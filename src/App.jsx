@@ -3,7 +3,7 @@
 // Usage:  import Omino from "./omino";  <Omino />
 // The root fills the window (position: fixed). Change .omino-root if you embed it.
 
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import ReactFlow, {
   Background,
   BackgroundVariant,
@@ -1122,6 +1122,23 @@ function Bohr({ el, size = 210 }) {
   );
 }
 
+function Footnote() {
+  return (
+    <footer className="omino-foot">
+      <p className="omino-foot__by">
+        OMINO is created by <strong>Oscar Perez</strong> — Medical student | Founder of Verde+
+        <span aria-hidden="true" className="omino-foot__dot">•</span>
+        <a href="https://discord.gg/ecYDZgumB" target="_blank" rel="noopener noreferrer">Join our Discord</a>
+        <span aria-hidden="true" className="omino-foot__dot">•</span>
+        <a href="https://www.patreon.com/cw/Oworld" target="_blank" rel="noopener noreferrer" className="omino-foot__support">
+          <Icon d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" size={12} />
+          Support Oworld
+        </a>
+      </p>
+    </footer>
+  );
+}
+
 function PeriodicTable({ q, setQ, sel, onPick, onClose, width }) {
   const hit = (e) => !q || [e.sym, e.name, e.z, CATS[e.cat][0], ROLES[e.role][0], e.note].join(" ").toLowerCase().includes(q);
   return (
@@ -1148,6 +1165,7 @@ function PeriodicTable({ q, setQ, sel, onPick, onClose, width }) {
       <div className="omino-ptable__legend">
         {Object.values(CATS).map(([l, c]) => <span key={l} style={{ "--c": c }}><i />{l}</span>)}
       </div>
+      <Footnote />
     </section>
   );
 }
@@ -1473,6 +1491,114 @@ function InfoCard({ cur, open, swap, fit, onBack, onClose }) {
   );
 }
 
+// Same breakpoints as OWORLD: >= 960px the search is a centered bar in the top bar; below that it is an icon that drops a full-width row.
+function useViewport() {
+  const read = () => ({ w: window.innerWidth, h: window.innerHeight });
+  const [vp, setVp] = useState(read);
+  useEffect(() => {
+    const on = () => setVp(read());
+    window.addEventListener("resize", on);
+    window.addEventListener("orientationchange", on);
+    return () => { window.removeEventListener("resize", on); window.removeEventListener("orientationchange", on); };
+  }, []);
+  return vp;
+}
+
+// Search bar, built to behave exactly like OWORLD's universal search: pill field, clear button, a dropdown panel with "Search in" scope chips,
+// This page = filter the atlas in place as you type; Everywhere / Elements / Pathways = list matches, tap one to jump to it.
+const OT = { card: "#121212", border: "#27272A", ink: "#FFFFFF", muted: "#A1A1AA", sel: "#71717A", blue: "#38BDF8", blueLight: "#1F1F23" };
+const SEARCH_FONT = "'Inter', Arial, 'Segoe UI', sans-serif";
+const LucideSvg = ({ size, color, children, style }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color || "currentColor"} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" style={style}>{children}</svg>
+);
+const SearchGlyph = ({ size = 17, color, style }) => <LucideSvg size={size} color={color} style={style}><circle cx="11" cy="11" r="8" /><path d="m21 21-4.3-4.3" /></LucideSvg>;
+const XGlyph = ({ size = 16, color, style }) => <LucideSvg size={size} color={color} style={style}><path d="M18 6 6 18" /><path d="m6 6 12 12" /></LucideSvg>;
+const SCOPES = [["auto", "This page"], ["all", "Everywhere"], ["elements", "Elements"], ["pathways", "Pathways"]];
+const SEARCH_PH = { auto: "Search Everything", all: "Search Everything", elements: "Search elements…", pathways: "Search pathways…" };
+function AtlasSearch({ q, setQ, scope, setScope, res, on, matchLine, onClear, onEnter, onPick, wide, autoFocus = false }) {
+  const [open, setOpen] = useState(false);
+  const boxRef = useRef(null);
+  const inputRef = useRef(null);
+  const inPlace = scope === "auto";
+  useEffect(() => { if (autoFocus && inputRef.current) { inputRef.current.focus(); setOpen(true); } }, []); // eslint-disable-line
+  useEffect(() => {
+    if (!open) return undefined;
+    const down = (e) => { if (boxRef.current && !boxRef.current.contains(e.target)) setOpen(false); };
+    const key = (e) => { if (e.key === "Escape") { setOpen(false); if (inputRef.current) inputRef.current.blur(); } };
+    document.addEventListener("mousedown", down); document.addEventListener("touchstart", down); document.addEventListener("keydown", key);
+    return () => { document.removeEventListener("mousedown", down); document.removeEventListener("touchstart", down); document.removeEventListener("keydown", key); };
+  }, [open]);
+  const total = res.cmp.length + res.enz.length + res.pth.length + res.els.length;
+  const grp = { fontFamily: SEARCH_FONT, fontWeight: 700, fontSize: 11, color: OT.muted, textTransform: "uppercase", letterSpacing: "0.05em", margin: "14px 0 4px" };
+  const row = { width: "100%", textAlign: "left", display: "block", background: "transparent", border: "none", borderBottom: `1px solid ${OT.border}`, padding: "10px 4px", cursor: "pointer", fontFamily: SEARCH_FONT, color: OT.ink };
+  const sub = { fontSize: 12, color: OT.muted, marginTop: 2, overflowWrap: "anywhere" };
+  const pick = (fn) => () => { fn(); setOpen(false); };
+  return (
+    <div ref={boxRef} style={{ position: "relative", width: wide ? "clamp(300px, 34vw, 460px)" : "100%" }}>
+      <div style={{ display: "flex", alignItems: "center", gap: 10, height: 40, padding: "0 8px 0 16px", borderRadius: 999, background: OT.card, border: `1px solid ${open ? OT.sel : OT.border}`, boxSizing: "border-box" }}>
+        <SearchGlyph size={17} color={OT.muted} style={{ flexShrink: 0 }} />
+        <input ref={inputRef} value={q} onChange={(e) => { setQ(e.target.value); setOpen(true); }} onFocus={() => setOpen(true)} maxLength={80}
+          onKeyDown={(e) => { if (e.key === "Enter") { if (inPlace) onEnter(); } }}
+          placeholder={SEARCH_PH[scope]} aria-label="Search" role="searchbox" autoComplete="off" spellCheck={false}
+          style={{ flex: 1, minWidth: 0, border: "none", outline: "none", background: "transparent", color: OT.ink, fontFamily: SEARCH_FONT, fontSize: 16 }} />
+        {q && (
+          <button onClick={() => { onClear(); if (inputRef.current) inputRef.current.focus(); }} title="Clear search" aria-label="Clear search"
+            style={{ background: "transparent", border: "none", cursor: "pointer", color: OT.muted, display: "flex", padding: 6, flexShrink: 0 }}><XGlyph size={16} /></button>
+        )}
+      </div>
+      {open && (
+        <div role="dialog" aria-label="Search" style={{ position: "absolute", top: 46, left: "50%", transform: "translateX(-50%)", width: wide ? "min(560px, 92vw)" : "100%", maxHeight: "70vh", overflowY: "auto", zIndex: 130, background: OT.card, border: `1px solid ${OT.border}`, borderRadius: 12, padding: 14, boxShadow: "0 12px 40px rgba(0,0,0,0.35)", boxSizing: "border-box", fontFamily: SEARCH_FONT, color: OT.ink }}>
+          <div role="group" aria-label="Search in" style={{ display: "flex", gap: 6, flexWrap: "wrap", justifyContent: "center", alignItems: "center" }}>
+            <span style={{ fontFamily: SEARCH_FONT, fontSize: 12, color: OT.muted, marginRight: 2 }}>Search in</span>
+            {SCOPES.map(([id, label]) => { const act = scope === id; return (
+              <button key={id} aria-pressed={act} onClick={() => { setScope(id); if (inputRef.current) inputRef.current.focus(); }} style={{
+                fontFamily: SEARCH_FONT, fontWeight: 600, fontSize: 12.5, padding: "5px 11px", borderRadius: 999, cursor: "pointer",
+                border: `1px solid ${act ? OT.sel : OT.border}`, background: act ? OT.blueLight : "transparent", color: act ? OT.blue : OT.ink,
+              }}>{label}</button>
+            ); })}
+          </div>
+          {inPlace ? (
+            <>
+              <p style={{ fontFamily: SEARCH_FONT, fontSize: 12.5, color: OT.muted, lineHeight: 1.5, margin: "12px 4px 0", textAlign: "center" }}>{q.trim() ? "Filtering this page as you type. Pick another scope to search elsewhere." : "Type to filter this page, or pick another scope to search elsewhere."}</p>
+              {matchLine && <p style={{ fontFamily: SEARCH_FONT, fontSize: 12.5, color: OT.ink, lineHeight: 1.5, margin: "8px 4px 0", textAlign: "center" }}>{matchLine}</p>}
+            </>
+          ) : (
+            <div>
+              {!on && <p style={{ fontFamily: SEARCH_FONT, fontSize: 13, color: OT.muted, margin: "12px 2px 2px", textAlign: "center" }}>Type at least 2 letters to search.</p>}
+              {on && total === 0 && <p style={{ fontFamily: SEARCH_FONT, fontSize: 13.5, color: OT.muted, margin: "14px 2px 2px" }}>{`No results for “${q.trim()}”.`}</p>}
+              {res.cmp.length > 0 && <div style={grp}>Compounds</div>}
+              {res.cmp.map((r) => (
+                <button key={r.id} onClick={pick(() => onPick("cmp", r))} style={row}>
+                  <div style={{ fontWeight: 700, fontSize: 13.5, overflowWrap: "anywhere" }}>{r.title}</div>
+                  {r.sub && <div style={sub}>{r.sub}</div>}
+                </button>
+              ))}
+              {res.enz.length > 0 && <div style={grp}>Enzymes</div>}
+              {res.enz.map((r) => (
+                <button key={r.id} onClick={pick(() => onPick("enz", r))} style={row}>
+                  <div style={{ fontWeight: 700, fontSize: 13.5, overflowWrap: "anywhere" }}>{r.title}</div>
+                  {r.sub && <div style={sub}>{r.sub}</div>}
+                </button>
+              ))}
+              {res.pth.length > 0 && <div style={grp}>Pathways</div>}
+              {res.pth.map((r) => (
+                <button key={r.id} onClick={pick(() => onPick("pth", r))} style={row}><div style={{ fontWeight: 600, fontSize: 13.5, overflowWrap: "anywhere" }}>{r.title}</div></button>
+              ))}
+              {res.els.length > 0 && <div style={grp}>Elements</div>}
+              {res.els.map((r) => (
+                <button key={r.id} onClick={pick(() => onPick("el", r))} style={row}>
+                  <div style={{ fontWeight: 700, fontSize: 13.5, overflowWrap: "anywhere" }}>{r.title}</div>
+                  {r.sub && <div style={sub}>{r.sub}</div>}
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
+
 function Atlas() {
   const [nodes, , onNodesChange] = useNodesState(initialNodes);
   const [edges, , onEdgesChange] = useEdgesState(initialEdges);
@@ -1484,7 +1610,12 @@ function Atlas() {
   const { fitView, zoomIn, zoomOut, getViewport, setViewport } = useReactFlow();
   const [ptOpen, setPtOpen] = useState(false); // periodic table panel
   const [stOpen, setStOpen] = useState(false); // settings panel
-  const [showMini, setShowMini] = useState(true); // minimap
+  const [showMini, setShowMini] = useState(true); // overview (minimap)
+  const [showPaths, setShowPaths] = useState(true); // pathway chip bar
+  const vp = useViewport();
+  const wide = vp.w >= 960; // same breakpoint as OWORLD: search bar centered in the top bar
+  const [searchOpen, setSearchOpen] = useState(false); // narrow screens: search drops down as its own row under the top bar
+  const [scope, setScope] = useState("auto"); // auto = this page (filter the atlas in place) | all | elements | pathways
   useEffect(() => {
     if (!stOpen) return;
     const away = (e) => { if (!e.target.closest(".omino-settings, [data-settings]")) setStOpen(false); };
@@ -1500,7 +1631,8 @@ function Atlas() {
   const swap = (t, id) => setStack((s) => [...s.slice(0, -1), { t, id }]);
   const fit = (ids) => fitView({ nodes: ids.map((id) => ({ id })), padding: 0.5, duration: 600, maxZoom: 1.2 });
 
-  const q = query.trim().toLowerCase();
+  const sq = query.trim().toLowerCase();
+  const q = scope === "auto" ? sq : ""; // only the "This page" scope filters the atlas in place
   const compounds = useMemo(() => nodes.filter((n) => !n.data.title), [nodes]);
 
   // Search matches names, formulas, notes and types, plus enzyme / cofactor labels on edges.
@@ -1521,6 +1653,25 @@ function Atlas() {
     }
     return { matchIds: ids, edgeHits: hits };
   }, [compounds, edges, q]);
+
+  const searchOn = sq.length >= 2 && scope !== "auto";
+  const searchRes = useMemo(() => {
+    const none = { cmp: [], enz: [], pth: [], els: [] };
+    if (!searchOn) return none;
+    const all = scope === "all";
+    const label = (id) => nodes.find((n) => n.id === id)?.data.label || id;
+    const cmp = all ? compounds.filter((n) => { const d = n.data; return [d.label, d.formula, d.note, KIND[d.kind].label, PATHWAYS[d.path]?.label].join(" ").toLowerCase().includes(sq); })
+      .slice(0, 10).map((n) => ({ id: n.id, title: n.data.label, sub: [n.data.formula, KIND[n.data.kind].label, PATHWAYS[n.data.path]?.label].filter(Boolean).join(" · "), node: n })) : [];
+    const enz = all ? edges.filter((e) => (e.data.label || "").toLowerCase().includes(sq)).slice(0, 8)
+      .map((e) => ({ id: e.id, title: e.data.label, sub: `${label(e.source)} → ${label(e.target)}`, edge: e })) : [];
+    const pth = (all || scope === "pathways") ? Object.entries(PATHWAYS).filter(([, p]) => p.label.toLowerCase().includes(sq)).slice(0, 6).map(([id, p]) => ({ id, title: p.label })) : [];
+    const els = (all || scope === "elements") ? ELEMENTS.filter((e) => [e.sym, e.name, CATS[e.cat][0], ROLES[e.role][0], e.note].join(" ").toLowerCase().includes(sq)).slice(0, 8)
+      .map((e) => ({ id: e.sym, title: `${e.name} (${e.sym})`, sub: `${CATS[e.cat][0]} · atomic number ${e.z}` })) : [];
+    return { cmp, enz, pth, els };
+  }, [searchOn, scope, sq, compounds, edges, nodes]); // eslint-disable-line
+  const matchLine = matchIds ? (matchIds.size === 0
+    ? "No matches. Try a name like “pyruvate”, a formula like “Mg”, or an enzyme like “kinase”."
+    : `${matchIds.size} of ${compounds.length} nodes match. Press Enter to zoom to them.`) : "";
 
   const shownNodes = useMemo(
     () =>
@@ -1579,6 +1730,21 @@ function Atlas() {
     }
   };
 
+  // Picking a search result jumps to it, like OWORLD opens the matching page.
+  const onSearchPick = (kind, r) => {
+    if (kind === "cmp") { if (r.node.data.mol) open("mol", r.id); fit([r.id]); }
+    else if (kind === "enz") fit([r.edge.source, r.edge.target]);
+    else if (kind === "pth") { if (focus === r.id) open("path", r.id); else selectPathway(r.id); }
+    else if (kind === "el") open("el", r.id);
+    setSearchOpen(false);
+  };
+  const searchProps = {
+    q: query, setQ: setQuery, scope, setScope, res: searchRes, on: searchOn, matchLine,
+    onClear: () => { setQuery(""); if (q) fitView({ padding: 0.15, duration: 600 }); },
+    onEnter: () => { focusMatches(); setSearchOpen(false); if (document.activeElement && document.activeElement.blur) document.activeElement.blur(); },
+    onPick: onSearchPick,
+  };
+
   // keep the active chip visible when a pathway is chosen from the canvas
   useEffect(() => {
     if (focus) document.querySelector(`.omino-chip[data-id="${focus}"]`)?.scrollIntoView({ inline: "center", block: "nearest", behavior: "smooth" });
@@ -1615,30 +1781,14 @@ function Atlas() {
     <OpenCtx.Provider value={open}>
     <div className="omino-root">
       <style>{CSS}</style>
-      <header className="omino-header">
-        <div className="omino-wordmark">OMINO</div>
-        <div className="omino-search">
-          <Icon d={ICON.search} />
-          <input
-            type="search"
-            value={query}
-            placeholder="Search Everything"
-            onChange={(e) => setQuery(e.target.value)}
-            onKeyDown={(e) => e.key === "Enter" && focusMatches()}
-            aria-label="Search Omino"
-          />
-          {q && (
-            <div className="omino-search__meta">
-              <span>
-                {matchIds.size === 0
-                  ? "No matches. Try a name like “pyruvate”, a formula like “Mg”, or an enzyme like “kinase”."
-                  : `${matchIds.size} of ${compounds.length} nodes match. Press Enter to zoom to them.`}
-              </span>
-              <button onClick={clear}>Clear</button>
-            </div>
+      <div className="omino-top">
+        <header className={`omino-header ${wide ? "is-wide" : ""}`}>
+          <button className="omino-wordmark" onClick={() => { setQuery(""); setFocus(null); setStack([]); setSearchOpen(false); fitView({ padding: 0.15, duration: 600 }); }} aria-label="Home" title="Home">OMINO</button>
+          {wide && <AtlasSearch {...searchProps} wide />}
+          <div className="omino-hdr-right">
+          {!wide && (
+            <button className="omino-round omino-round--ghost" onClick={() => setSearchOpen((o) => !o)} aria-expanded={searchOpen} aria-label="Search" title="Search"><SearchGlyph size={15} /></button>
           )}
-        </div>
-        <div className="omino-hdr-right">
           <button className={`omino-round ${ptOpen ? "is-on" : ""}`} onClick={() => setPtOpen((v) => !v)} aria-pressed={ptOpen} aria-label="Periodic table" title="Periodic table">
             <Icon d={ICON.table} />{ptOpen && <i />}
           </button>
@@ -1649,7 +1799,8 @@ function Atlas() {
               {[
                 ["Enzyme labels", "Names on the reaction arrows (G)", !hideG, () => setHideG((v) => !v)],
                 ["Substrates", "Co-substrates beside each molecule (S)", !hideS, () => setHideS((v) => !v)],
-                ["Minimap", "Overview in the corner", showMini, () => setShowMini((v) => !v)],
+                ["Pathways", "Pathway chips along the bottom", showPaths, () => setShowPaths((v) => !v)],
+                ["Overview", "Minimap in the corner", showMini, () => setShowMini((v) => !v)],
               ].map(([t, d, on, fn]) => (
                 <div className="omino-settings__row" key={t}>
                   <div><b>{t}</b><span>{d}</span></div>
@@ -1667,7 +1818,11 @@ function Atlas() {
             </div>
           )}
         </div>
-      </header>
+        </header>
+        {!wide && searchOpen && (
+          <div className="omino-searchrow"><AtlasSearch {...searchProps} autoFocus /></div>
+        )}
+      </div>
 
 
       <div className="omino-canvas" onMouseDownCapture={startZoomDrag} onContextMenu={(e) => e.preventDefault()}>
@@ -1715,7 +1870,7 @@ function Atlas() {
             </div>
           </Panel>
 
-          <Panel position="bottom-center">
+          {showPaths && <Panel position="bottom-center">
             <div className="omino-chips nowheel nopan" onWheel={(e) => { if (!e.deltaX) e.currentTarget.scrollLeft += e.deltaY; }}>
               {Object.entries(PATHWAYS).map(([id, p]) => (
                 <button key={id} data-id={id} className={`omino-chip ${focus === id ? "is-on" : ""}`} style={{ "--c": p.color }} onClick={() => selectPathway(id)} aria-pressed={focus === id}>
@@ -1724,14 +1879,16 @@ function Atlas() {
                 </button>
               ))}
             </div>
-          </Panel>
+          </Panel>}
         </ReactFlow>
         {ptOpen && (
           <PeriodicTable q={elQ.trim().toLowerCase()} setQ={setElQ} sel={cur?.t === "el" ? cur.id : null} onPick={(e) => (cur?.t === "el" ? swap("el", e.sym) : open("el", e.sym))} onClose={() => setPtOpen(false)}
-            width={cur ? "min(720px, calc(100% - 440px))" : "min(720px, calc(100% - 96px))"} />
+            width={cur ? "min(1120px, calc(100% - 440px))" : "min(1120px, calc(100% - 96px))"} />
         )}
         {cur && <InfoCard cur={cur} open={open} swap={swap} fit={fit} onBack={stack.length > 1 ? () => setStack((s) => s.slice(0, -1)) : null} onClose={() => setStack([])} />}
       </div>
+
+
     </div>
     </OpenCtx.Provider>
   );
@@ -1865,7 +2022,7 @@ const CSS = `
 }
 .omino-ptable__search input:focus-visible { border-color: #38bdf8; box-shadow: 0 0 0 3px rgba(56,189,248,.25); }
 .omino-tool--sm { width: 38px; height: 38px; flex: none; }
-.omino-ptable__grid { display: grid; grid-template-columns: repeat(18, minmax(30px, 1fr)); grid-template-rows: repeat(6, 46px); gap: 3px; min-width: 600px; }
+.omino-ptable__grid { display: grid; grid-template-columns: repeat(18, minmax(30px, 1fr)); grid-template-rows: repeat(6, clamp(46px, 8vh, 78px)); gap: 4px; min-width: 600px; }
 .omino-cell {
   position: relative; display: flex; align-items: flex-end; padding: 0 0 5px 5px; font: inherit; color: #f4f4f5; cursor: pointer;
   background: #0a0a0a; border: 1px solid #1b1b1f; border-bottom: 2px solid var(--c); border-radius: 6px; transition: opacity .15s, background .15s;
@@ -1942,6 +2099,38 @@ const CSS = `
 .omino-search > svg { top: 13px; }
 .omino-search__meta { top: 54px; border-radius: 16px; font-family: var(--mono); font-size: 11.5px; }
 .omino-header { z-index: 9; }
+/* Top bar laid out like OWORLD's: logo | centered search | actions, 14px / 20px padding, 40px round buttons; below 960px the search is an icon that drops a full-width row */
+.omino-top { flex: none; position: relative; z-index: 20; background: #0a0a0a; padding: 14px 20px 12px; }
+.omino-top .omino-header { position: relative; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 0; background: transparent; border: 0; z-index: auto; }
+.omino-top .omino-header.is-wide { display: grid; grid-template-columns: 1fr auto 1fr; }
+.omino-top .omino-header.is-wide .omino-wordmark { justify-self: start; }
+.omino-top .omino-header.is-wide .omino-hdr-right { justify-self: end; }
+.omino-top .omino-wordmark { background: transparent; border: 0; cursor: pointer; flex-shrink: 0; margin: 0; text-align: left; }
+.omino-top .omino-wordmark:focus-visible { outline: 2px solid var(--sky); outline-offset: 2px; border-radius: 4px; }
+.omino-top .omino-hdr-right { align-items: center; gap: 10px; }
+.omino-top .omino-round { width: 40px; height: 40px; flex-shrink: 0; }
+.omino-top .omino-settings { top: 48px; width: min(320px, calc(100vw - 40px)); max-height: calc(100dvh - 90px); overflow-y: auto; }
+.omino-searchrow { margin-top: 12px; }
+.omino-top .omino-round--ghost { background: transparent; border-color: #27272A; color: #FFFFFF; }
+.omino-top .omino-round--ghost:hover { background: transparent; }
+@media (max-width: 639px) { .omino-top .omino-hdr-right { gap: 8px; } }
+/* OMINO wordmark = OWORLD logo: Inter 800, 22px (20px on phones), line-height 1.2, no tracking, 4px 2px box */
+.omino-header .omino-wordmark { font-family: 'Inter', Arial, 'Segoe UI', sans-serif; font-size: 22px; font-weight: 800; line-height: 1.2; letter-spacing: 0; padding: 4px 2px; color: #f4f4f5; }
+@media (max-width: 639px) { .omino-header .omino-wordmark { font-size: 20px; } }
+/* Larger periodic table: bigger cells, type and search */
+.omino-ptable .omino-cell b { font-size: clamp(16px, 2.4vh, 24px); }
+.omino-ptable .omino-cell small { font-size: clamp(9px, 1.3vh, 12px); top: 4px; left: 6px; }
+.omino-ptable .omino-ptable__search input { font-size: 15px; padding-top: 11px; padding-bottom: 11px; }
+.omino-ptable .omino-ptable__legend { font-size: 12px; gap: 8px 18px; margin-top: 14px; }
+/* Footnote (same text and type sizes as OWORLD's), tucked into the bottom of the periodic table panel */
+.omino-foot { margin-top: 14px; padding-top: 12px; border-top: 1px solid #1f1f23; text-align: center; font-family: 'Inter', Arial, 'Segoe UI', sans-serif; }
+.omino-foot p { margin: 0; font-size: 12px; color: #8e8e99; line-height: 1.7; }
+.omino-foot__by strong { color: #f4f4f5; font-weight: 700; }
+.omino-foot a { color: #D4D4D8; text-decoration: none; white-space: nowrap; }
+.omino-foot a:hover { color: #f4f4f5; }
+.omino-foot__support { display: inline-flex; align-items: center; gap: 5px; font-size: 11.5px; }
+.omino-foot__dot { margin: 0 8px; }
+.omino-foot a:focus-visible { outline: 2px solid var(--sky); outline-offset: 2px; border-radius: 3px; }
 .omino-hdr-right { position: relative; display: flex; justify-content: flex-end; gap: 12px; }
 .omino-settings {
   position: absolute; top: 58px; right: 0; z-index: 20; width: 320px; box-sizing: border-box; padding: 20px;
