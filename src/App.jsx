@@ -1,3 +1,4 @@
+// v3.6: Cholesterol (synthesis from acetyl-CoA through HMG-CoA and mevalonate to 7-dehydrocholesterol and cholesterol, drawn as skeletal structures; fates: bile acids (cholic acid), steroid hormones (pregnenolone), vitamin D₃; statin, ezetimibe, PCSK9 and FXR targets tethered to it).
 // v3.5: Vitamins hub (all 13 fat- and water-soluble vitamins with function, deficiency, excess and RDA; cofactor vitamins linked to the enzymes, metabolites, cofactor cards and drug targets they work with; vitamin-to-vitamin links; vitamin replacement drugs).
 // v3.4: Immune hub (immunoglobulin classes IgG, IgA, IgM, IgE, IgD with schematics, functions, clinical associations and NBME serum values; immune globulins, FcRn blockers, anti-CD20, anti-BAFF, anti-IgE and targeted-release budesonide linked to them; TNF, IL-6R, IL-1R, JAK and the glucocorticoid receptor cross-linked).
 // v3.3: every element card has a Toxicity section (excess, deficiency, antidotes and drug adverse effects), searchable from the table and global search.
@@ -1015,10 +1016,79 @@ EDGES.push(
   { id: "hmfe", source: "fe", target: "heme", label: "cofactor", sh: "l", th: "r" },
 );
 
+
+const CH_AT = {};
+/* ---- cholesterol: synthesis, fates and structures (right of the lipid block, below the pentose phosphate pathway) ---- */
+PATHWAYS.chol = { label: "Cholesterol synthesis & fates", color: "#d6a35c" };
+// steroid skeleton, 30 px bonds, rings A–D; y is down. Stereochemistry (wedges, A/B ring fusion) is not drawn.
+const ST = { C1: [0, -30], C2: [-25.98, -15], C3: [-25.98, 15], C4: [0, 30], C5: [25.98, 15], C10: [25.98, -15], C6: [51.96, 30], C7: [77.94, 15], C8: [77.94, -15], C9: [51.96, -30], C11: [51.96, -60], C12: [77.94, -75], C13: [103.92, -60], C14: [103.92, -30], C15: [132.45, -20.73], C16: [150.08, -45], C17: [132.45, -69.27], C18: [103.92, -90], C19: [25.98, -45], C20: [141.72, -97.8], C21: [121.65, -120.1], C22: [171.07, -104.04], C23: [180.34, -132.57], C24: [209.69, -138.8], C25: [218.96, -167.33], C26: [248.31, -173.57], C27: [198.89, -189.63] };
+const RB = [51.96, 0]; // centre of ring B, for the inner line of ring double bonds
+function steroid({ dbl = [], sub = {}, tail = "chol" }) {
+  const atoms = [], bonds = [];
+  const ring = ["C1", "C2", "C3", "C4", "C5", "C6", "C7", "C8", "C9", "C10", "C11", "C12", "C13", "C14", "C15", "C16", "C17", "C18", "C19"];
+  ring.forEach((k) => atoms.push(C(k, ST[k])));
+  [["C1", "C2"], ["C2", "C3"], ["C3", "C4"], ["C4", "C5"], ["C5", "C10"], ["C10", "C1"], ["C5", "C6"], ["C6", "C7"], ["C7", "C8"], ["C8", "C9"], ["C9", "C10"],
+    ["C9", "C11"], ["C11", "C12"], ["C12", "C13"], ["C13", "C14"], ["C14", "C8"], ["C14", "C15"], ["C15", "C16"], ["C16", "C17"], ["C17", "C13"], ["C13", "C18"], ["C10", "C19"]]
+    .forEach(([a, b]) => bonds.push(dbl.some(([x, y]) => (x === a && y === b) || (x === b && y === a)) ? [a, b, 2, RB] : [a, b]));
+  const hy = (id, k, [x, y], t, align) => { atoms.push(A(id, [x, y], t, "O", align ? { align } : {})); bonds.push([k, id]); };
+  if (sub.o3) hy("O3", "C3", [-51.96, 30], "HO", "end");
+  if (sub.o7) hy("O7", "C7", [103.92, 30], "OH", "start");
+  if (sub.o12) hy("O12", "C12", [77.94, -105], "OH");
+  ["C20", "C21", "C22"].forEach((k) => atoms.push(C(k, ST[k])));
+  bonds.push(["C17", "C20"], ["C20", "C21"], ["C20", "C22"]);
+  if (tail === "chol") {
+    ["C23", "C24", "C25", "C26", "C27"].forEach((k) => atoms.push(C(k, ST[k])));
+    bonds.push(["C22", "C23"], ["C23", "C24"], ["C24", "C25"], ["C25", "C26"], ["C25", "C27"]);
+  } else if (tail === "acid") { // cholic acid: C22–C24 chain ending in a carboxylate
+    atoms.splice(atoms.findIndex((a) => a.id === "C22"), 1);
+    atoms.push(C("C22", ST.C22), C("C23", ST.C23), C("C24", ST.C24), A("O24a", [189.62, -161.1], "O", "O"), A("O24b", [239.04, -145.04], "O", "O", { q: "−" }));
+    bonds.push(["C22", "C23"], ["C23", "C24"], ["C24", "O24a", 2], ["C24", "O24b"]);
+  } else if (tail === "pregn") { // pregnenolone: C17 acetyl (C20=O, C21)
+    const i = atoms.findIndex((a) => a.id === "C20"); atoms.splice(i, 1);
+    const k = atoms.findIndex((a) => a.id === "C21"); atoms.splice(k, 1);
+    const j = atoms.findIndex((a) => a.id === "C22"); atoms.splice(j, 1);
+    atoms.push(C("C20", ST.C20), A("O20", ST.C21, "O", "O"), C("C21", ST.C22));
+    bonds.splice(bonds.findIndex((b) => b[0] === "C20" && b[1] === "C21"), 1);
+    bonds.splice(bonds.findIndex((b) => b[0] === "C20" && b[1] === "C22"), 1);
+    bonds.push(["C20", "O20", 2], ["C20", "C21"]);
+  }
+  return { atoms, bonds };
+}
+const hmgChain = (end) => { const m = zig(5, [[0, "COOL"], [4, end]]); m.atoms.push(A("o3", [40, 43], "OH", "O"), C("me", [64, 43])); m.bonds.push(["c2", "o3"], ["c2", "me"]); return m; };
+Object.assign(MOLS, {
+  hmgcoa: { name: "HMG-CoA", ...hmgChain("SCoA") },
+  mevalonate: { name: "Mevalonate", ...hmgChain("OH") },
+  dhc7: { name: "7-Dehydrocholesterol", ...steroid({ dbl: [["C5", "C6"], ["C7", "C8"]], sub: { o3: 1 } }) },
+  chol: { name: "Cholesterol", ...steroid({ dbl: [["C5", "C6"]], sub: { o3: 1 } }) },
+  cholic: { name: "Cholic acid", ...steroid({ sub: { o3: 1, o7: 1, o12: 1 }, tail: "acid" }) },
+  preg: { name: "Pregnenolone", ...steroid({ dbl: [["C5", "C6"]], sub: { o3: 1 }, tail: "pregn" }) },
+});
+NODES.push(
+  M("hmgcoa", "C27H44N7O20P3S", "Made from acetyl-CoA and acetoacetyl-CoA in the cytosol (the mitochondrial pool makes ketone bodies instead)"),
+  M("mevalonate", "C6H12O4", "Committed product of cholesterol synthesis; the HMG-CoA reductase step is rate-limiting and is blocked by statins"),
+  M("dhc7", "C27H44O", "Last precursor of cholesterol in the Kandutsch–Russell route; UVB in skin turns it into vitamin D₃"),
+  M("chol", "C27H46O", "Membrane lipid and precursor of bile acids, steroid hormones and vitamin D; carried in LDL and HDL"),
+  M("cholic", "C24H40O5", "Primary bile acid made in the liver; conjugated to glycine or taurine, secreted in bile"),
+  M("preg", "C21H32O2", "First steroid hormone: all adrenal and gonadal steroids are made from it"),
+);
+[["c_ch1", "+ acetoacetyl-CoA + H₂O", "hmgcoa", -270, 0], ["c_ch2", "+ 2 NADPH", "mevalonate", 270, -45], ["c_ch3", "→ CoA + 2 NADP⁺", "mevalonate", 270, 25],
+  ["c_ch4", "→ UVB → vitamin D", "dhc7", 300, 0], ["c_ch6", "→ steroid hormones", "preg", 0, 215], ["c_ch7", "→ bile salts → gut", "cholic", 0, 215]].forEach(([id, label, at, dx, dy]) => {
+  NODES.push({ id, kind: "cofactor", label, formula: "", note: "Co-substrate / co-product" });
+  layout[id] = [0, 0]; CH_AT[id] = [at, dx, dy];
+});
+Object.assign(layout, { hmgcoa: [2500, 4800], mevalonate: [2500, 5200], dhc7: [2500, 5640], chol: [2500, 6120], cholic: [3250, 6120], preg: [1750, 6120] });
+Object.entries(CH_AT).forEach(([id, [at, dx, dy]]) => { layout[id] = [layout[at][0] + dx, layout[at][1] + dy]; });
+["hmgcoa", "mevalonate", "dhc7", "chol", "cholic", "preg", "c_ch1", "c_ch2", "c_ch3", "c_ch4", "c_ch6", "c_ch7"].forEach((i) => (PATH_OF[i] = "chol"));
+EDGES.push(
+  { id: "ch0", source: "acetylcoa", target: "hmgcoa", label: "HMG-CoA synthase", main: true, sh: "b", th: "t" },
+  ...[["hmgcoa", "mevalonate", "HMG-CoA reductase"], ["mevalonate", "dhc7", "Isoprenoid, squalene and sterol steps"], ["dhc7", "chol", "7-DHC reductase (DHCR7)"],
+    ["chol", "cholic", "Cholesterol 7α-hydroxylase (CYP7A1)"], ["chol", "preg", "Desmolase (P450scc)"]].map(([source, target, label], i) => ({ id: "ch" + (i + 1), source, target, label, main: true, auto: true })),
+);
+
 // Big pathway titles sit in or beside their pathway, like the labels on a metro map
 [["glycolysis", -560, 1650], ["glycogen", 350, -480], ["ppp", 1275, 430], ["tca", 0, RING.cy], ["urea", U.x, U.y],
   ["amino", -1000, 4550], ["aa", -6300, 4850], ["lipid", 950, 2600],
-  ["ala", 1000, 7000], ["heme", 1500, 10050], ["bili", -1000, 12300]].forEach(([p, x, y]) => {
+  ["ala", 1000, 7000], ["heme", 1500, 10050], ["bili", -1000, 12300], ["chol", 2500, 4430]].forEach(([p, x, y]) => {
   NODES.push({ id: "t_" + p, kind: "pathway", title: true, label: PATHWAYS[p].label, formula: "", note: "", path: p });
   layout["t_" + p] = [x, y];
 });
@@ -1287,7 +1357,7 @@ PATHWAYS.pharm = { label: "Pharmacology", color: RX_COLOR };
 
 // id, name, type, gene, what it does, metabolites it acts on, the enzyme label on the map it belongs to (if any), preferred side
 const TARGETS = [
-  ["t_hmgcr", "HMG-CoA reductase", "enzyme", "HMGCR", "Rate-limiting enzyme of cholesterol synthesis: turns HMG-CoA into mevalonate in the cytosol. Blocking it lowers hepatic cholesterol, so liver cells make more LDL receptors and clear more LDL from blood.", ["c_mev"], null, "l"],
+  ["t_hmgcr", "HMG-CoA reductase", "enzyme", "HMGCR", "Rate-limiting enzyme of cholesterol synthesis: turns HMG-CoA into mevalonate in the cytosol. Blocking it lowers hepatic cholesterol, so liver cells make more LDL receptors and clear more LDL from blood.", ["mevalonate"], "HMG-CoA reductase", "l"],
   ["t_sglt2", "SGLT2", "transporter", "SLC5A2", "Sodium–glucose cotransporter of the proximal tubule; reabsorbs about 90% of filtered glucose. Blocking it makes the kidney excrete glucose, lowering blood glucose without insulin.", ["glucose"], null, "l"],
   ["t_gk", "Glucokinase", "enzyme", "GCK", "Hexokinase IV of liver and pancreatic β-cells, with a high Km so it senses blood glucose. Activating it lowers the glucose level that triggers insulin release and increases hepatic glucose uptake.", ["glucose"], "Hexokinase / Glucokinase", "l"],
   ["t_pdc", "Pyruvate dehydrogenase complex", "enzyme", "PDHA1 (E1α)", "Mitochondrial complex that turns pyruvate into acetyl-CoA. Pyruvate dehydrogenase kinase (PDK) switches it off by phosphorylation, so inhibiting PDK keeps the complex active.", ["pyruvate"], "Pyruvate dehydrogenase complex", "l"],
@@ -1316,11 +1386,10 @@ const DRUGS = [
 
 // Two link stubs for pathways the atlas does not draw (same convention as "→ bile → gut")
 NODES.push(
-  { id: "c_mev", kind: "cofactor", label: "HMG-CoA → mevalonate → cholesterol", formula: "", note: "Link to a pathway not drawn yet", w: 300, pharm: true },
   { id: "c_pg", kind: "cofactor", label: "Arachidonate → prostaglandins, thromboxane", formula: "", note: "Link to a pathway not drawn yet", w: 330, pharm: true },
 );
-layout.c_mev = [-470, 3640]; layout.c_pg = [1800, 2380];
-PATH_OF.c_mev = "pharm"; PATH_OF.c_pg = "pharm";
+layout.c_pg = [1800, 2380];
+PATH_OF.c_pg = "pharm";
 
 // Auto-placement: each target sits on its preferred side of its metabolite, its drug just beyond it, and nothing overlaps
 // an existing node or crosses an existing arrow.
@@ -1377,6 +1446,7 @@ DRUGS.forEach(([id, label, cls, examples, note, fx, molKey]) => {
   PATH_OF[id] = "pharm";
 });
 RX_EFFECTS.forEach((e) => EDGES.push({ id: `rx_${e.drug}_${e.target}`, source: e.drug, target: e.target, label: e.fx === "activate" && e.detail.startsWith("Indirect") ? "activates (via PDK)" : FX[e.fx].verb, fx: e.fx, auto: true, path: "pharm" }));
+RX_ACTS.push({ target: "t_npc1l1", met: "chol" }, { target: "t_pcsk9", met: "chol" }, { target: "t_fxr", met: "cholic" }); // hub targets defined later
 RX_ACTS.forEach((a) => EDGES.push({ id: `rx_${a.target}_${a.met}`, source: a.target, target: a.met, label: "", fx: "tether", auto: true, path: "pharm" }));
 const RX_ANCHORS = new Set(RX_ACTS.map((a) => a.met));
 
@@ -1393,9 +1463,9 @@ const LOCS = {
 };
 const LOC_OF = {};
 Object.entries({
-  cyt: "glucose g6p f6p fbp gap dhap bpg13 pg3 pg2 pep pyruvate lactate g1p glycogen udpglc p6gl p6g ru5p r5p xu5p s7p e4p alanine aspartate glutamate ornithine citrulline argsucc arginine urea glyc3p glycerol fa facyl malonyl acetylcoa glycine ala pbg hmb uro3 copro3 bilirubin biliverdin mg k p atp fe t_gk c_mev",
-  mit: "pyruvate acetylcoa citrate isocitrate akg succoa succinate fumarate malate oaa cp ornithine citrulline aspartate glutamate facyl acac glycine ala copro3 protogen protoporph heme fe atp t_pdc t_cps1 t_cpt1",
-  er: "tag glyc3p biliverdin bilglu t_hmgcr t_ugt t_cox c_mev c_pg",
+  cyt: "hmgcoa mevalonate glucose g6p f6p fbp gap dhap bpg13 pg3 pg2 pep pyruvate lactate g1p glycogen udpglc p6gl p6g ru5p r5p xu5p s7p e4p alanine aspartate glutamate ornithine citrulline argsucc arginine urea glyc3p glycerol fa facyl malonyl acetylcoa glycine ala pbg hmb uro3 copro3 bilirubin biliverdin mg k p atp fe t_gk c_mev",
+  mit: "preg pyruvate acetylcoa citrate isocitrate akg succoa succinate fumarate malate oaa cp ornithine citrulline aspartate glutamate facyl acac glycine ala copro3 protogen protoporph heme fe atp t_pdc t_cps1 t_cpt1",
+  er: "tag glyc3p biliverdin bilglu t_hmgcr t_ugt t_cox c_pg dhc7 chol cholic",
   nuc: "t_ppara t_pparg",
   ap: "t_sglt2",
   ext: "glucose lactate alanine acac fa glycerol urea bilirubin bilglu t_lipase",
@@ -1454,7 +1524,7 @@ const VIT = {
     fn: ["Raises intestinal calcium and phosphate absorption", "Supports bone mineralisation and lowers PTH", "Modulates immunity (antimicrobial peptides in macrophages)"],
     def: ["Children: rickets (bowed legs, rachitic rosary, craniotabes, late fontanelle closure)", "Adults: osteomalacia with bone pain and proximal weakness; secondary hyperparathyroidism", "Low calcium and phosphate, high PTH and alkaline phosphatase", "Causes: little sun, dark skin, exclusive breastfeeding without supplement, kidney disease (no 1α-hydroxylase), liver disease, anticonvulsants (CYP induction)"],
     ex: ["Hypercalcemia: polyuria, constipation, confusion, kidney stones, nephrocalcinosis", "Granulomatous disease (sarcoidosis, TB) makes calcitriol outside PTH control because macrophages express 1α-hydroxylase"],
-    cof2: { mol: [], enz: [], el: ["Ca", "P"] }, links: [["t_vdr", "calcitriol binds"]], relDrugs: ["d_vitd"], drug: null,
+    cof2: { mol: [], enz: [], el: ["Ca", "P"] }, links: [["t_vdr", "calcitriol binds"], ["dhc7", "made from 7-dehydrocholesterol"]], relDrugs: ["d_vitd"], drug: null,
   },
   t_vk: {
     name: "Vitamin K (phylloquinone, menaquinones)", kind: "vitf", gene: "Cofactor: γ-glutamyl carboxylase", locs: ["er"],
@@ -1882,7 +1952,7 @@ Object.entries({
   t_dnaalk: "wbc hb plt cr na alt ast", t_dnapt: "wbc hb plt cr na k mg ca", t_dnaint: "wbc plt alt ast bilt", t_dnabl: "po2 pco2 cr",
   t_top1: "wbc hb plt alt ast bilt", t_top2: "wbc hb plt tni alt ast bilt cr", t_asn: "glu amy lip alb alt ast bilt pt ptt", t_uric: "ua k phos ca cr ldh", t_csf3r: "wbc",
 }).forEach(([id, ks]) => (LAB_OF[id] = ks.split(" ")));
-Object.entries({ t_va: "alt ast", t_vd: "ca phos alp pth uca", t_vk: "pt ptt", t_ve: "hb retic", t_b3: "tc ldl hdl tg glu ua alt ast", t_b6: "hb mcv alt ast", t_b9: "hb mcv retic", t_b12: "hb mcv retic k" }).forEach(([id, ks]) => (LAB_OF[id] = ks.split(" ")));
+Object.entries({ chol: "tc ldl hdl tg", cholic: "alp bilt alt ast", t_va: "alt ast", t_vd: "ca phos alp pth uca", t_vk: "pt ptt", t_ve: "hb retic", t_b3: "tc ldl hdl tg glu ua alt ast", t_b6: "hb mcv alt ast", t_b9: "hb mcv retic", t_b12: "hb mcv retic k" }).forEach(([id, ks]) => (LAB_OF[id] = ks.split(" ")));
 const ORG_LAB = { cv: "tni ck ldh tc ldl hdl tg k", rn: "bun cr crcl na k cl hco3 osm uosm uprot ua", rs: "po2 pco2 ph", sk: "ca phos alp pth ck uca ua esr", gi: "amy lip", cn: "na", hp: "alt ast alp bilt bild prot alb", en: "glu glur a1c cort", on: "wbc hb plt mcv ua ldh cr alt ast bilt", im: "igg iga igm ige wbc esr prot alb", vt: "hb mcv retic ca phos alp pth uca pt ptt" };
 DRUGS.forEach((d) => { const u = new Set(d[5].flatMap((f) => LAB_OF[f[0]] || [])); if (u.size) LAB_OF[d[0]] = [...u]; }); // a drug inherits its targets' monitoring labs
 Object.entries(ORGAN_SET).forEach(([o, set]) => { const u = new Set(ORG_LAB[o].split(" ")); set.forEach((id) => (LAB_OF[id] || []).forEach((k) => u.add(k))); LAB_OF["o_" + o] = [...u]; });
@@ -2515,7 +2585,7 @@ const TOK = [
   ["FADH₂", ["mol", "fadh2"]], ["ATP", ["mol", "atp"]], ["ADP", ["mol", "adp"]], ["AMP", ["mol", "amp"]], ["GTP", ["mol", "gtp"]],
   ["UTP", ["mol", "utp"]], ["UDP", ["mol", "udp"]], ["CoA", ["mol", "coa"]], ["PPᵢ", ["mol", "ppi"]], ["Pᵢ", ["mol", "pi"]],
   ["H₂O₂", ["mol", "h2o2"]], ["H₂O", ["mol", "h2o"]], ["CO₂", ["mol", "co2"]], ["CO", ["mol", "co"]], ["NH₃", ["mol", "nh3"]],
-  ["O₂", ["mol", "o2"]], ["H⁺", ["mol", "hplus"]], ["Fe²⁺", ["el", "Fe"]],
+  ["O₂", ["mol", "o2"]], ["H⁺", ["mol", "hplus"]], ["Fe²⁺", ["el", "Fe"]], ["NADP⁺", ["mol", "nadp"]], ["vitamin D", ["target", "t_vd"]],
 ];
 const TOKMAP = Object.fromEntries(TOK);
 const TOK_RE = new RegExp("(" + TOK.map((t) => t[0]).sort((a, b) => b.length - a.length).join("|") + ")");
@@ -2573,6 +2643,22 @@ const PDESC = {
   bili: "Heme oxygenase opens the ring to biliverdin (releasing CO and iron), biliverdin reductase makes bilirubin, and the liver conjugates it with glucuronate for bile.",
 };
 
+Object.assign(EXPLAIN, {
+  hmgcoa: "Three-carbon-branched thioester made when HMG-CoA synthase adds acetyl-CoA to acetoacetyl-CoA. In the cytosol it goes to cholesterol; in liver mitochondria the same molecule is cleaved by HMG-CoA lyase to acetoacetate, a ketone body.",
+  mevalonate: "Six-carbon acid made by HMG-CoA reductase, the rate-limiting step of cholesterol synthesis. It is then phosphorylated and decarboxylated to the five-carbon isoprenoids IPP and DMAPP, which also give farnesyl and geranylgeranyl groups, ubiquinone, dolichol and heme a. Statins block the step before it. Mevalonate kinase deficiency (hyper-IgD syndrome) causes periodic fevers.",
+  dhc7: "Cholesterol with one extra double bond in ring B (C7=C8). 7-DHC reductase (DHCR7) removes it to make cholesterol; its deficiency is Smith–Lemli–Opitz syndrome: low cholesterol, high 7-DHC, microcephaly, intellectual disability, cleft palate, hypospadias and 2–3 toe syndactyly. In skin, UVB opens ring B to give previtamin D₃ and then vitamin D₃.",
+  chol: "A 27-carbon sterol: four fused rings, a 3-hydroxyl (the only polar group, drawn at left), and an eight-carbon tail. It stiffens membranes and is the precursor of bile acids, steroid hormones and vitamin D. The body makes about 1 g a day (liver most) and eats about 0.3 g. It is carried in lipoproteins (LDL delivers, HDL returns it), esterified by ACAT in cells and LCAT in plasma, and cleared by conversion to bile acids and biliary secretion. SREBP-2 switches synthesis on when sterols are low; high sterols block SREBP-2 processing and speed HMG-CoA reductase degradation. Familial hypercholesterolemia (LDL receptor, ApoB or PCSK9 gain of function) and atherosclerosis follow too much LDL cholesterol; cholesterol gallstones follow supersaturated bile.",
+  cholic: "One of the two primary bile acids (with chenodeoxycholic acid). The liver adds hydroxyl groups and shortens the side chain to a carboxylic acid, so the molecule has a water-loving face and a fat-loving face that emulsifies dietary fat. It is conjugated to glycine or taurine, stored in the gallbladder, and about 95% is recovered in the ileum and recycled (enterohepatic circulation). It feeds back on CYP7A1 through the FXR receptor. Bile-acid sequestrants (cholestyramine) interrupt the loop and make the liver spend cholesterol on new bile acid.",
+  preg: "C21 steroid made when P450scc (CYP11A1, inner mitochondrial membrane) cuts the cholesterol side chain; this is the rate-limiting step of steroid hormone synthesis, driven by StAR carrying cholesterol into the mitochondrion. Pregnenolone becomes progesterone, then corticosteroids, androgens and estrogens in a tissue-specific way. Lipoid congenital adrenal hyperplasia (StAR defect) leaves all adrenal and gonadal steroids low.",
+});
+Object.assign(ENZN, {
+  "HMG-CoA synthase": "Condenses acetyl-CoA with acetoacetyl-CoA to give HMG-CoA. The cytosolic isoform feeds cholesterol synthesis; the mitochondrial isoform feeds ketogenesis.",
+  "HMG-CoA reductase": "Rate-limiting step of cholesterol synthesis: HMG-CoA + 2 NADPH → mevalonate + CoA + 2 NADP⁺, in the ER membrane. Controlled by SREBP-2 (transcription), sterol-triggered degradation, and AMPK phosphorylation (inhibits). Statins compete with HMG-CoA for the active site.",
+  "Isoprenoid, squalene and sterol steps": "About 19 enzymes turn mevalonate into cholesterol: phosphorylation and decarboxylation to the five-carbon IPP, joining six of them into the 30-carbon squalene (squalene synthase), epoxidation and cyclisation to lanosterol, then demethylation and double-bond changes to 7-dehydrocholesterol or desmosterol. Making one cholesterol costs 18 acetyl-CoA, 36 ATP and 16 NADPH.",
+  "7-DHC reductase (DHCR7)": "Reduces the C7=C8 double bond of 7-dehydrocholesterol with NADPH to make cholesterol. Deficiency causes Smith–Lemli–Opitz syndrome.",
+  "Cholesterol 7α-hydroxylase (CYP7A1)": "ER cytochrome P450 of hepatocytes and the rate-limiting step of bile-acid synthesis. Bile acids return through FXR and FGF19 to repress it; bile-acid sequestrants and statins raise it.",
+  "Desmolase (P450scc)": "CYP11A1, an inner-mitochondrial-membrane P450 that hydroxylates and cleaves the cholesterol side chain to pregnenolone and isocaproaldehyde. It is the rate-limiting step of steroidogenesis; ACTH and LH raise StAR and CYP11A1.",
+});
 const Pill = ({ children, onClick, c }) => <button className="omino-pill" style={{ "--c": c || "#8e8e99" }} onClick={onClick}>{children}</button>;
 const Sec = ({ t, children }) => <section className="omino-ecard__sec"><h4>{t}</h4>{children}</section>;
 function CardShell({ c, sub, title, tags, onClose, onBack, label, children }) {
