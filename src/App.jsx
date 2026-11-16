@@ -1,3 +1,4 @@
+// v6.2: the generic "Molecule" tag is gone. Every molecule card and search result now carries a pill for its chemical class (amino acid, sugar, sugar phosphate, lipid, fatty acid, acyl-CoA, CoA thioester, ketone body, organic acid, nucleotide, porphyrin, bile pigment, sterol, bile acid …) from the CLS / CLS_OF tables; searching "sugar" or "lipid" now finds them. Amino acids keep a separate Essential / Non-essential pill.
 // v4.9: true-to-size everywhere on the canvas: every structure is drawn at exact pixel size (CSS can no longer shrink it), and co-substrate chips (H₂O, CO₂, ATP, NADH, Fe²⁺ …) are drawn as structures at the same scale instead of text pills, so a chip is only bigger than another if the molecule is. CO₂ now has real C=O bond lengths.
 // v4.9b (mobile): element and info cards use the periodic table's footprint; the table is a compact 7-column grid without its own search bar (the header search covers it); the footer is pinned under a scrolling body instead of being clipped.
 // v4.7: a single overlap pass after all placement (resolveOverlaps) replaces the manual `layout.c_atp4[1] += 60` nudge: co-substrate chips and pathway titles that overlap a node or sit on an arrow of their own molecule move to the nearest free spot; everything else is left alone and any leftover overlap is reported to the console.
@@ -994,6 +995,17 @@ AA_NEW.forEach(([id, f, col, row]) => {
   layout[id] = [-7600 + col * 520, 5300 + row * 480 + (row === 2 ? 180 : 0)];
 });
 EDGES.push({ id: "aa_pt", source: "phenylalanine", target: "tyrosine", label: "Phenylalanine hydroxylase", main: true, auto: true });
+// Real conversions that tie the twenty amino acids together (so Back / Follow and the card arrows can walk between them)
+[
+  ["tyrosine", "fumarate", "Tyrosine catabolism (fumarylacetoacetate hydrolase)"],
+  ["valine", "glutamate", "Branched-chain aminotransferase (BCAT)"], ["leucine", "glutamate", "Branched-chain aminotransferase (BCAT)"], ["isoleucine", "glutamate", "Branched-chain aminotransferase (BCAT)"],
+  ["lysine", "glutamate", "Saccharopine pathway (AASS)"], ["histidine", "glutamate", "Histidine catabolism (histidase)"],
+  ["glutamate", "proline", "P5C synthase / reductase"], ["glutamate", "glutamine", "Glutamine synthetase"],
+  ["aspartate", "asparagine", "Asparagine synthetase"],
+  ["serine", "glycine", "Serine hydroxymethyltransferase (SHMT)"], ["threonine", "glycine", "Threonine dehydrogenase / aldolase"],
+  ["methionine", "cysteine", "Transsulfuration (CBS, cystathionase)"], ["serine", "cysteine", "Cystathionine β-synthase"],
+  ["tryptophan", "alanine", "Kynureninase"],
+].forEach(([source, target, label], i) => EDGES.push({ id: "aal" + i, source, target, label, main: true, auto: true }));
 // The TCA ring (below acetyl-CoA), then every side branch off the spine and the rings
 const TCA = ["citrate", "isocitrate", "akg", "succoa", "succinate", "fumarate", "malate", "oaa"];
 const RING = { cx: 0, cy: 11 * STEP + 2100 };
@@ -2600,7 +2612,56 @@ const AA_NOTE = {
   asparagine: "Made from aspartate and glutamine by asparagine synthetase. N-linked glycosylation attaches to its amide nitrogen. Asparaginase removes circulating asparagine to starve leukaemic lymphoblasts, which lack the synthetase.",
 };
 Object.entries(AA_CLASS).forEach(([id, c]) => { const n = NODES.find((x) => x.id === id); if (n) { n.aa = c; if (AA_NOTE[id] && !n.note) n.note = AA_NOTE[id]; } });
-const tagText = (d) => [...(d.locs || []).map((l) => LOCS[l].label), ...(d.orgs || []).map((o) => ORGANS[o].label), ...(d.aa ? [`${AA_LABEL[d.aa]} amino acid`] : []), toxText(d.tox)].join(" ");
+
+/* ---- chemical class pills: they replace the generic word "Molecule" on cards, in search results and in the search text ---- */
+const CLS = {
+  amino:   { label: "Amino acid",         color: "#fb7185" },
+  sugar:   { label: "Sugar",              color: "#6fa8ff" },
+  sugarp:  { label: "Sugar phosphate",    color: "#8ab8ff" },
+  polysac: { label: "Polysaccharide",     color: "#a3e36f" },
+  nucsugar:{ label: "Nucleotide sugar",   color: "#c7a8ff" },
+  lipid:   { label: "Lipid",              color: "#f2c94c" },
+  fatty:   { label: "Fatty acid",         color: "#f2c94c" },
+  acyl:    { label: "Acyl-CoA",           color: "#ffb454" },
+  coa:     { label: "CoA thioester",      color: "#ff8a65" },
+  ketone:  { label: "Ketone body",        color: "#ffb454" },
+  organic: { label: "Organic acid",       color: "#ff8a65" },
+  nuc:     { label: "Nucleotide",         color: "#c7a8ff" },
+  nitro:   { label: "Nitrogen compound",  color: "#4fd1c5" },
+  porph:   { label: "Porphyrin",          color: "#e879f9" },
+  pigment: { label: "Bile pigment",       color: "#fbbf24" },
+  sterol:  { label: "Sterol",             color: "#f2c94c" },
+  steroid: { label: "Steroid hormone",    color: "#f2c94c" },
+  bile:    { label: "Bile acid",          color: "#fbbf24" },
+  other:   { label: "Compound",           color: "#dfe6ee" },
+};
+const CLS_OF = {};
+Object.entries({
+  amino:   ["ornithine", "citrulline", "argsucc", "glycine", "ala"],   // the 20 protein amino acids come from AA_CLASS
+  sugar:   ["glucose"],
+  sugarp:  ["g1p", "g6p", "f6p", "fbp", "gap", "dhap", "p6gl", "p6g", "ru5p", "r5p", "xu5p", "s7p", "e4p"],
+  polysac: ["glycogen"],
+  nucsugar:["udpglc"],
+  lipid:   ["glycerol", "glyc3p", "tag"],
+  fatty:   ["fa"],
+  acyl:    ["facyl", "malonyl"],
+  coa:     ["acetylcoa", "succoa", "hmgcoa"],
+  ketone:  ["acac"],
+  organic: ["pyruvate", "lactate", "bpg13", "pg3", "pg2", "pep", "citrate", "isocitrate", "akg", "succinate", "fumarate", "malate", "oaa", "mevalonate"],
+  nuc:     ["atp"],
+  nitro:   ["cp", "urea"],
+  porph:   ["pbg", "hmb", "uro3", "copro3", "protogen", "protoporph", "heme"],
+  pigment: ["biliverdin", "bilirubin", "bilglu"],
+  sterol:  ["dhc7", "chol"],
+  steroid: ["preg"],
+  bile:    ["cholic"],
+}).forEach(([c, ids]) => ids.forEach((i) => (CLS_OF[i] = c)));
+Object.keys(AA_CLASS).forEach((i) => (CLS_OF[i] = "amino"));
+NODES.forEach((n) => { if (n.kind === "molecule") n.cls = CLS_OF[n.id] || "other"; });
+const clsOf = (id) => CLS[CLS_OF[id] || "other"];
+// what to print where the generic kind name used to go: a molecule shows its class, everything else keeps its kind
+const kindLabel = (d) => (d.kind === "molecule" && d.cls ? CLS[d.cls].label : KIND[d.kind].label);
+const tagText = (d) => [...(d.locs || []).map((l) => LOCS[l].label), ...(d.orgs || []).map((o) => ORGANS[o].label), ...(d.cls ? [CLS[d.cls].label] : []), ...(d.aa ? [`${AA_LABEL[d.aa]} amino acid`] : []), toxText(d.tox)].join(" ");
 
 /* ------------------------------ overlap pass ------------------------------ */
 // Runs once, after every placement above, so no pathway needs hand-typed nudges to stay clear of its neighbours.
@@ -2767,10 +2828,15 @@ function OminoEdge({ id, sourceX, sourceY, targetX, targetY, sourcePosition, tar
 // Hovers just above the object the person is "standing on" and follows it as the view moves. Back / Follow hop along the lines in or out of it.
 function FollowCard({ at, inE, outE, nIn, nOut, iIn, iOut, onBack, onFollow, onCycleIn, onCycleOut, onClose, open }) {
   const [tx, ty, zoom] = useStore((s) => s.transform);
+  const cw = useStore((s) => s.width);
   const node = useStore((s) => s.nodeInternals.get(at));
+  const box = React.useRef(null), [w, setW] = useState(300);
+  React.useLayoutEffect(() => { if (box.current && box.current.offsetWidth !== w) setW(box.current.offsetWidth); });
   if (!node || !node.width) return null;
   const pa = node.positionAbsolute || node.position;
-  const sx = pa.x * zoom + tx, sy = (pa.y - node.height / 2) * zoom + ty;
+  // sits just below the object; on a narrow screen it is kept clear of the left tool column and the right edge, with its pointer still aimed at the object
+  const sx = pa.x * zoom + tx, sy = (pa.y + node.height / 2) * zoom + ty, lo = (cw < 700 ? 60 : 12) + w / 2, hi = cw - 8 - w / 2;
+  const cx = hi < lo ? cw / 2 : Math.min(Math.max(sx, lo), hi), ax = Math.min(Math.max(sx - cx, 20 - w / 2), w / 2 - 20);
   const o = outE && edgeHow(outE), i = inE && edgeHow(inE), c = (o || i || {}).color || "#A1A1AA";
   const side = (e, n, k, dir, go, cyc) => (
     <div className="omino-follow__side">
@@ -2782,7 +2848,7 @@ function FollowCard({ at, inE, outE, nIn, nOut, iIn, iOut, onBack, onFollow, onC
     </div>
   );
   return (
-    <div className="omino-follow nodrag nopan nowheel" style={{ left: sx, top: sy, "--c": c }}>
+    <div ref={box} className="omino-follow nodrag nopan nowheel" style={{ left: cx, top: sy, "--c": c, "--ax": `${ax}px` }}>
       <button className="omino-follow__x" onClick={onClose} aria-label="Dismiss" title="Dismiss">×</button>
       <div className="omino-follow__name">{nm(at)}</div>
       <div className="omino-follow__row">
@@ -3148,7 +3214,7 @@ function ElementCard({ el, onClose, onBack, onStep, onShow }) {
   const [cl, cc] = CATS[el.cat], [rl, rc] = ROLES[el.role];
   const i = ELEMENTS.indexOf(el), prev = ELEMENTS[i - 1], next = ELEMENTS[i + 1];
   return (
-    <aside className="omino-ecard" style={{ "--c": cc }} aria-label={`${el.name} element card`}>
+    <aside className="omino-ecard omino-ecard--nav" style={{ "--c": cc }} aria-label={`${el.name} element card`}>
       <header>
         <div>
           <div className="omino-ecard__name">{el.name}</div>
@@ -3158,6 +3224,10 @@ function ElementCard({ el, onClose, onBack, onStep, onShow }) {
         <div className="omino-ecard__btns">
           {onBack && <button className="omino-tool omino-tool--sm" onClick={onBack} aria-label="Back" title="Back"><Icon d={ICON.chevL} size={18} /></button>}
           <button className="omino-tool omino-tool--sm" onClick={onClose} aria-label="Close card" title="Close"><Icon d={ICON.close} size={18} /></button>
+        </div>
+        <div className="omino-ecard__nav">
+          <button className="omino-tool omino-tool--sm" disabled={!prev} onClick={() => onStep(-1)} aria-label="Previous element" title={prev ? `Previous: ${prev.name}` : "First element"}><Icon d={ICON.chevL} size={18} /></button>
+          <button className="omino-tool omino-tool--sm" disabled={!next} onClick={() => onStep(1)} aria-label="Next element" title={next ? `Next: ${next.name}` : "Last element"}><Icon d={ICON.chevR} size={18} /></button>
         </div>
       </header>
       <div className="omino-ecard__tags"><span style={{ "--c": cc }}>{cl}</span><span style={{ "--c": rc }}>{rl}</span></div>
@@ -3421,7 +3491,7 @@ function MolCard({ id, open, fit, shell }) {
   );
   return (
     <CardShell {...shell} c={accent} sub={n.formula} title={n.label} label={`${n.label} molecule card`}
-      tags={<><span style={{ "--c": isCof ? KIND.cofactor.color : CHALK }}>{isCof ? "Cofactor" : "Molecule"}</span>{n.aa && <span style={{ "--c": AA_COLOR[n.aa] }}>{AA_LABEL[n.aa]} amino acid</span>}{x.role && <span style={{ "--c": accent }}>{x.role}</span>}{pc && <Pill c={pc.color} onClick={() => open("path", p)}>{pc.label}</Pill>}</>}>
+      tags={<><span style={{ "--c": isCof ? KIND.cofactor.color : clsOf(id).color }}>{isCof ? "Cofactor" : clsOf(id).label}</span>{n.aa && <span style={{ "--c": AA_COLOR[n.aa] }}>{AA_LABEL[n.aa]}</span>}{x.role && <span style={{ "--c": accent }}>{x.role}</span>}{pc && <Pill c={pc.color} onClick={() => open("path", p)}>{pc.label}</Pill>}</>}>
       <div className={`omino-ecard__art ${big ? "is-big" : ""}`}><Skeletal mol={m} /></div>
       {wide && <button className="omino-ecard__zoom" onClick={() => setBig((v) => !v)}>{big ? "Fit structure to card" : "Enlarge structure (scrolls)"}</button>}
       {Object.keys(cnt).length > 0 && <div className="omino-ecard__hint">Click any bond to see what it is</div>}
@@ -3959,7 +4029,7 @@ function Atlas() {
     const nodeText = (d) => [d.label, d.formula, d.note, KIND[d.kind].label, PATHWAYS[d.path]?.label, tagText(d)];
     // drugs also match on the targets they act on, and targets on the drugs that act on them
     const relText = (id) => RX_EFFECTS.filter((e) => e.drug === id || e.target === id).map((e) => label(e.drug === id ? e.target : e.drug));
-    const sub = (n) => [n.data.formula, KIND[n.data.kind].label, PATHWAYS[n.data.path]?.label].filter(Boolean).join(" · ");
+    const sub = (n) => [n.data.formula, kindLabel(n.data), PATHWAYS[n.data.path]?.label].filter(Boolean).join(" · ");
     const hit = (kind, lim) => compounds.filter((n) => n.data.rx === kind && has([...nodeText(n.data), ...relText(n.id)])).slice(0, lim).map((n) => ({ id: n.id, title: n.data.label, sub: sub(n), node: n }));
     const drugs = dr ? hit("drug", 12) : [];
     const tgts = dr ? hit("target", 12) : [];
@@ -3987,7 +4057,7 @@ function Atlas() {
     const add = (t, k, go) => { const key = (t || "").toLowerCase().trim(); if (key.length > 1 && !seen.has(key)) { seen.add(key); out.push({ t: t.trim(), k, lo: key, go }); } };
     compounds.forEach((n) => {
       const go = { kind: n.data.rx || "cmp", r: { id: n.id, title: n.data.label, node: n } };
-      add(n.data.label, n.data.rx === "drug" ? "Drug" : n.data.rx === "target" ? "Target" : n.data.rx === "organ" ? "Organ" : KIND[n.data.kind].label, go);
+      add(n.data.label, n.data.rx === "drug" ? "Drug" : n.data.rx === "target" ? "Target" : n.data.rx === "organ" ? "Organ" : kindLabel(n.data), go);
       if (n.data.rx === "drug" && n.data.examples) n.data.examples.split(/,\s*/).forEach((x) => add(x.replace(/\s*\(.*?\)\s*/g, "").trim(), `Drug · ${n.data.label}`, go));
       if (n.data.rx === "target" && n.data.formula && !VIT[n.id]) n.data.formula.split(/,\s*/).forEach((x) => add(x, `Gene · ${n.data.label}`, go));
     });
@@ -4094,7 +4164,7 @@ function Atlas() {
     const w = c.offsetWidth + 28;
     return v.clientWidth - w >= 420 ? w : 0;
   };
-  const flyTo = (nid) => { const n = getNode(nid); if (!n) return; const z = Math.min(Math.max(getZoom(), 0.7), 1.5); setCenter(n.position.x + cardSpace() / 2 / z, n.position.y - 70 / z, { zoom: z, duration: 700 }); };
+  const flyTo = (nid) => { const n = getNode(nid); if (!n) return; const z = Math.min(Math.max(getZoom(), 0.7), 1.5); setCenter(n.position.x + cardSpace() / 2 / z, n.position.y + 80 / z, { zoom: z, duration: 700 }); };
   const pickEdge = (ev, e) => { // stand on whichever end of the clicked line is nearer the click
     if (track && (track.out === e.id || track.inn === e.id)) { setTrack(null); return; }
     const pt = screenToFlowPosition({ x: ev.clientX, y: ev.clientY }), a = getNode(e.source), b = getNode(e.target);
@@ -4129,7 +4199,7 @@ function Atlas() {
     const nid = NODE_CARDS.includes(cur.t) ? cur.id : cur.t === "el" ? EL_NODE[cur.id] : null, n = nid && getNode(nid), sp = n ? cardSpace() : 0;
     if (!n || !sp || n.hidden) return;
     const z = getZoom();
-    setCenter(n.position.x + sp / 2 / z, n.position.y - (track && track.at === nid ? 70 / z : 0), { zoom: z, duration: 600 });
+    setCenter(n.position.x + sp / 2 / z, n.position.y + (track && track.at === nid ? 80 / z : 0), { zoom: z, duration: 600 });
   }, [cur?.t, cur?.id]); // eslint-disable-line react-hooks/exhaustive-deps
   // Card dismissed: ease the object back to the true centre of the canvas (skipped if the person has since panned it out of view)
   const lastCardNode = useRef(null);
@@ -4142,7 +4212,7 @@ function Atlas() {
     if (!n || n.hidden || !v) return;
     const { x, y, zoom } = getViewport(), sx = n.position.x * zoom + x, sy = n.position.y * zoom + y;
     if (sx < 0 || sy < 0 || sx > v.clientWidth || sy > v.clientHeight) return;
-    setCenter(n.position.x, n.position.y - (track && track.at === last ? 70 / zoom : 0), { zoom, duration: 500 });
+    setCenter(n.position.x, n.position.y + (track && track.at === last ? 80 / zoom : 0), { zoom, duration: 500 });
   }, [cur]); // eslint-disable-line react-hooks/exhaustive-deps
   const canStep = (dir) => !!cardNode && ((dir === "out" ? adj.out : adj.inn)[cardNode] || []).length > 0;
   const stepCard = (dir) => { // the card's < > arrows: hop from the object the card is showing
@@ -4821,11 +4891,21 @@ const CSS = `
 .omino-edge-label.is-active { z-index: 5; opacity: 1 !important; box-shadow: 0 0 0 2px var(--c, currentColor); background: #1b1b1f; font-size: 13px; }
 .react-flow__node.is-end > * { filter: drop-shadow(0 0 12px rgba(255,255,255,.65)); }
 .omino-follow {
-  position: absolute; z-index: 8; width: max-content; max-width: 420px; padding: 10px 14px 12px; text-align: center; pointer-events: auto;
-  transform: translate(-50%, calc(-100% - 14px)); background: #121212; border: 1px solid var(--c); border-radius: 14px;
+  position: absolute; z-index: 8; width: max-content; max-width: min(420px, calc(100% - 72px)); padding: 10px 14px 12px; text-align: center; pointer-events: auto;
+  transform: translate(-50%, 14px); background: #121212; border: 1px solid var(--c); border-radius: 14px;
   box-shadow: 0 16px 40px rgba(0,0,0,.65); font-family: 'Inter', system-ui, sans-serif;
 }
-.omino-follow::after { content: ""; position: absolute; left: 50%; bottom: -6px; width: 10px; height: 10px; background: #121212; border: solid var(--c); border-width: 0 1px 1px 0; transform: translateX(-50%) rotate(45deg); }
+.omino-follow::after { content: ""; position: absolute; left: calc(50% + var(--ax, 0px)); top: -6px; width: 10px; height: 10px; background: #121212; border: solid var(--c); border-width: 1px 0 0 1px; transform: translateX(-50%) rotate(45deg); }
+@media (max-width: 640px) {
+  .omino-follow { padding: 8px 10px 10px; }
+  .omino-follow__name { font-size: 13px; }
+  .omino-follow__row { gap: 6px; }
+  .omino-follow__mid { min-width: 0; }
+  .omino-follow__side { width: 64px; }
+  .omino-follow__side small { max-width: 64px; font-size: 10px; overflow-wrap: anywhere; }
+  .omino-follow__arrow { padding: 6px 4px; font-size: 9.5px; letter-spacing: .03em; }
+  .omino-follow__how { font-size: 11.5px; }
+}
 .omino-follow__x { position: absolute; top: 4px; right: 6px; width: 22px; height: 22px; background: none; border: 0; color: #A1A1AA; font-size: 18px; line-height: 1; cursor: pointer; }
 .omino-follow__x:hover { color: #FFFFFF; }
 .omino-follow__name { padding: 0 22px; color: #FFFFFF; font-size: 14px; font-weight: 700; letter-spacing: -0.01em; }
