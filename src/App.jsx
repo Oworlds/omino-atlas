@@ -1,3 +1,4 @@
+// v6.3: Urinary crystals hub (13 crystals of urine sediment: calcium oxalate, uric acid, amorphous urates, ammonium biurate, struvite, calcium phosphate, cystine, cholesterol, bilirubin, leucine, tyrosine, sulfadiazine, acyclovir). Each node and card shows the compound's skeletal structure, the crystal habits under the microscope, urine pH, causes, stone data and treatment; thiazides, xanthine oxidase inhibitors, carbonic anhydrase and vitamins C and D are linked in, and crystal names and habits ('coffin lid', 'envelope', 'thorny apple') are searchable.
 // v6.2: the generic "Molecule" tag is gone. Every molecule card and search result now carries a pill for its chemical class (amino acid, sugar, sugar phosphate, lipid, fatty acid, acyl-CoA, CoA thioester, ketone body, organic acid, nucleotide, porphyrin, bile pigment, sterol, bile acid …) from the CLS / CLS_OF tables; searching "sugar" or "lipid" now finds them. Amino acids keep a separate Essential / Non-essential pill.
 // v4.9: true-to-size everywhere on the canvas: every structure is drawn at exact pixel size (CSS can no longer shrink it), and co-substrate chips (H₂O, CO₂, ATP, NADH, Fe²⁺ …) are drawn as structures at the same scale instead of text pills, so a chip is only bigger than another if the molecule is. CO₂ now has real C=O bond lengths.
 // v4.9b (mobile): element and info cards use the periodic table's footprint; the table is a compact 7-column grid without its own search bar (the header search covers it); the footer is pinned under a scrolling body instead of being clipped.
@@ -2009,6 +2010,160 @@ const VIT_VV = [["t_vc", "t_ve", "regenerates"], ["t_b2", "t_b6", "FMN makes PLP
 const VIT_NODES = (id) => [...new Set([...VIT[id].links.map((l) => l[0]), ...VIT_VV.filter((v) => v[0] === id || v[1] === id).map((v) => (v[0] === id ? v[1] : v[0]))])];
 const VIT_ROWS = VIT_ORDER.map((id) => { const v = VIT[id]; return ["vt", id, v.name, v.kind, v.gene, v.note, ...(v.drug || [null, null, null, null, null, null, null]), v.locs]; });
 // org, target id, target, type, gene, what it does | drug id, drug, class, examples, note | effect, detail | locations
+/* ------------------------------ urinary crystals ------------------------------ */
+// Urine sediment crystals: the compound's skeletal structure (drawn on the node and the card), the crystal habits seen under the microscope,
+// urine pH, causes, stone data and treatment. `drug` adds one drug node to the hub: [id, name, class, examples, note, effect, detail].
+KIND.crystal = { label: "Urinary crystal", color: "#d4b483" };
+ORGANS.uc = { label: "Urinary crystals", code: "UC", color: "#d4b483", desc: "Crystals form in urine when a salt is supersaturated, and which one appears depends on urine pH. Acidic urine (below 5.5) gives uric acid, amorphous urates and, with high oxalate, calcium oxalate; neutral to alkaline urine gives calcium phosphate, struvite (with urease-producing bacteria) and ammonium biurate; cystine needs the inherited transport defect. Rare crystals (cholesterol, bilirubin, leucine, tyrosine) point to nephrotic syndrome, liver disease or an inherited metabolic disease, and drug crystals (sulfadiazine, acyclovir) to dehydration or rapid infusion. Each card shows the compound's structure and its habit under the microscope. Drugs that change the urine's chemistry (thiazides, xanthine oxidase inhibitors, citrate) are linked from other hubs." };
+const UC_ORDER = ["t_u_ox", "t_u_ua", "t_u_urate", "t_u_biu", "t_u_str", "t_u_cap", "t_u_cys", "t_u_chol", "t_u_bil", "t_u_leu", "t_u_tyr", "t_u_sulfa", "t_u_acv"];
+const UC = {
+  t_u_ox: { name: "Calcium oxalate", formula: "CaC₂O₄ · H₂O or 2H₂O", note: "The commonest crystal and the commonest kidney stone. Calcium binds the oxalate dianion (drawn) in urine of any pH, and the more concentrated the urine the more it precipitates.",
+    shapes: [["envelope", "Dihydrate: envelope"], ["dumbbell", "Monohydrate: dumbbell"], ["oval", "Monohydrate: oval"]],
+    facts: [["Compound", "Calcium oxalate monohydrate (whewellite) or dihydrate (weddellite)"], ["Urine pH", "Acidic to neutral; forms at any pH"], ["Habit", "Colourless envelopes or octahedra (dihydrate); ovals and dumbbells (monohydrate)"], ["Stones", "About 70–80% of kidney stones; radio-opaque"]],
+    clin: ["Hypercalciuria (the commonest cause), hyperoxaluria, hypocitraturia and low urine volume", "Enteric hyperoxaluria: fat malabsorption (Crohn disease, bariatric surgery) leaves calcium bound to fat, so free oxalate is absorbed", "Primary hyperoxaluria (AGXT, GRHPR, HOGA1 defects): stones and kidney failure in childhood", "Ethylene glycol poisoning: oxalate crystals with anion-gap acidosis and acute kidney injury", "Large doses of vitamin C, which is converted to oxalate"],
+    tx: ["Fluids to a urine volume above 2.5 L a day", "Thiazide diuretics lower urinary calcium; potassium citrate raises urinary citrate, which binds calcium", "Keep normal dietary calcium with meals (it binds oxalate in the gut) and cut sodium and high-dose vitamin C", "Fomepizole for ethylene glycol; RNA interference drugs for primary hyperoxaluria"],
+    links: ["t_ncc", "t_vc", "t_vd"], also: ["whewellite", "weddellite", "envelope crystals", "dumbbell crystals", "oxalate", "ethylene glycol crystals"],
+    drug: ["d_lumas", "Lumasiran and nedosiran", "RNA interference (siRNA)", "lumasiran, nedosiran", "Silence liver genes so less oxalate is made in primary hyperoxaluria type 1; given by injection. Adverse effects: injection-site reactions.", "inhibit", "Lumasiran silences glycolate oxidase (HAO1) and nedosiran lactate dehydrogenase A (LDHA), so less oxalate is made and less crystallises."] },
+  t_u_ua: { name: "Uric acid", formula: "C₅H₄N₄O₃", note: "End product of purine breakdown (drawn as the neutral acid). It is poorly soluble below pH 5.5; above about 6.5 it ionises to urate and dissolves.",
+    shapes: [["rhomb", "Rhomboid plate"], ["rosette", "Rosette"], ["oval", "Whetstone"]],
+    facts: [["Compound", "Uric acid, pKa about 5.5"], ["Urine pH", "Acidic, below 5.5"], ["Habit", "Yellow-brown rhombic plates, rosettes, whetstones and barrels; strongly birefringent"], ["Stones", "About 5–10%; radiolucent on plain X-ray but seen on CT"]],
+    clin: ["Persistently acidic urine: insulin resistance, type 2 diabetes, obesity, chronic diarrhoea", "Hyperuricosuria: gout, purine-rich diet, myeloproliferative disease", "Tumour lysis syndrome: uric acid crystals block the tubules and cause acute kidney injury", "Lesch–Nyhan syndrome (HGPRT deficiency) and dehydration"],
+    tx: ["Alkalinise urine to pH 6–6.5 with potassium citrate, which can dissolve the stones (avoid pH above 7, which favours calcium phosphate)", "Fluids and less animal protein", "Xanthine oxidase inhibitors (allopurinol, febuxostat) when urinary uric acid is high; rasburicase in tumour lysis syndrome (check G6PD first)"],
+    links: ["t_xo", "t_uric"], also: ["rhomboid crystals", "whetstone", "urate", "gout stone", "uric acid stone"],
+    drug: ["d_kcit", "Potassium citrate", "Urinary alkaliniser", "potassium citrate, sodium bicarbonate", "Citrate is metabolised to bicarbonate, which raises urine pH and urinary citrate. Used for uric acid, cystine and calcium stones and distal renal tubular acidosis. Adverse effects: GI upset, hyperkalemia in kidney impairment. Avoid with struvite stones or urease-producing infection.", "alter", "Raises urine pH so uric acid ionises to soluble urate; the citrate also binds calcium, so fewer calcium crystals form."] },
+  t_u_urate: { name: "Amorphous urates", formula: "Na⁺, K⁺ or Ca²⁺ urate", note: "Sodium, potassium or calcium urate (drawn with sodium) that precipitates as formless granules in concentrated acidic urine. Usually harmless.",
+    shapes: [["granules", "Yellow-brown granules"]],
+    facts: [["Compound", "Urate salts without a crystal lattice"], ["Urine pH", "Acidic"], ["Habit", "Yellow-brown granules; 'brick dust' pink sediment after cooling"], ["Test", "Dissolve on warming to about 60 °C or with alkali; amorphous phosphates (white) dissolve with acetic acid instead"]],
+    clin: ["Concentrated, acidic or refrigerated urine; no significance by itself", "Looks like amorphous phosphate, which forms in alkaline urine"],
+    tx: ["None needed; drink more if it persists"], links: [], also: ["brick dust", "amorphous urate", "sodium urate", "amorphous phosphate"], drug: null },
+  t_u_biu: { name: "Ammonium biurate", formula: "NH₄⁺ urate", note: "Urate with ammonium as the cation, formed when urine is alkaline and rich in ammonia. The only urate crystal of alkaline urine.",
+    shapes: [["thorn", "Thorny apple"]],
+    facts: [["Compound", "Ammonium acid urate"], ["Urine pH", "Alkaline"], ["Habit", "Yellow-brown spheres with long spicules ('thorny apple')"], ["Test", "Dissolves with acetic acid and on heating; turns into uric acid crystals with hydrochloric acid"]],
+    clin: ["Old or stored urine specimens in which bacteria split urea to ammonia", "Urease-producing urinary infection", "Laxative abuse and chronic diarrhoea with hypokalemia (ammonium urate stones)"],
+    tx: ["Treat the cause; repeat the sample fresh if the specimen was old"], links: [], also: ["thorny apple", "ammonium urate"], drug: null },
+  t_u_str: { name: "Struvite (triple phosphate)", formula: "MgNH₄PO₄ · 6H₂O", note: "Magnesium ammonium phosphate (drawn as its three ions). It forms only in alkaline urine, so it is the crystal of infection with urease-producing bacteria.",
+    shapes: [["coffin", "Coffin lid"], ["fern", "Feathery fern"]],
+    facts: [["Compound", "Magnesium ammonium phosphate hexahydrate"], ["Urine pH", "Alkaline, above 7"], ["Habit", "Colourless coffin-lid prisms; feathery fern forms as they dissolve"], ["Stones", "About 10%; staghorn calculi, radio-opaque"]],
+    clin: ["Urease-producing bacteria (Proteus mirabilis, Klebsiella, Providencia, Ureaplasma) split urea to ammonia and CO₂, so urine pH rises", "More common in women, catheterised or neurogenic bladder, recurrent UTI", "Staghorn stones fill the renal pelvis and calyces, cause obstruction and keep the infection going"],
+    tx: ["Remove the whole stone (percutaneous nephrolithotomy), because fragments harbour bacteria", "Antibiotics for the infection; avoid alkalinising the urine", "Urease inhibitor as an add-on in selected patients"],
+    links: [], also: ["triple phosphate", "coffin lid", "staghorn calculus", "magnesium ammonium phosphate", "Proteus stone", "infection stone"],
+    drug: ["d_aha", "Acetohydroxamic acid", "Urease inhibitor", "acetohydroxamic acid", "Add-on for struvite stones that cannot be removed. Adverse effects: hemolytic anemia, headache, tremor, deep vein thrombosis; teratogenic, so contraindicated in pregnancy.", "inhibit", "Blocks bacterial urease so urea is not split to ammonia, urine pH falls and struvite stops forming."] },
+  t_u_cap: { name: "Calcium phosphate (brushite, apatite)", formula: "CaHPO₄ · 2H₂O", note: "Calcium hydrogen phosphate (brushite, drawn) and carbonate apatite form in neutral to alkaline urine. Amorphous phosphate granules are the formless version.",
+    shapes: [["star", "Prism star"], ["granules", "Amorphous granules"]],
+    facts: [["Compound", "Brushite CaHPO₄·2H₂O; apatite Ca₅(PO₄)₃(OH); amorphous calcium phosphate"], ["Urine pH", "Neutral to alkaline, above about 6.5"], ["Habit", "Colourless wedge-shaped prisms in stars or rosettes; white amorphous granules"], ["Stones", "Up to 15%, often mixed with calcium oxalate"]],
+    clin: ["Distal (type 1) renal tubular acidosis: alkaline urine, hypercalciuria, hypocitraturia, nephrocalcinosis", "Primary hyperparathyroidism", "Carbonic anhydrase inhibitors (acetazolamide, topiramate) lower citrate and raise urine pH", "Amorphous phosphate is common and harmless after meals (alkaline tide) or in stale urine"],
+    tx: ["Treat the cause (parathyroid surgery, RTA)", "Thiazides to lower urinary calcium; potassium citrate in RTA, watching that pH does not exceed 7", "Fluids"],
+    links: ["t_ca", "t_ncc"], also: ["brushite", "apatite", "hydroxyapatite", "calcium phosphate stone", "renal tubular acidosis"], drug: null },
+  t_u_cys: { name: "Cystine", formula: "C₆H₁₂N₂O₄S₂", note: "Two cysteines joined by a disulfide bond. Cystinuria, an inherited failure to reabsorb cystine in the proximal tubule, makes urine supersaturated, and cystine is poorly soluble below pH 7.5.",
+    shapes: [["hex", "Hexagonal plate"]],
+    facts: [["Compound", "Cystine, the disulfide dimer of cysteine"], ["Urine pH", "Acidic to neutral; solubility rises above pH 7.5"], ["Habit", "Colourless flat hexagonal plates (diagnostic)"], ["Genetics", "Cystinuria, autosomal recessive: SLC3A1 (rBAT) or SLC7A9 (b⁰,⁺AT)"], ["Stones", "About 1% in adults, 6–8% in children; faintly radio-opaque"]],
+    clin: ["Loss of cystine, ornithine, lysine and arginine (COLA) in urine, but only cystine forms stones", "Recurrent stones from childhood or adolescence, often staghorn", "Urine cyanide–nitroprusside test turns magenta"],
+    tx: ["Fluids above 3 L a day, including at night", "Alkalinise urine to pH 7–7.5 with potassium citrate; cut sodium and animal protein", "Thiol drugs (tiopronin, penicillamine) if that fails"],
+    links: [], also: ["cystinuria", "hexagonal crystals", "cystine stone", "COLA", "SLC3A1", "SLC7A9"],
+    drug: ["d_tiop", "Tiopronin", "Thiol cystine-binding drug", "tiopronin, penicillamine", "Second-line in cystinuria when fluids and alkalinisation are not enough. Adverse effects: rash, proteinuria and nephrotic syndrome; penicillamine is more toxic (lupus-like illness, myasthenia, loss of taste, marrow suppression).", "alter", "Thiol–disulfide exchange turns cystine into a mixed drug–cysteine disulfide that is far more soluble."] },
+  t_u_chol: { name: "Cholesterol", formula: "C₂₇H₄₆O", note: "Free cholesterol shed into urine when it is full of fat. Seen in nephrotic syndrome and chyluria; it is not a stone.",
+    shapes: [["plate", "Notched plate"]],
+    facts: [["Compound", "Cholesterol"], ["Habit", "Thin, flat, transparent rectangular plates with a notched corner ('broken windowpane')"], ["Also seen", "Oval fat bodies and Maltese crosses under polarised light"]],
+    clin: ["Nephrotic syndrome (heavy proteinuria with lipiduria)", "Chyluria: lymph leaking into the urinary tract, for example filariasis", "Refrigerated specimens"], tx: ["Treat the cause"], links: [], also: ["broken windowpane", "oval fat bodies", "Maltese cross", "lipiduria"], drug: null },
+  t_u_bil: { name: "Bilirubin", formula: "C₃₃H₃₆N₄O₆", note: "Conjugated bilirubin is water-soluble and appears in urine when bile cannot drain; unconjugated bilirubin is bound to albumin and is not filtered.",
+    shapes: [["needles", "Needles and granules"]],
+    facts: [["Compound", "Bilirubin"], ["Habit", "Reddish-brown needles or granules, often stuck to cells or casts"], ["Dipstick", "Positive, with dark 'tea-coloured' urine"]],
+    clin: ["Conjugated hyperbilirubinemia: biliary obstruction, hepatitis, cirrhosis, Dubin–Johnson syndrome", "Absent in unconjugated jaundice (hemolysis, Gilbert syndrome), which is acholuric"], tx: ["Treat the liver or biliary disease"], links: [], also: ["bilirubinuria", "tea-coloured urine"], drug: null },
+  t_u_leu: { name: "Leucine", formula: "C₆H₁₃NO₂", note: "A branched-chain amino acid that crystallises when urine holds very large amounts of amino acids. Rare.",
+    shapes: [["sphere", "Striated sphere"]],
+    facts: [["Compound", "Leucine"], ["Habit", "Yellow-brown spheres with concentric rings and radial striations"]],
+    clin: ["Severe liver disease (with tyrosine)", "Aminoacidurias such as maple syrup urine disease"], tx: ["Treat the cause"], links: [], also: ["amino acid crystals", "maple syrup urine disease"], drug: null },
+  t_u_tyr: { name: "Tyrosine", formula: "C₉H₁₁NO₃", note: "An aromatic amino acid, derived from phenylalanine. Rare; its needles can be confused with sulfonamide crystals.",
+    shapes: [["sheaf", "Needle sheaves"]],
+    facts: [["Compound", "Tyrosine"], ["Habit", "Fine silky needles in sheaves or clumps, colourless to yellow"]],
+    clin: ["Severe liver disease, with leucine", "Hereditary tyrosinemia type I (fumarylacetoacetate hydrolase deficiency): liver failure and renal tubular dysfunction"], tx: ["Treat the cause; nitisinone for tyrosinemia type I"], links: [], also: ["tyrosinemia", "tyrosine needles"], drug: null },
+  t_u_sulfa: { name: "Sulfadiazine", formula: "C₁₀H₁₀N₄O₂S", note: "Sulfonamide antibiotic (drawn). It and its acetylated metabolite are poorly soluble in acidic urine, so they crystallise in the tubules.",
+    shapes: [["sheaf", "Shock of wheat"], ["needles", "Needles"]],
+    facts: [["Compound", "Sulfadiazine and N-acetylsulfadiazine"], ["Urine pH", "Acidic"], ["Habit", "Yellow-brown sheaves ('shock of wheat'), needles or rosettes"]],
+    clin: ["Used for toxoplasmosis (with pyrimethamine) and nocardiosis", "Crystalluria, hematuria and acute kidney injury, especially with dehydration", "Rare with trimethoprim–sulfamethoxazole at usual doses"],
+    tx: ["Hydrate well (urine above 1.5 L a day)", "Alkalinise the urine and stop or reduce the drug if kidney function falls"], links: [], also: ["sulfonamide crystals", "shock of wheat", "sulfa crystals", "drug-induced crystalluria"], drug: null },
+  t_u_acv: { name: "Acyclovir", formula: "C₈H₁₁N₅O₃", note: "Guanine analogue (drawn). At high intravenous doses in a dehydrated patient it exceeds its solubility in the tubules.",
+    shapes: [["needles", "Birefringent needles"]],
+    facts: [["Compound", "Acyclovir"], ["Habit", "Birefringent needle-shaped crystals"], ["Risk", "Rapid IV infusion, dehydration, kidney impairment"]],
+    clin: ["Intratubular crystals and acute kidney injury, usually reversible", "Other drugs with crystalluria: indinavir (fans and stars), ciprofloxacin, methotrexate, triamterene"],
+    tx: ["Hydrate before and during infusion and infuse over at least an hour", "Reduce the dose in kidney impairment; stop the drug if injury develops"], links: [], also: ["drug crystals", "indinavir crystals", "crystal nephropathy"], drug: null },
+};
+const UC_ROWS = UC_ORDER.map((id) => { const u = UC[id]; return ["uc", id, u.name, "crystal", u.formula, u.note, ...(u.drug || [null, null, null, null, null, null, null]), ["ext"]]; });
+// compounds shown as ions: Ca²⁺, Mg²⁺, NH₄⁺ and Na⁺ stand beside the anion
+const UC_MOLS = {};
+UC_MOLS.t_u_ox = (() => {
+  const m = dmol("Oxalate (calcium oxalate)", 1);
+  m.at("c1", 0, 0).to("c1", "c2", 0, null);
+  m.to("c1", "o1", 240, "O", "O", 1, { q: "−" }).to("c1", "o2", 120, "O", "O", 2).to("c2", "o3", 300, "O", "O", 2).to("c2", "o4", 60, "O", "O", 1, { q: "−" });
+  m.at("ca", 110, 0, "Ca", "M", { q: "2+" });
+  return m;
+})();
+function urateMol(name, anion, cation) {
+  const m = dmol(name, 0.85), a = hexV(0, 0);
+  m.at("C6", ...a.t).at("C5", ...a.tr).at("C4", ...a.br).at("N3", ...a.b, "N", "N", anion ? { q: "−" } : undefined).at("C2", ...a.bl).at("N1", ...a.tl, "HN", "N");
+  m.at("N7", 54.52, -24.27, "HN", "N").at("C8", 72.15, 0).at("N9", 54.52, 24.27, "NH", "N");
+  m.bond("C6", "C5").bond("C5", "C4", 2, [0, 0]).bond("C4", "N3").bond("N3", "C2").bond("C2", "N1").bond("N1", "C6").bond("C5", "N7").bond("N7", "C8").bond("C8", "N9").bond("N9", "C4");
+  m.to("C6", "O6", 270, "O", "O", 2).to("C2", "O2", 150, "O", "O", 2).to("C8", "O8", 0, "O", "O", 2);
+  if (cation) m.at("cat", 160, 0, cation[0], cation[1], { q: cation[2] });
+  return m;
+}
+UC_MOLS.t_u_ua = urateMol("Uric acid", false);
+UC_MOLS.t_u_urate = urateMol("Urate (sodium urate)", true, ["Na", "M", "+"]);
+UC_MOLS.t_u_biu = urateMol("Urate (ammonium biurate)", true, ["NH4", "N", "+"]);
+const phosphateMol = (name, oxy, ions) => { // P with four oxygens: up =O, then [down, left, right] as given
+  const m = dmol(name, 0.95);
+  m.at("P", 0, 0, "P", "P").to("P", "o1", 270, "O", "O", 2);
+  [[90, oxy[0]], [180, oxy[1]], [0, oxy[2]]].forEach(([h, t], i) => m.to("P", "o" + (i + 2), h, t === "OH" ? "OH" : "O", "O", 1, t === "OH" ? (h === 0 ? { align: "start" } : { align: "end" }) : { q: "−" }));
+  ions.forEach(([id, x, t, el, q]) => m.at(id, x, 0, t, el, { q }));
+  return m;
+};
+UC_MOLS.t_u_str = phosphateMol("Phosphate with Mg²⁺ and NH₄⁺ (struvite)", ["O", "O", "O"], [["mg", 95, "Mg", "M", "2+"], ["nh4", 160, "NH4", "N", "+"]]);
+UC_MOLS.t_u_cap = phosphateMol("Hydrogen phosphate (brushite)", ["O", "O", "OH"], [["ca", 110, "Ca", "M", "2+"]]);
+UC_MOLS.t_u_cys = (() => {
+  const m = dmol("Cystine", 0.9);
+  m.at("k1", 0, 0).walk("k1", 30, -60, [["a1"], ["b1"], ["s1", "S", "S"], ["s2", "S", "S"], ["b2"], ["a2"], ["k2"]]);
+  m.to("a1", "n1", 90, "NH2", "N").to("a2", "n2", 270, "H2N", "N");
+  m.to("k1", "k1o", 270, "O", "O", 2).to("k1", "k1h", 150, "HO", "O", 1, { align: "end" });
+  m.to("k2", "k2o", 90, "O", "O", 2).to("k2", "k2h", 330, "OH", "O", 1, { align: "start" });
+  return m;
+})();
+UC_MOLS.t_u_chol = MOLS.chol; UC_MOLS.t_u_bil = MOLS.bilirubin;
+UC_MOLS.t_u_leu = (() => {
+  const m = dmol("Leucine", 1);
+  m.at("k", 0, 0).walk("k", 30, -60, [["ca"], ["cb"], ["cg"], ["cd1"]]);
+  m.to("cg", "cd2", 90, null).to("ca", "n", 90, "NH2", "N");
+  m.to("k", "ko", 270, "O", "O", 2).to("k", "kh", 150, "HO", "O", 1, { align: "end" });
+  return m;
+})();
+UC_MOLS.t_u_tyr = (() => {
+  const m = dmol("Tyrosine", 0.9);
+  m.at("k", 0, 0).walk("k", 30, -60, [["ca"], ["cb"]]);
+  m.to("ca", "n", 90, "NH2", "N").to("k", "ko", 270, "O", "O", 2).to("k", "kh", 150, "HO", "O", 1, { align: "end" });
+  m.ring("ph", "cb", 330, 6, [1, 3, 5]);
+  m.to(m.id("ph", 3), "oh", m.out("ph", 3), "OH", "O", 1, { align: "start" });
+  return m;
+})();
+UC_MOLS.t_u_sulfa = (() => {
+  const m = dmol("Sulfadiazine", 0.85);
+  m.at("r0", 0, 0).ring("b", "r0", 0, 6, [1, 3, 5]);
+  m.to("r0", "nh2", 180, "H2N", "N", 1, { align: "end" });
+  m.to(m.id("b", 3), "s", 0, "S", "S").to("s", "so1", 270, "O", "O", 2).to("s", "so2", 90, "O", "O", 2);
+  m.to("s", "nh", 330, "NH", "N").to("nh", "c2", 30, null);
+  m.ring("pm", "c2", 30, 6, [0, 2, 4], { 1: ["N", "N"], 5: ["N", "N"] });
+  return m;
+})();
+UC_MOLS.t_u_acv = (() => {
+  const m = dmol("Acyclovir", 0.85), a = hexV(0, 0);
+  m.at("C6", ...a.t).at("C5", ...a.tr).at("C4", ...a.br).at("N3", ...a.b, "N", "N").at("C2", ...a.bl).at("N1", ...a.tl, "HN", "N");
+  m.at("N7", 54.52, -24.27, "N", "N").at("C8", 72.15, 0).at("N9", 54.52, 24.27, "N", "N");
+  m.bond("C6", "C5").bond("C5", "C4", 2, [0, 0]).bond("C4", "N3").bond("N3", "C2", 2, [0, 0]).bond("C2", "N1").bond("N1", "C6").bond("C5", "N7").bond("N7", "C8", 2, [46.6, 0]).bond("C8", "N9").bond("N9", "C4");
+  m.to("C6", "O6", 270, "O", "O", 2).to("C2", "NH2", 150, "H2N", "N", 1, { align: "end" });
+  m.walk("N9", 60, -60, [["a1"], ["ao", "O", "O"], ["a2"], ["a3"], ["aoh", "OH", "O", 1, { align: "start" }]]);
+  return m;
+})();
+const UC_LAB = { t_u_ox: "uox uca ph", t_u_ua: "ua ph uca", t_u_urate: "ua ph", t_u_biu: "ph", t_u_str: "ph", t_u_cap: "ca uca phos pth ph", t_u_cys: "ph", t_u_chol: "uprot", t_u_bil: "bilt bild", t_u_sulfa: "cr ph", t_u_acv: "cr" };
+// the hub also lists these targets from other hubs: thiazides and the distal tubule, carbonic anhydrase, xanthine oxidase, serum uric acid, vitamins C and D
+["t_ncc", "t_ca", "t_xo", "t_uric", "t_vc", "t_vd"].forEach((t) => { EXIST_ORG[t] = [...(EXIST_ORG[t] || []), "uc"]; });
 const ORGAN_RX = [
   ["cv", "t_adrb1", "β₁-adrenergic receptor", "receptor", "ADRB1", "Gs-coupled receptor of cardiac muscle and renin-secreting kidney cells; noradrenaline raises heart rate, contractility and renin release.", "d_bb", "Beta-blockers", "β₁ antagonists", "metoprolol, atenolol, bisoprolol", "Lower heart rate, contractility and renin release. Used after myocardial infarction and in heart failure, angina, arrhythmia and hypertension. Avoid in asthma and heart block.", "inhibit", "Competitive antagonism blunts catecholamine signalling.", ["pm"]],
   ["cv", "t_ace", "Angiotensin-converting enzyme", "enzyme", "ACE", "Zinc peptidase on endothelium (most in the lungs) that converts angiotensin I to the vasoconstrictor angiotensin II and degrades bradykinin.", "d_acei", "ACE inhibitors", "Prils", "lisinopril, enalapril, ramipril", "Lower blood pressure and protect the heart and kidney in heart failure and diabetic nephropathy. Adverse effects: dry cough and angioedema (bradykinin), hyperkalemia; contraindicated in pregnancy.", "inhibit", "Less angiotensin II, and more bradykinin, so vessels dilate and aldosterone falls.", ["pm"]],
@@ -2267,6 +2422,7 @@ const ORGAN_RX = [
   ["ai", "t_trpm", "Flatworm TRPM channel", "transporter", "TRPM_PZQ", "Calcium-permeable channel of schistosomes and other flatworms, identified in 2021 as the praziquantel target.", "d_pzq", "Praziquantel", "Anti-flatworm drug", "praziquantel", "Schistosomiasis, liver flukes (Clonorchis, Opisthorchis), tapeworms (Taenia, Diphyllobothrium) and cysticercosis. Adverse effects: headache, dizziness, abdominal discomfort; seizures and raised intracranial pressure in neurocysticercosis as cysts die (give steroids); contraindicated in ocular cysticercosis.", "activate", "Opens the channel, so Ca²⁺ rushes in: spastic paralysis and damage to the worm's tegument.", ["pth"]],
   ["ai", "t_nnachr", "Nematode nicotinic receptor", "receptor", "L-type nAChR (unc-29, unc-38)", "Acetylcholine-gated cation channel of nematode body-wall muscle.", "d_pyran", "Pyrantel pamoate", "Depolarising neuromuscular blocker of worms", "pyrantel pamoate", "Pinworm (Enterobius) and Ascaris, as one dose; sold over the counter and poorly absorbed from the gut. Adverse effects: mild GI upset, headache.", "activate", "Persistent activation depolarises the muscle, so the worm is paralysed (spastic) and expelled.", ["pth"]],
   ...VIT_ROWS,
+  ...UC_ROWS,
 ];
 Object.assign(KIND, { nucleic: { label: "Nucleic acid", color: "#7dd3fc" }, metabolite: { label: "Metabolite", color: "#fdba74" }, organ: { label: "Organ hub", color: "#cbd5e1" }, ligand: { label: "Ligand / cytokine", color: "#fda4af" }, protein: { label: "Structural protein", color: "#bef264" }, ribosome: { label: "Ribosome", color: "#fca5a5" }, sigprot: { label: "Signalling protein", color: "#d8b4fe" } });
 const REN = {
@@ -2372,6 +2528,7 @@ ORG_OF.d_tamox = [...ORG_OF.d_tamox, "on"]; ORG_OF.d_colch = ORG_OF.d_colch.filt
 })();
 // vitamin nodes carry their structure, drawn on the canvas like the drug structures
 VIT_ORDER.forEach((id) => { MOLS[id] = VIT_MOLS[id]; const vn = NODES.find((n) => n.id === id); vn.dm = id; vn.w = Math.max(vn.w || 0, art(VIT_MOLS[id]).w + 28); }); // box widens to the true-scale structure
+UC_ORDER.forEach((id) => { if (!UC_MOLS[id]) return; MOLS[id] = UC_MOLS[id]; const un = NODES.find((n) => n.id === id); un.dm = id; un.w = Math.max(un.w || 0, art(UC_MOLS[id]).w + 28); }); // urinary crystals carry their structure too
 /* ------------------------------ drug toxicity (Oncology and Anti-infective hubs) ------------------------------ */
 // Organ systems a toxicity can hit, in the order they are listed on a card
 const TOX_ORG = { marrow: "Bone marrow", blood: "Red cells (hemolysis)", immune: "Immune system and infection", allergy: "Hypersensitivity and infusion reactions", heart: "Heart", vessel: "Vessels, blood pressure and clotting",
@@ -2583,6 +2740,8 @@ Object.entries({
 }).forEach(([id, ks]) => (LAB_OF[id] = ks.split(" ")));
 Object.entries({ chol: "tc ldl hdl tg", cholic: "alp bilt alt ast", t_va: "alt ast", t_vd: "ca phos alp pth uca", t_vk: "pt ptt", t_ve: "hb retic", t_b3: "tc ldl hdl tg glu ua alt ast", t_b6: "hb mcv alt ast", t_b9: "hb mcv retic", t_b12: "hb mcv retic k" }).forEach(([id, ks]) => (LAB_OF[id] = ks.split(" ")));
 const ORG_LAB = { cv: "tni ck ldh tc ldl hdl tg k", rn: "bun cr crcl na k cl hco3 osm uosm uprot ua", rs: "po2 pco2 ph", sk: "ca phos alp pth ck uca ua esr", gi: "amy lip", cn: "na", hp: "alt ast alp bilt bild prot alb", en: "glu glur a1c cort", on: "wbc hb plt mcv ua ldh cr alt ast bilt", im: "igg iga igm ige wbc esr prot alb", vt: "hb mcv retic ca phos alp pth uca pt ptt", ai: "wbc cr bun alt ast bilt k mg" };
+ORG_LAB.uc = "uca uox ua ph uosm";
+Object.entries(UC_LAB).forEach(([id, ks]) => (LAB_OF[id] = ks.split(" ")));
 DRUGS.forEach((d) => { const u = new Set(d[5].flatMap((f) => LAB_OF[f[0]] || [])); if (u.size) LAB_OF[d[0]] = [...u]; }); // a drug inherits its targets' monitoring labs
 Object.entries(ORGAN_SET).forEach(([o, set]) => { const u = new Set(ORG_LAB[o].split(" ")); set.forEach((id) => (LAB_OF[id] || []).forEach((k) => u.add(k))); LAB_OF["o_" + o] = [...u]; });
 Object.keys(LAB_OF).forEach((id) => (LAB_OF[id] = LAB_ORDER.filter((k) => LAB_OF[id].includes(k))));
@@ -2878,6 +3037,7 @@ const RX_GLYPH = {
   transporter: "M4 8h15M15 4l4 4-4 4M20 16H5M9 12l-4 4 4 4",
   receptor: "M12 21v-7M12 14L6 7M12 14l6-7M6 7V3M18 7V3",
   antibody: "M12 21v-8M12 13L6 4M12 13l6-9",
+  crystal: "M12 3l7 5v8l-7 5-7-5V8zM5 8l7 4 7-4M12 12v9",
   vitw: "M12 3s6 6.5 6 11a6 6 0 0 1-12 0c0-4.5 6-11 6-11z",
   vitf: "M12 3s6 6.5 6 11a6 6 0 0 1-12 0c0-4.5 6-11 6-11zM8.5 15h7",
   ligand: "M12 3a4 4 0 1 0 0 8 4 4 0 0 1 0-8zM12 15v6M9 18h6",
@@ -3668,6 +3828,42 @@ function IgSketch({ n, j }) {
     </svg>
   );
 }
+/* Urinary crystals: habit sketches, facts, causes and treatment */
+const UC_SHAPES = {
+  envelope: "M14 14H50V50H14ZM14 14L50 50M50 14L14 50", dumbbell: "M22 21a11 11 0 1 0 0 22M42 21a11 11 0 1 1 0 22M22 21H42M22 43H42",
+  oval: "M12 32a20 12 0 1 0 40 0a20 12 0 1 0-40 0Z", rhomb: "M32 10L54 32L32 54L10 32Z", rosette: "M32 10L41 32L32 54L23 32ZM12 20L36 25L52 44L28 39ZM52 20L28 25L12 44L36 39Z",
+  coffin: "M6 22H58V42H6ZM6 22L14 28H50L58 22M6 42L14 36H50L58 42M14 28V36M50 28V36", fern: "M32 56V8M32 48L18 38M32 48L46 38M32 36L20 26M32 36L44 26M32 24L24 16M32 24L40 16",
+  hex: "M32 8L53 20V44L32 56L11 44V20Z", thorn: "M32 20a12 12 0 1 0 .01 0ZM32 20V8M32 44V56M20 32H8M44 32H56M24 24L16 16M40 24L48 16M24 40L16 48M40 40L48 48",
+  star: "M32 32V8M32 32L52 20M32 32L52 44M32 32V56M32 32L12 44M32 32L12 20", sheaf: "M32 52L14 12M32 52L23 10M32 52V8M32 52L41 10M32 52L50 12M22 34H42",
+  needles: "M14 50L40 10M22 54L48 14M30 56L56 20M8 40L30 8", plate: "M8 14H44V20H56V50H8Z", sphere: "M32 10a22 22 0 1 0 .01 0ZM32 18a14 14 0 1 0 .01 0ZM32 26a6 6 0 1 0 .01 0Z",
+  granules: "M16 20h.01M30 14h.01M44 22h.01M22 32h.01M38 36h.01M50 44h.01M14 46h.01M30 50h.01",
+};
+function UcSketch({ shapes }) {
+  const C = KIND.crystal.color, W = 96;
+  return (
+    <svg viewBox={`0 0 ${W * shapes.length} 84`} width={W * shapes.length} height="84" role="img" aria-label={`Crystal habits: ${shapes.map((s) => s[1]).join(", ")}`}>
+      {shapes.map(([k, label], i) => (
+        <g key={k + i} transform={`translate(${i * W + 16} 2)`}>
+          <path d={UC_SHAPES[k]} fill="none" stroke={C} strokeWidth={k === "granules" ? 5 : 2} strokeLinecap="round" strokeLinejoin="round" />
+          <text x="32" y="76" textAnchor="middle" fontSize="9" fill="#A1A1AA">{label}</text>
+        </g>
+      ))}
+    </svg>
+  );
+}
+function UcBlock({ id, open }) {
+  const u = UC[id];
+  const List = ({ t, a }) => a?.length > 0 && <Sec t={t}><ul className="omino-ecard__list">{a.map((x) => <li key={x}>{x}</li>)}</ul></Sec>;
+  return (
+    <>
+      <div className="omino-ecard__art"><UcSketch shapes={u.shapes} /></div>
+      <dl className="omino-ecard__facts">{u.facts.map(([a, b]) => <React.Fragment key={a}><dt>{a}</dt><dd>{b}</dd></React.Fragment>)}</dl>
+      <List t="Causes and associations" a={u.clin} />
+      <List t="Prevention and treatment" a={u.tx} />
+      {u.links.length > 0 && <Sec t="Linked in the atlas"><div className="omino-chiprow">{u.links.map((n) => <Pill key={n} c={KIND[NODE_BY[n].kind]?.color} onClick={() => open("target", n)}>{nm(n)}</Pill>)}</div></Sec>}
+    </>
+  );
+}
 /* Vitamin cards: facts, cofactor role (with links), deficiency and excess */
 function VitBlock({ id, open, fit }) {
   const v = VIT[id], k = KIND[v.kind], vs = VIT_VV.filter(([a, b]) => a === id || b === id);
@@ -3713,6 +3909,7 @@ function TargetCard({ id, open, fit, shell }) {
         <Sec t="Clinical"><ul className="omino-ecard__list">{IG[id].clin.map((x) => <li key={x}>{x}</li>)}</ul></Sec>
       </>}
       {VIT[id] && <VitBlock id={id} open={open} fit={fit} />}
+      {UC[id] && <UcBlock id={id} open={open} />}
       {rx.length > 0 && <Sec t={rx.length > 1 ? "Drugs" : "Drug"}>
         <ul className="omino-ecard__list">{rx.map((e) => (
           <li key={e.drug}>
@@ -4059,7 +4256,8 @@ function Atlas() {
       const go = { kind: n.data.rx || "cmp", r: { id: n.id, title: n.data.label, node: n } };
       add(n.data.label, n.data.rx === "drug" ? "Drug" : n.data.rx === "target" ? "Target" : n.data.rx === "organ" ? "Organ" : kindLabel(n.data), go);
       if (n.data.rx === "drug" && n.data.examples) n.data.examples.split(/,\s*/).forEach((x) => add(x.replace(/\s*\(.*?\)\s*/g, "").trim(), `Drug · ${n.data.label}`, go));
-      if (n.data.rx === "target" && n.data.formula && !VIT[n.id]) n.data.formula.split(/,\s*/).forEach((x) => add(x, `Gene · ${n.data.label}`, go));
+      if (n.data.rx === "target" && n.data.formula && !VIT[n.id] && !UC[n.id]) n.data.formula.split(/,\s*/).forEach((x) => add(x, `Gene · ${n.data.label}`, go));
+      if (UC[n.id]) UC[n.id].also.forEach((x) => add(x, `Crystal · ${n.data.label}`, go));
     });
     Object.values(SPECIES).forEach((x) => add(x.label, "Cofactor", { kind: "sp", r: { id: x.id, title: x.label } }));
     edges.forEach((e) => add(e.data.label, "Enzyme", { kind: "enz", r: { id: e.id, title: e.data.label, edge: e } }));
