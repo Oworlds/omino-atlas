@@ -1,3 +1,8 @@
+// v4.9: true-to-size everywhere on the canvas: every structure is drawn at exact pixel size (CSS can no longer shrink it), and co-substrate chips (H₂O, CO₂, ATP, NADH, Fe²⁺ …) are drawn as structures at the same scale instead of text pills, so a chip is only bigger than another if the molecule is. CO₂ now has real C=O bond lengths.
+// v4.9b (mobile): element and info cards use the periodic table's footprint; the table is a compact 7-column grid without its own search bar (the header search covers it); the footer is pinned under a scrolling body instead of being clipped.
+// v4.7: a single overlap pass after all placement (resolveOverlaps) replaces the manual `layout.c_atp4[1] += 60` nudge: co-substrate chips and pathway titles that overlap a node or sit on an arrow of their own molecule move to the nearest free spot; everything else is left alone and any leftover overlap is reported to the console.
+// v4.6: one STEP and one ring rule everywhere: place.spine / place.branch always step by STEP, place.ring takes its radius from the number of nodes (place.radius). Heme and bilirubin now run in a single STEP chain; the TCA ring grows to r(8) and the urea cycle shrinks to r(4), so neighbours are 2 * STEP apart on both.
+// v4.5: layout is data-driven: place.spine / place.ring / place.branch (and the BRANCH_AT table) replace the hand-typed coordinates for glycolysis, TCA, urea, pentose phosphate, glycogen, lipid, heme and cholesterol; every node keeps its old position.
 // v4.3: skeletal formulas of all 13 vitamins drawn on their canvas nodes and cards (retinol, cholecalciferol, α-tocopherol, phylloquinone, ascorbic acid, thiamine, riboflavin, nicotinic acid, pantothenic acid, pyridoxine, biotin, folic acid, cobalamin with its corrin ring).
 // v4.2: every Oncology and Anti-infective drug card has a Toxicity section (main toxicity, effects organ by organ, prevention and antidotes, monitoring, what to avoid), searchable from global search; both hub cards index their drugs by the organ they harm.
 // v4.1: Anti-infective hub (antimicrobial chemotherapy: β-lactams, glycopeptides, membrane-active drugs, 30S/50S ribosome inhibitors, fluoroquinolones, rifamycins, nitro drugs, antifolates, antituberculars; antifungals; HIV, herpes, influenza, SARS-CoV-2 and hepatitis C antivirals; antimalarials and anthelmintics), each target tagged with its organism and site; a Pathogen location; Oncology hub extended with targeted therapy (kinase inhibitors, anti-HER2/EGFR/VEGF agents, PARP, proteasome, BCL-2, IDH, menin, cereblon, HDAC) and immunotherapy (PD-1/PD-L1, CTLA-4, CD19, CD30, CD38, BCMA), more cytotoxics and cytoprotectants (mitomycin, procarbazine, mitoxantrone, eribulin, mesna, dexrazoxane, amifostine).
@@ -34,6 +39,7 @@ import ReactFlow, {
   useEdgesState,
   useNodesState,
   useReactFlow,
+  useStore,
 } from "reactflow";
 import "reactflow/dist/style.css";
 
@@ -48,6 +54,10 @@ const OpenCtx = React.createContext(() => {}); // open(type, id): show an explan
 const EL_COLOR = { O: "#ff7a7a", N: "#7fb0ff", P: "#ffb454", S: "#f2d95c", X: "#c7a8ff", M: "#ff9d5c", F: "#8ee0a0", Cl: "#6fe08c" };
 
 const S = 40; // chair unit
+// True-to-size canvas: every structure on the canvas is drawn at one scale. A C–C bond (1.54 Å) is 30 units, so 1 Å = 19.48 units, and CANVAS_K turns
+// units into screen px. Water, glucose, ATP, cholesterol and an Fe²⁺ tile therefore keep their real sizes relative to each other. Cards keep their own readable scale.
+const CANVAS_K = 0.7, PX_PER_A = (30 / 1.54) * CANVAS_K;
+const art = (mol) => { const b = bounds(mol); return { w: Math.ceil(b.w * CANVAS_K), h: Math.ceil(b.h * CANVAS_K) }; }; // drawn size of a structure on the canvas
 const pt = (x, y) => [x * S, -y * S]; // y-up chemistry coords -> svg coords
 const A = (id, [x, y], text, el, extra = {}) => ({ id, x, y, text, el, ...extra });
 const C = (id, [x, y]) => ({ id, x, y });
@@ -118,7 +128,7 @@ function zig(n, subs, dx = 26, dbl = [], het = {}) {
     if (k === "OP") phos(atoms, bonds, id, c.id, [c.x, c.y], [0, d]);
     if (k === "COOL") { atoms.push(A(id, [c.x, c.y + 30 * d], "O", "O"), A(id + "b", [c.x - dx, (i - 1) % 2 ? 0 : 15], "O", "O", { q: "−", qd: [-8, -8] })); bonds.push([c.id, id, 2], [c.id, id + "b"]); }
     if (k === "NH3") { atoms.push(A(id, [c.x, c.y + 30 * d], "NH3", "N", { q: "+", qd: [14, -8] })); bonds.push([c.id, id]); }
-    if (k === "NH3e" || k === "NH2e") { atoms.push(A(id, nx, k === "NH3e" ? "NH3" : "NH2", "N", k === "NH3e" ? { q: "+", qd: [14, -8] } : {})); bonds.push([c.id, id]); }
+    if (k === "NH3e" || k === "NH2e") { atoms.push(A(id + "z", nx, k === "NH3e" ? "NH3" : "NH2", "N", k === "NH3e" ? { q: "+", qd: [14, -8] } : {})); bonds.push([c.id, id + "z"]); } // own id: =O, =NH and N-succinyl on the same carbon already use `s${i}`
     if (k === "=NH") { atoms.push(A(id, [c.x, c.y + 30 * d], "NH", "N")); bonds.push([c.id, id, 2]); }
     if (k === "NSUC") { const x = c.x, y = c.y; atoms.push(A(id, [x, y + 30], "N", "N"), C(id + "a", [x, y + 60]), C(id + "b", [x - 26, y + 75]), C(id + "c", [x + 26, y + 75]), A(id + "d", [x - 26, y + 105], "O", "O"), A(id + "e", [x - 52, y + 60], "O", "O", { q: "−", qd: [-8, -8] }), C(id + "f", [x + 52, y + 60]), A(id + "g", [x + 52, y + 30], "O", "O"), A(id + "h", [x + 78, y + 75], "O", "O", { q: "−" })); bonds.push([c.id, id, 2], [id, id + "a"], [id + "a", id + "b"], [id + "a", id + "c"], [id + "b", id + "d", 2], [id + "b", id + "e"], [id + "c", id + "f"], [id + "f", id + "g", 2], [id + "f", id + "h"]); }
     if (k === "EST") { const y = c.y; atoms.push(A(id, [c.x, y + 30 * d], "O", "O"), C(id + "c", [c.x, y + 60 * d]), A(id + "d", [c.x - 26, y + 75 * d], "O", "O"), A(id + "r", [c.x + 26, y + 75 * d], "R", "X", { align: "start" })); bonds.push([c.id, id], [id, id + "c"], [id + "c", id + "d", 2], [id + "c", id + "r"]); }
@@ -141,9 +151,10 @@ function furanose(c1) {
   hy("O3", "C3", out("C3"), true); hy("O4", "C4", out("C4"), false);
   const [x2, y2] = out("C2", 30, 45); hy("O2", "C2", [x2, y2], true);
   const [x1, y1, u1] = out("C2", 30, -45); atoms.push(C("C1", [x1, y1])); bonds.push(["C2", "C1"]);
-  c1 === "P" ? phos(atoms, bonds, "p1", "C1", [x1, y1], u1) : hy("O1", "C1", [x1 + u1[0] * 20, y1 + u1[1] * 20], true);
+  const k1 = rot(u1, 60); // C1 and C6 are CH2 vertices: the next bond turns 120° so the carbon shows as a corner
+  c1 === "P" ? phos(atoms, bonds, "p1", "C1", [x1, y1], k1) : hy("O1", "C1", [x1 + k1[0] * 30, y1 + k1[1] * 30], true);
   const [x6, y6, u6] = out("C5"); atoms.push(C("C6", [x6, y6])); bonds.push(["C5", "C6"]);
-  phos(atoms, bonds, "p6", "C6", [x6, y6], u6);
+  phos(atoms, bonds, "p6", "C6", [x6, y6], rot(u6, 60));
   return { atoms, bonds };
 }
 const g1pAtoms = chairAtoms().filter((a) => a.id !== "O1");
@@ -190,7 +201,17 @@ const MOLS = {
   s7p: { name: "Sedoheptulose 7-phosphate", ...zig(7, [[0, "OH"], [1, "=O"], [2, "OH"], [3, "OH"], [4, "OH"], [5, "OH"], [6, "OP"]]) },
   e4p: { name: "Erythrose 4-phosphate", ...zig(4, [[0, "=O"], [1, "OH"], [2, "OH"], [3, "OP"]]) },
   glycerol: { name: "Glycerol", ...zig(3, [[0, "OH"], [1, "OH"], [2, "OH"]]) },
-  tag: { name: "Triacylglycerol", ...zig(3, [[0, "EST"], [1, "EST"], [2, "EST"]], 60) },
+  tag: { name: "Triacylglycerol", atoms: [
+      C("c0", [0, 15]), C("c1", [26, 0]), C("c2", [52, 15]),
+      A("a0", [0, 45], "O", "O"), C("a0c", [-26, 60]), A("a0d", [-26, 90], "O", "O"), A("a0r", [-52, 45], "R", "X", { align: "end" }),
+      A("a1", [26, -30], "O", "O"), C("a1c", [26, -60]), A("a1d", [0, -75], "O", "O"), A("a1r", [52, -75], "R", "X", { align: "start" }),
+      A("a2", [52, 45], "O", "O"), C("a2c", [78, 60]), A("a2d", [78, 90], "O", "O"), A("a2r", [104, 45], "R", "X", { align: "start" }),
+    ], bonds: [
+      ["c0", "c1"], ["c1", "c2"],
+      ["c0", "a0"], ["a0", "a0c"], ["a0c", "a0d", 2], ["a0c", "a0r"],
+      ["c1", "a1"], ["a1", "a1c"], ["a1c", "a1d", 2], ["a1c", "a1r"],
+      ["c2", "a2"], ["a2", "a2c"], ["a2c", "a2d", 2], ["a2c", "a2r"],
+    ] },
   fa: { name: "Fatty acid", ...zig(6, [[5, "COO"]]) },
   facyl: { name: "Fatty acyl-CoA", ...zig(5, [[4, "SCoA"]]) },
   malonyl: { name: "Malonyl-CoA", ...zig(3, [[0, "COOL"], [2, "SCoA"]]) },
@@ -545,12 +566,12 @@ MOLS.udpglcA = (() => {
 
 // small molecules
 const small = (name, scale, atoms, bonds) => ({ name, scale, atoms, bonds });
-MOLS.h2o = small("Water", 1.7, [A("O", [0, 0], "O", "O"), A("H1", [-30, 24], "H", "H"), A("H2", [30, 24], "H", "H")], [["O", "H1"], ["O", "H2"]]);
-MOLS.nh3 = small("Ammonia", 1.6, [A("N", [0, 0], "N", "N"), A("H1", [-36, 22], "H", "H"), A("H2", [36, 22], "H", "H"), A("H3", [0, -42], "H", "H")], [["N", "H1"], ["N", "H2"], ["N", "H3"]]);
-MOLS.co2 = small("Carbon dioxide", 1.6, [A("O1", [-50, 0], "O", "O"), A("C", [0, 0], "C", "C"), A("O2", [50, 0], "O", "O")], [["O1", "C", 2], ["C", "O2", 2]]);
-MOLS.co = small("Carbon monoxide", 1.8, [A("C", [-26, 0], "C", "C"), A("O", [26, 0], "O", "O")], [["C", "O", 3]]);
-MOLS.o2 = small("Oxygen", 1.8, [A("O1", [-26, 0], "O", "O"), A("O2", [26, 0], "O", "O")], [["O1", "O2", 2]]);
-MOLS.h2o2 = small("Hydrogen peroxide", 1.6, [A("H1", [-52, -24], "H", "H"), A("O1", [-22, 0], "O", "O"), A("O2", [22, 0], "O", "O"), A("H2", [52, -24], "H", "H")], [["H1", "O1"], ["O1", "O2"], ["O2", "H2"]]);
+MOLS.h2o = small("Water", 3.4, [A("O", [0, 0], "O", "O"), A("H1", [-14.8, 11.4], "H", "H"), A("H2", [14.8, 11.4], "H", "H")], [["O", "H1"], ["O", "H2"]]);
+MOLS.nh3 = small("Ammonia", 3.4, [A("N", [0, 0], "N", "N"), A("H1", [-17.1, 9.9], "H", "H"), A("H2", [17.1, 9.9], "H", "H"), A("H3", [0, -19.7], "H", "H")], [["N", "H1"], ["N", "H2"], ["N", "H3"]]);
+MOLS.co2 = small("Carbon dioxide", 3.2, [A("O1", [-22.6, 0], "O", "O"), A("C", [0, 0], "C", "C"), A("O2", [22.6, 0], "O", "O")], [["O1", "C", 2], ["C", "O2", 2]]);
+MOLS.co = small("Carbon monoxide", 3.8, [A("C", [-11, 0], "C", "C", { q: "−", qd: [-12, -10] }), A("O", [11, 0], "O", "O", { q: "+", qd: [12, -10] })], [["C", "O", 3]]);
+MOLS.o2 = small("Oxygen", 3.8, [A("O1", [-11.8, 0], "O", "O"), A("O2", [11.8, 0], "O", "O")], [["O1", "O2", 2]]);
+MOLS.h2o2 = small("Hydrogen peroxide", 2.8, [A("H1", [-29.2, -11.7], "H", "H"), A("O1", [-14.4, 0], "O", "O"), A("O2", [14.4, 0], "O", "O"), A("H2", [29.2, -11.7], "H", "H")], [["H1", "O1"], ["O1", "O2"], ["O2", "H2"]]);
 MOLS.hplus = small("Proton", 2.4, [A("H", [0, 0], "H", "H", { q: "+", qd: [14, -10] })], []);
 MOLS.pi = small("Inorganic phosphate (Pᵢ)", 1.5, [A("P", [0, 0], "P", "P"), A("Od", [0, -32], "O", "O"), A("Om1", [-32, 0], "O", "O", { q: "−" }), A("Oh", [32, 0], "OH", "O", { align: "start" }), A("Om2", [0, 32], "O", "O", { q: "−" })],
   [["P", "Od", 2], ["P", "Om1"], ["P", "Oh"], ["P", "Om2"]]);
@@ -649,7 +670,7 @@ function bounds(mol) {
 function bondLines(a, b, order = 1, side) {
   const dx = b.x - a.x, dy = b.y - a.y, len = Math.hypot(dx, dy);
   const ux = dx / len, uy = dy / len, nx = -uy, ny = ux;
-  const ta = a.text ? TRIM : 0, tb = b.text ? TRIM : 0;
+  const tm = Math.min(TRIM, len * 0.3), ta = a.text ? tm : 0, tb = b.text ? tm : 0; // short real bonds (O–H) keep a visible line
   const x1 = a.x + ux * ta, y1 = a.y + uy * ta, x2 = b.x - ux * tb, y2 = b.y - uy * tb;
   if (order === 1 || order === "w") return [[x1, y1, x2, y2]]; // "w" = solid wedge, drawn as a polygon in Skeletal
   if (order === 3) {
@@ -678,14 +699,16 @@ function Label({ a }) {
   const x = a.x + (a.align === "start" ? -5 : a.align === "end" ? 5 : 0);
   const fill = EL_COLOR[a.el] || CHALK;
   const parts = a.text.split(/(\d+)/).filter(Boolean); // NH2 -> N H <sub>2</sub>
+  // dy="0.36em" centres capitals on the atom in every browser (dominant-baseline="central" is ignored by iOS Safari, which drew labels about 5 px high);
+  // a subscript drops 4 px and the next run lifts it back, so H2N keeps H and N on one baseline
   return (
     <>
-      <text x={x} y={a.y} textAnchor={anchor} dominantBaseline="central" fill={fill} fontSize="15" fontWeight="500">
+      <text x={x} y={a.y} dy="0.36em" textAnchor={anchor} fill={fill} fontSize="15" fontWeight="500">
         {parts.map((p, i) =>
           /^\d+$/.test(p) ? (
             <tspan key={i} dy="4" fontSize="11">{p}</tspan>
           ) : (
-            <tspan key={i}>{p}</tspan>
+            <tspan key={i} dy={i > 0 && /^\d+$/.test(parts[i - 1]) ? -4 : undefined}>{p}</tspan>
           )
         )}
       </text>
@@ -693,8 +716,8 @@ function Label({ a }) {
         <text
           x={a.x + (a.qd ? a.qd[0] : 8)}
           y={a.y + (a.qd ? a.qd[1] : -8)}
+          dy="0.36em"
           textAnchor="middle"
-          dominantBaseline="central"
           fill={fill}
           fontSize="12"
         >
@@ -705,14 +728,14 @@ function Label({ a }) {
   );
 }
 
-function Skeletal({ mol, hit = true }) {
+function Skeletal({ mol, hit = true, canvas = false }) {
   const open = React.useContext(OpenCtx);
   const kinds = useMemo(() => classify(mol), [mol]);
   const byId = useMemo(() => Object.fromEntries(mol.atoms.map((a) => [a.id, a])), [mol]);
   const { x0, y0, w, h } = useMemo(() => bounds(mol), [mol]);
-  const k = mol.scale || 1;
+  const k = canvas ? CANVAS_K : mol.scale || 1;
   return (
-    <svg viewBox={`${x0} ${y0} ${w} ${h}`} width={w * k} height={h * k} role="img" aria-label={`Skeletal structure of ${mol.name}`}>
+    <svg viewBox={`${x0} ${y0} ${w} ${h}`} width={w * k} height={h * k} style={canvas ? { width: Math.ceil(w * k), height: Math.ceil(h * k), maxWidth: "none", maxHeight: "none", flex: "none" } : undefined} role="img" aria-label={`Skeletal structure of ${mol.name}`}>
       <g stroke={CHALK} strokeWidth="1.8" strokeLinecap="round" fill="none">
         {mol.bonds.flatMap(([a, b, order, side], i) =>
           order === "w"
@@ -742,13 +765,16 @@ function Skeletal({ mol, hit = true }) {
   );
 }
 
+// Atom and ion tiles: diameter = 2 x radius (ionic radius for ions, covalent radius for the neutral atom), at the same scale as the structures
+const ATOM_R = { "Mg2+": 0.72, "K+": 1.38, "Fe2+": 0.78, P: 1.07 }; // Å
 function AtomTile({ glyph, color }) {
+  const r = ATOM_R[glyph.symbol + (glyph.charge || "")] || 0.77, d = Math.round(2 * r * PX_PER_A), fs = Math.max(8, Math.min(15, d * 0.42));
   return (
-    <svg viewBox="0 0 44 44" width="44" height="44" role="img" aria-label={glyph.symbol}>
-      <circle cx="22" cy="22" r="20" fill="none" stroke={color} strokeWidth="1.8" />
-      <text x="22" y="22" textAnchor="middle" dominantBaseline="central" fill={CHALK} fontSize="15" fontWeight="500">
+    <svg viewBox={`0 0 ${d} ${d}`} width={d} height={d} style={{ width: d, height: d, maxWidth: "none", maxHeight: "none", flex: "none" }} role="img" aria-label={glyph.symbol}>
+      <circle cx={d / 2} cy={d / 2} r={d / 2 - 1} fill="none" stroke={color} strokeWidth="1.5" />
+      <text x={d / 2} y={d / 2} dy="0.36em" textAnchor="middle" fill={CHALK} fontSize={fs} fontWeight="500">
         {glyph.symbol}
-        {glyph.charge && <tspan dy="-5" fontSize="10">{glyph.charge}</tspan>}
+        {glyph.charge && <tspan dy={-fs * 0.33} fontSize={fs * 0.67}>{glyph.charge}</tspan>}
       </text>
     </svg>
   );
@@ -907,7 +933,37 @@ const EDGES = [
 const STEP = 330;
 const SPINE = ["g1p", "glucose", "g6p", "f6p", "fbp", "gap", "bpg13", "pg3", "pg2", "pep", "pyruvate", "acetylcoa"];
 const layout = { dhap: [300, 5 * STEP], atp: [-480, 2.5 * STEP], mg: [520, 3 * STEP], k: [520, 9.5 * STEP], p: [-480, 8 * STEP] };
-SPINE.forEach((id, i) => (layout[id] = [0, i * STEP]));
+/* Placement primitives: one per pathway shape. Each writes centres into `layout` (nodeOrigin = [0.5, 0.5]) and returns `ids`,
+   so a pathway is one call, or one row of a table, instead of hand-typed coordinates. They live on `place` because `ring` is
+   already the pyrrole-drawing function in the structures section above.
+   Spacing has no per-pathway knobs: chains step by STEP, and a ring's radius is a function of its size only. */
+const place = {
+  // Ring radius for n nodes: neighbours sit 2 * STEP apart on the circle (chord = 2 * r * sin(PI / n)), so r = STEP / sin(PI / n).
+  radius: (n) => STEP / Math.sin(Math.PI / n),
+  // Vertical chain: ids[i] at (x, y0 + i * STEP).
+  spine(ids, x, y0) {
+    ids.forEach((id, i) => { layout[id] = [x, y0 + i * STEP]; });
+    return ids;
+  },
+  // Cycle: ids evenly spaced on a circle of radius place.radius(ids.length), clockwise on screen from startAngle (degrees; 0 = east, -90 = top).
+  ring(ids, cx, cy, startAngle = -90) {
+    if (ids.length < 3) throw new Error(`place.ring: a cycle needs at least 3 ids (got ${ids.join(", ")})`);
+    const r = place.radius(ids.length);
+    ids.forEach((id, i) => {
+      const a = ((startAngle + (360 / ids.length) * i) * Math.PI) / 180;
+      layout[id] = [cx + r * Math.cos(a), cy + r * Math.sin(a)];
+    });
+    return ids;
+  },
+  // Side branch: ids[0] sits at rootId + (dx, dy); later ids follow straight down, STEP apart. The root must already be placed.
+  branch(rootId, ids, dx, dy) {
+    if (!layout[rootId]) throw new Error(`place.branch: "${rootId}" is not placed yet (branching ${ids.join(", ")})`);
+    const [rx, ry] = layout[rootId];
+    ids.forEach((id, i) => { layout[id] = [rx + dx, ry + dy + STEP * i]; });
+    return ids;
+  },
+};
+place.spine(SPINE, 0, 0);  // glycolysis: G1P down to acetyl-CoA
 const COSUB_AT = [
   ["glucose", 240, 0], ["g6p", -240, -70], ["f6p", 240, 0], ["fbp", -240, -60], ["gap", -240, 40],
   ["bpg13", 240, 0], ["bpg13", -240, 70], ["pg3", 240, 0], ["pep", 240, -60], ["pep", -240, 70], ["pyruvate", 240, 0],
@@ -919,18 +975,12 @@ COSUBS.forEach((c, i) => {
 NODES.push(...COSUBS);
 
 // Urea cycle (left of the TCA ring), amino-acid hubs, and links from the integrated map
-const U = { x: -2300, y: RING_Y(), r: 650 };
+const U = { x: -2300, y: RING_Y() };
 function RING_Y() { return 11 * STEP + 2100; }
-Object.assign(layout, {
-  citrulline: [U.x, U.y - U.r], argsucc: [U.x + U.r, U.y], arginine: [U.x, U.y + U.r], ornithine: [U.x - U.r, U.y],
-  cp: [U.x - 750, U.y - 1000], aspartate: [-1000, U.y - 900], urea: [U.x - U.r, U.y + 850],
-  alanine: [-700, 10 * STEP], lactate: [900, 10 * STEP], glutamate: [1700, U.y], glyc3p: [700, 5 * STEP],
-  glycogen: [0, -300], facyl: [-700, 11 * STEP], acac: [700, 11 * STEP],
-});
+place.ring(["citrulline", "argsucc", "arginine", "ornithine"], U.x, U.y);  // clockwise from the top
 [["c_g1", "UTP → PPᵢ"], 
   ["c_u1", "ATP → AMP + PPᵢ"], ["c_u2", "+ H₂O"]].forEach(([id, label]) =>
   NODES.push({ id, kind: "cofactor", label, formula: "", note: "Link to a pathway not drawn yet" }));
-layout.c_u1 = [U.x + 360, U.y - U.r]; layout.c_u2 = [U.x, U.y + U.r + 170];
 
 // The twenty proteinogenic amino acids: five sit in the pathways above, the other fifteen form a block to the left of the urea cycle
 const AA_NEW = [
@@ -944,20 +994,38 @@ AA_NEW.forEach(([id, f, col, row]) => {
   layout[id] = [-7600 + col * 520, 5300 + row * 480 + (row === 2 ? 180 : 0)];
 });
 EDGES.push({ id: "aa_pt", source: "phenylalanine", target: "tyrosine", label: "Phenylalanine hydroxylase", main: true, auto: true });
-layout.c_atp4[1] += 60; // keep clear of the new pyruvate → lactate edge
-// Pentose phosphate branch (right of G6P) and the TCA ring (below acetyl-CoA)
-layout.p6gl = [1050, 2 * STEP]; layout.p6g = [1050, 3 * STEP]; layout.ru5p = [1050, 4 * STEP]; layout.r5p = [1050, 5 * STEP];
-Object.assign(layout, {
-  xu5p: [1500, 4 * STEP], s7p: [1500, 5 * STEP], e4p: [1500, 6 * STEP],
-  udpglc: [700, -300], c_g1: [700, -150],
-  tag: [700, 2300], glycerol: [1200, 2300], fa: [1200, 2900], facyl: [700, 2900], acac: [700, 3900], malonyl: [1500, 3630],
-});
+// The TCA ring (below acetyl-CoA), then every side branch off the spine and the rings
 const TCA = ["citrate", "isocitrate", "akg", "succoa", "succinate", "fumarate", "malate", "oaa"];
-const RING = { cx: 0, cy: 11 * STEP + 2100, r: 700 };
-TCA.forEach((id, i) => {
-  const a = ((-90 + 45 * i) * Math.PI) / 180;
-  layout[id] = [RING.cx + RING.r * Math.cos(a), RING.cy + RING.r * Math.sin(a)];
-});
+const RING = { cx: 0, cy: 11 * STEP + 2100 };
+// where the user was looking: saved when the camera stops and when the page is hidden or closed, restored on the next open (reload, return to the tab, new visit)
+const VIEW_KEY = "omino.viewport.v1";
+const saveView = (v) => { try { if (v && [v.x, v.y, v.zoom].every(Number.isFinite)) localStorage.setItem(VIEW_KEY, JSON.stringify({ x: v.x, y: v.y, zoom: v.zoom })); } catch (e) { /* storage unavailable: nothing to remember */ } };
+const savedView = () => { try { const v = JSON.parse(localStorage.getItem(VIEW_KEY)); return v && [v.x, v.y, v.zoom].every(Number.isFinite) && v.zoom >= 0.05 && v.zoom <= 4 ? v : null; } catch (e) { return null; } };
+// the opening view: centred on the TCA ring at a readable zoom; OMINO (home) returns here
+const homeViewport = () => {
+  const el = document.querySelector(".omino-canvas"), cw = el ? el.clientWidth : window.innerWidth, ch = el ? el.clientHeight : window.innerHeight;
+  const zoom = Math.min(0.8, Math.max(0.3, Math.min(cw / 2300, ch / 1900)));
+  return { x: cw / 2 - RING.cx * zoom, y: ch / 2 - RING.cy * zoom, zoom };
+};
+place.ring(TCA, RING.cx, RING.cy);
+// [root, ids, dx, dy]: ids[0] at root + (dx, dy), later ids straight down, STEP apart. Vertical offsets are multiples of STEP / 2. Rows run in order, so a root must come first.
+const BRANCH_AT = [
+  // glycolysis exits
+  ["pyruvate", ["alanine"], -700, 0], ["pyruvate", ["lactate"], 900, 0],
+  // glycogen, off G1P
+  ["g1p", ["glycogen"], 0, -STEP], ["g1p", ["udpglc"], 700, -STEP], ["udpglc", ["c_g1"], 0, STEP / 2],
+  // pentose phosphate pathway, off G6P: oxidative arm down the page, non-oxidative arm beside it
+  ["g6p", ["p6gl", "p6g", "ru5p", "r5p"], 1050, 0], ["ru5p", ["xu5p", "s7p", "e4p"], 450, 0],
+  // lipids, off DHAP: glycerol-3-P → TAG → glycerol and fatty acids → acyl-CoA → ketones / malonyl-CoA
+  ["dhap", ["glyc3p"], 400, 0], ["glyc3p", ["tag"], 0, 2 * STEP], ["tag", ["glycerol"], 500, 0], ["glycerol", ["fa"], 0, 2 * STEP],
+  ["tag", ["facyl"], 0, 2 * STEP], ["facyl", ["acac"], 0, 3 * STEP], ["facyl", ["malonyl"], 800, 2 * STEP],
+  // urea cycle inputs and outputs
+  ["citrulline", ["cp"], -750, -STEP], ["argsucc", ["aspartate"], 650, -3 * STEP], ["ornithine", ["urea"], 0, 2.5 * STEP],
+  ["citrulline", ["c_u1"], 360, 0], ["arginine", ["c_u2"], 0, STEP / 2],
+  // TCA ring: α-ketoglutarate ↔ glutamate
+  ["akg", ["glutamate"], 1.5 * STEP, 0],
+];
+BRANCH_AT.forEach((b) => place.branch(...b));
 const COSUBS2 = [
   ["c_nadp1", "+ NADPH", "p6gl", 250, 0], ["c_nadp2", "+ NADPH + CO₂", "ru5p", 0, 110],
   ["c_t1", "+ NADH + CO₂", "isocitrate", 260, -50], ["c_t2", "+ NADH + CO₂", "akg", 260, 0],
@@ -990,26 +1058,29 @@ NODES.push(
   M("bilglu", "C45H52N4O18", "Water-soluble; secreted into bile. UGT1A1 is reduced in Gilbert and absent in Crigler–Najjar." + KEY + " GlcA = glucuronate."),
   { id: "fe", kind: "ion", glyph: { symbol: "Fe", charge: "2+" }, label: "Iron", formula: "Fe²⁺", note: "Inserted into protoporphyrin IX by ferrochelatase" },
 );
+// [id, label, anchor, dx, dy, pathway]: co-substrates hang off a molecule; beside an edge means (±260, STEP / 2) from its upper node
 const HCOS = [
-  ["c_h1", "+ CoA + CO₂", 440, 7000, "ala"], ["c_h2", "+ 2 H₂O", 960, 7725, "heme"], ["c_h3", "+ 4 NH₃", 960, 8450, "heme"],
-  ["c_h4", "+ H₂O", 960, 9250, "heme"], ["c_h5", "+ 4 CO₂", 960, 10050, "heme"], ["c_h6", "+ 2 CO₂ + 2 H₂O", 960, 10850, "heme"],
-  ["c_h7", "+ 3 H₂O₂", 960, 11650, "heme"], ["c_h8", "+ 2 H⁺", 960, 12450, "heme"],
-  ["c_b1", "+ O₂ + NADPH", 250, 12710, "bili"], ["c_b2", "+ CO + Fe²⁺", 250, 12990, "bili"], ["c_b3", "+ NADPH", -700, 12710, "bili"],
-  ["c_b4", "+ 2 UDP-glucuronate", -1700, 12710, "bili"], ["c_b5", "→ 2 UDP", -1700, 12990, "bili"], ["c_b6", "→ bile → gut: urobilinogen", -2950, 12850, "bili"],
+  ["c_h1", "+ CoA + CO₂", "ala", -260, -STEP, "ala"], ["c_h2", "+ 2 H₂O", "ala", 260, STEP / 2, "heme"], ["c_h3", "+ 4 NH₃", "pbg", 260, STEP / 2, "heme"],
+  ["c_h4", "+ H₂O", "hmb", 260, STEP / 2, "heme"], ["c_h5", "+ 4 CO₂", "uro3", 260, STEP / 2, "heme"], ["c_h6", "+ 2 CO₂ + 2 H₂O", "copro3", 260, STEP / 2, "heme"],
+  ["c_h7", "+ 3 H₂O₂", "protogen", 260, STEP / 2, "heme"], ["c_h8", "+ 2 H⁺", "protoporph", 260, STEP / 2, "heme"],
+  ["c_b1", "+ O₂ + NADPH", "heme", 260, STEP / 2, "bili"], ["c_b2", "+ CO + Fe²⁺", "heme", -260, STEP / 2, "bili"], ["c_b3", "+ NADPH", "biliverdin", 260, STEP / 2, "bili"],
+  ["c_b4", "+ 2 UDP-glucuronate", "bilirubin", 260, STEP / 2, "bili"], ["c_b5", "→ 2 UDP", "bilirubin", -260, STEP / 2, "bili"], ["c_b6", "→ bile → gut: urobilinogen", "bilglu", 0, STEP, "bili"],
 ];
-HCOS.forEach(([id, label, x, y, p]) => {
-  NODES.push({ id, kind: "cofactor", label, formula: "", note: id === "c_b6" ? "Link to a pathway not drawn yet" : "Co-substrate / co-product" });
-  layout[id] = [x, y];
-  PATH_OF[id] = p;
-});
 Object.entries({
   ala: ["glycine", "ala"],
   heme: ["pbg", "hmb", "uro3", "copro3", "protogen", "protoporph", "heme", "fe"],
   bili: ["biliverdin", "bilirubin", "bilglu"],
 }).forEach(([p, ids]) => ids.forEach((i) => (PATH_OF[i] = p)));
 const HCHAIN = ["ala", "pbg", "hmb", "uro3", "copro3", "protogen", "protoporph", "heme"];
-[7400, 8050, 8850, 9650, 10450, 11250, 12050, 12850].forEach((y, i) => (layout[HCHAIN[i]] = [700, y]));
-Object.assign(layout, { glycine: [1300, 7400], fe: [1300, 12850], biliverdin: [-200, 12850], bilirubin: [-1200, 12850], bilglu: [-2200, 12850] });
+place.spine(HCHAIN, 700, Math.round(RING.cy + place.radius(TCA.length)) + 2 * STEP);  // ALA → heme, starting two steps below the TCA ring
+place.branch("ala", ["glycine"], 600, 0);
+place.branch("heme", ["fe"], 600, 0);
+place.branch("heme", ["biliverdin", "bilirubin", "bilglu"], 0, STEP);  // breakdown carries straight on down
+HCOS.forEach(([id, label, at, dx, dy, p]) => {
+  NODES.push({ id, kind: "cofactor", label, formula: "", note: id === "c_b6" ? "Link to a pathway not drawn yet" : "Co-substrate / co-product" });
+  place.branch(at, [id], dx, dy);
+  PATH_OF[id] = p;
+});
 EDGES.push(
   ...[["succoa", "ala", "ALA synthase (B₆)"], ["glycine", "ala", ""], ["ala", "pbg", "ALA dehydratase"], ["pbg", "hmb", "PBG deaminase"],
     ["hmb", "uro3", "Uroporphyrinogen III synthase"], ["uro3", "copro3", "Uroporphyrinogen decarboxylase"], ["copro3", "protogen", "Coproporphyrinogen oxidase"],
@@ -1079,7 +1150,9 @@ NODES.push(
   NODES.push({ id, kind: "cofactor", label, formula: "", note: "Co-substrate / co-product" });
   layout[id] = [0, 0]; CH_AT[id] = [at, dx, dy];
 });
-Object.assign(layout, { hmgcoa: [2500, 4800], mevalonate: [2500, 5200], dhc7: [2500, 5640], chol: [2500, 6120], cholic: [3250, 6120], preg: [1750, 6120] });
+place.spine(["hmgcoa", "mevalonate", "dhc7", "chol"], 2500, 4800);
+place.branch("chol", ["cholic"], 750, 0);  // bile acids to the right
+place.branch("chol", ["preg"], -750, 0);   // steroid hormones to the left
 Object.entries(CH_AT).forEach(([id, [at, dx, dy]]) => { layout[id] = [layout[at][0] + dx, layout[at][1] + dy]; });
 ["hmgcoa", "mevalonate", "dhc7", "chol", "cholic", "preg", "c_ch1", "c_ch2", "c_ch3", "c_ch4", "c_ch6", "c_ch7"].forEach((i) => (PATH_OF[i] = "chol"));
 EDGES.push(
@@ -1090,20 +1163,54 @@ EDGES.push(
 
 // Big pathway titles sit in or beside their pathway, like the labels on a metro map
 [["glycolysis", -560, 1650], ["glycogen", 350, -480], ["ppp", 1275, 430], ["tca", 0, RING.cy], ["urea", U.x, U.y],
-  ["amino", -1000, 4550], ["aa", -6300, 4850], ["lipid", 950, 2600],
-  ["ala", 1000, 7000], ["heme", 1500, 10050], ["bili", -1000, 12300], ["chol", 2500, 4430]].forEach(([p, x, y]) => {
+  ["amino", -1000, 4550], ["aa", -6300, 4850]
+  ].forEach(([p, x, y]) => {
   NODES.push({ id: "t_" + p, kind: "pathway", title: true, label: PATHWAYS[p].label, formula: "", note: "", path: p });
   layout["t_" + p] = [x, y];
 });
+// ...and the titles of chains placed by `place` hang off a node of the chain: [pathway, anchor, dx, dy]
+[["lipid", "tag", 250, STEP], ["ala", "ala", 300, -STEP], ["heme", "uro3", 800, STEP / 2], ["bili", "biliverdin", -800, STEP / 2], ["chol", "hmgcoa", 0, -STEP]].forEach(([p, at, dx, dy]) => {
+  NODES.push({ id: "t_" + p, kind: "pathway", title: true, label: PATHWAYS[p].label, formula: "", note: "", path: p });
+  place.branch(at, ["t_" + p], dx, dy);
+});
+
+// the names that can appear in a co-substrate label, and where clicking each one goes
+const TOK = [
+  ["UDP-glucuronate", ["mol", "udpglcA"]], ["NADPH", ["mol", "nadph"]], ["NADH", ["mol", "nadh"]], ["NAD⁺", ["mol", "nad"]],
+  ["FADH₂", ["mol", "fadh2"]], ["ATP", ["mol", "atp"]], ["ADP", ["mol", "adp"]], ["AMP", ["mol", "amp"]], ["GTP", ["mol", "gtp"]],
+  ["UTP", ["mol", "utp"]], ["UDP", ["mol", "udp"]], ["CoA", ["mol", "coa"]], ["PPᵢ", ["mol", "ppi"]], ["Pᵢ", ["mol", "pi"]],
+  ["H₂O₂", ["mol", "h2o2"]], ["H₂O", ["mol", "h2o"]], ["CO₂", ["mol", "co2"]], ["CO", ["mol", "co"]], ["NH₃", ["mol", "nh3"]],
+  ["O₂", ["mol", "o2"]], ["H⁺", ["mol", "hplus"]], ["Fe²⁺", ["el", "Fe"]], ["NADP⁺", ["mol", "nadp"]], ["vitamin D", ["target", "t_vd"]],
+];
+const TOKMAP = Object.fromEntries(TOK);
+const TOK_RE = new RegExp("(" + TOK.map((t) => t[0]).sort((a, b) => b.length - a.length).join("|") + ")");
+const cofTokens = (label) => label.split(TOK_RE).filter(Boolean).map((t) => (TOKMAP[t] ? { t, to: TOKMAP[t] } : { t }));
+// ---- co-substrate chips drawn to scale ----
+// A chip is a row of its structures (same scale as every molecule on the canvas) joined by the text of the label ("+", "→", "2"); names with no
+// drawing (bile, urobilinogen …) stay text, and a label with no drawable name is a plain text pill as before.
+const CHIP_TILE = { "Fe²⁺": { symbol: "Fe", charge: "2+" } };
+const CHIP_CAP = 16, CHIP_GAP = 8, CHIP_PAD = 12, CHIP_TXT = 8.6; // px: caption row under a structure, gap between parts, outer padding, width of one text character
+const tileD = (g) => Math.round(2 * (ATOM_R[g.symbol + (g.charge || "")] || 0.77) * PX_PER_A);
+const chipParts = (label) => cofTokens(label).map((t, i, all) => {
+  if (t.to && i > 0 && /[A-Za-z0-9-]$/.test(all[i - 1].t)) return { t: t.t, w: Math.ceil(t.t.length * CHIP_TXT), h: 20 }; // "acetoacetyl-CoA" is not free CoA: a name glued to a longer one stays text
+  if (t.to && t.to[0] === "mol" && MOLS[t.to[1]]) { const a = art(MOLS[t.to[1]]); return { t: t.t, to: t.to, mol: t.to[1], w: Math.max(a.w, Math.ceil(t.t.length * 6.8)), h: a.h }; }
+  if (t.to && t.to[0] === "el" && CHIP_TILE[t.t]) { const d = tileD(CHIP_TILE[t.t]); return { t: t.t, to: t.to, tile: CHIP_TILE[t.t], w: Math.max(d, Math.ceil(t.t.length * 6.8)), h: d, d }; }
+  const s = t.t.trim(); return { t: s, w: Math.ceil(s.length * CHIP_TXT), h: 20 };
+}).filter((p) => p.t).reduce((o, p) => { const l = o[o.length - 1]; if (l && !l.mol && !l.tile && !p.mol && !p.tile) { l.t += p.t; l.w = Math.ceil(l.t.length * CHIP_TXT); } else o.push(p); return o; }, []);
+const chipDims = (n) => { // [w, h] of a co-substrate chip
+  const ps = chipParts(n.label);
+  if (!ps.some((p) => p.mol || p.tile)) return [Math.max(130, n.label.length * 9 + 16), 44];
+  return [Math.ceil(ps.reduce((s, p) => s + p.w, 0) + CHIP_GAP * (ps.length - 1) + CHIP_PAD), Math.ceil(Math.max(...ps.map((p) => p.h + (p.mol || p.tile ? CHIP_CAP : 0))) + CHIP_PAD)];
+};
 
 // Every molecule, ion, atom and co-substrate label on the canvas has the same box; structures are scaled down to fit it.
 const NODE_W = 240, NODE_ART_H = 140; // drawn structures share one width and are scaled down to fit it; boxes are otherwise as tight as their content
 const isCompound = (n) => !n.rx && !n.title;
 const sizeOf = (n) => {
-  if (isCompound(n) && n.kind !== "cofactor") return { w: NODE_W };
+  if (isCompound(n) && n.kind !== "cofactor") return { w: n.mol ? Math.max(NODE_W, art(MOLS[n.mol]).w + 28) : NODE_W }; // wider than the usual box only for a structure that is
   if (n.w) return { w: n.w };
   if (n.title) return { w: 320 };
-  if (n.kind === "cofactor") return { w: 130 };
+  if (n.kind === "cofactor") return { w: chipDims(n)[0] };
   if (DRAWINGS[n.id]) return { w: DRAWINGS[n.id].w || 180 };
   if (n.mol) {
     const m = MOLS[n.mol];
@@ -1588,7 +1695,7 @@ PATH_OF.c_pg = "pharm";
 // Auto-placement: each target sits on its preferred side of its metabolite, its drug just beyond it, and nothing overlaps
 // an existing node or crosses an existing arrow.
 const RX_ALL = [...NODES];
-const hOfNode = (n) => (n.title ? 60 : n.kind === "cofactor" ? 44 : n.mol ? Math.min(NODE_ART_H, bounds(MOLS[n.mol]).h * (MOLS[n.mol].scale || 1)) + 64 : 130);
+const hOfNode = (n) => (n.title ? 60 : n.kind === "cofactor" ? chipDims(n)[1] : n.mol ? art(MOLS[n.mol]).h + 64 : n.glyph ? 100 : 130);
 const boxAt = (x, y, w, h, m = 0) => ({ x0: x - w / 2 - m, x1: x + w / 2 + m, y0: y - h / 2 - m, y1: y + h / 2 + m });
 const boxHit = (a, b) => a.x0 < b.x1 && a.x1 > b.x0 && a.y0 < b.y1 && a.y1 > b.y0;
 const segHitsBox = ([ax, ay], [bx, by], b) => {
@@ -1628,9 +1735,9 @@ TARGETS.forEach(([id, label, type, gene, note, acts, enz, side]) => {
 });
 DRUGS.forEach(([id, label, cls, examples, note, fx, molKey]) => {
   // each drug node carries the skeletal structure of one (representative) drug, so its box grows with the drawing
-  const mol = DRUG_MOLS[molKey], mb = bounds(mol), art = { w: Math.ceil(mb.w * mol.scale), h: Math.ceil(mb.h * mol.scale) };
+  const mol = DRUG_MOLS[molKey], mart = art(mol);
   const shown = mol.name.toLowerCase().startsWith(label.toLowerCase()) ? null : mol.name; // e.g. "Statins" shows atorvastatin
-  const W = NODE_W, H = Math.min(NODE_ART_H, art.h) + (shown ? 128 : 108); // drugs share the molecules' width; height hugs the drawing
+  const W = Math.max(NODE_W, mart.w + 28), H = mart.h + (shown ? 128 : 108); // drugs share the molecules' width; height hugs the drawing
   MOLS[id] = mol;
   const t0 = fx[0][0], side = TARGETS.find((t) => t[0] === t0)[7];
   layout[id] = placeBeside(t0, W, H, side, 420 + Math.max(0, (W - 210) / 2));
@@ -2252,7 +2359,7 @@ ORG_OF.d_tamox = [...ORG_OF.d_tamox, "on"]; ORG_OF.d_colch = ORG_OF.d_colch.filt
   } });
 })();
 // vitamin nodes carry their structure, drawn on the canvas like the drug structures
-VIT_ORDER.forEach((id) => { MOLS[id] = VIT_MOLS[id]; NODES.find((n) => n.id === id).dm = id; });
+VIT_ORDER.forEach((id) => { MOLS[id] = VIT_MOLS[id]; const vn = NODES.find((n) => n.id === id); vn.dm = id; vn.w = Math.max(vn.w || 0, art(VIT_MOLS[id]).w + 28); }); // box widens to the true-scale structure
 /* ------------------------------ drug toxicity (Oncology and Anti-infective hubs) ------------------------------ */
 // Organ systems a toxicity can hit, in the order they are listed on a card
 const TOX_ORG = { marrow: "Bone marrow", blood: "Red cells (hemolysis)", immune: "Immune system and infection", allergy: "Hypersensitivity and infusion reactions", heart: "Heart", vessel: "Vessels, blood pressure and clotting",
@@ -2495,6 +2602,54 @@ const AA_NOTE = {
 Object.entries(AA_CLASS).forEach(([id, c]) => { const n = NODES.find((x) => x.id === id); if (n) { n.aa = c; if (AA_NOTE[id] && !n.note) n.note = AA_NOTE[id]; } });
 const tagText = (d) => [...(d.locs || []).map((l) => LOCS[l].label), ...(d.orgs || []).map((o) => ORGANS[o].label), ...(d.aa ? [`${AA_LABEL[d.aa]} amino acid`] : []), toxText(d.tox)].join(" ");
 
+/* ------------------------------ overlap pass ------------------------------ */
+// Runs once, after every placement above, so no pathway needs hand-typed nudges to stay clear of its neighbours.
+// Molecules, targets, drugs and hubs are fixed: their positions are the layout. Satellites (co-substrate chips and pathway
+// titles) are what get moved: a satellite that overlaps a node, or sits on an arrow of the molecule it belongs to, goes to the
+// nearest free spot around where it was put. Anything else that still overlaps is reported to the console, never silently moved.
+const SEP_NODE = 16, SEP_EDGE = 24, MAX_MOVE = 640;  // px: gap kept to other nodes, gap kept to arrows, farthest a satellite may travel (true-scale chips are big)
+const isSatellite = (n) => n.kind === "cofactor" || !!n.title;
+const boxSize = (n) => [
+  n.kind === "cofactor" && !n.w ? chipDims(n)[0] : sizeOf(n).w, // chips are as wide as their drawn content
+  n.rx === "target" ? RX_TARGET_H : hOfNode(n),
+];
+const SEARCH_DIRS = [90, 270, 0, 180, 60, 120, 240, 300, 30, 150, 210, 330];  // degrees, 90 = down: tries down, up, right, left first
+const OVERLAP_MOVES = [];
+(function resolveOverlaps() {
+  const boxes = new Map(NODES.map((n) => [n.id, boxAt(layout[n.id][0], layout[n.id][1], ...boxSize(n), SEP_NODE / 2)]));
+  const anchors = NODES.filter((n) => !isSatellite(n) && n.mol);
+  const arrows = EDGES.filter((e) => !e.fx && !e.org && !e.cross && layout[e.source] && layout[e.target]);  // the pathway's own arrows
+  for (let pass = 0; pass < 8; pass++) {
+    let moved = false;
+    NODES.filter(isSatellite).forEach((s) => {
+      const [x0, y0] = layout[s.id], [w, h] = boxSize(s);
+      // arrows to keep clear of: those of the molecule this satellite sits next to (the nearest one)
+      const home = anchors.reduce((a, b) => (Math.hypot(layout[b.id][0] - x0, layout[b.id][1] - y0) < Math.hypot(layout[a.id][0] - x0, layout[a.id][1] - y0) ? b : a));
+      const segs = arrows.filter((e) => (e.source === home.id || e.target === home.id) && e.source !== s.id && e.target !== s.id).map((e) => [layout[e.source], layout[e.target]]);
+      const free = (x, y) => {
+        const b = boxAt(x, y, w, h, SEP_NODE / 2);
+        return ![...boxes].some(([id, o]) => id !== s.id && boxHit(o, b)) && !segs.some(([p, q]) => segHitsBox(p, q, boxAt(x, y, w, h, SEP_EDGE)));
+      };
+      if (free(x0, y0)) return;
+      for (let r = 8; r <= MAX_MOVE; r += 8) {
+        for (const a of SEARCH_DIRS) {
+          const x = Math.round(x0 + r * Math.cos((a * Math.PI) / 180)), y = Math.round(y0 + r * Math.sin((a * Math.PI) / 180));
+          if (!free(x, y)) continue;
+          layout[s.id] = [x, y]; boxes.set(s.id, boxAt(x, y, w, h, SEP_NODE / 2));
+          OVERLAP_MOVES.push([s.id, x - x0, y - y0]); moved = true;
+          return;
+        }
+      }
+      console.warn(`overlap pass: no free spot within ${MAX_MOVE}px for "${s.id}"`);
+    });
+    if (!moved) break;
+  }
+  const all = [...boxes];
+  for (let i = 0; i < all.length; i++) for (let j = i + 1; j < all.length; j++) {
+    if (boxHit(all[i][1], all[j][1])) console.warn(`overlap pass: "${all[i][0]}" and "${all[j][0]}" still overlap`);
+  }
+})();
+
 const initialNodes = NODES.map((n) => ({
   id: n.id,
   type: n.title ? "pathway" : n.rx || "compound",
@@ -2504,6 +2659,7 @@ const initialNodes = NODES.map((n) => ({
   data: { ...n, w: sizeOf(n).w, path: PATH_OF[n.id] || n.path, locs: LOC_OF[n.id], orgs: ORG_OF[n.id], seg: REN[n.id]?.[1] },
 }));
 
+const HOME_POS = new Map(initialNodes.map((n) => [n.id, n.position])); // where every element starts, for the P (reset positions) button
 const handles = (e) => {
   if (!e.auto) return [e.sh || "b", e.th || "t"];
   const [sx, sy] = layout[e.source], [tx, ty] = layout[e.target], dx = tx - sx, dy = ty - sy;
@@ -2533,6 +2689,21 @@ function CompoundNode({ data, selected }) {
     <Handle key={id} id={id} type="source" position={[Position.Top, Position.Left, Position.Right, Position.Bottom][i]} style={handleStyle} />
   ));
   if (data.kind === "cofactor") {
+    const parts = chipParts(data.label);
+    if (parts.some((p) => p.mol || p.tile)) return (
+      <div className={cls} style={{ "--accent": k.color, width: "max-content" }} title="Click a structure to see what it is">
+        {handles}
+        <div className="omino-chip">
+          {parts.map((p, i) => (p.mol || p.tile)
+            ? <span key={i} className="omino-chipmol" role="button" tabIndex={0} onClick={(e) => { e.stopPropagation(); open(p.to[0], p.to[1]); }}
+                onKeyDown={(e) => { if (e.key === "Enter") { e.stopPropagation(); open(p.to[0], p.to[1]); } }}>
+                {p.mol ? <Skeletal mol={MOLS[p.mol]} canvas hit={false} /> : <AtomTile glyph={p.tile} color={KIND.ion.color} />}
+                <span className="omino-chipmol__cap">{p.t}</span>
+              </span>
+            : <span key={i} className="omino-chip__txt">{p.t}</span>)}
+        </div>
+      </div>
+    );
     const toks = cofTokens(data.label);
     return (
       <div className={cls} style={{ "--accent": k.color, width: "max-content" }} title={toks.some((t) => t.to) ? "Click a name to see what it is and its structure" : data.note}>
@@ -2548,10 +2719,10 @@ function CompoundNode({ data, selected }) {
   }
   const drawing = DRAWINGS[data.id];
   return (
-    <div className={cls} style={{ "--accent": k.color, width: NODE_W }} title={data.note}>
+    <div className={cls} style={{ "--accent": k.color, width: data.w }} title={data.note}>
       {handles}
       <div className="omino-node__art">
-        {drawing ? <img src={drawing.src} alt={data.label} draggable={false} /> : data.mol ? <Skeletal mol={MOLS[data.mol]} /> : <AtomTile glyph={data.glyph} color={k.color} />}
+        {drawing ? <img src={drawing.src} alt={data.label} draggable={false} /> : data.mol ? <Skeletal mol={MOLS[data.mol]} canvas /> : <AtomTile glyph={data.glyph} color={k.color} />}
       </div>
       <div className="omino-node__name">{data.label}</div>
       {data.kind !== "molecule" && <div className="omino-node__formula">{data.formula}</div>}
@@ -2561,24 +2732,68 @@ function CompoundNode({ data, selected }) {
   );
 }
 
+// What a line means, in words (used by the follower card)
+function edgeHow(e) {
+  const d = e.data || {}, fxd = d.fx && FX[d.fx];
+  return {
+    how: d.main ? `Enzymatic step${d.label ? " · " + d.label : ""}` : fxd ? fxd.label : d.fx === "organ" ? "Organ link" : d.fx === "tether" ? "Drug action on this step" : "Cofactor / side link",
+    detail: d.fx ? RX_EFFECTS.find((x) => `rx_${x.drug}_${x.target}` === e.id)?.detail : "",
+    color: d.main ? d.color : d.fxColor || "#A1A1AA",
+  };
+}
+
 function OminoEdge({ id, sourceX, sourceY, targetX, targetY, sourcePosition, targetPosition, markerEnd, style, data }) {
   const open = React.useContext(OpenCtx);
   const args = { sourceX, sourceY, sourcePosition, targetX, targetY, targetPosition };
   const [path, lx, ly] = data.main ? getSmoothStepPath({ ...args, borderRadius: 12 }) : getBezierPath(args);
   const mEnd = data.fx === "inhibit" ? "url(#omino-bar)" : markerEnd; // flat-headed bar for inhibition
+  const color = data.main ? data.color : data.fxColor || "#A1A1AA";
   return (
     <>
-      <BaseEdge id={id} path={path} markerEnd={mEnd} style={style} />
-      {data.label && !data.hideLabel && <EdgeLabelRenderer>
+      <BaseEdge id={id} path={path} markerEnd={mEnd} style={style} interactionWidth={34} />
+      {data.label && (!data.hideLabel || data.active) && <EdgeLabelRenderer>
         <div
-          className={`omino-edge-label nodrag nopan ${data.main ? "is-main is-link" : ""} ${data.fx ? "is-fx" : ""}`}
+          className={`omino-edge-label nodrag nopan ${data.main ? "is-main is-link" : ""} ${data.fx ? "is-fx" : ""} ${data.active ? "is-active" : ""}`}
           onClick={() => data.main && open("enz", data.label)}
-          style={{ transform: `translate(-50%, -50%) translate(${lx}px, ${ly}px)`, opacity: data.faded ? 0.15 : 1, color: data.main ? data.color : data.fxColor }}
+          style={{ transform: `translate(-50%, -50%) translate(${lx}px, ${ly}px)`, opacity: data.faded ? 0.15 : 1, color }}
         >
           {data.label}
         </div>
       </EdgeLabelRenderer>}
     </>
+  );
+}
+
+// Hovers just above the object the person is "standing on" and follows it as the view moves. Back / Follow hop along the lines in or out of it.
+function FollowCard({ at, inE, outE, nIn, nOut, iIn, iOut, onBack, onFollow, onCycleIn, onCycleOut, onClose, open }) {
+  const [tx, ty, zoom] = useStore((s) => s.transform);
+  const node = useStore((s) => s.nodeInternals.get(at));
+  if (!node || !node.width) return null;
+  const pa = node.positionAbsolute || node.position;
+  const sx = pa.x * zoom + tx, sy = (pa.y - node.height / 2) * zoom + ty;
+  const o = outE && edgeHow(outE), i = inE && edgeHow(inE), c = (o || i || {}).color || "#A1A1AA";
+  const side = (e, n, k, dir, go, cyc) => (
+    <div className="omino-follow__side">
+      <button className="omino-follow__arrow" disabled={!e} onClick={go} aria-label={dir === "in" ? "Back" : "Follow"} title={e ? `${dir === "in" ? "Back" : "Follow"}: centre on ${nm(dir === "in" ? e.source : e.target)}` : dir === "in" ? "Nothing leads into this" : "This leads nowhere further"}>
+        {dir === "in" && <Icon d={ICON.chevL} size={18} />}<span>{dir === "in" ? "Back" : "Follow"}</span>{dir === "out" && <Icon d={ICON.chevR} size={18} />}
+      </button>
+      <small>{e ? nm(dir === "in" ? e.source : e.target) : "—"}</small>
+      {n > 1 && <button className="omino-follow__cyc" onClick={cyc} title="Switch to another connection">{k + 1}/{n}</button>}
+    </div>
+  );
+  return (
+    <div className="omino-follow nodrag nopan nowheel" style={{ left: sx, top: sy, "--c": c }}>
+      <button className="omino-follow__x" onClick={onClose} aria-label="Dismiss" title="Dismiss">×</button>
+      <div className="omino-follow__name">{nm(at)}</div>
+      <div className="omino-follow__row">
+        {side(inE, nIn, iIn, "in", onBack, onCycleIn)}
+        <div className="omino-follow__mid">
+          {o ? <><div className="omino-follow__how" style={{ color: o.color }}>{o.how}</div>{o.detail && <div className="omino-follow__detail">{o.detail}</div>}</> : <div className="omino-follow__detail">End of the line</div>}
+          {outE?.data.main && outE.data.label && <button className="omino-edgecard__enz" onClick={() => open("enz", outE.data.label)}>Open enzyme card</button>}
+        </div>
+        {side(outE, nOut, iOut, "out", onFollow, onCycleOut)}
+      </div>
+    </div>
   );
 }
 
@@ -2615,7 +2830,7 @@ function RxNode({ data, selected }) {
     <div className={cls} style={{ "--accent": k.color, width: data.w }} title={data.note}>
       {hs}
       <div className="omino-rx__tag"><Icon d={RX_GLYPH[data.kind]} size={13} />{k.label}</div>
-      {m && <div className="omino-rx__art"><Skeletal mol={m} /></div>}
+      {m && <div className="omino-rx__art"><Skeletal mol={m} canvas /></div>}
       <div className="omino-rx__name">{data.label}</div>
       {data.formula && <div className="omino-rx__sub">{data.formula}</div>}
       {data.shown && <div className="omino-rx__shown">Structure shown: {data.shown}</div>}
@@ -2660,6 +2875,7 @@ const ICON = {
   fit: "M3 9h6V3M21 9h-6V3M3 15h6v6M21 15h-6v6",
   lock: "M5 11h14v10H5zM8 11V7a4 4 0 0 1 8 0v4",
   download: "M12 3v12m0 0l-4-4m4 4l4-4M4 19h16",
+  reset: "M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8M3 3v5h5",
   table: "M3 5h18v14H3zM3 10h18M3 14.5h18M9 5v14M15 5v14",
   close: "M6 6l12 12M18 6L6 18",
   settings: "M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33h0a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51h0a1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82v0a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z",
@@ -2868,12 +3084,14 @@ function Bohr({ el, size = 210 }) {
     <svg viewBox={`0 0 ${size} ${size}`} width={size} height={size} role="img" aria-label={`Bohr model of ${el.name}: ${el.shells.join(", ")} electrons per shell`}>
       {[0, 1, 2, 3, 4, 5, 6].map((i) => <circle key={i} cx={c} cy={c} r={r(i)} fill="none" stroke={i < el.shells.length ? "#A1A1AA" : "#34343a"} strokeWidth="1.4" />)}
       <circle cx={c} cy={c} r="4" fill={CHALK} />
-      {el.shells.flatMap((n, i) =>
-        Array.from({ length: n }, (_, j) => {
-          const [x, y] = ang(c, c, r(i), -90 + (360 * j) / n + i * 23);
-          return <circle key={`${i}-${j}`} cx={x} cy={y} r="3.2" fill={CHALK} />;
-        })
-      )}
+      {el.shells.map((n, i) => ( // each shell is its own group turning counterclockwise about the nucleus: inner shells faster
+        <g key={i} className="omino-orbit" style={{ "--dur": `${7 + i * 4}s`, animationDirection: "reverse" }}>
+          {Array.from({ length: n }, (_, j) => {
+            const [x, y] = ang(c, c, r(i), -90 + (360 * j) / n + i * 23);
+            return <circle key={j} cx={x} cy={y} r="3.2" fill={CHALK} />;
+          })}
+        </g>
+      ))}
     </svg>
   );
 }
@@ -2895,29 +3113,22 @@ function Footnote() {
   );
 }
 
-function PeriodicTable({ q, setQ, sel, onPick, onClose, width }) {
+function PeriodicTable({ q, sel, onPick, onClose, width }) { // q comes from the main search bar: matching elements stay lit, the rest dim
   const [rxOnly, setRxOnly] = useState(false); // highlight the elements added for drugs and imaging
   const hit = (e) => (!q || [e.sym, e.name, e.z, CATS[e.cat][0], ROLES[e.role][0], e.note, e.rx, e.tox].join(" ").toLowerCase().includes(q)) && (!rxOnly || e.role === "drug");
   return (
     <section className="omino-ptable" style={{ width }} aria-label="Periodic table">
       <div className="omino-ptable__bar">
-        <div className="omino-ptable__search">
-          <Icon d={ICON.search} size={18} />
-          <input
-            type="search" value={q} placeholder="Search elements, roles, drugs, toxicity" aria-label="Search elements" autoFocus
-            onChange={(e) => setQ(e.target.value)}
-            onKeyDown={(e) => { if (e.key === "Enter") { const f = ELEMENTS.find(hit); if (f) onPick(f); } }}
-          />
-        </div>
         <button className="omino-tool omino-tool--sm" onClick={onClose} aria-label="Close periodic table" title="Close"><Icon d={ICON.close} size={18} /></button>
       </div>
+      <div className="omino-ptable__body">
       <div className="omino-ptable__grid">
         <div className="omino-cell omino-cell--ph" style={{ gridColumn: 3, gridRow: 6 }} aria-hidden="true">57–71</div>
         <span className="omino-ptable__flabel" style={{ gridColumn: "1 / 3", gridRow: 9 }}>Lanthanides</span>
         {ELEMENTS.map((e) => (
           <button key={e.sym} className={`omino-cell ${sel === e.sym ? "is-sel" : ""} ${hit(e) ? "" : "is-dim"}`}
             style={{ gridColumn: e.gc, gridRow: e.gr, "--c": CATS[e.cat][1] }} onClick={() => onPick(e)} title={`${e.name} (${e.z})`} aria-label={`${e.name}, atomic number ${e.z}`}>
-            <small>{e.z}</small><b>{e.sym}</b>{e.role === "drug" && <i className="omino-cell__rx" aria-hidden="true" />}
+            <small>{e.z}</small><b>{e.sym}</b><i className="omino-cell__cat" aria-hidden="true" />{e.role === "drug" && <i className="omino-cell__rx" aria-hidden="true" />}
           </button>
         ))}
       </div>
@@ -2926,6 +3137,7 @@ function PeriodicTable({ q, setQ, sel, onPick, onClose, width }) {
         <button className={`omino-ptable__rx ${rxOnly ? "is-on" : ""}`} style={{ "--c": RX_COLOR }} aria-pressed={rxOnly} onClick={() => setRxOnly((v) => !v)} title="Elements that are here because of drugs and imaging agents">
           <i />Drug / imaging elements
         </button>
+      </div>
       </div>
       <Footnote />
     </section>
@@ -3091,17 +3303,6 @@ sp("h2o2", "Hydrogen peroxide", "H2O2", "Reactive oxygen species", "Two OH group
 sp("hplus", "Proton (H⁺)", "H+", "Acid", "A bare hydrogen nucleus. Inserting Fe²⁺ into protoporphyrin IX (ferrochelatase) displaces the two N–H protons, so two H⁺ are released. Proton gradients across the mitochondrial membrane are what ATP synthase runs on.",
   "Protoporphyrin IX + Fe²⁺ → heme + 2 H⁺", ["h2o", "nadh"]);
 
-// the names that can appear in a co-substrate label, and where clicking each one goes
-const TOK = [
-  ["UDP-glucuronate", ["mol", "udpglcA"]], ["NADPH", ["mol", "nadph"]], ["NADH", ["mol", "nadh"]], ["NAD⁺", ["mol", "nad"]],
-  ["FADH₂", ["mol", "fadh2"]], ["ATP", ["mol", "atp"]], ["ADP", ["mol", "adp"]], ["AMP", ["mol", "amp"]], ["GTP", ["mol", "gtp"]],
-  ["UTP", ["mol", "utp"]], ["UDP", ["mol", "udp"]], ["CoA", ["mol", "coa"]], ["PPᵢ", ["mol", "ppi"]], ["Pᵢ", ["mol", "pi"]],
-  ["H₂O₂", ["mol", "h2o2"]], ["H₂O", ["mol", "h2o"]], ["CO₂", ["mol", "co2"]], ["CO", ["mol", "co"]], ["NH₃", ["mol", "nh3"]],
-  ["O₂", ["mol", "o2"]], ["H⁺", ["mol", "hplus"]], ["Fe²⁺", ["el", "Fe"]], ["NADP⁺", ["mol", "nadp"]], ["vitamin D", ["target", "t_vd"]],
-];
-const TOKMAP = Object.fromEntries(TOK);
-const TOK_RE = new RegExp("(" + TOK.map((t) => t[0]).sort((a, b) => b.length - a.length).join("|") + ")");
-const cofTokens = (label) => label.split(TOK_RE).filter(Boolean).map((t) => (TOKMAP[t] ? { t, to: TOKMAP[t] } : { t }));
 
 const EXPLAIN = {
   ...AA_NOTE,
@@ -3173,15 +3374,19 @@ Object.assign(ENZN, {
 });
 const Pill = ({ children, onClick, c }) => <button className="omino-pill" style={{ "--c": c || "#A1A1AA" }} onClick={onClick}>{children}</button>;
 const Sec = ({ t, children }) => <section className="omino-ecard__sec"><h4>{t}</h4>{children}</section>;
-function CardShell({ c, sub, title, tags, onClose, onBack, label, children }) {
+function CardShell({ c, sub, title, tags, onClose, onBack, nav, label, children }) {
   return (
-    <aside className="omino-ecard" style={{ "--c": c }} aria-label={label}>
+    <aside className={`omino-ecard ${nav ? "omino-ecard--nav" : ""}`} style={{ "--c": c }} aria-label={label}>
       <header>
         <div><div className="omino-ecard__name">{sub}</div><div className="omino-ecard__title">{title}</div></div>
         <div className="omino-ecard__btns">
           {onBack && <button className="omino-tool omino-tool--sm" onClick={onBack} aria-label="Back" title="Back"><Icon d={ICON.chevL} size={18} /></button>}
           <button className="omino-tool omino-tool--sm" onClick={onClose} aria-label="Close card" title="Close"><Icon d={ICON.close} size={18} /></button>
         </div>
+        {nav && <div className="omino-ecard__nav">
+          <button className="omino-tool omino-tool--sm" disabled={!nav.canPrev} onClick={nav.onPrev} aria-label="Previous object on the canvas" title="Back: previous connected object"><Icon d={ICON.chevL} size={18} /></button>
+          <button className="omino-tool omino-tool--sm" disabled={!nav.canNext} onClick={nav.onNext} aria-label="Next object on the canvas" title="Follow: next connected object"><Icon d={ICON.chevR} size={18} /></button>
+        </div>}
       </header>
       {tags && <div className="omino-ecard__tags">{tags}</div>}
       {children}
@@ -3504,8 +3709,8 @@ function OrganCard({ id, open, fit, shell }) {
     </CardShell>
   );
 }
-function InfoCard({ cur, open, swap, fit, onBack, onClose }) {
-  const shell = { onBack, onClose };
+function InfoCard({ cur, open, swap, fit, onBack, onClose, nav }) {
+  const shell = { onBack, onClose, nav };
   if (cur.t === "drug") return <DrugCard key={cur.id} id={cur.id} open={open} fit={fit} shell={shell} />;
   if (cur.t === "target") return <TargetCard key={cur.id} id={cur.id} open={open} fit={fit} shell={shell} />;
   if (cur.t === "mol") return <MolCard key={cur.id} id={cur.id} open={open} fit={fit} shell={shell} />;
@@ -3661,14 +3866,18 @@ function AtlasSearch({ q, setQ, scope, setScope, res, on, matchLine, onClear, on
 }
 
 function Atlas() {
-  const [nodes, , onNodesChange] = useNodesState(initialNodes);
+  const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
+  const resetPositions = () => setNodes((ns) => ns.map((n) => { const o = HOME_POS.get(n.id); return o && (n.position.x !== o.x || n.position.y !== o.y) ? { ...n, position: { x: o.x, y: o.y } } : n; })); // P: moved elements go back to where the layout put them
   const [edges, , onEdgesChange] = useEdgesState(initialEdges);
+  const [hoverEdge, setHoverEdge] = useState(null); // line under the pointer
+  const hopped = useRef(false); // set when Back / Follow swaps the card, so the card-open recentring does not fire twice
+  const [track, setTrack] = useState(null); // follower: { at: object id, inn: incoming line id, out: outgoing line id }
   const [query, setQuery] = useState("");
   const [hideG, setHideG] = useState(false); // G: enzymes (edge labels)
   const [hideS, setHideS] = useState(false); // S: substrates / co-substrates
   const [focus, setFocus] = useState(null); // highlighted pathway
   const [scrollPans, setScrollPans] = useState(false); // scroll wheel / trackpad: zoom (default) or pan
-  const { fitView, zoomIn, zoomOut, getViewport, setViewport } = useReactFlow();
+  const { fitView, zoomIn, zoomOut, getViewport, setViewport, getNode, setCenter, getZoom, screenToFlowPosition } = useReactFlow();
   const [zoomLock, setZoomLock] = useState(false); // keeps the camera still while the location / organ / pathway chips are switched
   const lockTimer = useRef(null), lockFired = useRef(false);
   const chipFit = (opts) => { if (!zoomLock) fitView(opts); };
@@ -3678,6 +3887,7 @@ function Atlas() {
   const [showPaths, setShowPaths] = useState(true); // pathway chip bar
   const [showRx, setShowRx] = useState(true); // pharmacology layer (drugs, targets, effect lines)
   const [showKey, setShowKey] = useState(true); // legend for the pharmacology lines, toggled separately from the layer
+  const [showChips, setShowChips] = useState(true); // the filter chip rows along the bottom (collapsible from the left column)
   const [showLoc, setShowLoc] = useState(true); // cellular-location tags and filter chips
   const [showOrgans, setShowOrgans] = useState(true); // organ hubs (part of the pharmacology layer)
   const [locFocus, setLocFocus] = useState(null);
@@ -3711,7 +3921,6 @@ function Atlas() {
     document.addEventListener("keydown", esc);
     return () => { document.removeEventListener("mousedown", away); document.removeEventListener("keydown", esc); };
   }, [stOpen]);
-  const [elQ, setElQ] = useState("");
   const [stack, setStack] = useState([]); // explanation cards, newest last: { t: "el" | "mol" | "bond" | "enz" | "path", id }
   const cur = stack[stack.length - 1];
   const open = useCallback((t, id) => setStack((s) => (s.length && s[s.length - 1].t === t && s[s.length - 1].id === id ? s : [...s, { t, id }].slice(-30))), []);
@@ -3830,7 +4039,7 @@ function Atlas() {
           (matchIds && !edgeHits.has(e.id) && !(matchIds.has(e.source) && matchIds.has(e.target))) || (focus && e.data.path !== focus) || (locFocus && !(hasLoc(e.source, locFocus) && hasLoc(e.target, locFocus))) || (organFocus && !(ORGAN_SET[organFocus].has(e.source) && ORGAN_SET[organFocus].has(e.target)));
         const main = e.data.main;
         const color = PATHWAYS[e.data.path]?.color || "#FFFFFF";
-        const stroke = main ? color : "#59626e";
+        const stroke = main ? color : "#7b8594";
         const fx = e.data.fx;
         if (fx) { // pharmacology lines: red dashed + flat head | green dashed | blue solid | grey dotted tether
           const fxc = fx === "tether" ? "#59626e" : fx === "organ" ? ORGANS[e.data.org].color : FX[fx].color;
@@ -3847,12 +4056,110 @@ function Atlas() {
           ...e,
           animated: false,
           markerEnd: { type: MarkerType.ArrowClosed, color: stroke, width: 16, height: 16 },
-          style: { stroke, strokeWidth: main ? 2.2 : 1.2, strokeDasharray: main ? undefined : "5 5", opacity: faded ? 0.12 : 1 },
+          style: { stroke, strokeWidth: main ? 2.4 : 1.7, strokeDasharray: main ? undefined : "5 5", opacity: faded ? 0.12 : 1 },
           data: { ...e.data, faded, color, hideLabel: hideG },
         };
       }),
     [edges, matchIds, edgeHits, focus, hideG, showRx, showOrgans, locFocus, organFocus]
   );
+
+  // Hovered or clicked line: lift it above the rest and light up the two things it joins, wherever they are on the canvas.
+  const picked = track ? [track.inn, track.out].filter(Boolean) : [];
+  const activeEdge = hoverEdge || (track ? picked[0] : null);
+  const edgesOut = useMemo(() => (hoverEdge || picked.length)
+    ? shownEdges.map((e) => (e.id === hoverEdge || picked.includes(e.id))
+      ? { ...e, className: e.id === hoverEdge ? "is-active" : "is-picked", zIndex: 1000, data: { ...e.data, active: true } }
+      : e)
+    : shownEdges, [shownEdges, hoverEdge, track]); // eslint-disable-line react-hooks/exhaustive-deps
+  const nodesOut = useMemo(() => {
+    const ae = hoverEdge && shownEdges.find((e) => e.id === hoverEdge);
+    if (!ae && !track) return shownNodes;
+    return shownNodes.map((n) => (ae && (n.id === ae.source || n.id === ae.target)) || (track && n.id === track.at) ? { ...n, className: "is-end" } : n);
+  }, [shownNodes, shownEdges, hoverEdge, track]);
+
+  // Neighbours of every visible object, main enzymatic steps first
+  const edgeById = useMemo(() => Object.fromEntries(shownEdges.map((e) => [e.id, e])), [shownEdges]);
+  const adj = useMemo(() => {
+    const hid = new Set(shownNodes.filter((n) => n.hidden).map((n) => n.id)), out = {}, inn = {};
+    shownEdges.forEach((e) => { if (e.hidden || hid.has(e.source) || hid.has(e.target)) return; (out[e.source] = out[e.source] || []).push(e); (inn[e.target] = inn[e.target] || []).push(e); });
+    const rank = (e) => (e.data.main ? 0 : e.data.fx ? 2 : 1);
+    [out, inn].forEach((m) => Object.values(m).forEach((l) => l.sort((x, y) => rank(x) - rank(y))));
+    return { out, inn };
+  }, [shownEdges, shownNodes]);
+  // Bring an object to a comfortable, readable view: zoom held between 0.7x and 1.5x, and the object sat a little below centre so the card above it is centred too
+  // With a description card open on the right, aim for the middle of the canvas that is still visible (only when that leaves a workable width)
+  const cardSpace = () => {
+    const c = document.querySelector(".omino-ecard"), v = document.querySelector(".omino-canvas");
+    if (!c || !v) return 0;
+    const w = c.offsetWidth + 28;
+    return v.clientWidth - w >= 420 ? w : 0;
+  };
+  const flyTo = (nid) => { const n = getNode(nid); if (!n) return; const z = Math.min(Math.max(getZoom(), 0.7), 1.5); setCenter(n.position.x + cardSpace() / 2 / z, n.position.y - 70 / z, { zoom: z, duration: 700 }); };
+  const pickEdge = (ev, e) => { // stand on whichever end of the clicked line is nearer the click
+    if (track && (track.out === e.id || track.inn === e.id)) { setTrack(null); return; }
+    const pt = screenToFlowPosition({ x: ev.clientX, y: ev.clientY }), a = getNode(e.source), b = getNode(e.target);
+    if (!a || !b) return;
+    const atSource = Math.hypot(a.position.x - pt.x, a.position.y - pt.y) <= Math.hypot(b.position.x - pt.x, b.position.y - pt.y);
+    const at = atSource ? e.source : e.target;
+    setTrack(atSource ? { at, out: e.id, inn: adj.inn[at]?.[0]?.id || null } : { at, inn: e.id, out: adj.out[at]?.[0]?.id || null });
+    // a long line, or a zoomed-out map, makes the card hard to read: fly in to it
+    if (Math.hypot(a.position.x - b.position.x, a.position.y - b.position.y) * getZoom() > 320 || getZoom() < 0.7) flyTo(at);
+  };
+  const hop = (e, dir) => { // move to the far end of line e, then line up its onward and return lines
+    if (!e) return;
+    const at = dir === "out" ? e.target : e.source, outs = adj.out[at] || [], ins = adj.inn[at] || [];
+    setTrack(dir === "out"
+      ? { at, inn: e.id, out: (outs.find((x) => x.target !== e.source) || outs[0])?.id || null }
+      : { at, out: e.id, inn: (ins.find((x) => x.source !== e.target) || ins[0])?.id || null });
+    flyTo(at);
+    syncCard(at);
+  };
+  // The open description card follows the canvas: hopping to an object swaps the card to it
+  const NODE_CARDS = ["mol", "drug", "target", "organ"];
+  const cardNode = cur && NODE_CARDS.includes(cur.t) ? cur.id : null;
+  const syncCard = (id) => {
+    if (!cardNode) return;
+    const d = nodes.find((x) => x.id === id)?.data, t = d?.mol ? "mol" : d?.rx;
+    if (t && NODE_CARDS.includes(t) && !(cur.t === t && cur.id === id)) { hopped.current = true; swap(t, id); }
+  };
+  // A card opened from the canvas, search or a link: slide that object into the middle of the free canvas beside it
+  useEffect(() => {
+    if (hopped.current) { hopped.current = false; return; } // a Back / Follow hop already flew there
+    if (!cur) return;
+    const nid = NODE_CARDS.includes(cur.t) ? cur.id : cur.t === "el" ? EL_NODE[cur.id] : null, n = nid && getNode(nid), sp = n ? cardSpace() : 0;
+    if (!n || !sp || n.hidden) return;
+    const z = getZoom();
+    setCenter(n.position.x + sp / 2 / z, n.position.y - (track && track.at === nid ? 70 / z : 0), { zoom: z, duration: 600 });
+  }, [cur?.t, cur?.id]); // eslint-disable-line react-hooks/exhaustive-deps
+  // Card dismissed: ease the object back to the true centre of the canvas (skipped if the person has since panned it out of view)
+  const lastCardNode = useRef(null);
+  useEffect(() => {
+    const nid = cur ? (NODE_CARDS.includes(cur.t) ? cur.id : cur.t === "el" ? EL_NODE[cur.id] : null) : null;
+    if (cur) { if (nid) lastCardNode.current = nid; return; }
+    const last = lastCardNode.current;
+    lastCardNode.current = null;
+    const n = last && getNode(last), v = document.querySelector(".omino-canvas");
+    if (!n || n.hidden || !v) return;
+    const { x, y, zoom } = getViewport(), sx = n.position.x * zoom + x, sy = n.position.y * zoom + y;
+    if (sx < 0 || sy < 0 || sx > v.clientWidth || sy > v.clientHeight) return;
+    setCenter(n.position.x, n.position.y - (track && track.at === last ? 70 / zoom : 0), { zoom, duration: 500 });
+  }, [cur]); // eslint-disable-line react-hooks/exhaustive-deps
+  const canStep = (dir) => !!cardNode && ((dir === "out" ? adj.out : adj.inn)[cardNode] || []).length > 0;
+  const stepCard = (dir) => { // the card's < > arrows: hop from the object the card is showing
+    if (!cardNode) return;
+    const list = (dir === "out" ? adj.out : adj.inn)[cardNode] || [], key = dir === "out" ? "out" : "inn";
+    hop(track && track.at === cardNode ? edgeById[track[key]] || list[0] : list[0], dir);
+  };
+  const cycle = (side) => setTrack((t) => {
+    const list = (side === "out" ? adj.out : adj.inn)[t.at] || [], i = list.findIndex((x) => x.id === t[side === "out" ? "out" : "inn"]);
+    return list.length ? { ...t, [side === "out" ? "out" : "inn"]: list[(i + 1) % list.length].id } : t;
+  });
+  useEffect(() => {
+    if (!track) return undefined;
+    const k = (ev) => { if (ev.key === "Escape") setTrack(null); };
+    window.addEventListener("keydown", k);
+    return () => window.removeEventListener("keydown", k);
+  }, [track]);
 
   const focusMatches = useCallback(() => {
     if (!matchIds || matchIds.size === 0) return;
@@ -3959,16 +4266,16 @@ function Atlas() {
     window.addEventListener("mouseup", up);
   };
 
-  const download = () => {
-    const data = {
-      nodes: compounds.map((n) => ({ id: n.id, name: n.data.label, formula: n.data.formula, pathway: n.data.path || null, locations: n.data.locs || null, organs: n.data.orgs || null, x: Math.round(n.position.x), y: Math.round(n.position.y) })),
-      edges: edges.map((e) => ({ source: e.source, target: e.target, enzyme: e.data.fx ? null : e.data.label || null, effect: e.data.fx || null })),
-    };
-    const a = document.createElement("a");
-    a.href = URL.createObjectURL(new Blob([JSON.stringify(data, null, 2)], { type: "application/json" }));
-    a.download = "omino-atlas.json";
-    a.click();
-    URL.revokeObjectURL(a.href);
+  useEffect(() => { // phones can discard a backgrounded page: write the view as it goes out of sight
+    const keep = () => saveView(getViewport());
+    const vis = () => { if (document.visibilityState === "hidden") keep(); };
+    document.addEventListener("visibilitychange", vis); window.addEventListener("pagehide", keep);
+    return () => { document.removeEventListener("visibilitychange", vis); window.removeEventListener("pagehide", keep); };
+  }, [getViewport]);
+
+  const resetSettings = () => { // every switch and choice in the settings panel back to how Omino first opens
+    setHideG(false); setHideS(false); setShowRx(true); setShowKey(true); setShowLoc(true); setShowOrgans(true);
+    setShowPaths(true); setShowMini(true); setScrollPans(false);
   };
 
   return (
@@ -3977,7 +4284,7 @@ function Atlas() {
       <style>{CSS}</style>
       <div className="omino-top">
         <header className={`omino-header ${wide ? "is-wide" : ""}`}>
-          <button className="omino-wordmark" onClick={() => { setQuery(""); setFocus(null); setLocFocus(null); setOrganFocus(null); setStack([]); setSearchOpen(false); fitView({ padding: 0.15, duration: 600 }); }} aria-label="Home" title="Home">OMINO</button>
+          <button className="omino-wordmark" onClick={() => { setQuery(""); setFocus(null); setLocFocus(null); setOrganFocus(null); setStack([]); setSearchOpen(false); setViewport(homeViewport(), { duration: 600 }); }} aria-label="Home" title="Home">OMINO</button>
           {wide && <AtlasSearch {...searchProps} wide />}
           <div className="omino-hdr-right">
           {!wide && (
@@ -4013,7 +4320,7 @@ function Atlas() {
                   <button className={scrollPans ? "is-on" : ""} onClick={() => setScrollPans(true)}>Pan</button>
                 </div>
               </div>
-              <button className="omino-settings__export" onClick={download}><Icon d={ICON.download} size={18} />Export atlas data (JSON)</button>
+              <button className="omino-settings__export" onClick={resetSettings}><Icon d={ICON.reset} size={18} />Default Settings</button>
             </div>
           )}
         </div>
@@ -4027,10 +4334,14 @@ function Atlas() {
       <svg width="0" height="0" style={{ position: "absolute" }} aria-hidden="true"><defs>
         <marker id="omino-bar" viewBox="0 0 12 24" refX="9" refY="12" markerWidth="12" markerHeight="24" markerUnits="userSpaceOnUse" orient="auto"><path d="M6 2V22" stroke="#ff5d5d" strokeWidth="3" strokeLinecap="round" /></marker>
       </defs></svg>
-      <div className="omino-canvas" onMouseDownCapture={startZoomDrag} onContextMenu={(e) => e.preventDefault()}>
+      <div className={`omino-canvas ${hoverEdge || track ? "has-edge" : ""}`} onMouseDownCapture={startZoomDrag} onContextMenu={(e) => e.preventDefault()}>
         <ReactFlow
-          nodes={shownNodes}
-          edges={shownEdges}
+          nodes={nodesOut}
+          edges={edgesOut}
+          onEdgeMouseEnter={(_, e) => setHoverEdge(e.id)}
+          onEdgeMouseLeave={() => setHoverEdge(null)}
+          onEdgeClick={pickEdge}
+          onPaneClick={() => setTrack(null)}
           onNodesChange={onNodesChange}
           onEdgesChange={onEdgesChange}
           onNodeClick={(_, n) => {
@@ -4045,11 +4356,10 @@ function Atlas() {
           nodeOrigin={[0.5, 0.5]}
           connectionMode="loose"
           colorMode="dark"
+          onMoveEnd={(_, v) => saveView(v)}
           onInit={(inst) => {
             // Opening view: centred on the TCA ring at a readable zoom (the Fit button and Home still fit the whole map).
-            const el = document.querySelector(".omino-canvas"), cw = el ? el.clientWidth : window.innerWidth, ch = el ? el.clientHeight : window.innerHeight;
-            const zoom = Math.min(0.8, Math.max(0.3, Math.min(cw / 2300, ch / 1900)));
-            inst.setViewport({ x: cw / 2 - RING.cx * zoom, y: ch / 2 - RING.cy * zoom, zoom });
+            inst.setViewport(savedView() || homeViewport());
           }}
           panOnScroll={scrollPans}
           zoomOnScroll={!scrollPans}
@@ -4074,6 +4384,10 @@ function Atlas() {
                 onClick={(e) => { if (lockFired.current) { lockFired.current = false; return; } if (e.shiftKey) { setZoomLock((v) => !v); return; } zoomOut({ duration: 200 }); }}>
                 <Icon d={ICON.zoomOut} />{zoomLock && <i className="omino-tool__lock"><Icon d={ICON.lock} size={11} /></i>}
               </button>
+              <button className="omino-tool" onClick={resetPositions} aria-label="Reset moved elements to their original positions" title="Reset moved elements to their original positions">
+                <Icon d={ICON.reset} /><b>P</b>
+              </button>
+              <button className="omino-tool" onClick={() => fitView({ padding: 0.15, duration: 600 })} aria-label="Fit to screen" title="Fit to screen"><Icon d={ICON.fit} /></button>
               <button className={`omino-tool ${hideG ? "is-off" : ""}`} onClick={() => setHideG((v) => !v)} aria-pressed={hideG} aria-label="Toggle enzymes" title={hideG ? "Show enzymes" : "Hide enzymes"}>
                 <Icon d={hideG ? ICON.eyeOff : ICON.eye} /><b>G</b>
               </button>
@@ -4083,23 +4397,27 @@ function Atlas() {
               <button className={`omino-tool ${!showRx ? "is-off" : ""}`} onClick={toggleRx} aria-pressed={!showRx} aria-label="Toggle pharmacology layer" title={showRx ? "Hide pharmacology layer" : "Show pharmacology layer"}>
                 <Icon d={showRx ? ICON.eye : ICON.eyeOff} /><b>Rx</b>
               </button>
-              <button className={`omino-tool ${!showKey ? "is-off" : ""}`} onClick={() => setShowKey((v) => !v)} aria-pressed={!showKey} aria-label="Toggle pharmacology legend" title={showKey ? "Hide pharmacology legend" : "Show pharmacology legend"}>
-                <Icon d={showKey ? ICON.eye : ICON.eyeOff} /><b>L</b>
-              </button>
               <button className={`omino-tool ${!showLoc ? "is-off" : ""}`} onClick={toggleLoc} aria-pressed={!showLoc} aria-label="Toggle cellular locations" title={showLoc ? "Hide cellular locations" : "Show cellular locations"}>
                 <Icon d={showLoc ? ICON.eye : ICON.eyeOff} /><b>Loc</b>
               </button>
               <button className={`omino-tool ${!showOrgans ? "is-off" : ""}`} onClick={toggleOrgans} aria-pressed={!showOrgans} aria-label="Toggle organ hubs" title={showOrgans ? "Hide organ hubs" : "Show organ hubs"}>
                 <Icon d={showOrgans ? ICON.eye : ICON.eyeOff} /><b>Org</b>
               </button>
-              <button className="omino-tool" onClick={() => fitView({ padding: 0.15, duration: 600 })} aria-label="Fit to screen" title="Fit to screen"><Icon d={ICON.fit} /></button>
+              <button className={`omino-tool ${!showChips ? "is-off" : ""}`} onClick={() => setShowChips((v) => !v)} aria-pressed={!showChips} aria-label="Toggle filter chips" title={showChips ? "Collapse the filter chips at the bottom" : "Show the filter chips at the bottom"}>
+                <Icon d={showChips ? ICON.eye : ICON.eyeOff} /><b>Fil</b>
+              </button>
               <button className={`omino-tool ${scrollPans ? "is-off" : ""}`} onClick={() => setScrollPans((v) => !v)} aria-pressed={scrollPans} aria-label="Scroll behaviour" title={scrollPans ? "Scrolling pans (Ctrl/⌘ + scroll zooms). Click for scroll-to-zoom" : "Scrolling zooms. Click for scroll-to-pan"}>
                 <Icon d={scrollPans ? ICON.pan : ICON.zoomIn} />
               </button>
             </div>
           </Panel>
 
-          <Panel position="bottom-center"><div className="omino-chiprows">
+          {track && (() => {
+            const inE = edgeById[track.inn], outE = edgeById[track.out], ins = adj.inn[track.at] || [], outs = adj.out[track.at] || [];
+            return <FollowCard at={track.at} inE={inE} outE={outE} nIn={ins.length} nOut={outs.length} iIn={Math.max(0, ins.findIndex((x) => x.id === track.inn))} iOut={Math.max(0, outs.findIndex((x) => x.id === track.out))}
+              onBack={() => hop(inE, "in")} onFollow={() => hop(outE, "out")} onCycleIn={() => cycle("in")} onCycleOut={() => cycle("out")} onClose={() => setTrack(null)} open={open} />;
+          })()}
+          {showChips && <Panel position="bottom-center"><div className="omino-chiprows">
             {showLoc && <div className="omino-chips nowheel nopan" onWheel={chipWheel}>
               {Object.entries(LOCS).map(([id, l]) => <button key={id} className={`omino-chip omino-chip--loc ${locFocus === id ? "is-on" : ""}`} style={{ "--c": l.color }} onClick={() => selectLoc(id)} aria-pressed={locFocus === id}><i />{l.label}</button>)}
             </div>}
@@ -4114,13 +4432,14 @@ function Atlas() {
                 </button>
               ))}
             </div>}
-          </div></Panel>
+          </div></Panel>}
         </ReactFlow>
         {ptOpen && (
-          <PeriodicTable q={elQ.trim().toLowerCase()} setQ={setElQ} sel={cur?.t === "el" ? cur.id : null} onPick={(e) => (cur?.t === "el" ? swap("el", e.sym) : open("el", e.sym))} onClose={() => setPtOpen(false)}
+          <PeriodicTable q={query.trim().toLowerCase()} sel={cur?.t === "el" ? cur.id : null} onPick={(e) => (cur?.t === "el" ? swap("el", e.sym) : open("el", e.sym))} onClose={() => setPtOpen(false)}
             width={cur ? "min(1120px, calc(100% - 440px))" : "min(1120px, calc(100% - 96px))"} />
         )}
-        {cur && <InfoCard cur={cur} open={open} swap={swap} fit={fit} onBack={stack.length > 1 ? () => setStack((s) => s.slice(0, -1)) : null} onClose={() => setStack([])} />}
+        {cur && <InfoCard cur={cur} open={open} swap={swap} fit={fit} onBack={stack.length > 1 ? () => setStack((s) => s.slice(0, -1)) : null} onClose={() => setStack([])}
+          nav={cardNode ? { canPrev: canStep("in"), canNext: canStep("out"), onPrev: () => stepCard("in"), onNext: () => stepCard("out") } : null} />}
       </div>
 
 
@@ -4179,7 +4498,13 @@ const CSS = `
 .omino-node.is-dim { opacity: .16; }
 
 .omino-node__art { display: flex; justify-content: center; align-items: center; margin: 0 0 8px; }
-.omino-node__art svg, .omino-node__art img { display: block; max-width: 100%; max-height: 140px; width: auto; height: auto; }
+.omino-node__art svg { display: block; flex: none; } /* structures keep their true pixel size: no max-width / max-height / auto sizing */
+.omino-node__art img { display: block; max-width: 100%; max-height: 140px; width: auto; height: auto; }
+.omino-chip { display: flex; align-items: center; justify-content: center; gap: 8px; white-space: nowrap; color: var(--accent); }
+.omino-chip__txt { font-size: 15px; font-weight: 500; }
+.omino-chipmol { display: flex; flex-direction: column; align-items: center; gap: 2px; cursor: pointer; border-radius: 6px; }
+.omino-chipmol:hover, .omino-chipmol:focus-visible { background: rgba(255,255,255,.1); outline: none; }
+.omino-chipmol__cap { font-size: 11px; line-height: 14px; font-weight: 500; }
 .omino-node__name { font-size: 15px; font-weight: 400; line-height: 1.2; }
 .omino-node__formula { margin-top: 3px; font-size: 12px; color: var(--accent); }
 .omino-node__cofactor { font-size: 15px; font-weight: 500; color: var(--accent); white-space: nowrap; }
@@ -4265,7 +4590,7 @@ const CSS = `
   background: #121212; border: 1px solid #27272A; border-radius: 14px; box-shadow: 0 12px 40px rgba(0,0,0,.5);
 }
 .omino-ptable { top: 12px; left: 76px; padding: 12px; }
-.omino-ptable__bar { display: flex; gap: 8px; align-items: center; margin-bottom: 10px; }
+.omino-ptable__bar { display: flex; gap: 8px; align-items: center; justify-content: flex-end; margin-bottom: 10px; }
 .omino-ptable__search { position: relative; flex: 1; }
 .omino-ptable__search > svg { position: absolute; left: 12px; top: 10px; color: #A1A1AA; pointer-events: none; }
 .omino-ptable__search input {
@@ -4275,7 +4600,8 @@ const CSS = `
 .omino-ptable__search input:focus-visible { border-color: #38bdf8; box-shadow: 0 0 0 3px rgba(56,189,248,.25); }
 .omino-tool--sm { width: 38px; height: 38px; flex: none; }
 .omino-ptable__grid { display: grid; grid-template-columns: repeat(18, minmax(30px, 1fr)); grid-template-rows: repeat(7, clamp(40px, 6.4vh, 72px)) 12px clamp(40px, 6.4vh, 72px); gap: 4px; min-width: 600px; }
-.omino-cell__rx { position: absolute; top: 6px; right: 6px; width: 6px; height: 6px; border-radius: 50%; background: #e879f9; }
+.omino-cell__cat { position: absolute; top: 6px; right: 6px; width: 6px; height: 6px; border-radius: 50%; background: var(--c); } /* category colour, as in the legend */
+.omino-cell__rx { position: absolute; bottom: 8px; right: 6px; width: 6px; height: 6px; border-radius: 50%; background: #e879f9; }
 .omino-cell--ph { align-items: center; justify-content: center; padding: 0; background: transparent; border: 1px dashed #27272A; color: #A1A1AA; font: 10px var(--mono); pointer-events: none; }
 .omino-ptable__flabel { align-self: center; justify-self: end; padding-right: 6px; font: 10.5px var(--mono); color: #A1A1AA; }
 .omino-ptable__rx { display: inline-flex; align-items: center; font: inherit; color: inherit; background: transparent; border: 1px solid #27272A; border-radius: 999px; padding: 2px 10px; cursor: pointer; }
@@ -4362,11 +4688,11 @@ const CSS = `
 .omino-rx { box-sizing: border-box; text-align: center; padding: 9px 16px 11px; background: #121212; border: 1.5px solid var(--accent); transition: opacity .2s, filter .2s; cursor: pointer; }
 .omino-rx--drug { border-radius: 22px; }
 .omino-rx--drug.has-mol { padding-bottom: 12px; }
-.omino-rx--drug .omino-rx__art svg { max-width: 100%; max-height: 140px; width: auto; height: auto; }
+.omino-rx--drug .omino-rx__art svg { flex: none; }
 .omino-rx--target .omino-rx__art svg { max-width: 100%; max-height: 150px; width: auto; height: auto; }
 .omino-rx--hug { width: max-content; min-width: 150px; max-width: 240px; }
 .omino-rx__art { display: flex; justify-content: center; margin: 8px 0 4px; }
-.omino-rx__art svg { display: block; max-width: 100%; height: auto; }
+.omino-rx__art svg { display: block; flex: none; }
 .omino-rx__shown { margin-top: 5px; font-family: var(--mono); font-size: 10.5px; color: #A1A1AA; }
 .omino-rx--target { border-radius: 12px; border-style: solid; background: #121212; }
 .omino-rx.is-dim { opacity: .16; }
@@ -4478,7 +4804,7 @@ const CSS = `
 .omino-ecard { top: 16px; right: 16px; width: 348px; padding: 22px; max-height: calc(100% - 32px); }
 .omino-ecard__name { font-family: var(--mono); font-size: 12px; letter-spacing: .02em; color: #A1A1AA; }
 .omino-ecard__title { font-size: 26px; font-weight: 700; letter-spacing: -0.03em; color: #FFFFFF; }
-.omino-ecard__sym { font-weight: 800; letter-spacing: -0.04em; }
+.omino-ecard__sym { font-weight: 800; letter-spacing: -0.04em; color: #FFFFFF; }
 .omino-ecard__mass { font-family: var(--mono); font-size: 12px; }
 .omino-ecard__tags { gap: 8px; margin: 14px 0 6px; }
 .omino-ecard__tags span, .omino-ecard__tags .omino-pill {
@@ -4487,6 +4813,44 @@ const CSS = `
 }
 .omino-ecard__tags .omino-pill::before { display: none; }
 .omino-ecard__tags .omino-pill:hover { background: color-mix(in srgb, var(--c) 28%, transparent); border: 0; }
+.react-flow__edge-interaction { cursor: pointer; }
+.react-flow__edge.is-active path.react-flow__edge-path, .react-flow__edge.is-picked path.react-flow__edge-path { stroke-width: 4.5px !important; opacity: 1 !important; filter: drop-shadow(0 0 6px currentColor); }
+.react-flow__edge.is-active, .react-flow__edge.is-picked { opacity: 1 !important; }
+.omino-canvas.has-edge .react-flow__edge:not(.is-active):not(.is-picked) { opacity: .22; }
+.omino-canvas.has-edge .omino-edge-label:not(.is-active) { opacity: .3 !important; }
+.omino-edge-label.is-active { z-index: 5; opacity: 1 !important; box-shadow: 0 0 0 2px var(--c, currentColor); background: #1b1b1f; font-size: 13px; }
+.react-flow__node.is-end > * { filter: drop-shadow(0 0 12px rgba(255,255,255,.65)); }
+.omino-follow {
+  position: absolute; z-index: 8; width: max-content; max-width: 420px; padding: 10px 14px 12px; text-align: center; pointer-events: auto;
+  transform: translate(-50%, calc(-100% - 14px)); background: #121212; border: 1px solid var(--c); border-radius: 14px;
+  box-shadow: 0 16px 40px rgba(0,0,0,.65); font-family: 'Inter', system-ui, sans-serif;
+}
+.omino-follow::after { content: ""; position: absolute; left: 50%; bottom: -6px; width: 10px; height: 10px; background: #121212; border: solid var(--c); border-width: 0 1px 1px 0; transform: translateX(-50%) rotate(45deg); }
+.omino-follow__x { position: absolute; top: 4px; right: 6px; width: 22px; height: 22px; background: none; border: 0; color: #A1A1AA; font-size: 18px; line-height: 1; cursor: pointer; }
+.omino-follow__x:hover { color: #FFFFFF; }
+.omino-follow__name { padding: 0 22px; color: #FFFFFF; font-size: 14px; font-weight: 700; letter-spacing: -0.01em; }
+.omino-follow__row { display: flex; align-items: flex-start; gap: 10px; margin-top: 8px; }
+.omino-follow__mid { flex: 1; min-width: 120px; align-self: center; }
+.omino-follow__side { display: flex; flex-direction: column; align-items: center; gap: 3px; flex: none; width: 84px; }
+.omino-follow__side small { max-width: 84px; font-size: 10.5px; line-height: 1.25; color: #A1A1AA; }
+.omino-follow__arrow { display: flex; align-items: center; justify-content: center; gap: 2px; width: 100%; padding: 7px 6px; background: color-mix(in srgb, var(--c) 16%, transparent); color: var(--c); border: 0; border-radius: 10px; font: 600 10.5px 'Inter', system-ui, sans-serif; letter-spacing: .06em; text-transform: uppercase; cursor: pointer; }
+.omino-follow__arrow:hover:not(:disabled) { background: color-mix(in srgb, var(--c) 34%, transparent); }
+.omino-follow__arrow:disabled { opacity: .35; cursor: default; }
+.omino-follow__cyc { background: none; border: 1px solid #27272A; border-radius: 999px; padding: 1px 8px; color: #A1A1AA; font: 500 10px var(--mono, monospace); cursor: pointer; }
+.omino-follow__cyc:hover { color: #FFFFFF; border-color: var(--c); }
+.omino-follow__how { font-size: 12px; font-weight: 600; }
+.omino-follow__detail { margin-top: 4px; font-size: 11.5px; line-height: 1.45; color: #A1A1AA; }
+.omino-edgecard__enz { margin-top: 8px; background: none; border: 1px solid #27272A; border-radius: 999px; padding: 3px 10px; color: #FFFFFF; font: 500 11px 'Inter', system-ui, sans-serif; cursor: pointer; }
+.omino-edgecard__enz:hover { border-color: var(--c); }
+.omino-ecard header { position: relative; display: block; }
+.omino-ecard__tags { justify-content: center; }
+.omino-ecard__nav { position: absolute; top: 0; left: 0; display: flex; gap: 6px; }
+.omino-ecard__nav .omino-tool:disabled { opacity: .35; cursor: default; }
+.omino-ecard--nav .omino-ecard__name { padding: 0 92px; }
+.omino-ecard header > div:not(.omino-ecard__nav):not(.omino-ecard__btns) { text-align: center; min-width: 0; }
+.omino-ecard__name { padding: 0 76px; overflow-wrap: anywhere; }
+.omino-ecard__title { margin-top: 22px; padding: 0; text-wrap: balance; overflow-wrap: anywhere; hyphens: auto; }
+.omino-ecard__btns { position: absolute; top: 0; right: 0; }
 .omino-ecard__stats span { font-family: var(--mono); }
 .omino-ecard__stats b { font-weight: 700; letter-spacing: -0.03em; }
 .omino-ecard__facts { font-family: var(--mono); font-size: 12px; }
@@ -4529,6 +4893,38 @@ const CSS = `
 .omino-organ.is-hit { filter: drop-shadow(0 0 14px color-mix(in srgb, var(--accent) 70%, transparent)); }
 .omino-organ.is-selected { filter: drop-shadow(0 0 10px rgba(255,255,255,.35)); }
 
+/* ---- Bohr diagram: shells orbit continuously ---- */
+.omino-orbit { transform-box: view-box; transform-origin: 50% 50%; animation: omino-orbit var(--dur, 10s) linear infinite; }
+@keyframes omino-orbit { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) { .omino-orbit { animation: none; } }
+/* ---- periodic table tiles: everything scales with the tile, so nothing collides at any panel width ---- */
+.omino-ptable .omino-cell { container-type: inline-size; min-width: 0; overflow: hidden; }
+.omino-ptable .omino-cell b { font-size: clamp(11px, 34cqw, 22px); letter-spacing: -0.03em; }
+.omino-ptable .omino-cell small { font-size: clamp(7px, 18cqw, 11px); top: 4px; left: 5px; }
+.omino-cell .omino-cell__cat, .omino-cell .omino-cell__rx { top: 5px; bottom: auto; width: clamp(4px, 11cqw, 6px); height: clamp(4px, 11cqw, 6px); }
+.omino-cell .omino-cell__cat { right: 5px; }
+.omino-cell .omino-cell__rx { right: calc(5px + clamp(4px, 11cqw, 6px) + 3px); } /* drug / imaging dot sits beside the category dot, clear of the symbol */
+.omino-ptable .omino-cell--ph { font: 9px/1 var(--mono); white-space: nowrap; overflow: visible; }
+.omino-ptable__flabel { font-size: 9px; letter-spacing: 0; white-space: nowrap; padding-right: 4px; }
+/* ---- mobile: one shared panel footprint, compact table, pinned footer ---- */
+.omino-ptable { display: flex; flex-direction: column; overflow: hidden; }
+.omino-ptable__body { flex: 1 1 auto; min-height: 0; overflow: auto; overscroll-behavior: contain; }
+.omino-ptable .omino-foot { flex: none; }
+@media (max-width: 639px) {
+  .omino-ptable, .omino-ecard { top: 12px; left: 76px; right: 12px; bottom: auto; width: auto !important; max-height: calc(100% - 24px); padding: 14px; border-radius: 18px; }
+  .omino-ecard { overflow: auto; overscroll-behavior: contain; }
+  .omino-ptable__search { display: none; }
+  .omino-ptable__bar { justify-content: flex-end; margin-bottom: 8px; }
+  .omino-ptable__grid { display: flex; flex-wrap: wrap; gap: 4px; min-width: 0; }
+  .omino-ptable__grid .omino-cell { flex: 0 0 calc((100% - 24px) / 7); height: 44px; }
+  .omino-ptable__grid .omino-cell--ph, .omino-ptable__flabel { display: none; }
+  .omino-ptable .omino-cell b { font-size: 15px; }
+  .omino-ptable .omino-cell small { font-size: 8.5px; top: 3px; left: 4px; }
+  .omino-ptable .omino-ptable__legend { font-size: 10.5px; gap: 6px 12px; margin-top: 10px; }
+  .omino-ptable .omino-foot { margin-top: 8px; padding-top: 8px; }
+  .omino-foot p { font-size: 10.5px; line-height: 1.55; }
+  .omino-foot__dot { margin: 0 4px; }
+}
 @media (prefers-reduced-motion: reduce) {
   .omino-node { transition: none; }
   .react-flow__edge.animated path { animation: none; }
