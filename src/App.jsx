@@ -1,3 +1,6 @@
+// v4.3: skeletal formulas of all 13 vitamins drawn on their canvas nodes and cards (retinol, cholecalciferol, α-tocopherol, phylloquinone, ascorbic acid, thiamine, riboflavin, nicotinic acid, pantothenic acid, pyridoxine, biotin, folic acid, cobalamin with its corrin ring).
+// v4.2: every Oncology and Anti-infective drug card has a Toxicity section (main toxicity, effects organ by organ, prevention and antidotes, monitoring, what to avoid), searchable from global search; both hub cards index their drugs by the organ they harm.
+// v4.1: Anti-infective hub (antimicrobial chemotherapy: β-lactams, glycopeptides, membrane-active drugs, 30S/50S ribosome inhibitors, fluoroquinolones, rifamycins, nitro drugs, antifolates, antituberculars; antifungals; HIV, herpes, influenza, SARS-CoV-2 and hepatitis C antivirals; antimalarials and anthelmintics), each target tagged with its organism and site; a Pathogen location; Oncology hub extended with targeted therapy (kinase inhibitors, anti-HER2/EGFR/VEGF agents, PARP, proteasome, BCL-2, IDH, menin, cereblon, HDAC) and immunotherapy (PD-1/PD-L1, CTLA-4, CD19, CD30, CD38, BCMA), more cytotoxics and cytoprotectants (mitomycin, procarbazine, mitoxantrone, eribulin, mesna, dexrazoxane, amifostine).
 // v3.6: Cholesterol (synthesis from acetyl-CoA through HMG-CoA and mevalonate to 7-dehydrocholesterol and cholesterol, drawn as skeletal structures; fates: bile acids (cholic acid), steroid hormones (pregnenolone), vitamin D₃; statin, ezetimibe, PCSK9 and FXR targets tethered to it).
 // v3.5: Vitamins hub (all 13 fat- and water-soluble vitamins with function, deficiency, excess and RDA; cofactor vitamins linked to the enzymes, metabolites, cofactor cards and drug targets they work with; vitamin-to-vitamin links; vitamin replacement drugs).
 // v3.4: Immune hub (immunoglobulin classes IgG, IgA, IgM, IgE, IgD with schematics, functions, clinical associations and NBME serum values; immune globulins, FcRn blockers, anti-CD20, anti-BAFF, anti-IgE and targeted-release budesonide linked to them; TNF, IL-6R, IL-1R, JAK and the glucocorticoid receptor cross-linked).
@@ -40,7 +43,7 @@ import "reactflow/dist/style.css";
 /*    implicit: an atom with no `text` is a skeletal vertex.           */
 /* ================================================================== */
 
-const CHALK = "#e8e8ec";
+const CHALK = "#FFFFFF";
 const OpenCtx = React.createContext(() => {}); // open(type, id): show an explanation card
 const EL_COLOR = { O: "#ff7a7a", N: "#7fb0ff", P: "#ffb454", S: "#f2d95c", X: "#c7a8ff", M: "#ff9d5c", F: "#8ee0a0", Cl: "#6fe08c" };
 
@@ -768,7 +771,7 @@ const KIND = {
   ion: { label: "Ion", color: "#8fd18a" },
   atom: { label: "Atom", color: "#6fe0b4" },
   cofactor: { label: "Cofactor", color: "#6f93ff" },
-  pathway: { label: "Pathway", color: "#8e8e99" },
+  pathway: { label: "Pathway", color: "#A1A1AA" },
 };
 
 // Each pathway gets one colour: its edges, enzyme labels, title and legend chip.
@@ -1332,6 +1335,197 @@ DRUG_MOLS.dorza = (() => {
   return m;
 })();
 
+/* ---- vitamin structures, drawn on the vitamin nodes of the Vitamins hub and on their cards ---- */
+// fused rings are placed on a grid of pointy-top hexagons: centres 51.96 apart, shared edges vertical
+const hexV = (cx, cy) => ({ t: [cx, cy - 30], tr: [cx + 25.98, cy - 15], br: [cx + 25.98, cy + 15], b: [cx, cy + 30], bl: [cx - 25.98, cy + 15], tl: [cx - 25.98, cy - 15] });
+const VIT_MOLS = {};
+
+/* vitamin A: all-trans retinol */
+VIT_MOLS.t_va = (() => {
+  const m = dmol("Retinol (vitamin A)", 0.7);
+  m.at("c6", 0, 0).ring("r", "c6", 180, 6, [0]);             // v0 C6, v1 C5 (methyl), v5 C1 (gem-dimethyl)
+  m.to(m.id("r", 1), "m5", m.out("r", 1), null);
+  m.to(m.id("r", 5), "m1a", 270, null).to(m.id("r", 5), "m1b", 330, null);
+  m.walk("c6", 30, -60, [["c7"], ["c8", null, null, 2], ["c9"], ["c10", null, null, 2], ["c11"], ["c12", null, null, 2], ["c13"], ["c14", null, null, 2], ["c15"], ["oh", "OH", "O", 1, { align: "start" }]]);
+  m.to("c9", "m9", 90, null).to("c13", "m13", 90, null);
+  return m;
+})();
+
+/* vitamin D3: cholecalciferol, (5Z,7E)-9,10-secocholesta-5,7,10(19)-trien-3β-ol; rings C and D and the side chain on the steroid grid */
+VIT_MOLS.t_vd = (() => {
+  const m = dmol("Cholecalciferol (vitamin D₃)", 0.72);
+  ["C8", "C9", "C11", "C12", "C13", "C14", "C15", "C16", "C17", "C18", "C20", "C21", "C22", "C23", "C24", "C25", "C26", "C27"].forEach((k) => m.at(k, ...ST[k]));
+  [["C8", "C9"], ["C9", "C11"], ["C11", "C12"], ["C12", "C13"], ["C13", "C14"], ["C14", "C8"], ["C14", "C15"], ["C15", "C16"], ["C16", "C17"], ["C17", "C13"], ["C13", "C18"],
+    ["C17", "C20"], ["C20", "C21"], ["C20", "C22"], ["C22", "C23"], ["C23", "C24"], ["C24", "C25"], ["C25", "C26"], ["C25", "C27"]].forEach(([a, b]) => m.bond(a, b));
+  m.at("C7", 77.94, 15).bond("C8", "C7", 2);
+  m.at("C6", 51.96, 30).bond("C7", "C6");
+  m.at("C5", 51.96, 60).bond("C6", "C5", 2);
+  m.ring("A", "C5", 90, 6);                                     // v1 C10, v2 C1, v3 C2, v4 C3, v5 C4
+  m.to(m.id("A", 1), "C19", m.out("A", 1), null, null, 2);
+  m.to(m.id("A", 4), "O3", m.out("A", 4), "HO", "O", 1, { align: "end" });
+  return m;
+})();
+
+/* vitamin E: RRR-α-tocopherol */
+VIT_MOLS.t_ve = (() => {
+  const m = dmol("α-Tocopherol (vitamin E)", 0.6);
+  const a = hexV(0, 0), p = hexV(51.96, 0);
+  m.at("C8", ...a.t).at("C7", ...a.tl).at("C6", ...a.bl).at("C5", ...a.b).at("C8a", ...a.tr).at("C4a", ...a.br);
+  m.at("O1", ...p.t, "O", "O").at("C2", ...p.tr).at("C3", ...p.br).at("C4", ...p.b);
+  m.bond("C8a", "C8", 2, [0, 0]).bond("C8", "C7").bond("C7", "C6", 2, [0, 0]).bond("C6", "C5").bond("C5", "C4a", 2, [0, 0]).bond("C4a", "C8a");
+  m.bond("C8a", "O1").bond("O1", "C2").bond("C2", "C3").bond("C3", "C4").bond("C4", "C4a");
+  m.to("C8", "m8", 270, null).to("C7", "m7", 210, null).to("C5", "m5", 90, null).to("C6", "O6", 150, "HO", "O", 1, { align: "end" });
+  m.to("C2", "m2", 270, null);
+  m.walk("C2", 330, 60, [["k1"], ["k2"], ["k3"], ["k4"], ["k5"], ["k6"], ["k7"], ["k8"], ["k9"], ["k10"], ["k11"], ["k12"], ["k13"]]);
+  m.to("k4", "q4", 90, null).to("k8", "q8", 90, null).to("k12", "q12", 90, null);
+  return m;
+})();
+
+/* vitamin K1: phylloquinone, 2-methyl-3-phytyl-1,4-naphthoquinone */
+VIT_MOLS.t_vk = (() => {
+  const m = dmol("Phylloquinone (vitamin K₁)", 0.56);
+  const a = hexV(0, 0), q = hexV(51.96, 0);
+  m.at("C8", ...a.t).at("C7", ...a.tl).at("C6", ...a.bl).at("C5", ...a.b).at("C8a", ...a.tr).at("C4a", ...a.br);
+  m.at("C1", ...q.t).at("C2", ...q.tr).at("C3", ...q.br).at("C4", ...q.b);
+  m.bond("C8a", "C4a", 2, [0, 0]).bond("C8a", "C8").bond("C8", "C7", 2, [0, 0]).bond("C7", "C6").bond("C6", "C5", 2, [0, 0]).bond("C5", "C4a");
+  m.bond("C8a", "C1").bond("C1", "C2").bond("C2", "C3", 2, [51.96, 0]).bond("C3", "C4").bond("C4", "C4a");
+  m.to("C1", "O1", 270, "O", "O", 2).to("C4", "O4", 90, "O", "O", 2).to("C2", "m2", 330, null);
+  m.to("C3", "p1", 30, null);
+  m.walk("p1", 330, 60, [["p2"], ["p3", null, null, 2], ["p4"], ["p5"], ["p6"], ["p7"], ["p8"], ["p9"], ["p10"], ["p11"], ["p12"], ["p13"], ["p14"], ["p15"], ["p16"]]);
+  ["p3", "p7", "p11", "p15"].forEach((k) => m.to(k, "q" + k, 90, null));
+  return m;
+})();
+
+/* vitamin C: L-ascorbic acid */
+VIT_MOLS.t_vc = (() => {
+  const m = dmol("L-Ascorbic acid (vitamin C)", 1.0);
+  m.at("o1", 0, 0, "O", "O").ring("r", "o1", 0, 5, [2]);    // v1 C1 (C=O), v2 C2, v3 C3, v4 C4
+  m.to(m.id("r", 1), "ok", m.out("r", 1), "O", "O", 2);
+  m.to(m.id("r", 2), "o2", m.out("r", 2), "OH", "O", 1, { align: "start" });
+  m.to(m.id("r", 3), "o3", m.out("r", 3), "OH", "O", 1, { align: "start" });
+  m.to(m.id("r", 4), "c5", m.out("r", 4), null);
+  m.to("c5", "o5", 168, "HO", "O", 1, { align: "end" }).to("c5", "c6", 48, null).to("c6", "o6", 108, "OH", "O");
+  return m;
+})();
+
+/* vitamin B1: thiamine (cation) */
+VIT_MOLS.t_b1 = (() => {
+  const m = dmol("Thiamine (vitamin B₁)", 0.95);
+  m.at("c5", 0, 0).ring("py", "c5", 180, 6, [0, 2, 4], { 2: ["N", "N"], 4: ["N", "N"] }); // v1 C6, v2 N1, v3 C2, v4 N3, v5 C4
+  m.to(m.id("py", 5), "nh2", m.out("py", 5), "NH2", "N");
+  m.to(m.id("py", 3), "me2", m.out("py", 3), null);
+  m.to("c5", "br", 0, null).to("br", "n", 60, "N", "N", 1, { q: "+" });
+  m.ring("tz", "n", 60, 5, [0, 3], { 2: ["S", "S"] });       // v1 C2, v2 S1, v3 C5, v4 C4
+  m.to(m.id("tz", 4), "me4", m.out("tz", 4), null);
+  m.to(m.id("tz", 3), "e1", m.out("tz", 3), null).to("e1", "e2", m.out("tz", 3) - 60, null).to("e2", "eo", m.out("tz", 3), "OH", "O");
+  return m;
+})();
+
+/* vitamin B2: riboflavin */
+VIT_MOLS.t_b2 = (() => {
+  const m = dmol("Riboflavin (vitamin B₂)", 0.78);
+  const a = hexV(0, 0), b = hexV(51.96, 0), c = hexV(103.92, 0);
+  m.at("C6", ...a.t).at("C7", ...a.tl).at("C8", ...a.bl).at("C9", ...a.b).at("C5a", ...a.tr).at("C9a", ...a.br);
+  m.at("N5", ...b.t, "N", "N").at("N10", ...b.b, "N", "N").at("C4a", ...b.tr).at("C10a", ...b.br);
+  m.at("C4", ...c.t).at("N3", ...c.tr, "NH", "N", { align: "start" }).at("C2", ...c.br).at("N1", ...c.b, "N", "N");
+  m.bond("C5a", "C6", 2, [0, 0]).bond("C6", "C7").bond("C7", "C8", 2, [0, 0]).bond("C8", "C9").bond("C9", "C9a", 2, [0, 0]).bond("C9a", "C5a");
+  m.bond("C5a", "N5").bond("N5", "C4a", 2, [51.96, 0]).bond("C4a", "C10a").bond("C10a", "N10").bond("N10", "C9a");
+  m.bond("C4a", "C4").bond("C4", "N3").bond("N3", "C2").bond("C2", "N1").bond("N1", "C10a", 2, [103.92, 0]);
+  m.to("C4", "O4", 270, "O", "O", 2).to("C2", "O2", 30, "O", "O", 2).to("C7", "m7", 210, null).to("C8", "m8", 150, null);
+  m.walk("N10", 60, 60, [["r1"], ["r2"], ["r3"], ["r4"], ["r5"], ["o5", "OH", "O"]]);
+  m.to("r2", "o2r", 180, "HO", "O", 1, { align: "end" }).to("r3", "o3r", 0, "OH", "O", 1, { align: "start" }).to("r4", "o4r", 180, "HO", "O", 1, { align: "end" });
+  return m;
+})();
+
+/* vitamin B3: nicotinic acid (niacin) */
+VIT_MOLS.t_b3 = (() => {
+  const m = dmol("Nicotinic acid (vitamin B₃)", 1.2);
+  m.at("c3", 0, 0).ring("r", "c3", 180, 6, [0, 2, 4], { 4: ["N", "N"] });
+  m.to("c3", "cc", 0, null).to("cc", "o1", 300, "O", "O", 2).to("cc", "o2", 60, "OH", "O", 1, { align: "start" });
+  return m;
+})();
+
+/* vitamin B5: (R)-pantothenic acid */
+VIT_MOLS.t_b5 = (() => {
+  const m = dmol("Pantothenic acid (vitamin B₅)", 0.95);
+  m.at("o1", 0, 0, "HO", "O", { align: "end" });
+  m.walk("o1", 30, -60, [["c1"], ["c2"], ["c3"], ["c4"], ["n", "NH", "N"], ["c5"], ["c6"], ["c7"]]);
+  m.to("c2", "m1", 270, null).to("c2", "m2", 90, null).to("c3", "o3", 90, "OH", "O").to("c4", "o4", 270, "O", "O", 2);
+  m.to("c7", "o7", 270, "O", "O", 2).to("c7", "o8", 30, "OH", "O", 1, { align: "start" });
+  return m;
+})();
+
+/* vitamin B6: pyridoxine */
+VIT_MOLS.t_b6 = (() => {
+  const m = dmol("Pyridoxine (vitamin B₆)", 1.05);
+  m.at("c4", 0, 0).ring("r", "c4", 90, 6, [0, 2, 4], { 3: ["N", "N"] }); // v1 C3, v2 C2, v3 N1, v4 C6, v5 C5
+  m.to("c4", "a", 270, null).to("a", "ao", 330, "OH", "O", 1, { align: "start" });
+  m.to(m.id("r", 1), "o3", m.out("r", 1), "OH", "O", 1, { align: "start" });
+  m.to(m.id("r", 2), "m2", m.out("r", 2), null);
+  m.to(m.id("r", 5), "b", m.out("r", 5), null).to("b", "bo", 150, "HO", "O", 1, { align: "end" });
+  return m;
+})();
+
+/* vitamin B7: biotin; two fused five-membered rings sharing the C3a–C6a bond */
+VIT_MOLS.t_b7 = (() => {
+  const m = dmol("Biotin (vitamin B₇)", 1.0);
+  m.at("c3a", 0, 0).at("c6a", 30, 0);
+  m.at("n3", -9.27, -28.53, "HN", "N", { align: "end" }).at("c2", 15, -46.17).at("n1", 39.27, -28.53, "NH", "N", { align: "start" });
+  m.at("c4", -9.27, 28.53).at("s", 15, 46.17, "S", "S").at("c6", 39.27, 28.53);
+  m.bond("c3a", "c6a").bond("c3a", "n3").bond("n3", "c2").bond("c2", "n1").bond("n1", "c6a").bond("c3a", "c4").bond("c4", "s").bond("s", "c6").bond("c6", "c6a");
+  m.to("c2", "o2", 270, "O", "O", 2);
+  m.walk("c4", 150, 60, [["k1"], ["k2"], ["k3"], ["k4"], ["kc"]]);
+  m.to("kc", "ko1", 90, "O", "O", 2).to("kc", "ko2", 210, "HO", "O", 1, { align: "end" });
+  return m;
+})();
+
+/* vitamin B9: folic acid (pteroylglutamic acid) */
+VIT_MOLS.t_b9 = (() => {
+  const m = dmol("Folic acid (vitamin B₉)", 0.62);
+  const a = hexV(0, 0), b = hexV(51.96, 0);
+  m.at("C4", ...a.t).at("N3", ...a.tl, "HN", "N").at("C2", ...a.bl).at("N1", ...a.b, "N", "N").at("C4a", ...a.tr).at("C8a", ...a.br);
+  m.at("N5", ...b.t, "N", "N").at("C6", ...b.tr).at("C7", ...b.br).at("N8", ...b.b, "N", "N");
+  m.bond("C4", "N3").bond("N3", "C2").bond("C2", "N1", 2, [0, 0]).bond("N1", "C8a").bond("C8a", "C4a").bond("C4a", "C4");
+  m.bond("C4a", "N5", 2, [51.96, 0]).bond("N5", "C6").bond("C6", "C7", 2, [51.96, 0]).bond("C7", "N8").bond("N8", "C8a", 2, [51.96, 0]);
+  m.to("C4", "O4", 270, "O", "O", 2).to("C2", "N2", 150, "H2N", "N", 1, { align: "end" });
+  m.to("C6", "C9", 330, null).to("C9", "N10", 30, "NH", "N").to("N10", "b0", 330, null);
+  m.ring("ph", "b0", 330, 6, [1, 3, 5]);
+  m.to(m.id("ph", 3), "ca", 30, null).to("ca", "cao", 270, "O", "O", 2).to("ca", "na", 30, "NH", "N").to("na", "ga", 330, null);
+  m.to("ga", "g1", 270, null).to("g1", "g1a", 210, "O", "O", 2).to("g1", "g1b", 330, "OH", "O", 1, { align: "start" });
+  m.walk("ga", 30, -60, [["gb"], ["gg"], ["gd"]]);
+  m.to("gd", "gd1", 90, "O", "O", 2).to("gd", "gd2", 330, "OH", "O", 1, { align: "start" });
+  return m;
+})();
+
+/* vitamin B12: cobalamin. The corrin ring is drawn in full; side chains are abbreviated like the heme substituents */
+VIT_MOLS.t_b12 = (() => {
+  const atoms = [], bonds = [], D = 70;
+  const cs = [[0, -D], [D, 0], [0, D], [-D, 0]], nds = [90, 180, 270, 0];
+  // pyrroles A (top) B (right) C (bottom) D (left): N, alpha 1, beta 2, beta 3, alpha 4; corrin C=N on rings B, C and D
+  cs.forEach(([x, y], k) => ring(atoms, bonds, "r" + k, x, y, nds[k], "N", [], k ? ["N1"] : []));
+  const at = (id) => atoms.find((a) => a.id === id), P = (id) => [at(id).x, at(id).y];
+  // meso carbons C5 (A–B), C10 (B–C), C15 (C–D); rings A and D are joined directly (C1–C19), the hallmark of corrin
+  [0, 1, 2].forEach((k) => { atoms.push(C("m" + k, ang(0, 0, 60.4, -45 + 90 * k))); bonds.push(["r" + k + "4", "m" + k, 2], ["m" + k, "r" + (k + 1) + "1"]); });
+  bonds.push(["r34", "r01"]);
+  { const a = at("r01"), d = at("r34"), dx = (a.x - d.x) * 0.2, dy = (a.y - d.y) * 0.2; a.x -= dx; a.y -= dy; d.x += dx; d.y += dy; } // pull C1 and C19 together so the direct bond is near normal length
+  const sub = (from, id, t, dAng = 0, len = 28) => { // substituent pointing away from the corrin centre, turned by dAng
+    const [x, y] = P(from), a0 = (Math.atan2(y, x) * 180) / Math.PI + dAng;
+    atoms.push(t ? A(id, [x + len * dcos(a0), y + len * dsin(a0)], t, "X") : C(id, [x + len * dcos(a0), y + len * dsin(a0)]));
+    bonds.push([from, id]);
+  };
+  sub("r01", "me1", null); sub("m0", "me5", null); sub("m2", "me15", null);           // methyls on C1, C5, C15
+  sub("r02", "me2", null, -32); sub("r02", "a2", "a", 26); sub("r03", "p3", "p");      // ring A
+  sub("r12", "me7", null, -32); sub("r12", "a7", "a", 26); sub("r13", "p8", "p");      // ring B
+  sub("r22", "me12a", null, -32); sub("r22", "me12b", null, 26); sub("r23", "p13", "p"); // ring C
+  sub("r32", "me17", null, 32); sub("r32", "p17", "p′", -26); sub("r33", "a18", "a");  // ring D: p′ carries the nucleotide loop
+  atoms.push(A("Co", [0, 0], "Co", "M", { q: "+", qd: [-13, -10] }));
+  [0, 1, 2, 3].forEach((k) => bonds.push(["Co", "r" + k + "N"]));
+  atoms.push(A("R", [24, -24], "R", "X"), A("dmb", [-26, 26], "DMB", "X"));
+  bonds.push(["Co", "R", "w"], ["Co", "dmb"]);
+  return { name: "Cobalamin (vitamin B₁₂)", scale: 0.95, atoms, bonds,
+    key: "R = CN (cyanocobalamin), OH (hydroxocobalamin), CH₃ (methylcobalamin) or 5′-deoxyadenosyl (adenosylcobalamin), above the ring. DMB = 5,6-dimethylbenzimidazole, the lower ligand, whose nucleotide loops round to the p′ side chain of ring D. a = CH₂CONH₂, p = CH₂CH₂CONH₂." };
+})();
+
 /* ------------------------------ pharmacology ------------------------------ */
 // A layer on top of the metabolic map: drugs -> their targets (enzymes, transporters, receptors) -> the metabolite the target acts on.
 //   drug -> target  : the effect, drawn as a coloured line (FX below)
@@ -1446,7 +1640,7 @@ DRUGS.forEach(([id, label, cls, examples, note, fx, molKey]) => {
   PATH_OF[id] = "pharm";
 });
 RX_EFFECTS.forEach((e) => EDGES.push({ id: `rx_${e.drug}_${e.target}`, source: e.drug, target: e.target, label: e.fx === "activate" && e.detail.startsWith("Indirect") ? "activates (via PDK)" : FX[e.fx].verb, fx: e.fx, auto: true, path: "pharm" }));
-RX_ACTS.push({ target: "t_npc1l1", met: "chol" }, { target: "t_pcsk9", met: "chol" }, { target: "t_fxr", met: "cholic" }); // hub targets defined later
+RX_ACTS.push({ target: "t_npc1l1", met: "chol" }, { target: "t_pcsk9", met: "chol" }, { target: "t_fxr", met: "cholic" }, { target: "t_idh", met: "akg" }, { target: "t_hemoz", met: "heme" }); // hub targets defined later
 RX_ACTS.forEach((a) => EDGES.push({ id: `rx_${a.target}_${a.met}`, source: a.target, target: a.met, label: "", fx: "tether", auto: true, path: "pharm" }));
 const RX_ANCHORS = new Set(RX_ACTS.map((a) => a.met));
 
@@ -1459,6 +1653,7 @@ const LOCS = {
   pm: { label: "Plasma membrane", short: "Membrane", color: "#94a3b8", desc: "Cell-surface membrane. Transporters, channels and G-protein-coupled receptors sit here, so most drug targets of the organ hubs live in this compartment." },
   ap: { label: "Apical membrane", short: "Apical", color: "#2dd4bf", desc: "The lumen-facing surface of a polarised epithelial cell, such as a kidney tubule or gut cell. Most diuretic targets sit here, so the drug reaches them from the tubular fluid." },
   bl: { label: "Basolateral membrane", short: "Basolateral", color: "#fcd34d", desc: "The blood-facing surface of an epithelial cell. Hormone receptors such as the vasopressin V₂ receptor and the Na⁺/K⁺-ATPase that drives reabsorption sit here." },
+  pth: { label: "Pathogen", short: "Pathogen", color: "#5eead4", desc: "Structures that belong to the bacterium, fungus, virus or parasite rather than to the host: cell walls, outer membranes, 70S ribosomes, microbial enzymes and viral proteins. Anti-infective drugs are selective because these targets are absent from human cells or differ from their human counterparts. Viral targets also carry the host compartment where the virus uses them." },
   ext: { label: "Extracellular / lumen", short: "Blood · lumen", color: "#f9a8d4", desc: "Blood, interstitial fluid, kidney tubule or gut lumen. Glucose, lactate, ketone bodies, urea and albumin-bound bilirubin travel here between organs." },
 };
 const LOC_OF = {};
@@ -1484,15 +1679,18 @@ const ORGANS = {
   cn: { label: "Nervous system", code: "CN", color: "#c4b5fd", desc: "Neurotransmitter reuptake and receptor signalling in the brain. Most CNS drugs act on membrane transporters and ligand-gated channels." },
   hp: { label: "Hepatic", code: "HP", color: "#a3e635", desc: "The liver makes cholesterol and urea, oxidises fatty acids, clears alcohol and conjugates bilirubin and drugs for excretion. It is also the site of hepatitis B and C infection and of the bile-acid and LDL-receptor controls. Metabolic targets are drawn beside the metabolites they act on." },
   en: { label: "Endocrine & metabolic", code: "EN", color: "#f472b6", desc: "Insulin and incretin signalling, glucose sensing and fat storage, plus the thyroid, parathyroid, pituitary and sex-steroid axes. Glucose targets are drawn beside glucose, pyruvate or triacylglycerol; the rest sit on the hub ring." },
-  on: { label: "Oncology", code: "ON", color: "#facc15", desc: "Cytotoxic chemotherapy kills dividing cells, so its targets are the supply of DNA building blocks, the integrity of DNA and the mitotic spindle. Drugs are grouped by mechanism and, where it applies, by cell-cycle phase. Tissues that divide quickly (marrow, gut lining, hair follicles, gonads) set the usual toxicities. Hormonal agents and antiemetics that sit on other hubs are linked here, and rescue and supportive drugs are included." },
+  on: { label: "Oncology", code: "ON", color: "#facc15", desc: "Cytotoxic chemotherapy kills dividing cells, so its targets are the supply of DNA building blocks, the integrity of DNA and the mitotic spindle. Drugs are grouped by mechanism and, where it applies, by cell-cycle phase. Tissues that divide quickly (marrow, gut lining, hair follicles, gonads) set the usual toxicities. Targeted therapy (kinase inhibitors, antibodies and antibody–drug conjugates against HER2, EGFR and VEGF, PARP, proteasome and BCL-2 inhibitors, differentiation agents) and immunotherapy (checkpoint inhibitors, bispecific T-cell engagers, CAR T cells) are grouped by the pathway or antigen they target. Hormonal agents and antiemetics that sit on other hubs are linked here, and rescue and supportive drugs are included." },
   im: { label: "Immune", code: "IM", color: "#34d399", desc: "Antibodies (immunoglobulins) are made by plasma cells and fall into five classes set by the heavy chain: IgG, IgA, IgM, IgE and IgD. Each class has its own job in blood, mucosa, allergy and B-cell signalling. Drugs here supply antibody (immune globulin, hyperimmune globulin, antibody fragments), lower it (FcRn blockers, B-cell depletion, BAFF blockade), block one class (anti-IgE), or act on the cytokines, kinases and receptors around it (TNF, IL-6R, IL-1R, JAK, the glucocorticoid receptor)." },
   vt: { label: "Vitamins", code: "VT", color: "#f59e0b", desc: "Thirteen vitamins in two groups. Fat-soluble A, D, E and K are absorbed with dietary fat, stored in liver and fat, and toxic in excess. Water-soluble C and the B group are absorbed in the small intestine, stored little (B₁₂ and folate in the liver) and excreted in urine. Most are cofactor precursors: thiamine gives TPP, riboflavin FAD and FMN, niacin NAD⁺ and NADP⁺, pantothenate coenzyme A, pyridoxine PLP, biotin the carboxylase prosthetic group, folate THF and cobalamin methyl- and adenosylcobalamin. Vitamin K and vitamin C are cofactors of carboxylase and hydroxylase reactions. Vitamins A, D and E are not enzyme cofactors: they act as visual pigment and receptor ligand, hormone and antioxidant. Cofactor vitamins are linked to the metabolites, targets and cofactor cards they work with; the lines show when this hub is selected." },
+  ai: { label: "Anti-infective", code: "AI", color: "#14b8a6", desc: "Antimicrobial chemotherapy relies on selective toxicity: it hits structures that the bacterium, fungus, virus or parasite has and human cells lack, or have in a different form. Antibacterials act on the peptidoglycan wall, the outer and cytoplasmic membranes, the 70S ribosome (30S and 50S subunits), DNA gyrase, RNA polymerase and folate synthesis; mycobacteria add the enzymes of their mycolic acid wall. Antifungals target ergosterol and its synthesis, the glucan wall and fungal nucleic acid synthesis. Antivirals block steps of the viral life cycle: entry, uncoating, genome copying, integration, polyprotein processing and release. Antiparasitic drugs act on heme detoxification and the mitochondrion of Plasmodium, and on the nerves, muscles and microtubules of worms. Targets are listed by organism and site; the hepatitis B and C polymerases on the Hepatic hub are linked here." },
 };
 const EXIST_ORG = { t_gr: ["rs", "sk", "en", "im"], t_urat1: ["rn", "sk"], t_ace: ["cv", "rn"], t_at1: ["cv", "rn"], t_hmgcr: ["hp", "cv"], t_sglt2: ["rn", "en"], t_gk: ["hp", "en"], t_pdc: ["en"], t_lipase: ["gi"], t_ppara: ["hp", "cv"], t_pparg: ["en"], t_cps1: ["hp"], t_ugt: ["hp"], t_cox: ["cv", "sk"], t_cpt1: ["hp", "cv"],
   t_nav: ["cv", "cn"], t_a2: ["sk", "cv"], t_d2: ["cn", "gi", "en"], t_mu: ["cn", "gi"], t_ache: ["sk", "cn"], t_h1: ["rs", "cn"], t_npc1l1: ["hp", "gi"], t_pcsk9: ["hp", "cv"], t_ampk: ["en", "hp"], t_er: ["sk", "en"], t_pde5: ["rs", "cv"], t_vkor: ["cv", "hp"] };
 // Oncology also lists these targets, which are defined on other hubs (hormonal therapy, antifolates, antimitotics, antiemetics)
 Object.assign(EXIST_ORG, { t_ige: ["im"], t_tnf: ["im"], t_il6r: ["im"], t_il1r: ["im"], t_jak: ["im"] }); // immune hub also lists these sk-hub targets
 Object.assign(EXIST_ORG, { t_dhfr: ["sk", "on"], t_tubulin: ["sk", "on"], t_cyp19: ["en", "on"], t_ar: ["en", "on"], t_gnrhr: ["en", "on"], t_er: ["sk", "en", "on"], t_5ht3: ["gi", "on"], t_nk1: ["gi", "on"] });
+// Oncology also lists anti-CD20 (Immune hub) and JAK (Skeletal hub); the anti-infective hub lists the hepatitis B and C polymerases (Hepatic hub)
+Object.assign(EXIST_ORG, { t_cd20: ["on"], t_jak: [...EXIST_ORG.t_jak, "on"], t_hbvpol: ["ai"], t_ns5b: ["ai"] });
 /* ------------------------------ vitamins ------------------------------ */
 // All thirteen vitamins, fat-soluble first. `links` join a vitamin to the nodes its coenzyme works on (drawn while the Vitamins hub is selected);
 // `cof2` feeds the clickable chips on the card (cofactor cards, enzymes, elements); `drug` adds one drug node to the hub:
@@ -1633,7 +1831,7 @@ const VIT = {
     ex: ["Chronic doses above about 100 mg/day cause a sensory neuropathy that usually reverses on stopping", "Lowers the effect of levodopa given without carbidopa"],
     more: ["Decarboxylases, transsulfuration, serine hydroxymethyltransferase and kynureninase are not drawn in the atlas."],
     cof2: { mol: [], enz: ["Alanine transaminase", "Aspartate transaminase", "Transaminase / GDH", "ALA synthase (B₆)", "Glycogen phosphorylase"], el: [] },
-    links: [["alanine", "cofactor (ALT)"], ["aspartate", "cofactor (AST)"], ["ala", "cofactor (ALAS)"], ["glycogen", "cofactor (phosphorylase)"]], relDrugs: [],
+    links: [["alanine", "cofactor (ALT)"], ["aspartate", "cofactor (AST)"], ["ala", "cofactor (ALAS)"], ["glycogen", "cofactor (phosphorylase)"], ["t_inha", "depleted by isoniazid"]], relDrugs: [],
     drug: ["d_pyrid", "Pyridoxine", "Vitamin B₆ replacement", "pyridoxine",
       "Given with isoniazid to prevent neuropathy in at-risk patients, and IV for isoniazid overdose seizures. Treats pyridoxine-dependent seizures and some sideroblastic anaemias, and with doxylamine for nausea in pregnancy. Excess causes sensory neuropathy.",
       "activate", "Becomes PLP, restoring transamination, ALA synthase and decarboxylase activity."],
@@ -1663,7 +1861,7 @@ const VIT = {
     ex: ["Folic acid alone corrects the anaemia of B₁₂ deficiency but not the neuropathy, which can progress: check B₁₂ first", "No other toxicity; may blunt the effect of phenytoin"],
     more: ["Purine transformylases, serine hydroxymethyltransferase and methionine synthase are not drawn as steps in the atlas."],
     cof2: { mol: [], enz: [], el: [] },
-    links: [["t_ts", "methylene-THF donor"], ["t_dhfr", "reduced by"], ["methionine", "methyl-THF (methionine synthase)"], ["serine", "carbon donor (SHMT)"], ["glycine", "made by SHMT"]],
+    links: [["t_ts", "methylene-THF donor"], ["t_dhfr", "reduced by"], ["t_bdhfr", "microbes make their own (trimethoprim, pyrimethamine)"], ["methionine", "methyl-THF (methionine synthase)"], ["serine", "carbon donor (SHMT)"], ["glycine", "made by SHMT"]],
     relDrugs: ["d_mtx", "d_peme", "d_leuco"],
     drug: ["d_folic", "Folic acid", "Folate replacement", "folic acid",
       "Treats megaloblastic anaemia, prevents neural-tube defects (400 µg preconception; 4 mg after a previous affected pregnancy) and lessens methotrexate mucositis. Check B₁₂ first, because folic acid can mask pernicious anaemia while neuropathy advances. Leucovorin (folinic acid) bypasses DHFR and sits on the oncology hub.",
@@ -1828,6 +2026,51 @@ const ORGAN_RX = [
   // supportive care
   ["on", "t_uric", "Uric acid (serum)", "metabolite", "C₅H₄N₄O₃", "End product of purine breakdown in humans. Massive tumour cell death in tumour lysis syndrome releases purines, giving hyperuricemia with hyperkalemia, hyperphosphatemia and hypocalcemia; crystals injure the kidney.", "d_rasbu", "Rasburicase", "Recombinant urate oxidase", "rasburicase", "Prevents and treats tumour lysis syndrome in leukemia and lymphoma, working within hours (allopurinol only stops new urate). Adverse effects: hemolysis and methemoglobinemia in G6PD deficiency (contraindicated), hypersensitivity; the enzyme goes on degrading urate in the sample, so send blood on ice.", "alter", "Converts uric acid to the far more soluble allantoin, a step humans lack.", ["ext"]],
   ["on", "t_csf3r", "G-CSF receptor", "receptor", "CSF3R", "Cytokine receptor on neutrophil precursors; G-CSF drives their proliferation, maturation and release from the marrow.", "d_gcsf", "G-CSF analogues", "Myeloid growth factors", "filgrastim, pegfilgrastim", "Shorten neutropenia and cut febrile neutropenia after myelosuppressive chemotherapy; also mobilise stem cells for transplant. Adverse effects: bone pain, leukocytosis, rare splenic rupture.", "activate", "Direct agonism drives neutrophil production.", ["pm"]],
+  // more cytotoxics, and drugs that protect normal tissue
+  ["on", "t_dnaalk", null, null, null, null, "d_mitomycin", "Mitomycin", "Antitumour antibiotic, alkylator", "mitomycin C", "Anal cancer (with fluorouracil and radiotherapy), superficial bladder cancer (intravesical), and topical use to stop scarring in eye and airway surgery. Reduction activates it, so it is more active in hypoxic tumour. Adverse effects: severe delayed myelosuppression, hemolytic uremic syndrome, pulmonary fibrosis, tissue injury if it extravasates.", "alter", "Reduced to a bifunctional alkylator that cross-links guanines on opposite DNA strands.", null],
+  ["on", "t_dnaalk", null, null, null, null, "d_procarb", "Procarbazine", "Methylating hydrazine", "procarbazine", "Hodgkin lymphoma (BEACOPP) and brain tumours (PCV, with lomustine and vincristine). Adverse effects: myelosuppression, a disulfiram-like reaction with alcohol, MAO inhibition (avoid tyramine-rich food, sympathomimetics and serotonergic drugs), infertility, secondary leukemia.", "alter", "After liver activation it methylates DNA and breaks strands.", null],
+  ["on", "t_top2", null, null, null, null, "d_mitox", "Mitoxantrone", "Anthracenedione", "mitoxantrone", "Acute myeloid leukemia, castration-resistant prostate cancer and, in the past, aggressive multiple sclerosis. Fewer free radicals and less alopecia than anthracyclines. Adverse effects: cumulative cardiotoxicity, myelosuppression, secondary AML, blue-green urine and sclerae.", "inhibit", "Intercalates and poisons topoisomerase II.", null],
+  ["on", "t_top2", null, null, null, null, "d_dexraz", "Dexrazoxane", "Cardioprotectant", "dexrazoxane", "Lowers anthracycline cardiotoxicity in patients who need high cumulative doses; also treats anthracycline extravasation. Adverse effects: myelosuppression.", "inhibit", "A catalytic inhibitor of topoisomerase IIβ (the isoform in heart muscle) and, once hydrolysed, an iron chelator, so anthracyclines make fewer DNA breaks and free radicals in cardiomyocytes.", null],
+  ["on", "t_dnapt", null, null, null, null, "d_amifos", "Amifostine", "Thiol cytoprotectant", "amifostine", "Lowers cisplatin nephrotoxicity and radiation-induced dry mouth. Adverse effects: hypotension during the infusion, nausea, hypocalcemia, severe skin reactions.", "inhibit", "Alkaline phosphatase, more active in normal tissue than in tumour, frees its thiol, which binds reactive platinum species and free radicals before they reach DNA.", null],
+  ["on", "t_acrol", "Acrolein (urinary)", "metabolite", "C₃H₄O", "Reactive aldehyde released when the liver activates cyclophosphamide and ifosfamide; concentrated in urine, it injures the bladder lining (hemorrhagic cystitis).", "d_mesna", "Mesna", "Uroprotectant", "mesna", "Given with every dose of ifosfamide and with high-dose cyclophosphamide, along with hydration and frequent voiding. Adverse effects: nausea, headache, rash; false-positive urine ketones.", "alter", "Its free thiol, concentrated in urine, binds acrolein and makes it harmless.", ["ext"]],
+  ["on", "t_tubulin", null, null, null, null, "d_eribulin", "Eribulin", "Halichondrin microtubule inhibitor", "eribulin", "Metastatic breast cancer after an anthracycline and a taxane, and liposarcoma. Adverse effects: neutropenia, peripheral neuropathy, QT prolongation, alopecia.", "inhibit", "Binds microtubule plus ends and stops their growth, so the spindle fails (M-phase arrest).", null],
+  // ---- targeted therapy: cell cycle and signalling kinases ----
+  ["on", "t_cdk46", "CDK4/6", "enzyme", "CDK4, CDK6 (with cyclin D)", "Cyclin D–dependent kinases that phosphorylate Rb in G1, releasing E2F to switch on S-phase genes. Hormone-receptor-positive breast cancers depend on them.", "d_cdk46", "CDK4/6 inhibitors", "Cell-cycle kinase inhibitors", "palbociclib, ribociclib, abemaciclib", "Hormone-receptor-positive, HER2-negative advanced breast cancer with an aromatase inhibitor or fulvestrant; abemaciclib or ribociclib as adjuvant therapy in high-risk early disease. They need functional Rb. Adverse effects: neutropenia (seldom febrile), fatigue; QT prolongation and hepatotoxicity with ribociclib; diarrhoea with abemaciclib; venous thromboembolism, interstitial lung disease.", "inhibit", "Rb stays unphosphorylated, so cells arrest in G1.", ["nuc"]],
+  ["on", "t_bcrabl", "BCR-ABL tyrosine kinase", "enzyme", "BCR::ABL1 (Philadelphia chromosome, t(9;22))", "Fusion of BCR with the ABL1 tyrosine kinase that is permanently switched on; it drives chronic myeloid leukemia and Philadelphia-positive acute lymphoblastic leukemia.", "d_abl", "BCR-ABL inhibitors", "Tyrosine kinase inhibitors", "imatinib, dasatinib, nilotinib, bosutinib, ponatinib, asciminib", "Chronic myeloid leukemia (life expectancy is now close to normal) and Ph-positive ALL. Imatinib also blocks KIT and PDGFR, so it treats gastrointestinal stromal tumour. Ponatinib covers the T315I gatekeeper mutation; asciminib binds the myristoyl pocket instead of the ATP site. Follow BCR::ABL1 transcripts by PCR. Adverse effects: myelosuppression, fluid retention and periorbital oedema (imatinib), pleural effusion and pulmonary hypertension (dasatinib), QT prolongation, hyperglycemia and pancreatitis (nilotinib), arterial occlusion (ponatinib).", "inhibit", "Occupy the ATP pocket (asciminib an allosteric site), so the kinase cannot phosphorylate its substrates.", ["cyt"]],
+  ["on", "t_egfr", "EGFR (HER1)", "receptor", "EGFR", "Receptor tyrosine kinase for EGF on epithelial cells. Activating mutations (exon 19 deletion, L858R) drive some non-small-cell lung cancers; overexpression is common in colorectal and head-and-neck cancers.", "d_egfrtki", "EGFR tyrosine kinase inhibitors", "-tinibs", "osimertinib, erlotinib, gefitinib, afatinib", "EGFR-mutant non-small-cell lung cancer. Osimertinib also covers the T790M resistance mutation, enters the brain, and is given adjuvant after resection. Adverse effects: acneiform rash (a sign of response), diarrhoea, paronychia, interstitial lung disease; QT prolongation and cardiomyopathy with osimertinib.", "inhibit", "Block the ATP site of the mutant kinase, so growth signalling stops.", ["pm"]],
+  ["on", "t_egfr", null, null, null, null, "d_egfrmab", "Anti-EGFR antibodies", "Monoclonal antibodies", "cetuximab, panitumumab", "RAS wild-type metastatic colorectal cancer (useless when KRAS or NRAS is mutated, as the signal then starts downstream), and cetuximab with radiotherapy for head-and-neck squamous cancer. Adverse effects: acneiform rash, hypomagnesemia (EGFR in the distal convoluted tubule drives Mg²⁺ reabsorption), infusion reactions (cetuximab is chimeric).", "inhibit", "Bind the extracellular domain and block ligand binding and receptor dimerisation.", null],
+  ["on", "t_her2", "HER2", "receptor", "ERBB2", "Receptor tyrosine kinase with no ligand of its own that pairs with other HER receptors. Gene amplification in about 15–20% of breast and some gastric cancers drives aggressive growth.", "d_her2", "Anti-HER2 antibodies and conjugates", "Monoclonal antibodies, antibody–drug conjugates", "trastuzumab, pertuzumab, trastuzumab emtansine (T-DM1), trastuzumab deruxtecan (T-DXd)", "HER2-positive breast cancer (neoadjuvant, adjuvant and metastatic) and gastric cancer; trastuzumab deruxtecan also treats HER2-low breast cancer and HER2-mutant lung cancer. Adverse effects: trastuzumab cardiotoxicity (falling ejection fraction, usually reversible and not dose-related, unlike anthracyclines; check LVEF every 3 months), infusion reactions; interstitial lung disease with trastuzumab deruxtecan; thrombocytopenia and hepatotoxicity with T-DM1.", "inhibit", "Bind HER2, block its signalling and flag the cell for antibody-dependent cytotoxicity; the conjugates also carry a cytotoxic payload inside.", ["pm"]],
+  ["on", "t_her2", null, null, null, null, "d_her2tki", "HER2 tyrosine kinase inhibitors", "-tinibs", "tucatinib, lapatinib, neratinib", "Metastatic HER2-positive breast cancer, including brain metastases (tucatinib with trastuzumab and capecitabine), and extended adjuvant therapy (neratinib). Adverse effects: diarrhoea, hand–foot syndrome, hepatotoxicity.", "inhibit", "Block the intracellular kinase domain.", null],
+  ["on", "t_alk", "ALK fusion kinase", "enzyme", "EML4::ALK", "Rearrangements fuse ALK to a partner such as EML4, giving a constantly active kinase in about 5% of non-small-cell lung cancers, mostly in never-smokers.", "d_alki", "ALK inhibitors", "-tinibs", "alectinib, lorlatinib, brigatinib, crizotinib", "ALK-positive non-small-cell lung cancer; crizotinib also treats ROS1- and MET-altered tumours. Later-generation drugs penetrate the brain. Adverse effects: visual disturbance and GI upset (crizotinib), myalgia, raised CK and bradycardia (alectinib), hyperlipidemia, weight gain and mood changes (lorlatinib).", "inhibit", "ATP-competitive inhibition of the fusion kinase.", ["cyt"]],
+  ["on", "t_kras", "KRAS G12C", "enzyme", "KRAS", "Small GTPase that relays receptor signals to the MAPK and PI3K pathways; mutations lock it in the active, GTP-bound state. G12C occurs in about 13% of lung adenocarcinomas.", "d_krasi", "KRAS G12C inhibitors", "Covalent GTPase inhibitors", "sotorasib, adagrasib", "KRAS G12C non-small-cell lung cancer after earlier therapy, and colorectal cancer with an anti-EGFR antibody. Adverse effects: diarrhoea, nausea, hepatotoxicity, QT prolongation (adagrasib).", "inhibit", "Bind the mutant cysteine covalently and trap KRAS in its inactive, GDP-bound state.", ["pm"]],
+  ["on", "t_braf", "BRAF V600E", "enzyme", "BRAF", "Serine/threonine kinase of the MAPK cascade (RAS → RAF → MEK → ERK); V600E makes it active without RAS. Found in half of melanomas, hairy cell leukemia, and some thyroid, colorectal and lung cancers.", "d_brafi", "BRAF inhibitors", "-rafenibs", "dabrafenib, vemurafenib, encorafenib", "BRAF V600-mutant melanoma, non-small-cell lung cancer and anaplastic thyroid cancer, always paired with a MEK inhibitor; encorafenib with cetuximab in colorectal cancer. Adverse effects: cutaneous squamous cell carcinoma and keratoacanthoma (paradoxical MAPK activation in BRAF wild-type cells, fewer with a MEK inhibitor), photosensitivity (vemurafenib), fever (dabrafenib), arthralgia.", "inhibit", "Block the mutant kinase, so ERK signalling falls.", ["cyt"]],
+  ["on", "t_mek", "MEK1/2", "enzyme", "MAP2K1, MAP2K2", "Dual-specificity kinases between RAF and ERK in the MAPK cascade.", "d_meki", "MEK inhibitors", "-metinibs", "trametinib, cobimetinib, binimetinib, selumetinib", "With a BRAF inhibitor in BRAF-mutant melanoma, lung and thyroid cancers; selumetinib for plexiform neurofibromas in neurofibromatosis type 1. Adverse effects: acneiform rash, diarrhoea, reduced ejection fraction, serous retinopathy and retinal vein occlusion, raised CK.", "inhibit", "Allosteric inhibition outside the ATP site, so ERK is not phosphorylated.", ["cyt"]],
+  ["on", "t_pi3k", "PI3K (class I)", "enzyme", "PIK3CA (p110α), PIK3CD (p110δ)", "Lipid kinases that make PIP₃ and switch on AKT and mTOR downstream of growth-factor receptors; PIK3CA is mutated in about 40% of hormone-receptor-positive breast cancers.", "d_pi3ki", "PI3K inhibitors", "-lisibs", "alpelisib, inavolisib (p110α); idelalisib, duvelisib (p110δ)", "Alpelisib and inavolisib with endocrine therapy in PIK3CA-mutant breast cancer; idelalisib and duvelisib in relapsed CLL and follicular lymphoma. Adverse effects: hyperglycemia (PI3K carries the insulin signal), rash, diarrhoea; colitis, hepatotoxicity, pneumonitis and serious infection with the δ inhibitors.", "inhibit", "Block PIP₃ formation, so AKT is not activated.", ["cyt"]],
+  ["on", "t_mtor", "mTOR (mTORC1)", "enzyme", "MTOR", "Serine/threonine kinase that senses growth factors, amino acids and energy and drives protein synthesis and cell growth downstream of PI3K–AKT.", "d_mtori", "mTOR inhibitors", "Rapalogs", "everolimus, temsirolimus (sirolimus as an immunosuppressant)", "Renal cell carcinoma, hormone-receptor-positive breast cancer (everolimus with exemestane), pancreatic neuroendocrine tumours, and the tumours of tuberous sclerosis (subependymal giant-cell astrocytoma, angiomyolipoma). Adverse effects: stomatitis, non-infectious pneumonitis, hyperglycemia and hyperlipidemia, infection, poor wound healing.", "inhibit", "Bind FKBP12, and the complex blocks mTORC1, so protein synthesis and proliferation fall.", ["cyt"]],
+  ["on", "t_jak", null, null, null, null, "d_ruxo", "JAK2 inhibitors for myeloproliferative neoplasms", "Tyrosine kinase inhibitors", "ruxolitinib, fedratinib, pacritinib, momelotinib", "Myelofibrosis (smaller spleen, fewer symptoms) and polycythemia vera resistant to hydroxyurea; ruxolitinib also for steroid-refractory graft-versus-host disease. JAK2 V617F drives most of these neoplasms. Adverse effects: anemia and thrombocytopenia, infection (herpes zoster), symptom rebound on stopping; Wernicke encephalopathy with fedratinib (check thiamine).", "inhibit", "Block JAK2 (and JAK1) whether or not it carries V617F, so STAT signalling and cytokine release fall.", null],
+  ["on", "t_btk", "Bruton tyrosine kinase", "enzyme", "BTK", "Cytoplasmic kinase that carries B-cell receptor signals for B-cell survival and proliferation; loss-of-function mutations cause X-linked agammaglobulinemia.", "d_btki", "BTK inhibitors", "-brutinibs", "ibrutinib, acalabrutinib, zanubrutinib, pirtobrutinib", "Chronic lymphocytic leukemia, mantle cell lymphoma, Waldenström macroglobulinemia, marginal zone lymphoma; continuous oral therapy. A transient rise in lymphocytes early on is expected. Adverse effects: atrial fibrillation, bleeding (impaired platelet function), hypertension, infection, arthralgia, diarrhoea; fewer cardiac effects with the second-generation drugs.", "inhibit", "Covalent binding to Cys481 (pirtobrutinib binds reversibly), so B-cell receptor signalling stops.", ["cyt"]],
+  ["on", "t_flt3", "FLT3", "receptor", "FLT3", "Receptor tyrosine kinase of hematopoietic progenitors. Internal tandem duplications (ITD) or kinase-domain mutations occur in about 30% of acute myeloid leukemias and worsen the prognosis.", "d_flt3i", "FLT3 inhibitors", "Tyrosine kinase inhibitors", "midostaurin, quizartinib, gilteritinib", "Midostaurin or quizartinib with induction chemotherapy in newly diagnosed FLT3-mutant AML; gilteritinib alone for relapsed disease. Adverse effects: myelosuppression, QT prolongation (quizartinib), differentiation syndrome and raised liver enzymes (gilteritinib), nausea.", "inhibit", "Block the constitutively active receptor kinase.", ["pm"]],
+  ["on", "t_smo", "Smoothened", "receptor", "SMO", "Seven-pass membrane protein of the Hedgehog pathway; when the inhibitory receptor PTCH1 is lost, as in basal cell carcinoma and some medulloblastomas, it signals unchecked.", "d_smoi", "Hedgehog pathway inhibitors", "Smoothened antagonists", "vismodegib, sonidegib, glasdegib", "Locally advanced or metastatic basal cell carcinoma (vismodegib, sonidegib); glasdegib with low-dose cytarabine in AML. Adverse effects: muscle spasms, loss of taste, alopecia, weight loss; embryo–fetal death and birth defects, so pregnancy prevention is required.", "inhibit", "Block Smoothened, so the GLI transcription factors stay off.", ["pm"]],
+  // angiogenesis
+  ["on", "t_vegf", "VEGF-A", "ligand", "VEGFA", "Growth factor that tumours release under hypoxia to grow new blood vessels; it also keeps normal capillaries and glomeruli healthy.", "d_vegfmab", "Anti-VEGF agents", "Monoclonal antibodies, decoy receptor", "bevacizumab, ramucirumab (anti-VEGFR2), ziv-aflibercept", "Metastatic colorectal cancer, non-small-cell lung, renal, ovarian and cervical cancers, glioblastoma, and with atezolizumab in hepatocellular carcinoma; intravitreal anti-VEGF drugs treat wet macular degeneration. Adverse effects: hypertension, proteinuria, bleeding, arterial thrombosis, GI perforation and poor wound healing (stop before surgery), posterior reversible encephalopathy.", "inhibit", "Bind VEGF (ramucirumab its receptor), so new vessels do not form and abnormal tumour vessels regress.", ["ext"]],
+  ["on", "t_vegfr", "VEGF receptors (multikinase)", "receptor", "KDR (VEGFR2), FLT1, FLT4; also PDGFR, KIT, RET, MET", "Receptor tyrosine kinases on endothelium that carry the VEGF signal; most drugs that block them also hit PDGFR, KIT and other kinases.", "d_mki", "Multikinase inhibitors", "Anti-angiogenic -tinibs", "sunitinib, sorafenib, pazopanib, axitinib, cabozantinib, lenvatinib, regorafenib", "Renal cell carcinoma, hepatocellular carcinoma (sorafenib, lenvatinib, cabozantinib), thyroid cancer (lenvatinib, cabozantinib), gastrointestinal stromal tumour (sunitinib, regorafenib) and colorectal cancer (regorafenib). Adverse effects: hypertension, hand–foot skin reaction, diarrhoea, fatigue, hypothyroidism, proteinuria, hepatotoxicity, bleeding, poor wound healing, cardiac dysfunction.", "inhibit", "ATP-competitive inhibition of VEGFR and related kinases on endothelium and tumour cells.", ["pm"]],
+  // apoptosis, DNA repair, protein turnover
+  ["on", "t_bcl2", "BCL-2", "sigprot", "BCL2", "Anti-apoptotic protein of the outer mitochondrial membrane that holds BAX and BAK in check; overexpressed in CLL and in follicular lymphoma with t(14;18).", "d_venet", "BCL-2 inhibitor", "BH3 mimetic", "venetoclax", "Chronic lymphocytic leukemia (fixed duration, with obinutuzumab or a BTK inhibitor) and AML in older or unfit patients (with azacitidine or decitabine). In CLL the dose is ramped up over 5 weeks with hydration and allopurinol, because tumour lysis can be abrupt. Adverse effects: tumour lysis syndrome, neutropenia, infection; many CYP3A4 interactions (azoles).", "inhibit", "Occupies the BH3 groove of BCL-2, freeing BAX and BAK to open the mitochondrial membrane and start apoptosis.", ["mit"]],
+  ["on", "t_parp", "PARP1/2", "enzyme", "PARP1, PARP2", "Poly(ADP-ribose) polymerases that use NAD⁺ to flag single-strand DNA breaks and recruit base-excision repair. Cells without BRCA1 or BRCA2 (homologous recombination) lean on them.", "d_parpi", "PARP inhibitors", "-paribs", "olaparib, niraparib, rucaparib, talazoparib", "Maintenance in ovarian cancer after a response to platinum, and BRCA-mutated breast, pancreatic and prostate cancers: synthetic lethality, since tumour cells without BRCA cannot repair the double-strand breaks that follow. Adverse effects: anemia and other cytopenias, nausea, fatigue, rare myelodysplastic syndrome and AML, hypertension (niraparib).", "inhibit", "Block the catalytic site and trap PARP on DNA, so unrepaired single-strand breaks become double-strand breaks at replication forks.", ["nuc"]],
+  ["on", "t_prot", "26S proteasome", "enzyme", "PSMB5 (β5, chymotrypsin-like site)", "Barrel-shaped protease complex that destroys ubiquitin-tagged proteins. Myeloma cells, which make huge amounts of immunoglobulin, depend on it heavily.", "d_protinh", "Proteasome inhibitors", "-zomibs", "bortezomib, carfilzomib, ixazomib", "Multiple myeloma (a backbone of induction) and mantle cell lymphoma. Adverse effects: peripheral neuropathy (bortezomib; less when given subcutaneously), herpes zoster reactivation (give acyclovir prophylaxis), thrombocytopenia; heart failure, hypertension and kidney injury with carfilzomib.", "inhibit", "Block protein breakdown, so misfolded proteins pile up (ER stress) and NF-κB stays inactive: the cell undergoes apoptosis.", ["cyt", "nuc"]],
+  ["on", "t_crbn", "Cereblon (CRL4 E3 ligase)", "enzyme", "CRBN", "Substrate receptor of a cullin-RING ubiquitin ligase. The drugs act as molecular glue, redirecting it to tag the transcription factors Ikaros and Aiolos (IKZF1/3) and, in del(5q) MDS, casein kinase 1α for destruction.", "d_imid", "Immunomodulatory drugs (IMiDs)", "Thalidomide analogues", "lenalidomide, pomalidomide, thalidomide", "Multiple myeloma (induction and maintenance), del(5q) myelodysplastic syndrome (lenalidomide), erythema nodosum leprosum (thalidomide). Adverse effects: severe teratogenicity (phocomelia; restricted prescribing programmes), venous thromboembolism (aspirin or anticoagulant prophylaxis), myelosuppression, rash; neuropathy, constipation and sedation with thalidomide.", "activate", "Bind cereblon and reprogram the ligase to degrade Ikaros and Aiolos, so myeloma cells die and T and NK cells are stimulated.", ["nuc"]],
+  // differentiation and epigenetic therapy
+  ["on", "t_idh", "Mutant IDH1/IDH2", "enzyme", "IDH1 (cytosol), IDH2 (mitochondria)", "Mutant isocitrate dehydrogenase gains a new reaction, reducing α-ketoglutarate to the oncometabolite 2-hydroxyglutarate, which blocks α-KG-dependent DNA and histone demethylases and stops cells differentiating. Found in AML, glioma and cholangiocarcinoma.", "d_idhi", "IDH inhibitors", "Mutant-selective inhibitors", "ivosidenib, olutasidenib (IDH1); enasidenib (IDH2); vorasidenib (IDH1/2)", "IDH-mutant AML (alone or with azacitidine), cholangiocarcinoma (ivosidenib), and grade 2 glioma (vorasidenib, which enters the brain). Adverse effects: differentiation syndrome (fever, dyspnoea, pulmonary infiltrates, oedema; treat with dexamethasone), leukocytosis, QT prolongation (ivosidenib), unconjugated hyperbilirubinemia (enasidenib), raised liver enzymes.", "inhibit", "Block the mutant enzyme, so 2-hydroxyglutarate falls and blasts mature.", ["cyt", "mit"]],
+  ["on", "t_menin", "Menin", "sigprot", "MEN1", "Scaffold protein that binds KMT2A (MLL). In KMT2A-rearranged and NPM1-mutant acute leukemias the complex keeps HOXA and MEIS1 genes on and blocks differentiation.", "d_menini", "Menin inhibitors", "Menin–KMT2A blockers", "revumenib, ziftomenib", "Relapsed or refractory KMT2A-rearranged acute leukemia and NPM1-mutant AML. Adverse effects: differentiation syndrome, QT prolongation, nausea, cytopenias.", "inhibit", "Block menin from binding KMT2A, so the leukemic gene programme switches off and blasts differentiate.", ["nuc"]],
+  ["on", "t_rara", "PML::RARA (RARα fusion)", "receptor", "PML::RARA, t(15;17)", "Fusion of PML with retinoic acid receptor α that represses myeloid differentiation genes even at normal retinoic acid levels; it defines acute promyelocytic leukemia (APL).", "d_apl", "APL differentiation agents", "Retinoid and arsenical", "tretinoin (all-trans retinoic acid, ATRA), arsenic trioxide", "Together they cure most APL without conventional chemotherapy. Start ATRA as soon as APL is suspected, because APL causes disseminated intravascular coagulation. Adverse effects: differentiation syndrome (treat with dexamethasone), pseudotumour cerebri and hypertriglyceridemia (ATRA), QT prolongation (arsenic: keep K⁺ and Mg²⁺ normal), teratogenicity.", "alter", "High-dose ATRA lifts the repression and arsenic targets PML for degradation, so the fusion protein is destroyed and promyelocytes mature.", ["nuc"]],
+  ["on", "t_hdac", "Histone deacetylases", "enzyme", "HDAC1–3, HDAC6", "Remove acetyl groups from histone lysines, condensing chromatin and silencing genes, including tumour suppressors.", "d_hdaci", "HDAC inhibitors", "Epigenetic drugs", "vorinostat, romidepsin, belinostat", "Cutaneous T-cell lymphoma (vorinostat, romidepsin) and peripheral T-cell lymphoma (belinostat). Adverse effects: fatigue, nausea, thrombocytopenia, QT changes, thrombosis.", "inhibit", "Histones stay acetylated, so silenced genes are expressed and the cells arrest or die.", ["nuc"]],
+  // immunotherapy: checkpoints, cell-surface antigens, T-cell engagers and CAR T cells
+  ["on", "t_pd1", "PD-1 / PD-L1", "receptor", "PDCD1, CD274", "Immune checkpoint: PD-L1 on tumour and other cells binds PD-1 on activated T cells and switches them off. It protects healthy tissue but lets tumours escape.", "d_pd1", "PD-1 and PD-L1 inhibitors", "Immune checkpoint inhibitors", "pembrolizumab, nivolumab, cemiplimab, dostarlimab (anti-PD-1); atezolizumab, durvalumab, avelumab (anti-PD-L1)", "Melanoma, non-small-cell lung, renal, bladder, head-and-neck, hepatocellular and many other cancers, Hodgkin lymphoma, and any mismatch-repair-deficient (MSI-high) tumour; responses can last years. Immune-related adverse effects can hit any organ: colitis, hepatitis, pneumonitis, dermatitis, thyroiditis and hypothyroidism, hypophysitis, adrenal insufficiency, type 1 diabetes, nephritis, and rare but often fatal myocarditis. Hold the drug and give glucocorticoids for moderate or severe events.", "inhibit", "Block the PD-1–PD-L1 interaction, so exhausted T cells resume killing tumour cells.", ["pm"]],
+  ["on", "t_ctla4", "CTLA-4", "receptor", "CTLA4", "Checkpoint receptor on T cells that outcompetes CD28 for B7 (CD80/86) on antigen-presenting cells, damping T-cell priming in lymph nodes; regulatory T cells express it constantly.", "d_ctla4", "CTLA-4 inhibitors", "Immune checkpoint inhibitors", "ipilimumab, tremelimumab", "Melanoma, renal cell carcinoma, MSI-high colorectal cancer, mesothelioma, hepatocellular carcinoma and others, usually with a PD-1 or PD-L1 inhibitor. Immune-related adverse effects are more frequent than with PD-1 blockade alone, especially colitis, hepatitis, dermatitis and hypophysitis.", "inhibit", "Blocks CTLA-4, so CD28 co-stimulation goes ahead and more T cells are primed against the tumour.", ["pm"]],
+  ["on", "t_cd19", "CD19", "receptor", "CD19", "B-cell co-receptor present from the pro-B to the mature B-cell stage and on most B-cell leukemias and lymphomas.", "d_cd19", "CD19-directed therapies", "Bispecific T-cell engager, CAR T cells", "blinatumomab; tisagenlecleucel, axicabtagene ciloleucel, lisocabtagene maraleucel, brexucabtagene autoleucel", "B-cell acute lymphoblastic leukemia, including measurable residual disease (blinatumomab), and relapsed large B-cell, follicular and mantle cell lymphomas (CAR T cells). Adverse effects: cytokine release syndrome (fever, hypotension, hypoxia; treat with tocilizumab and steroids), immune effector cell-associated neurotoxicity (ICANS), B-cell aplasia with hypogammaglobulinemia, prolonged cytopenias, rare T-cell lymphoma after CAR T.", "inhibit", "Blinatumomab bridges CD19 on the B cell to CD3 on a T cell; CAR T cells recognise CD19 directly. Either way, T cells kill the B cells.", ["pm"]],
+  ["on", "t_cd30", "CD30", "receptor", "TNFRSF8", "TNF-receptor family member on the Reed–Sternberg cells of Hodgkin lymphoma and on anaplastic large-cell lymphoma.", "d_brentux", "Brentuximab vedotin", "Antibody–drug conjugate", "brentuximab vedotin", "Hodgkin lymphoma (first-line with chemotherapy, or at relapse) and CD30-positive T-cell lymphomas. Adverse effects: peripheral neuropathy (from the payload, monomethyl auristatin E), neutropenia, rare progressive multifocal leukoencephalopathy; never with bleomycin (pulmonary toxicity).", "inhibit", "Binds CD30, is taken into the cell and releases its microtubule toxin, so the cell arrests in mitosis.", ["pm"]],
+  ["on", "t_cd38", "CD38", "receptor", "CD38", "Ectoenzyme (NAD⁺ glycohydrolase) present at high levels on myeloma plasma cells and at lower levels on red cells and NK cells.", "d_cd38", "Anti-CD38 antibodies", "Monoclonal antibodies", "daratumumab, isatuximab", "Multiple myeloma at every stage, with IMiDs, proteasome inhibitors or steroids; daratumumab also treats AL amyloidosis. Adverse effects: infusion reactions (premedicate; fewer with subcutaneous daratumumab), infection, neutropenia. Binding to red cells makes the indirect antiglobulin test positive and interferes with crossmatching, so type and screen before the first dose.", "inhibit", "Kill plasma cells by complement, antibody-dependent cytotoxicity and phagocytosis.", ["pm"]],
+  ["on", "t_bcma", "BCMA", "receptor", "TNFRSF17", "B-cell maturation antigen: a receptor for BAFF and APRIL that keeps plasma cells alive; present on nearly all myeloma cells.", "d_bcma", "BCMA-directed therapies", "Bispecific antibodies, CAR T cells", "teclistamab, elranatamab, linvoseltamab; idecabtagene vicleucel, ciltacabtagene autoleucel", "Relapsed or refractory multiple myeloma after several lines of therapy. Adverse effects: cytokine release syndrome, neurotoxicity (including delayed parkinsonism with ciltacabtagene), severe infection and hypogammaglobulinemia (give immune globulin), cytopenias.", "inhibit", "Bridge BCMA on myeloma cells to CD3 on T cells (bispecifics), or arm the patient's own T cells to recognise BCMA (CAR T), so plasma cells are killed.", ["pm"]],
   // ---- Immune hub: the five immunoglobulin classes, then the drugs that supply, lower or block antibody ----
   ["im", "t_igg", "IgG", "antibody", "IGHG1–4", "The commonest class, about 75% of serum immunoglobulin, in four subclasses. It carries the secondary (memory) response, is the only class that crosses the placenta, and is the class of most pathogenic autoantibodies.", "d_ivig", "Immune globulin (IVIG, SCIG)", "Pooled human IgG", "immune globulin intravenous (IVIG), subcutaneous immune globulin (SCIG)", "Replacement in primary antibody deficiency (agammaglobulinaemia, common variable immunodeficiency), given every 3–4 weeks IV or weekly SC. At high dose it is immunomodulatory in immune thrombocytopenia, Kawasaki disease (with aspirin), Guillain–Barré syndrome, CIDP and myasthenic crisis. Adverse effects: infusion reactions, headache and aseptic meningitis, thrombosis, haemolysis, kidney injury with sucrose-stabilised products, volume load; anaphylaxis in IgA deficiency with anti-IgA antibodies.", "activate", "Supplies pooled IgG. At high dose it is thought to saturate FcRn, so the patient's own IgG is cleared faster, and to block Fc receptors on macrophages.", ["ext"]],
   ["im", "t_igg", null, null, null, null, "d_hig", "Hyperimmune globulins", "Passive immunisation", "anti-D immune globulin (RhoGAM), hepatitis B immune globulin, rabies immune globulin, tetanus immune globulin, varicella-zoster immune globulin, botulism immune globulin (BabyBIG)", "Concentrated IgG from donors with a high titre to one antigen. Given for immediate protection after exposure, when a vaccine would act too slowly. Anti-D stops an Rh-negative mother making her own anti-D by clearing fetal D-positive cells: give at 28 weeks and within 72 hours of delivery or a sensitising event. Protection wanes over weeks to months.", "activate", "Supplies IgG specific for one pathogen, toxin or antigen: passive immunity.", null],
@@ -1838,9 +2081,75 @@ const ORGAN_RX = [
   ["im", "t_fcrn", "Neonatal Fc receptor (FcRn)", "receptor", "FCGRT", "MHC class I-like receptor in the endosomes of endothelium and other cells. It binds IgG and albumin at acidic pH and returns them to the surface, rescuing them from lysosomal breakdown; this gives IgG its half-life of about 3 weeks. In the placenta it carries IgG to the fetus.", "d_fcrni", "FcRn blockers", "IgG-lowering agents", "efgartigimod, rozanolixizumab", "Generalised myasthenia gravis with anti-acetylcholine-receptor antibodies (efgartigimod also for CIDP). Adverse effects: infections, headache. Total IgG falls, autoantibody included, but IgM, IgA and IgE do not.", "inhibit", "Occupy FcRn, so endocytosed IgG goes to the lysosome and is degraded rather than recycled.", ["pm"]],
   ["im", "t_cd20", "CD20", "receptor", "MS4A1", "Membrane protein on B cells from the pre-B to the memory stage. It is absent from stem cells and from plasma cells, so antibody-secreting cells survive depletion of their precursors.", "d_cd20", "Anti-CD20 antibodies", "B-cell-depleting monoclonals", "rituximab, ocrelizumab, ofatumumab, obinutuzumab", "Rituximab: B-cell lymphoma and CLL, rheumatoid arthritis, ANCA vasculitis, pemphigus, and off-label for many autoantibody diseases; ocrelizumab and ofatumumab for multiple sclerosis. Adverse effects: infusion reactions, hypogammaglobulinaemia, hepatitis B reactivation, PML.", "inhibit", "Bind CD20 and deplete B cells by complement, antibody-dependent cytotoxicity and apoptosis. Because plasma cells lack CD20, serum IgG falls only slowly.", ["pm"]],
   ["im", "t_baff", "BAFF (BLyS)", "ligand", "TNFSF13B", "TNF-family cytokine from myeloid cells that keeps B cells alive and lets autoreactive B cells escape deletion. Raised in systemic lupus erythematosus.", "d_belim", "Anti-BAFF antibody", "B-cell survival blocker", "belimumab", "Add-on therapy in SLE and lupus nephritis; lowers anti-dsDNA antibodies and raises complement. Adverse effects: infusion reactions, infection, depression and suicidality warning.", "inhibit", "Binds soluble BAFF, so B cells lose a survival signal and fewer become plasma cells.", ["ext"]],
+  // ---- Anti-infective hub: antimicrobial chemotherapy by organism and site (bacteria, mycobacteria, fungi, viruses, parasites) ----
+  // bacterial cell wall
+  ["ai", "t_pbp", "Penicillin-binding proteins (transpeptidases)", "enzyme", "PBP1–3; PBP2a (mecA) in MRSA", "Membrane-anchored enzymes that cross-link peptidoglycan by joining the D-Ala-D-Ala end of one stem peptide to its neighbour. Human cells have no peptidoglycan, which is why β-lactams are so selective. MRSA makes PBP2a, which most β-lactams cannot bind.", "d_pen", "Penicillins", "Natural and penicillinase-resistant β-lactams", "penicillin G, penicillin V, benzathine penicillin G, nafcillin, oxacillin, dicloxacillin", "Penicillin G and V: streptococci, syphilis (benzathine penicillin G), meningococcus, clostridia, actinomyces. Nafcillin, oxacillin and dicloxacillin resist staphylococcal penicillinase and treat methicillin-sensitive Staphylococcus aureus (MSSA); nafcillin and oxacillin are cleared by the liver. Adverse effects: hypersensitivity of all four types (anaphylaxis, rash, interstitial nephritis, hemolytic anemia), seizures at very high dose, Jarisch–Herxheimer reaction when treating syphilis.", "inhibit", "Acylate the transpeptidase active-site serine irreversibly, so cross-links fail and autolysins lyse the growing cell (bactericidal).", ["pth"]],
+  ["ai", "t_pbp", null, null, null, null, "d_aminopen", "Aminopenicillins and antipseudomonal penicillins", "Extended-spectrum penicillins", "ampicillin, amoxicillin, piperacillin (with clavulanate, sulbactam or tazobactam)", "Wider Gram-negative cover: amoxicillin for otitis media, sinusitis, Lyme disease and H. pylori; ampicillin for Listeria and enterococci; piperacillin–tazobactam for Pseudomonas and mixed hospital infections. β-Lactamases destroy them unless an inhibitor is added. Adverse effects: hypersensitivity, a rash when ampicillin or amoxicillin is given in infectious mononucleosis, Clostridioides difficile diarrhoea.", "inhibit", "Same transpeptidase block; a more hydrophilic side chain lets them through Gram-negative porins.", null],
+  ["ai", "t_pbp", null, null, null, null, "d_ceph", "Cephalosporins", "β-Lactams, generations 1–5", "cefazolin, cephalexin (1st); cefuroxime, cefoxitin (2nd); ceftriaxone, cefotaxime, ceftazidime (3rd); cefepime (4th); ceftaroline (5th)", "Gram-negative cover widens with each generation. Cefazolin: surgical prophylaxis and MSSA. Ceftriaxone: meningitis, gonorrhoea, Lyme carditis, community-acquired pneumonia. Ceftazidime and cefepime: Pseudomonas. Ceftaroline binds PBP2a, so it treats MRSA. None covers the LAME organisms: Listeria, atypicals (Chlamydia, Mycoplasma), MRSA (except ceftaroline) and enterococci. Adverse effects: hypersensitivity (little cross-reaction with penicillin allergy), vitamin K deficiency and a disulfiram-like reaction with cefotetan, biliary sludge with ceftriaxone, C. difficile.", "inhibit", "Acylate transpeptidases; they resist many β-lactamases, but extended-spectrum β-lactamases (ESBLs) hydrolyse them.", null],
+  ["ai", "t_pbp", null, null, null, null, "d_carba", "Carbapenems and monobactams", "β-Lactamase-stable β-lactams", "imipenem (with cilastatin), meropenem, ertapenem, aztreonam", "Carbapenems are the broadest β-lactams: Gram-positives, Gram-negatives including ESBL producers, and anaerobes; ertapenem misses Pseudomonas. Cilastatin blocks the renal dehydropeptidase I that inactivates imipenem. Seizures, most with imipenem. Aztreonam binds PBP3 of Gram-negative aerobes only; it is safe in penicillin allergy (cross-reacts only with ceftazidime, which shares its side chain) and synergistic with aminoglycosides.", "inhibit", "Acylate PBPs; their structure resists most β-lactamases, though carbapenemases (KPC, NDM, OXA-48) break them down.", null],
+  ["ai", "t_blact", "β-Lactamases", "enzyme", "TEM, SHV, CTX-M (ESBL), AmpC, KPC, NDM, OXA-48", "Bacterial enzymes that open the β-lactam ring before the drug reaches the PBPs: they sit in the periplasm of Gram-negatives and are secreted by staphylococci. Plasmid-borne genes spread resistance between species.", "d_bli", "β-Lactamase inhibitors", "Given with a β-lactam partner", "clavulanate, sulbactam, tazobactam, avibactam, vaborbactam, relebactam", "Partnered as amoxicillin–clavulanate, ampicillin–sulbactam and piperacillin–tazobactam; the newer ceftazidime–avibactam, meropenem–vaborbactam and imipenem–relebactam cover KPC-producing Enterobacterales. Little antibacterial action of their own (sulbactam kills Acinetobacter). None of these inhibits metallo-β-lactamases such as NDM.", "inhibit", "Bind the β-lactamase active site and inactivate it, so the partner β-lactam survives to reach the PBPs.", ["pth"]],
+  ["ai", "t_dala", "D-Ala-D-Ala (peptidoglycan precursor)", "metabolite", "Lipid II pentapeptide terminus", "The last two residues of the stem peptide on each new peptidoglycan building block; transglycosylases and transpeptidases use it to extend and cross-link the wall. vanA enterococci swap it for D-Ala-D-Lac, which vancomycin binds about a thousand times less tightly.", "d_glyco", "Glycopeptides", "Cell-wall synthesis inhibitors", "vancomycin, telavancin, dalbavancin, oritavancin", "Gram-positives only, because the molecule is too large to cross the outer membrane: MRSA, Staphylococcus epidermidis, enterococci, and oral vancomycin (not absorbed) for C. difficile. Dose intravenous vancomycin by trough or AUC levels. Adverse effects: infusion-rate flushing (vancomycin infusion reaction, formerly red man syndrome; slow the infusion and give an antihistamine), nephrotoxicity (worse with aminoglycosides or piperacillin–tazobactam), ototoxicity, DRESS.", "inhibit", "Binds D-Ala-D-Ala, so new building blocks cannot be polymerised or cross-linked.", ["pth"]],
+  ["ai", "t_mura", "MurA (UDP-GlcNAc enolpyruvyl transferase)", "enzyme", "murA", "First committed cytoplasmic step of peptidoglycan synthesis: transfers enolpyruvate from phosphoenolpyruvate to UDP-N-acetylglucosamine.", "d_fosfo", "Fosfomycin", "Phosphonic acid antibiotic", "fosfomycin trometamol", "A single oral dose for uncomplicated cystitis, including ESBL-producing E. coli; intravenous use for multidrug-resistant infection in some countries. Bacteria take it up on their glycerol-3-phosphate and glucose-6-phosphate transporters. Adverse effects: diarrhoea, nausea. Resistance emerges quickly when used alone in systemic infection.", "inhibit", "A phosphoenolpyruvate analogue that alkylates the active-site cysteine of MurA.", ["pth"]],
+  // bacterial membranes
+  ["ai", "t_lps", "Lipid A (Gram-negative outer membrane)", "metabolite", "Lipopolysaccharide anchor", "Phosphorylated glycolipid that anchors lipopolysaccharide in the outer leaflet of the Gram-negative outer membrane; Mg²⁺ and Ca²⁺ bridge its phosphates. It is also endotoxin, which triggers septic shock through TLR4.", "d_polymyx", "Polymyxins", "Cationic peptide antibiotics", "colistin (polymyxin E), polymyxin B", "Last-resort drugs for multidrug-resistant Pseudomonas, Acinetobacter and carbapenem-resistant Enterobacterales; polymyxin B in topical ointments. Adverse effects: nephrotoxicity, neurotoxicity (paresthesia, neuromuscular blockade with respiratory arrest). The plasmid gene mcr-1 gives resistance by modifying lipid A.", "alter", "Displace Mg²⁺ and Ca²⁺ from lipid A and insert like a detergent, so the outer and inner membranes leak (bactericidal).", ["pth"]],
+  ["ai", "t_gpmem", "Gram-positive cytoplasmic membrane", "metabolite", "Phosphatidylglycerol-rich bilayer", "The membrane under the thick Gram-positive wall; its potential powers transport and wall synthesis.", "d_dapto", "Daptomycin", "Cyclic lipopeptide", "daptomycin", "MRSA and vancomycin-resistant enterococcal bacteremia, right-sided endocarditis and complicated skin infection. Not for pneumonia: pulmonary surfactant inactivates it. Adverse effects: myopathy and rhabdomyolysis (check CK weekly and pause statins), eosinophilic pneumonia.", "alter", "Inserts into the membrane in a calcium-dependent way and forms channels, so K⁺ leaks out, the membrane depolarises and the cell dies.", ["pth"]],
+  // bacterial protein synthesis (70S ribosome)
+  ["ai", "t_r30", "Bacterial 30S ribosomal subunit", "ribosome", "16S rRNA + 21 proteins", "Small subunit of the bacterial 70S ribosome; it decodes mRNA and checks codon–anticodon pairing. Human cytoplasmic ribosomes are 80S (40S + 60S), but mitochondrial ribosomes resemble bacterial ones, which explains some toxicities.", "d_amino", "Aminoglycosides", "30S inhibitors (bactericidal)", "gentamicin, tobramycin, amikacin, streptomycin, neomycin, plazomicin", "Severe aerobic Gram-negative infection (sepsis, Pseudomonas), synergy with a β-lactam or vancomycin in endocarditis, streptomycin for tuberculosis and plague, oral neomycin for bowel preparation and hepatic encephalopathy. Uptake needs oxygen, so anaerobes are resistant. Once-daily dosing exploits concentration-dependent killing and the post-antibiotic effect; monitor levels. Adverse effects: nephrotoxicity (acute tubular necrosis), ototoxicity (cochlear and vestibular, worse with loop diuretics), neuromuscular blockade, teratogenicity.", "inhibit", "Bind 16S rRNA, blocking the initiation complex and causing misreading; faulty proteins insert into the membrane and the cell dies.", ["pth"]],
+  ["ai", "t_r30", null, null, null, null, "d_tetra", "Tetracyclines and glycylcyclines", "30S inhibitors (bacteriostatic)", "doxycycline, minocycline, tetracycline, tigecycline, omadacycline", "Rickettsiae (Rocky Mountain spotted fever), Borrelia (Lyme disease), Chlamydia, Mycoplasma, community MRSA skin infection, acne, cholera, anthrax; doxycycline is not cleared by the kidney. Tigecycline evades tetracycline efflux pumps. Milk, antacids and iron chelate them and block absorption. Adverse effects: tooth discolouration and impaired bone growth in children under 8 and in pregnancy, photosensitivity, pill oesophagitis, hepatotoxicity; vertigo and hyperpigmentation with minocycline.", "inhibit", "Stop aminoacyl-tRNA from binding the A site, so elongation stops.", null],
+  ["ai", "t_r50", "Bacterial 50S ribosomal subunit", "ribosome", "23S + 5S rRNA + 33 proteins", "Large subunit of the 70S ribosome: its peptidyl transferase centre joins amino acids, and the new chain leaves through its exit tunnel.", "d_macro", "Macrolides", "50S inhibitors", "azithromycin, clarithromycin, erythromycin", "Atypical pneumonia (Mycoplasma, Chlamydophila, Legionella), streptococcal infection in penicillin allergy, pertussis, Chlamydia trachomatis (single-dose azithromycin), Mycobacterium avium complex, H. pylori (clarithromycin). Erythromycin is a motilin agonist, used as a prokinetic. Adverse effects: GI upset, QT prolongation, cholestatic hepatitis, infantile hypertrophic pyloric stenosis; erythromycin and clarithromycin inhibit CYP3A4. Resistance: 23S rRNA methylation (erm) or efflux.", "inhibit", "Bind 23S rRNA in the exit tunnel and block translocation, so the growing chain stalls (bacteriostatic).", ["pth"]],
+  ["ai", "t_r50", null, null, null, null, "d_clinda", "Lincosamides", "50S inhibitor", "clindamycin", "Anaerobes above the diaphragm (aspiration pneumonia, lung abscess, dental infection), community MRSA skin infection, and toxin suppression in necrotising fasciitis and toxic shock (with a β-lactam). Adverse effects: C. difficile colitis (one of the highest risks of any antibiotic), rash.", "inhibit", "Binds 23S rRNA and blocks peptide transfer and translocation, so toxin production stops quickly.", null],
+  ["ai", "t_r50", null, null, null, null, "d_linez", "Oxazolidinones", "50S initiation inhibitors", "linezolid, tedizolid", "MRSA and vancomycin-resistant enterococci, including pneumonia; fully bioavailable by mouth; part of regimens for drug-resistant tuberculosis. Adverse effects: myelosuppression (mostly thrombocytopenia) after about 2 weeks, peripheral and optic neuropathy, lactic acidosis, serotonin syndrome with SSRIs (weak MAO inhibition).", "inhibit", "Bind 23S rRNA and stop the 70S initiation complex from forming.", null],
+  ["ai", "t_r50", null, null, null, null, "d_chloram", "Chloramphenicol", "50S inhibitor", "chloramphenicol", "Now kept mainly for bacterial meningitis and rickettsial disease where nothing else is available, because of toxicity. Adverse effects: dose-related anemia and rare idiosyncratic aplastic anemia; gray baby syndrome in neonates, who lack the UDP-glucuronosyltransferase that clears it.", "inhibit", "Blocks peptidyl transferase, so peptide bonds are not made (bacteriostatic).", null],
+  // bacterial nucleic acids
+  ["ai", "t_gyrase", "DNA gyrase and topoisomerase IV", "enzyme", "gyrA/gyrB, parC/parE", "Bacterial type II topoisomerases. Gyrase adds negative supercoils ahead of the replication fork (main target in Gram-negatives); topoisomerase IV separates daughter chromosomes (main target in Gram-positives).", "d_fq", "Fluoroquinolones", "Topoisomerase poisons", "ciprofloxacin, levofloxacin, moxifloxacin, delafloxacin", "Ciprofloxacin: Gram-negative urinary and GI infection, Pseudomonas, anthrax. Levofloxacin and moxifloxacin (respiratory fluoroquinolones): pneumonia and drug-resistant tuberculosis. Antacids and dairy chelate them. Boxed warnings: tendinitis and tendon rupture (worse with steroids and in the elderly), peripheral neuropathy, CNS effects, myasthenia gravis exacerbation. Also QT prolongation, dysglycemia, aortic aneurysm; avoided in pregnancy and children (cartilage damage).", "inhibit", "Trap the enzyme on cut DNA, so double-strand breaks accumulate (bactericidal).", ["pth"]],
+  ["ai", "t_rnap", "Bacterial RNA polymerase", "enzyme", "rpoB (β subunit)", "DNA-dependent RNA polymerase that transcribes bacterial genes; different enough from human RNA polymerase II to be blocked selectively.", "d_rif", "Rifamycins", "RNA polymerase inhibitors", "rifampin (rifampicin), rifabutin, rifapentine", "Tuberculosis (always combined, because single rpoB mutations give resistance quickly), latent tuberculosis, leprosy, prophylaxis for contacts of meningococcal and Haemophilus influenzae type b disease, and staphylococcal prosthetic infection with other drugs. Adverse effects: hepatotoxicity, red-orange urine, tears and sweat, flu-like illness; strong CYP450 induction that lowers warfarin, oral contraceptive and HIV protease inhibitor levels (rifabutin induces less).", "inhibit", "Binds the β subunit and blocks chain elongation, so mRNA is not made.", ["pth"]],
+  ["ai", "t_rnap", null, null, null, null, "d_fidax", "Fidaxomicin", "Macrocyclic RNA polymerase inhibitor", "fidaxomicin", "First-line for Clostridioides difficile infection, with fewer recurrences than vancomycin. Barely absorbed and narrow in spectrum, so it spares the colonic flora. Adverse effects: nausea, rarely GI bleeding.", "inhibit", "Blocks the polymerase switch region before transcription starts, a site apart from the rifamycins'.", null],
+  ["ai", "t_bdna", "Microbial DNA (nitro radical damage)", "nucleic", "Anaerobes and protozoa", "Anaerobic bacteria and protozoa reduce nitro groups through ferredoxin-linked enzymes such as pyruvate–ferredoxin oxidoreductase; the short-lived radicals break DNA. Aerobic human cells barely activate the drugs.", "d_metro", "Nitroimidazoles", "Nitro prodrugs", "metronidazole, tinidazole, secnidazole", "Anaerobes below the diaphragm (intra-abdominal abscess), bacterial vaginosis (Gardnerella), Trichomonas, Giardia, Entamoeba, H. pylori, and C. difficile (now second-line). Adverse effects: disulfiram-like reaction with alcohol, metallic taste, peripheral neuropathy, dark urine; potentiates warfarin.", "alter", "Reduced to a nitro radical that fragments DNA (bactericidal).", ["pth"]],
+  ["ai", "t_bdna", null, null, null, null, "d_nitrof", "Nitrofurantoin", "Urinary nitrofuran", "nitrofurantoin", "Uncomplicated cystitis and its prophylaxis. It reaches useful levels only in urine, so it is not for pyelonephritis or a low creatinine clearance. Adverse effects: acute hypersensitivity pneumonitis and chronic pulmonary fibrosis, peripheral neuropathy, hepatitis, hemolysis in G6PD deficiency.", "alter", "Bacterial nitroreductases make reactive intermediates that damage DNA, ribosomes and other macromolecules.", null],
+  // folate synthesis (bacteria and protozoa make their own folate; humans take it from food)
+  ["ai", "t_dhps", "Dihydropteroate synthase", "enzyme", "folP", "Joins para-aminobenzoic acid (PABA) to a pteridine, an early step of folate synthesis. Bacteria must make folate; humans get it from the diet and have no such enzyme.", "d_sulfa", "Sulfonamides and dapsone", "PABA analogues", "sulfamethoxazole (with trimethoprim), sulfadiazine, dapsone", "With trimethoprim (TMP-SMX): urinary tract infection, Pneumocystis treatment and prophylaxis, Toxoplasma prophylaxis, community MRSA skin infection, Nocardia. Sulfadiazine with pyrimethamine: toxoplasmosis. Dapsone: leprosy, Pneumocystis prophylaxis, dermatitis herpetiformis. Adverse effects: hypersensitivity (rash up to Stevens–Johnson syndrome), hemolysis in G6PD deficiency, kernicterus in neonates (they displace bilirubin from albumin), crystalluria, interstitial nephritis; methemoglobinemia with dapsone.", "inhibit", "Compete with PABA, so dihydropteroate and folate are not made (bacteriostatic).", ["pth"]],
+  ["ai", "t_bdhfr", "Dihydrofolate reductase (bacterial, protozoal)", "enzyme", "folA (bacteria); DHFR-TS (Plasmodium, Toxoplasma)", "Reduces dihydrofolate to tetrahydrofolate, the same reaction as human DHFR, but these drugs bind the microbial enzymes tens of thousands of times more tightly.", "d_tmp", "Trimethoprim", "Bacterial DHFR inhibitor", "trimethoprim (alone or with sulfamethoxazole)", "With a sulfonamide it blocks two steps in a row (sequential blockade), so two bacteriostatic drugs become a bactericidal pair. Adverse effects: megaloblastic anemia and leukopenia (folinic acid helps), hyperkalemia (blocks ENaC in the collecting duct, like amiloride), a rise in serum creatinine (blocks its tubular secretion without lowering GFR).", "inhibit", "Competitive with dihydrofolate, so tetrahydrofolate runs out and thymidine and purines are not made.", ["pth"]],
+  ["ai", "t_bdhfr", null, null, null, null, "d_pyrim", "Pyrimethamine and proguanil", "Protozoal DHFR inhibitors", "pyrimethamine (with sulfadiazine), proguanil (with atovaquone)", "Pyrimethamine with sulfadiazine treats toxoplasmosis (encephalitis in AIDS, congenital infection); always give leucovorin to protect the marrow. Proguanil, converted to cycloguanil, is paired with atovaquone for malaria prophylaxis and treatment. Adverse effects: megaloblastic anemia, rash.", "inhibit", "Selectively block the DHFR domain of the parasite's bifunctional DHFR–thymidylate synthase.", null],
+  // mycobacteria
+  ["ai", "t_inha", "InhA (enoyl-ACP reductase)", "enzyme", "inhA; katG activates the prodrug", "Enzyme of the FAS-II system that elongates the very long mycolic acids of the mycobacterial cell wall.", "d_inh", "Isoniazid", "Mycolic acid synthesis inhibitor", "isoniazid (INH)", "First-line for active tuberculosis (RIPE: rifampin, isoniazid, pyrazinamide, ethambutol) and alone for latent tuberculosis. A prodrug activated by bacterial catalase-peroxidase (KatG); katG mutations give high-level resistance. Slow acetylators (NAT2) reach higher levels. Adverse effects: hepatitis (rises with age; check ALT), peripheral neuropathy and sideroblastic anemia from pyridoxine (B₆) depletion, so give pyridoxine; drug-induced lupus; CYP450 inhibition; seizures in overdose (antidote pyridoxine).", "inhibit", "Activated isoniazid joins NAD⁺ to form an adduct that blocks InhA, so mycolic acid synthesis stops.", ["pth"]],
+  ["ai", "t_emb", "Arabinosyltransferases", "enzyme", "embA, embB, embC", "Polymerise arabinose into arabinogalactan, the layer that ties mycolic acids to peptidoglycan in the mycobacterial wall.", "d_emb", "Ethambutol", "Arabinogalactan synthesis inhibitor", "ethambutol", "Part of initial four-drug tuberculosis therapy until susceptibility is known, and for Mycobacterium avium complex. Bacteriostatic; cleared by the kidney. Adverse effects: optic neuritis with red–green colour blindness and loss of acuity (dose-related; check vision monthly, and take care in children who cannot report it), hyperuricemia.", "inhibit", "Blocks arabinose polymerisation, so the wall cannot anchor its mycolic acids.", ["pth"]],
+  ["ai", "t_pnca", "Pyrazinamidase (PncA)", "enzyme", "pncA", "Mycobacterial amidase that converts pyrazinamide to pyrazinoic acid, which builds up in acidic places such as phagolysosomes and caseous lesions. What pyrazinoic acid then hits (proposed targets include PanD in coenzyme A synthesis and membrane energetics) is still debated; pncA mutations cause resistance.", "d_pza", "Pyrazinamide", "Antimycobacterial prodrug", "pyrazinamide (PZA)", "The first 2 months of tuberculosis therapy; by killing semidormant bacilli in acidic sites it lets the course be cut to 6 months. Adverse effects: hepatotoxicity (the most hepatotoxic first-line drug), hyperuricemia and gout (blocks urate secretion), arthralgia.", "substrate", "Converted to active pyrazinoic acid inside the bacillus.", ["pth"]],
+  ["ai", "t_atpsyn", "Mycobacterial ATP synthase", "enzyme", "atpE (c subunit)", "F₁F₀ ATP synthase that makes ATP from the proton gradient across the mycobacterial membrane; its c-ring differs from the human mitochondrial enzyme's.", "d_bdq", "Bedaquiline", "Diarylquinoline", "bedaquiline", "Backbone of all-oral regimens for multidrug- and rifampin-resistant tuberculosis (BPaL or BPaLM, with pretomanid and linezolid, with or without moxifloxacin). Very long half-life. Adverse effects: QT prolongation (monitor the ECG and electrolytes), hepatotoxicity, nausea.", "inhibit", "Binds the c-ring and stalls its rotation, so the bacillus runs out of ATP.", ["pth"]],
+  // fungi
+  ["ai", "t_ergo", "Ergosterol (fungal membrane)", "metabolite", "C₂₈H₄₄O", "The main sterol of fungal membranes, in place of the cholesterol of human cells; it sets membrane fluidity and the activity of membrane enzymes.", "d_polyene", "Polyenes", "Pore-forming antifungals", "amphotericin B (deoxycholate, liposomal), nystatin", "Amphotericin B: life-threatening systemic mycoses (cryptococcal meningitis with flucytosine, mucormycosis, severe histoplasmosis, candidemia) and visceral leishmaniasis. Nystatin: oral and cutaneous candidiasis only, too toxic to give systemically. Amphotericin adverse effects: fever and rigors during infusion, nephrotoxicity with distal renal tubular acidosis, hypokalemia and hypomagnesemia (saline loading helps; liposomal forms are less toxic), anemia from low erythropoietin, arrhythmia.", "alter", "Bind ergosterol and form pores, so ions leak and the fungus dies; weaker binding to cholesterol causes the toxicity.", ["pth"]],
+  ["ai", "t_cyp51", "Lanosterol 14α-demethylase", "enzyme", "ERG11 (fungal CYP51)", "Fungal cytochrome P450 that removes the 14α-methyl group of lanosterol on the way to ergosterol; the human counterpart works in cholesterol synthesis.", "d_azole", "Azoles", "Ergosterol synthesis inhibitors", "fluconazole, itraconazole, voriconazole, posaconazole, isavuconazole; clotrimazole, miconazole, ketoconazole (topical)", "Fluconazole: candidiasis (not C. krusei, often not C. glabrata), cryptococcal meningitis consolidation and maintenance, coccidioidomycosis. Itraconazole: histoplasmosis, blastomycosis, sporotrichosis, onychomycosis. Voriconazole: invasive aspergillosis. Posaconazole and isavuconazole also cover Mucorales. Adverse effects: hepatotoxicity, strong CYP3A4 inhibition (many interactions), QT prolongation (isavuconazole shortens it instead), visual disturbance, photosensitivity and skin cancer with voriconazole, heart failure with itraconazole, gynecomastia with ketoconazole (it blocks steroid synthesis).", "inhibit", "Block the P450, so ergosterol falls and toxic 14α-methyl sterols build up (fungistatic against yeasts).", ["pth"]],
+  ["ai", "t_sqle", "Squalene epoxidase", "enzyme", "ERG1", "Oxidises squalene to 2,3-oxidosqualene, the step before lanosterol in ergosterol synthesis.", "d_allyl", "Allylamines", "Squalene epoxidase inhibitors", "terbinafine, naftifine", "Dermatophyte infections: onychomycosis (oral terbinafine for 6–12 weeks), tinea capitis, corporis and pedis. Concentrates in keratin. Adverse effects: hepatotoxicity (check liver tests), taste and smell disturbance, rash, depression.", "inhibit", "Ergosterol falls and squalene builds up to toxic levels (fungicidal against dermatophytes).", ["pth"]],
+  ["ai", "t_bgs", "β-(1,3)-D-glucan synthase", "enzyme", "FKS1, FKS2", "Membrane enzyme that spins β-glucan chains, the main structural polysaccharide of the Candida and Aspergillus cell wall. Humans make no glucan wall.", "d_echino", "Echinocandins", "Glucan synthase inhibitors", "caspofungin, micafungin, anidulafungin, rezafungin", "First-line for candidemia and invasive candidiasis (including C. glabrata and C. krusei), oesophageal candidiasis, and salvage therapy of aspergillosis. Intravenous only. No activity against Cryptococcus or Mucorales. Adverse effects: few; infusion flushing (histamine release), raised liver enzymes.", "inhibit", "Noncompetitive inhibition weakens the wall, so Candida lyses (fungicidal for Candida, fungistatic for Aspergillus).", ["pth"]],
+  ["ai", "t_cdase", "Cytosine deaminase (fungal)", "enzyme", "FCY1", "Fungal enzyme, absent from human cells, that deaminates cytosine to uracil.", "d_5fc", "Flucytosine", "Pyrimidine prodrug", "flucytosine (5-FC)", "With amphotericin B for induction therapy of cryptococcal meningitis; resistance develops quickly when used alone. Cleared by the kidney, so dose by creatinine clearance and monitor levels. Adverse effects: myelosuppression, hepatotoxicity, GI upset (gut bacteria also convert some to 5-fluorouracil).", "substrate", "Converted to 5-fluorouracil, which blocks fungal thymidylate synthase (as FdUMP) and is built into RNA.", ["pth"]],
+  ["ai", "t_ftub", "Fungal microtubules", "protein", "Dermatophyte β-tubulin", "Spindle microtubules of dermatophytes. Griseofulvin binds their tubulin and is deposited in newly formed keratin, so new skin, hair and nail resist infection.", "d_griseo", "Griseofulvin", "Antimitotic antifungal", "griseofulvin", "Tinea capitis in children, taken with a fatty meal; otherwise largely replaced by terbinafine. Adverse effects: teratogenicity, CYP450 induction (lowers warfarin and oral contraceptive levels), photosensitivity, headache, hepatotoxicity; it can provoke porphyria attacks and a disulfiram-like reaction.", "inhibit", "Binds tubulin and disrupts the mitotic spindle, so fungal mitosis stops (fungistatic).", ["pth"]],
+  // viruses: HIV, in life-cycle order
+  ["ai", "t_ccr5", "CCR5 (host co-receptor)", "receptor", "CCR5", "Chemokine receptor on CD4 T cells and macrophages that most HIV strains use, with CD4, to enter (R5-tropic virus). People homozygous for CCR5-Δ32 are largely resistant to infection.", "d_marav", "CCR5 antagonist", "Entry inhibitor", "maraviroc", "Only for R5-tropic HIV, so a tropism assay comes first; useless against virus that uses CXCR4. Adverse effects: hepatotoxicity, orthostatic hypotension, upper respiratory infection.", "inhibit", "Binds CCR5 and stops gp120 from engaging it, so the virus cannot fuse.", ["pm"]],
+  ["ai", "t_gp41", "HIV gp41 (fusion protein)", "protein", "env", "Transmembrane envelope protein that folds back on itself once gp120 has bound CD4 and a co-receptor, pulling the viral and cell membranes together.", "d_enfuv", "Fusion inhibitor", "Entry inhibitor", "enfuvirtide", "Salvage therapy for multidrug-resistant HIV, injected twice daily. Adverse effects: injection-site reactions in nearly everyone, a higher risk of bacterial pneumonia.", "inhibit", "A peptide copy of part of gp41 that binds it and blocks the fold-back, so fusion fails.", ["pth", "ext"]],
+  ["ai", "t_hivcap", "HIV capsid (p24)", "protein", "gag (CA)", "Cone-shaped shell of p24 protein that carries the HIV genome to the nucleus and is rebuilt in each new virion.", "d_lena", "Capsid inhibitor", "Long-acting antiretroviral", "lenacapavir", "A subcutaneous injection every 6 months: with other drugs for multidrug-resistant HIV, and alone as pre-exposure prophylaxis. Adverse effects: injection-site nodules and reactions; CYP3A interactions.", "inhibit", "Binds between capsid subunits, disrupting both nuclear import and the assembly of new capsids.", ["pth", "cyt"]],
+  ["ai", "t_hivrt", "HIV reverse transcriptase", "enzyme", "pol (p66/p51)", "RNA-dependent DNA polymerase that copies the HIV RNA genome into double-stranded DNA in the cytoplasm of infected CD4 T cells. It does not proofread, so HIV mutates quickly and drugs are always combined.", "d_nrti", "NRTIs", "Nucleos(t)ide reverse transcriptase inhibitors", "tenofovir (TDF, TAF), emtricitabine, lamivudine, abacavir, zidovudine", "Two NRTIs form the backbone of most regimens; tenofovir with emtricitabine is also pre-exposure prophylaxis, and tenofovir and lamivudine treat hepatitis B. Host kinases must phosphorylate them (tenofovir, a nucleotide, needs one step fewer). Adverse effects: lactic acidosis and hepatic steatosis (mitochondrial toxicity, worst with older drugs), nephrotoxicity (Fanconi syndrome) and bone loss with tenofovir disoproxil, abacavir hypersensitivity (test for HLA-B*57:01 first), anemia with zidovudine; hepatitis B flares when lamivudine or tenofovir is stopped.", "inhibit", "Built into the growing viral DNA but lack a 3′-OH, so the chain ends.", ["pth", "cyt"]],
+  ["ai", "t_hivrt", null, null, null, null, "d_nnrti", "NNRTIs", "Non-nucleoside reverse transcriptase inhibitors", "efavirenz, rilpivirine, doravirine, nevirapine, etravirine", "Combination therapy; rilpivirine also as an injection every 1–2 months with cabotegravir. They need no phosphorylation and do not work against HIV-2. Adverse effects: rash (Stevens–Johnson syndrome and hepatotoxicity with nevirapine), vivid dreams and neuropsychiatric effects with efavirenz, CYP450 interactions; one mutation (K103N) can give resistance.", "inhibit", "Bind an allosteric pocket next to the active site and lock it (noncompetitive).", null],
+  ["ai", "t_hivin", "HIV integrase", "enzyme", "pol (IN)", "Trims the ends of the viral DNA and splices it into a host chromosome in the nucleus (strand transfer), making the provirus permanent.", "d_insti", "Integrase strand transfer inhibitors", "INSTIs (-tegravirs)", "dolutegravir, bictegravir, raltegravir, cabotegravir", "Preferred anchors of first-line regimens (bictegravir–emtricitabine–tenofovir alafenamide, or dolutegravir with two NRTIs); long-acting injectable cabotegravir for treatment and prevention. Dolutegravir and bictegravir have a high barrier to resistance. Antacids, iron and calcium chelate them, so separate the doses. Adverse effects: weight gain, insomnia, headache; dolutegravir and bictegravir raise serum creatinine by blocking its tubular secretion, without changing GFR; raltegravir can raise CK.", "inhibit", "Chelate the two Mg²⁺ ions of the active site, so viral DNA cannot be inserted.", ["pth", "nuc"]],
+  ["ai", "t_hivpr", "HIV protease", "enzyme", "pol (PR)", "Aspartyl protease that cuts the Gag and Gag-Pol polyproteins into mature structural proteins and enzymes as new virions bud; without it the particles cannot infect.", "d_hivpi", "HIV protease inhibitors", "-navirs", "darunavir, atazanavir, lopinavir (boosted with ritonavir or cobicistat)", "Combination therapy, and high-barrier regimens after resistance. Ritonavir and cobicistat are given only to inhibit CYP3A4 and boost levels. Adverse effects: hyperglycemia, dyslipidemia and lipodystrophy, GI upset, many CYP3A4 interactions (rifampin is contraindicated); atazanavir causes unconjugated hyperbilirubinemia (UGT1A1 inhibition) and kidney stones.", "inhibit", "Occupy the active site, so the polyproteins are not cut and virions stay immature.", ["pth", "ext"]],
+  // other viruses
+  ["ai", "t_hsvpol", "Herpesvirus DNA polymerase", "enzyme", "UL30 (HSV), ORF28 (VZV), UL54 (CMV)", "Viral DNA polymerase that copies the herpesvirus genome in the nucleus of infected cells.", "d_acv", "Guanosine analogues", "Herpes antivirals", "acyclovir, valacyclovir, famciclovir; ganciclovir, valganciclovir (CMV)", "HSV and VZV: genital and oral herpes, encephalitis (intravenous acyclovir), zoster, neonatal herpes, suppressive therapy. Ganciclovir: CMV retinitis and colitis, transplant prophylaxis. Viral thymidine kinase (HSV, VZV) or the CMV UL97 kinase adds the first phosphate, so the drugs are activated only in infected cells; kinase mutations cause resistance. Valacyclovir and valganciclovir are oral prodrugs. Adverse effects: crystal nephropathy and neurotoxicity with intravenous acyclovir (hydrate); leukopenia and thrombocytopenia with ganciclovir.", "inhibit", "The triphosphate competes with dGTP and, once built into viral DNA, ends the chain.", ["pth", "nuc"]],
+  ["ai", "t_hsvpol", null, null, null, null, "d_foscar", "Foscarnet and cidofovir", "Kinase-independent herpes antivirals", "foscarnet, cidofovir", "For HSV and CMV resistant to acyclovir or ganciclovir (thymidine kinase or UL97 mutants). Foscarnet, a pyrophosphate analogue, needs no activation; cidofovir, a nucleotide analogue, needs only host kinases. Adverse effects: nephrotoxicity with both (give cidofovir with probenecid and saline); foscarnet chelates Ca²⁺ and Mg²⁺, causing hypocalcemia, hypomagnesemia, hypokalemia and seizures; neutropenia with cidofovir.", "inhibit", "Foscarnet blocks the pyrophosphate-binding site of the polymerase; cidofovir diphosphate ends the chain.", null],
+  ["ai", "t_pa", "Influenza cap-dependent endonuclease", "enzyme", "PA subunit of the viral polymerase", "Part of the influenza RNA polymerase that steals 5′ caps from host mRNA (cap snatching) to prime viral mRNA.", "d_balox", "Baloxavir marboxil", "Endonuclease inhibitor", "baloxavir marboxil", "A single oral dose for uncomplicated influenza A or B within 48 hours of symptoms, and post-exposure prophylaxis. Antacids and other polyvalent cations block absorption. Adverse effects: diarrhoea; resistant variants (PA I38T) can emerge during treatment, mostly in children.", "inhibit", "Its active form chelates the metal ions of the endonuclease, so viral mRNA cannot be primed.", ["pth", "nuc"]],
+  ["ai", "t_neur", "Influenza neuraminidase", "enzyme", "NA (N1–N9)", "Surface enzyme of influenza A and B that cuts sialic acid off host glycoproteins, freeing new virions to leave the infected cell.", "d_nai", "Neuraminidase inhibitors", "Sialic acid analogues", "oseltamivir, zanamivir, peramivir", "Treatment of influenza A and B, best within 48 hours of symptoms (but at any time in severe illness, inpatients and high-risk groups), and post-exposure prophylaxis. Oseltamivir is oral; zanamivir is inhaled (bronchospasm, so avoid in asthma and COPD); peramivir is one intravenous dose. Adverse effects: nausea and vomiting, rare neuropsychiatric events in children.", "inhibit", "Mimic sialic acid in the active site, so new virions stay stuck to the cell and to each other.", ["pth", "pm"]],
+  ["ai", "t_rdrp", "SARS-CoV-2 RNA-dependent RNA polymerase", "enzyme", "nsp12", "The viral replicase that copies the coronavirus RNA genome in the cytoplasm.", "d_remde", "Remdesivir", "Adenosine nucleotide analogue", "remdesivir", "Intravenous treatment of hospitalised COVID-19, and a 3-day course for high-risk outpatients. A prodrug converted to the triphosphate inside cells. Adverse effects: raised transaminases, infusion reactions, bradycardia.", "inhibit", "Built into the RNA chain, it stalls the polymerase a few nucleotides later (delayed chain termination).", ["pth", "cyt"]],
+  ["ai", "t_mpro", "SARS-CoV-2 main protease (Mpro, 3CLpro)", "enzyme", "nsp5", "Cysteine protease that cuts the viral polyproteins into the parts of the replication machinery.", "d_nirm", "Nirmatrelvir–ritonavir", "Protease inhibitor", "nirmatrelvir with ritonavir", "Mild to moderate COVID-19 in people at high risk of severe disease, started within 5 days of symptoms. Ritonavir is a booster that inhibits CYP3A4, so check every co-medication (statins, anticoagulants, antiarrhythmics, calcineurin inhibitors). Adverse effects: altered taste, diarrhoea, symptom rebound.", "inhibit", "Binds the catalytic cysteine covalently, so the polyproteins are not processed.", ["pth", "cyt"]],
+  ["ai", "t_ns5a", "HCV NS5A", "protein", "NS5A", "Hepatitis C phosphoprotein without enzyme activity that organises the replication complex on ER-derived membranes and helps assemble virions.", "d_ns5ai", "NS5A inhibitors", "-asvirs", "velpatasvir, ledipasvir, pibrentasvir, elbasvir", "Always combined: sofosbuvir–velpatasvir and glecaprevir–pibrentasvir are pangenotypic and cure over 95% in 8–12 weeks. Adverse effects: headache, fatigue; hepatitis B can reactivate (screen first); amiodarone with sofosbuvir causes severe bradycardia.", "inhibit", "Bind NS5A and block both RNA replication and virion assembly.", ["pth", "er"]],
+  ["ai", "t_ns3", "HCV NS3/4A protease", "enzyme", "NS3/NS4A", "Serine protease that cuts the hepatitis C polyprotein; it also cleaves the host adaptors MAVS and TRIF, blunting the interferon response.", "d_ns3i", "NS3/4A protease inhibitors", "-previrs", "glecaprevir, grazoprevir, voxilaprevir", "Glecaprevir with pibrentasvir (pangenotypic); sofosbuvir–velpatasvir–voxilaprevir for retreatment. Contraindicated in decompensated cirrhosis (Child–Pugh B or C), where levels rise. Adverse effects: headache, fatigue, hyperbilirubinemia; hepatitis B reactivation.", "inhibit", "Block the protease active site, so the viral polyprotein is not processed.", ["pth", "er"]],
+  // parasites
+  ["ai", "t_hemoz", "Heme detoxification (hemozoin)", "metabolite", "Fe(III)-protoporphyrin IX → hemozoin", "Plasmodium digests hemoglobin in its acidic food vacuole. The free heme released is toxic, so the parasite stacks it into inert hemozoin crystals (malaria pigment).", "d_quin", "Quinolines", "Blood schizonticides", "chloroquine, hydroxychloroquine, quinine, mefloquine, amodiaquine", "Chloroquine: P. vivax, ovale, malariae and sensitive falciparum (resistance is widespread, through the PfCRT efflux transporter); hydroxychloroquine is also used in lupus and rheumatoid arthritis. Quinine (with doxycycline or clindamycin) and mefloquine treat or prevent resistant falciparum. None kills liver hypnozoites, so add primaquine or tafenoquine for P. vivax and ovale after checking G6PD. Adverse effects: retinopathy (chloroquine, hydroxychloroquine), pruritus, QT prolongation; cinchonism (tinnitus, headache, vertigo), hypoglycemia (insulin release) and hemolysis with quinine; neuropsychiatric effects with mefloquine.", "inhibit", "Concentrate in the acidic food vacuole and cap growing hemozoin crystals, so free heme builds up and kills the parasite.", ["pth"]],
+  ["ai", "t_hemoz", null, null, null, null, "d_artem", "Artemisinins", "Endoperoxide antimalarials", "artesunate, artemether (with lumefantrine), dihydroartemisinin (with piperaquine)", "The fastest-acting antimalarials. Artemisinin-based combination therapy is first-line for uncomplicated falciparum malaria, and intravenous artesunate for severe malaria; the longer-lived partner drug clears the parasites left over. Partial resistance (PfKelch13 mutations) has spread in Southeast Asia and East Africa. Adverse effects: delayed hemolysis after intravenous artesunate (check hemoglobin for 4 weeks), QT prolongation with some partner drugs.", "alter", "Heme iron opens the endoperoxide bridge; the radicals that form alkylate parasite proteins and heme.", null],
+  ["ai", "t_cytbc1", "Plasmodium cytochrome bc₁", "enzyme", "cytb (mitochondrial genome)", "Complex III of the parasite respiratory chain. In blood-stage Plasmodium its main job is to regenerate ubiquinone for dihydroorotate dehydrogenase, so pyrimidine synthesis depends on it.", "d_atov", "Atovaquone (with proguanil)", "Ubiquinone analogue", "atovaquone, atovaquone–proguanil", "Malaria prophylaxis (daily, from 1–2 days before travel to 7 days after) and treatment of uncomplicated falciparum malaria; atovaquone alone prevents and treats Pneumocystis in sulfa allergy, and treats babesiosis with azithromycin. Take with fatty food. Adverse effects: GI upset, rash, raised transaminases.", "inhibit", "Binds the ubiquinol site of the complex, so the mitochondrial membrane potential and pyrimidine synthesis fail.", ["pth"]],
+  ["ai", "t_glucl", "Glutamate-gated chloride channels", "transporter", "GluCl (invertebrate)", "Chloride channels of nematode and arthropod nerve and muscle. Mammals lack them, and P-glycoprotein keeps the drug out of the human brain.", "d_iverm", "Ivermectin", "Macrocyclic lactone", "ivermectin", "Onchocerciasis (river blindness), strongyloidiasis, scabies and head lice (oral or topical), and lymphatic filariasis in mass drug administration. Adverse effects: Mazzotti reaction to dying microfilariae (fever, pruritus, hypotension); encephalopathy in heavy Loa loa infection, so screen in endemic areas.", "activate", "Locks the channels open, so chloride floods in and the parasite suffers flaccid paralysis.", ["pth"]],
+  ["ai", "t_htub", "Helminth β-tubulin", "protein", "Nematode and cestode β-tubulin", "Microtubule subunit of worm intestinal and tegumental cells; the drugs bind it far more tightly than mammalian tubulin.", "d_benz", "Benzimidazoles", "Microtubule inhibitors", "albendazole, mebendazole", "Most intestinal nematodes (Ascaris, hookworm, pinworm, whipworm), and albendazole for neurocysticercosis (with steroids) and echinococcosis (hydatid cyst). Take albendazole with a fatty meal for tissue infection. Adverse effects: GI upset; with long courses, hepatotoxicity, marrow suppression and alopecia; avoided in the first trimester.", "inhibit", "Bind β-tubulin and block polymerisation, so glucose uptake fails and the worm starves.", ["pth"]],
+  ["ai", "t_trpm", "Flatworm TRPM channel", "transporter", "TRPM_PZQ", "Calcium-permeable channel of schistosomes and other flatworms, identified in 2021 as the praziquantel target.", "d_pzq", "Praziquantel", "Anti-flatworm drug", "praziquantel", "Schistosomiasis, liver flukes (Clonorchis, Opisthorchis), tapeworms (Taenia, Diphyllobothrium) and cysticercosis. Adverse effects: headache, dizziness, abdominal discomfort; seizures and raised intracranial pressure in neurocysticercosis as cysts die (give steroids); contraindicated in ocular cysticercosis.", "activate", "Opens the channel, so Ca²⁺ rushes in: spastic paralysis and damage to the worm's tegument.", ["pth"]],
+  ["ai", "t_nnachr", "Nematode nicotinic receptor", "receptor", "L-type nAChR (unc-29, unc-38)", "Acetylcholine-gated cation channel of nematode body-wall muscle.", "d_pyran", "Pyrantel pamoate", "Depolarising neuromuscular blocker of worms", "pyrantel pamoate", "Pinworm (Enterobius) and Ascaris, as one dose; sold over the counter and poorly absorbed from the gut. Adverse effects: mild GI upset, headache.", "activate", "Persistent activation depolarises the muscle, so the worm is paralysed (spastic) and expelled.", ["pth"]],
   ...VIT_ROWS,
 ];
-Object.assign(KIND, { nucleic: { label: "Nucleic acid", color: "#7dd3fc" }, metabolite: { label: "Metabolite", color: "#fdba74" }, organ: { label: "Organ hub", color: "#cbd5e1" }, ligand: { label: "Ligand / cytokine", color: "#fda4af" }, protein: { label: "Structural protein", color: "#bef264" } });
+Object.assign(KIND, { nucleic: { label: "Nucleic acid", color: "#7dd3fc" }, metabolite: { label: "Metabolite", color: "#fdba74" }, organ: { label: "Organ hub", color: "#cbd5e1" }, ligand: { label: "Ligand / cytokine", color: "#fda4af" }, protein: { label: "Structural protein", color: "#bef264" }, ribosome: { label: "Ribosome", color: "#fca5a5" }, sigprot: { label: "Signalling protein", color: "#d8b4fe" } });
 const REN = {
   t_sglt2: [1, "Proximal tubule S1–S2 · apical membrane"], t_ca: [2, "Proximal tubule · apical membrane (CA IV) and cytosol (CA II)"], t_urat1: [3, "Proximal tubule · apical membrane"],
   t_nkcc2: [4, "Thick ascending limb · apical membrane"], t_ncc: [5, "Distal convoluted tubule · apical membrane"], t_enac: [6, "Collecting duct principal cell · apical membrane"],
@@ -1850,10 +2159,34 @@ const REN = {
 };
 // Oncology: where each target acts in the cell cycle, in order G1 -> S -> G2 -> M, then phase-independent DNA damage
 const ONC = {
-  t_asn: [1, "G1 phase · lymphoblasts starved of asparagine cannot make protein"], t_ts: [2, "S phase · thymidine supply for DNA synthesis"], t_dhfr: [3, "S phase · folate cycle that feeds thymidylate and purines"],
+  t_cdk46: [0, "G1 phase · CDK4/6 push cells past the restriction point into S phase"], t_asn: [1, "G1 phase · lymphoblasts starved of asparagine cannot make protein"], t_ts: [2, "S phase · thymidine supply for DNA synthesis"], t_dhfr: [3, "S phase · folate cycle that feeds thymidylate and purines"],
   t_ppat: [4, "S phase · purine supply for DNA synthesis"], t_rnr: [5, "S phase · deoxyribonucleotide supply"], t_polym: [6, "S phase · DNA replication"], t_dnmt: [7, "S phase · methylation of newly copied DNA"],
   t_top1: [8, "S phase · unwinding ahead of the replication fork"], t_top2: [9, "Late S and G2 phases · untangling copied chromosomes (anthracyclines act in any phase)"], t_dnabl: [10, "G2 phase · DNA strand breaks"],
   t_tubulin: [11, "M phase · mitotic spindle"], t_dnaalk: [12, "Any phase · not cell-cycle specific"], t_dnapt: [13, "Any phase · not cell-cycle specific"], t_dnaint: [14, "Any phase · not cell-cycle specific"],
+};
+// Oncology: targeted therapy and immunotherapy, grouped by the pathway or antigen they hit
+const ONT = {
+  t_bcrabl: [1, "Signalling · fusion tyrosine kinase (CML, Ph-positive ALL)"], t_egfr: [2, "Signalling · receptor tyrosine kinase (lung, colorectal, head and neck)"], t_her2: [3, "Signalling · receptor tyrosine kinase (breast, gastric)"],
+  t_alk: [4, "Signalling · fusion tyrosine kinase (lung)"], t_kras: [5, "Signalling · MAPK pathway GTPase"], t_braf: [6, "Signalling · MAPK pathway kinase"], t_mek: [7, "Signalling · MAPK pathway kinase"],
+  t_pi3k: [8, "Signalling · PI3K–AKT–mTOR"], t_mtor: [9, "Signalling · PI3K–AKT–mTOR"], t_jak: [10, "Signalling · JAK–STAT (myeloproliferative neoplasms)"], t_btk: [11, "Signalling · B-cell receptor"],
+  t_flt3: [12, "Signalling · receptor tyrosine kinase (AML)"], t_smo: [13, "Signalling · Hedgehog"], t_vegf: [14, "Angiogenesis · growth factor"], t_vegfr: [15, "Angiogenesis · receptor kinases"],
+  t_bcl2: [16, "Apoptosis · mitochondrial pathway"], t_parp: [17, "DNA repair · synthetic lethality with BRCA loss"], t_prot: [18, "Protein turnover · proteasome"], t_crbn: [19, "Protein turnover · targeted degradation"],
+  t_idh: [20, "Differentiation · oncometabolite"], t_menin: [21, "Differentiation · leukemic gene programme"], t_rara: [22, "Differentiation · fusion nuclear receptor (APL)"], t_hdac: [23, "Epigenetic · chromatin"],
+  t_pd1: [24, "Immunotherapy · T-cell checkpoint"], t_ctla4: [25, "Immunotherapy · T-cell checkpoint"], t_cd20: [26, "Cell-surface antigen · B cells"], t_cd19: [27, "Cell-surface antigen · B cells (T-cell engager, CAR T)"],
+  t_cd30: [28, "Cell-surface antigen · Hodgkin and anaplastic lymphoma"], t_cd38: [29, "Cell-surface antigen · plasma cells"], t_bcma: [30, "Cell-surface antigen · plasma cells (T-cell engagers, CAR T)"],
+};
+// Anti-infective: organism and site of each target, in order bacteria -> mycobacteria -> fungi -> viruses (by life-cycle step) -> parasites
+const AIN = {
+  t_pbp: [1, "Bacteria · cell wall cross-linking"], t_blact: [2, "Bacteria · periplasm (Gram-negatives) or secreted (staphylococci): resistance enzyme"], t_dala: [3, "Bacteria · cell wall building blocks"], t_mura: [4, "Bacteria · cytoplasm, first step of peptidoglycan synthesis"],
+  t_lps: [5, "Gram-negative bacteria · outer membrane"], t_gpmem: [6, "Gram-positive bacteria · cytoplasmic membrane"], t_r30: [7, "Bacteria · protein synthesis, 30S subunit"], t_r50: [8, "Bacteria · protein synthesis, 50S subunit"],
+  t_gyrase: [9, "Bacteria · DNA replication"], t_rnap: [10, "Bacteria · transcription"], t_bdna: [11, "Anaerobes and protozoa · DNA"], t_dhps: [12, "Bacteria · folate synthesis"], t_bdhfr: [13, "Bacteria and protozoa · folate reduction"],
+  t_inha: [14, "Mycobacteria · mycolic acid synthesis"], t_emb: [15, "Mycobacteria · arabinogalactan synthesis"], t_pnca: [16, "Mycobacteria · prodrug activation"], t_atpsyn: [17, "Mycobacteria · energy (ATP synthesis)"],
+  t_ergo: [18, "Fungi · cell membrane"], t_cyp51: [19, "Fungi · ergosterol synthesis"], t_sqle: [20, "Fungi · ergosterol synthesis"], t_bgs: [21, "Fungi · cell wall"], t_cdase: [22, "Fungi · nucleic acid synthesis"], t_ftub: [23, "Dermatophytes · mitosis"],
+  t_ccr5: [24, "HIV · attachment (host co-receptor)"], t_gp41: [25, "HIV · fusion"], t_hivcap: [26, "HIV · uncoating, nuclear import and assembly"], t_hivrt: [27, "HIV · reverse transcription"], t_hivin: [28, "HIV · integration"], t_hivpr: [29, "HIV · maturation"],
+  t_hsvpol: [30, "Herpesviruses · DNA replication"], t_pa: [31, "Influenza · viral mRNA priming"], t_neur: [32, "Influenza · release"], t_rdrp: [33, "SARS-CoV-2 · RNA replication"], t_mpro: [34, "SARS-CoV-2 · polyprotein processing"],
+  t_hbvpol: [35, "Hepatitis B · reverse transcription"], t_ns5b: [36, "Hepatitis C · RNA replication"], t_ns5a: [37, "Hepatitis C · replication complex and assembly"], t_ns3: [38, "Hepatitis C · polyprotein processing"],
+  t_hemoz: [39, "Plasmodium · food vacuole (blood stage)"], t_cytbc1: [40, "Plasmodium · mitochondrion"], t_glucl: [41, "Nematodes and arthropods · nerve and muscle"], t_htub: [42, "Nematodes and cestodes · intestinal and tegumental cells"],
+  t_trpm: [43, "Flatworms · tegument and muscle"], t_nnachr: [44, "Nematodes · body-wall muscle"],
 };
 const ORG_OF = {}, ORGAN_SET = {}, ORG_RX_IDS = new Set();
 Object.entries(EXIST_ORG).forEach(([t, os]) => (ORG_OF[t] = os));
@@ -1863,15 +2196,21 @@ DRUGS.forEach((d) => (ORG_OF[d[0]] = [...new Set(d[5].flatMap((f) => EXIST_ORG[f
 Object.assign(EXIST_ORG, { t_vkor: [...EXIST_ORG.t_vkor, "vt"], t_pdc: [...EXIST_ORG.t_pdc, "vt"], t_dhfr: [...EXIST_ORG.t_dhfr, "vt"], t_vdr: ["vt"], t_ts: ["vt"] });
 ORGAN_RX.forEach((r) => { const m = [...new Set([r[0], ...(EXIST_ORG[r[1]] || [])])]; if (r[2]) { ORG_OF[r[1]] = m; LOC_OF[r[1]] = r[13]; } if (r[6]) ORG_OF[r[6]] = r[2] ? m : [r[0]]; });
 // Oncology: tamoxifen's row sits on the endocrine hub, so list it here too; colchicine shares β-tubulin but is not chemotherapy
-ORG_OF.d_tamox = [...ORG_OF.d_tamox, "on"]; ORG_OF.d_colch = ORG_OF.d_colch.filter((o) => o !== "on");
+ORG_OF.d_tamox = [...ORG_OF.d_tamox, "on"]; ORG_OF.d_colch = ORG_OF.d_colch.filter((o) => o !== "on"); ORG_OF.d_jaki = ORG_OF.d_jaki.filter((o) => o !== "on"); // rheumatology JAK inhibitors are not chemotherapy
 (() => { // placement: hubs in two columns to the right of the atlas; targets on a ring, their drugs just outside it
   const codes = Object.keys(ORGANS);
   const cur = [600, 600]; // next free y in the left / right column; clusters grow with their number of rows
+  // cluster sizes first, so large hubs (Oncology, Anti-infective) can be pushed clear of the atlas and of the other column
+  const geo = codes.map((o, i) => {
+    const n = ORGAN_RX.filter((r) => r[0] === o).length, rt = Math.max(560, (o === "vt" ? 56 : 40) * n), rd = rt + 520, ext = rd + 160, c = i % 2, hy = cur[c] + ext;
+    cur[c] = hy + ext + 200;
+    return { rt, rd, ext, c, hy, hx: c ? 8000 : Math.max(4800, 3400 + ext) };
+  });
+  geo.filter((g) => g.c).forEach((g) => { while (geo.some((h) => !h.c && Math.hypot(g.hx - h.hx, g.hy - h.hy) < g.ext + h.ext + 200)) g.hx += 40; });
   codes.forEach((o, i) => {
     const hid = "o_" + o, rows = ORGAN_RX.filter((r) => r[0] === o).sort((a, b) => (REN[a[1]]?.[0] || 0) - (REN[b[1]]?.[0] || 0)),
       xs = Object.keys(EXIST_ORG).filter((t) => EXIST_ORG[t].includes(o) && !rows.some((r) => r[1] === t && r[2]));
-    const rt = Math.max(560, (o === "vt" ? 56 : 40) * rows.length), rd = rt + 520, ext = rd + 160, c = i % 2, hx = c ? 8000 : 4800, hy = cur[c] + ext;
-    cur[c] = hy + ext + 200;
+    const { rt, rd, hx, hy } = geo[i];
     layout[hid] = [hx, hy]; PATH_OF[hid] = "pharm";
     NODES.push({ id: hid, kind: "organ", rx: "organ", organ: o, label: ORGANS[o].label, formula: `${xs.length + rows.filter((r) => r[2]).length} targets`, note: ORGANS[o].desc, w: 250, pharm: true });
     rows.forEach((r, k) => {
@@ -1912,6 +2251,169 @@ ORG_OF.d_tamox = [...ORG_OF.d_tamox, "on"]; ORG_OF.d_colch = ORG_OF.d_colch.filt
     if (near) LOC_OF[n.id] = [LOC_OF[near.id][0]];
   } });
 })();
+// vitamin nodes carry their structure, drawn on the canvas like the drug structures
+VIT_ORDER.forEach((id) => { MOLS[id] = VIT_MOLS[id]; NODES.find((n) => n.id === id).dm = id; });
+/* ------------------------------ drug toxicity (Oncology and Anti-infective hubs) ------------------------------ */
+// Organ systems a toxicity can hit, in the order they are listed on a card
+const TOX_ORG = { marrow: "Bone marrow", blood: "Red cells (hemolysis)", immune: "Immune system and infection", allergy: "Hypersensitivity and infusion reactions", heart: "Heart", vessel: "Vessels, blood pressure and clotting",
+  lung: "Lung", kidney: "Kidney", bladder: "Bladder", liver: "Liver", gi: "GI tract", nerve: "Nervous system", eye: "Eye", ear: "Ear", skin: "Skin, hair and nails", muscle: "Muscle, bone and joints",
+  endo: "Endocrine", metab: "Metabolic and electrolytes", repro: "Fertility, pregnancy and fetus", cancer: "Secondary cancer", local: "Injection site and extravasation", other: "Other" };
+// drug id: [dose-limiting or main toxicity, "organ: effects; organ: effects", prevention, treatment or antidote, what to monitor, what to avoid (contraindications and interactions)]
+const DRUG_TOX = Object.fromEntries(Object.entries({
+  // ---- Oncology hub ----
+  // hormonal therapy and antiemetics (rows on other hubs)
+  d_serm: ["Venous thromboembolism", "vessel: deep vein thrombosis, pulmonary embolism, stroke; endo: hot flushes; muscle: leg cramps", "Stop before prolonged immobilisation or surgery", "Symptoms of thrombosis", "Past venous thromboembolism; pregnancy"],
+  d_tamox: ["Endometrial cancer and thromboembolism", "cancer: endometrial hyperplasia and carcinoma (agonist in the uterus); vessel: deep vein thrombosis, pulmonary embolism, stroke; endo: hot flushes, vaginal discharge; eye: cataract", "Investigate any postmenopausal bleeding", "Gynaecological symptoms", "Strong CYP2D6 inhibitors (paroxetine, fluoxetine) lower endoxifen; pregnancy"],
+  d_ai: ["Bone loss and arthralgia", "muscle: osteoporosis and fractures, arthralgia, myalgia; endo: hot flushes, vaginal dryness; metab: raised cholesterol", "Calcium, vitamin D, and a bisphosphonate or denosumab when bone density is low", "Bone density (DXA) at baseline and every 1–2 years, lipids", "Premenopausal women without ovarian suppression (ineffective)"],
+  d_antiand: ["Hepatotoxicity and gynecomastia", "liver: hepatitis (flutamide most); endo: gynecomastia, breast pain, hot flushes; nerve: seizures and fatigue (enzalutamide)", "Breast-bud irradiation or tamoxifen can prevent gynecomastia", "Liver tests (flutamide, bicalutamide)", "Enzalutamide with seizure history; CYP interactions with enzalutamide (strong inducer)"],
+  d_gnrh: ["Tumour flare and androgen-deprivation effects", "endo: hot flushes, loss of libido, erectile dysfunction, metabolic syndrome and diabetes; muscle: osteoporosis, loss of muscle mass; heart: QT prolongation, cardiovascular events; other: tumour flare in the first weeks with agonists (bone pain, cord compression)", "An antiandrogen for 2–4 weeks when starting an agonist; antagonists (degarelix) cause no flare", "Testosterone, glucose and lipids, bone density", "Agonists alone in impending cord compression"],
+  d_5ht3: ["QT prolongation", "heart: QT prolongation, torsades; gi: constipation; nerve: headache; other: serotonin syndrome with other serotonergic drugs", "Correct K⁺ and Mg²⁺; limit IV ondansetron dose", "ECG in those at risk", "Congenital long QT; other QT-prolonging drugs"],
+  d_nk1: ["Drug interactions", "nerve: fatigue, hiccups; liver: raised transaminases; local: infusion-site reactions (fosaprepitant)", "Lower the dexamethasone dose given with it", "Warfarin INR", "Moderate CYP3A4 inhibition raises dexamethasone, and induction lowers warfarin and hormonal contraceptive levels"],
+  d_mtx: ["Myelosuppression and mucositis", "marrow: pancytopenia, megaloblastic changes; gi: mucositis, stomatitis, diarrhoea; liver: fibrosis and cirrhosis with long use; lung: hypersensitivity pneumonitis; kidney: crystal nephropathy at high dose; repro: abortifacient and teratogen; nerve: leukoencephalopathy (intrathecal or high dose)", "Folic acid weekly at low dose; leucovorin rescue, hydration and urine alkalinisation at high dose; glucarpidase if levels stay high with kidney injury", "CBC, liver tests and creatinine; methotrexate levels after high dose", "Pregnancy; NSAIDs, PPIs, penicillins and probenecid slow its clearance; trimethoprim adds antifolate effect; poor kidney function"],
+  // antimetabolites
+  d_fu: ["Myelosuppression (bolus) or mucositis and diarrhoea (infusion)", "marrow: neutropenia, thrombocytopenia; gi: mucositis, diarrhoea; skin: hand–foot syndrome (capecitabine), hyperpigmentation; heart: coronary vasospasm with angina; nerve: cerebellar ataxia (rare); eye: tear-duct stenosis", "DPD (DPYD) genotyping before starting; uridine triacetate is the antidote for overdose or early severe toxicity", "CBC, chest pain", "DPD deficiency; warfarin (capecitabine raises the INR)"],
+  d_peme: ["Myelosuppression", "marrow: neutropenia, thrombocytopenia; gi: mucositis; skin: rash; kidney: acute kidney injury", "Folic acid daily and vitamin B₁₂ every 9 weeks from a week before; dexamethasone for rash", "CBC, creatinine", "Creatinine clearance below 45 mL/min; NSAIDs around the dose"],
+  d_leuco: ["Few of its own", "gi: worsens fluorouracil diarrhoea and mucositis; allergy: rare reactions", "Never give it intrathecally", "With fluorouracil, watch for diarrhoea", "Intrathecal use; as a substitute for vitamin B₁₂ in pernicious anemia (masks it)"],
+  d_thiop: ["Myelosuppression", "marrow: leukopenia, thrombocytopenia, severe in TPMT or NUDT15 deficiency; liver: cholestatic hepatitis, veno-occlusive disease (thioguanine); gi: pancreatitis (azathioprine); cancer: lymphoma and skin cancer with long immunosuppression", "Test TPMT and NUDT15 before starting; cut the dose about 75% with allopurinol or febuxostat", "CBC weekly at first, then monthly; liver tests", "Xanthine oxidase inhibitors at full dose; live vaccines"],
+  d_hu: ["Myelosuppression", "marrow: neutropenia, macrocytosis; skin: hyperpigmentation, nail changes, leg ulcers; repro: teratogenic; cancer: possible leukemia with long use", "Adjust the dose to blood counts", "CBC every 2–4 weeks at first, MCV", "Pregnancy; live vaccines"],
+  d_pyra: ["Myelosuppression", "marrow: profound pancytopenia; nerve: cerebellar toxicity with high-dose cytarabine; eye: chemical conjunctivitis (cytarabine); kidney: hemolytic uremic syndrome (gemcitabine); lung: pneumonitis (gemcitabine); other: cytarabine syndrome (fever, myalgia, rash)", "Steroid eye drops with high-dose cytarabine; check cerebellar function before each dose", "CBC, neurological examination (cytarabine), creatinine", "High-dose cytarabine in poor kidney function (cerebellar risk)"],
+  d_puran: ["Lymphopenia and myelosuppression", "immune: prolonged CD4 lymphopenia with opportunistic infection; marrow: neutropenia, thrombocytopenia; blood: autoimmune hemolytic anemia (fludarabine); nerve: neurotoxicity at high dose; kidney: tumour lysis", "Pneumocystis and herpes prophylaxis; irradiated blood products to prevent transfusion graft-versus-host disease", "CBC, CD4 count, direct antiglobulin test", "Fludarabine with pentostatin (lethal lung toxicity)"],
+  d_hma: ["Myelosuppression", "marrow: neutropenia, thrombocytopenia (counts often fall before they improve); gi: nausea, constipation; local: injection-site reactions", "Antiemetics; growth factors as needed", "CBC before each cycle, creatinine", "Pregnancy"],
+  // DNA damage
+  d_mustard: ["Myelosuppression", "marrow: myelosuppression; bladder: hemorrhagic cystitis from acrolein (cyclophosphamide, ifosfamide) and bladder cancer; nerve: encephalopathy (ifosfamide); kidney: Fanconi syndrome (ifosfamide); metab: SIADH (cyclophosphamide); repro: infertility; cancer: leukemia, bladder cancer; heart: cardiomyopathy at transplant doses", "Mesna and hydration; methylene blue for ifosfamide encephalopathy; sperm or egg banking", "CBC, urinalysis for hematuria, electrolytes", "Pregnancy; urinary obstruction"],
+  d_nitroso: ["Delayed myelosuppression", "marrow: myelosuppression at 4–6 weeks; lung: pulmonary fibrosis (carmustine, cumulative and possibly years later); kidney: nephrotoxicity (streptozocin); endo: hypoglycemia, then diabetes (streptozocin); nerve: confusion, ataxia; cancer: secondary leukemia", "Space cycles at least 6 weeks", "CBC weekly, pulmonary function (DLCO), creatinine and urine protein (streptozocin)", "Cumulative carmustine above about 1400 mg/m²"],
+  d_busulfan: ["Myelosuppression", "marrow: profound, prolonged myelosuppression; lung: pulmonary fibrosis (busulfan lung); nerve: seizures; liver: veno-occlusive disease (sinusoidal obstruction syndrome); skin: hyperpigmentation; endo: adrenal insufficiency-like syndrome", "Seizure prophylaxis (levetiracetam) at transplant doses; dose by drug levels", "CBC, liver tests, weight and bilirubin for veno-occlusive disease", "Pregnancy"],
+  d_triaz: ["Myelosuppression", "marrow: thrombocytopenia and neutropenia; gi: severe nausea and vomiting (dacarbazine); liver: hepatotoxicity, rare hepatic vein thrombosis; skin: photosensitivity; immune: lymphopenia with Pneumocystis (temozolomide with radiotherapy)", "Antiemetics; Pneumocystis prophylaxis during temozolomide with radiotherapy", "CBC, liver tests", "Pregnancy"],
+  d_pt: ["Nephrotoxicity (cisplatin), myelosuppression (carboplatin), neuropathy (oxaliplatin)", "kidney: proximal tubular injury, Mg²⁺ and K⁺ wasting; ear: high-tone hearing loss, tinnitus; nerve: peripheral sensory neuropathy, cold-triggered dysesthesia (oxaliplatin); gi: severe acute and delayed emesis (cisplatin); marrow: thrombocytopenia (carboplatin); allergy: hypersensitivity after several cycles", "Saline hydration with Mg²⁺ and K⁺; amifostine; sodium thiosulfate for hearing in children; NK₁ antagonist, 5-HT₃ antagonist and dexamethasone", "Creatinine, Mg²⁺, K⁺, audiometry, neurological examination", "Aminoglycosides and loop diuretics with cisplatin (ototoxicity, nephrotoxicity)"],
+  d_dactino: ["Myelosuppression and mucositis", "marrow: myelosuppression; gi: mucositis, diarrhoea; liver: veno-occlusive disease; skin: radiation recall, acne; local: severe tissue necrosis on extravasation", "Central line; stop at once and cool the site if it extravasates", "CBC, liver tests", "Live vaccines"],
+  d_bleo: ["Pulmonary fibrosis", "lung: pneumonitis then fibrosis, worse with cumulative dose above 400 units, age, kidney failure and high inspired oxygen; skin: flagellate hyperpigmentation, nail changes; allergy: fever, rigors, rare anaphylactoid reaction in lymphoma; marrow: spared", "Keep cumulative dose low; give the lowest FiO₂ in anesthesia; test dose in lymphoma", "Pulmonary function (DLCO), chest examination", "Kidney failure without dose reduction; brentuximab vedotin"],
+  d_camp: ["Neutropenia and diarrhoea", "gi: early cholinergic diarrhoea and sweating (irinotecan), late severe diarrhoea; marrow: neutropenia, severe with UGT1A1*28 homozygosity; lung: interstitial pneumonitis (rare)", "Atropine for early diarrhoea, high-dose loperamide for late diarrhoea; UGT1A1 genotyping", "CBC, stool frequency, electrolytes", "Strong CYP3A4 inducers or inhibitors; Gilbert syndrome without dose reduction"],
+  d_epip: ["Myelosuppression", "marrow: neutropenia; cancer: secondary AML with 11q23 (KMT2A) rearrangement 2–3 years later; skin: alopecia; vessel: hypotension with rapid infusion; allergy: infusion reactions; gi: mucositis", "Infuse over at least 30–60 minutes", "CBC, blood pressure during infusion", "Rapid IV push"],
+  d_anthra: ["Cardiotoxicity and myelosuppression", "heart: acute arrhythmia, dose-dependent dilated cardiomyopathy (doxorubicin risk rises steeply above about 450 mg/m² lifetime), late heart failure in childhood survivors; marrow: neutropenia; skin: alopecia, radiation recall; local: severe necrosis on extravasation; gi: mucositis; cancer: secondary AML; other: red urine", "Dexrazoxane; cap the lifetime dose; liposomal forms; dexrazoxane or cooling for extravasation", "LVEF by echocardiogram or MUGA scan at baseline and during treatment, CBC", "Trastuzumab given concurrently (additive cardiotoxicity); poor ejection fraction"],
+  d_vinca: ["Neuropathy (vincristine), myelosuppression (vinblastine, vinorelbine)", "nerve: peripheral sensory and motor neuropathy, jaw pain, foot drop, autonomic neuropathy with constipation and paralytic ileus, cranial nerve palsies; metab: SIADH with hyponatremia; marrow: neutropenia (vinblastine, vinorelbine); local: vesicant on extravasation", "Bowel regimen; cap single vincristine doses at 2 mg; label 'for IV use only, fatal if given by other routes'", "Neurological examination, bowel habit, sodium, CBC", "Intrathecal route (fatal); strong CYP3A4 inhibitors (azoles worsen neuropathy); Charcot–Marie–Tooth disease"],
+  d_taxane: ["Neutropenia and neuropathy", "marrow: neutropenia; nerve: peripheral sensory neuropathy; allergy: infusion hypersensitivity from the solvent (Cremophor for paclitaxel, polysorbate 80 for docetaxel); skin: alopecia, nail loss; vessel: fluid retention and oedema (docetaxel); muscle: arthralgia, myalgia", "Premedicate with dexamethasone, an H₁ and an H₂ blocker; dexamethasone around docetaxel for fluid retention; nab-paclitaxel avoids the solvent", "CBC, neurological examination", "Strong CYP3A4 or CYP2C8 inhibitors; severe liver dysfunction (docetaxel)"],
+  d_aspase: ["Hypersensitivity and pancreatitis", "allergy: anaphylaxis and silent inactivation by antibodies; gi: pancreatitis; vessel: thrombosis, including cerebral venous sinus thrombosis, and bleeding from low fibrinogen and antithrombin; liver: hepatotoxicity, steatosis; endo: hyperglycemia; metab: hypertriglyceridemia", "Switch to Erwinia asparaginase after allergy; replace fibrinogen or antithrombin when low", "Asparaginase activity, lipase, glucose, fibrinogen, liver tests, triglycerides", "Past pancreatitis or serious thrombosis with asparaginase"],
+  // supportive care
+  d_rasbu: ["Hemolysis in G6PD deficiency", "blood: hemolysis and methemoglobinemia in G6PD deficiency; allergy: anaphylaxis; other: falsely low uric acid if blood is not kept on ice", "Test G6PD before use in those at risk", "Uric acid (sample on ice), hemoglobin", "G6PD deficiency"],
+  d_gcsf: ["Bone pain", "muscle: bone pain (relieved by loratadine or NSAIDs); immune: leukocytosis; other: rare splenic rupture, capillary leak syndrome, sickle cell crisis", "Antihistamine or NSAID for bone pain", "CBC, left upper quadrant pain", "Sickle cell disease; giving it within 24 hours before chemotherapy"],
+  // more cytotoxics and protective drugs
+  d_mitomycin: ["Delayed myelosuppression", "marrow: cumulative, delayed myelosuppression; kidney: hemolytic uremic syndrome; lung: interstitial pneumonitis and fibrosis; local: severe necrosis on extravasation; bladder: chemical cystitis (intravesical)", "Limit the cumulative dose", "CBC, creatinine, blood film for schistocytes", "Cumulative dose above about 50 mg/m²"],
+  d_procarb: ["Myelosuppression", "marrow: myelosuppression; nerve: drowsiness, neuropathy; other: disulfiram-like reaction with alcohol, hypertensive crisis with tyramine (weak MAO inhibition); repro: azoospermia, infertility; cancer: secondary leukemia; allergy: rash, pneumonitis", "Tyramine-poor diet; avoid alcohol", "CBC, blood pressure", "Alcohol, tyramine-rich food, sympathomimetics, SSRIs, tricyclics and other serotonergic drugs"],
+  d_mitox: ["Myelosuppression and cardiotoxicity", "heart: cardiomyopathy above about 140 mg/m² cumulative; marrow: neutropenia; cancer: secondary AML; other: blue-green urine, sclerae and nails", "Lifetime dose limits", "LVEF before each dose in multiple sclerosis, CBC", "Prior anthracycline exposure near its limit"],
+  d_dexraz: ["Myelosuppression", "marrow: adds to chemotherapy myelosuppression; local: injection-site pain", "Reduce the dose in kidney impairment", "CBC", "Starting it at the first anthracycline dose in adults (approved once cumulative doxorubicin exceeds 300 mg/m²)"],
+  d_amifos: ["Hypotension", "vessel: hypotension during infusion; gi: nausea and vomiting; metab: hypocalcemia; skin: Stevens–Johnson syndrome and toxic epidermal necrolysis; allergy: rash, fever", "Give lying down, with fluids; hold antihypertensives for 24 hours", "Blood pressure every 5 minutes during infusion, calcium", "Hypotension or dehydration"],
+  d_mesna: ["Few", "gi: nausea, bad taste; allergy: rash, rare hypersensitivity; other: false-positive urine ketones", "None needed", "Urinalysis for hematuria (confirms protection)", "Known thiol allergy"],
+  d_eribulin: ["Neutropenia", "marrow: neutropenia; nerve: peripheral neuropathy; heart: QT prolongation; skin: alopecia; other: fatigue", "Delay or reduce for neuropathy", "CBC, ECG and electrolytes in those at risk", "Congenital long QT"],
+  // targeted therapy
+  d_cdk46: ["Neutropenia", "marrow: neutropenia (rarely febrile), anemia; heart: QT prolongation (ribociclib); liver: hepatotoxicity (ribociclib, abemaciclib); gi: diarrhoea (abemaciclib); vessel: venous thromboembolism; lung: interstitial lung disease", "Loperamide at the first loose stool with abemaciclib", "CBC every 2 weeks at first, liver tests, ECG with ribociclib", "Strong CYP3A4 inhibitors or inducers; QT-prolonging drugs with ribociclib"],
+  d_abl: ["Myelosuppression and drug-specific effects", "marrow: neutropenia, thrombocytopenia; vessel: fluid retention and periorbital oedema (imatinib), arterial occlusion and hypertension (ponatinib, nilotinib); lung: pleural effusion and pulmonary arterial hypertension (dasatinib); heart: QT prolongation (nilotinib), heart failure; metab: hyperglycemia, hyperlipidemia (nilotinib); gi: pancreatitis (nilotinib), diarrhoea (bosutinib); muscle: cramps", "Take nilotinib on an empty stomach; manage cardiovascular risk factors with ponatinib", "CBC, BCR::ABL1 PCR, ECG and electrolytes (nilotinib), lipase, glucose and lipids, echocardiogram (dasatinib)", "Strong CYP3A4 inhibitors; PPIs reduce dasatinib absorption; pregnancy"],
+  d_egfrtki: ["Rash and diarrhoea", "skin: acneiform rash, dry skin, paronychia; gi: diarrhoea; lung: interstitial lung disease; heart: QT prolongation and cardiomyopathy (osimertinib); eye: keratitis; liver: raised transaminases", "Doxycycline or minocycline and topical steroid for the rash; loperamide; sun protection", "Liver tests, ECG and LVEF with osimertinib, cough or dyspnoea", "Smoking and CYP3A4 inducers lower erlotinib levels; PPIs reduce erlotinib and gefitinib absorption"],
+  d_egfrmab: ["Acneiform rash and hypomagnesemia", "skin: acneiform rash (correlates with response), fissures, paronychia; metab: hypomagnesemia, hypokalemia, hypocalcemia; allergy: infusion reactions (cetuximab, IgE to galactose-α-1,3-galactose after tick bites); lung: interstitial lung disease (rare)", "Prophylactic doxycycline and moisturiser; Mg²⁺ replacement; premedicate cetuximab", "Mg²⁺, K⁺ and Ca²⁺", "RAS-mutant colorectal cancer (no benefit)"],
+  d_her2: ["Cardiotoxicity (trastuzumab), interstitial lung disease (T-DXd)", "heart: falling ejection fraction and heart failure, usually reversible and not dose-related; lung: interstitial lung disease and pneumonitis (trastuzumab deruxtecan); marrow: thrombocytopenia (T-DM1), neutropenia (T-DXd); liver: hepatotoxicity (T-DM1); allergy: infusion reactions with the first dose; repro: oligohydramnios in pregnancy", "Hold for a fall in LVEF and restart when it recovers; steroids for pneumonitis", "LVEF every 3 months, platelets and liver tests (T-DM1), chest imaging and symptoms (T-DXd)", "Concurrent anthracyclines; pregnancy"],
+  d_her2tki: ["Diarrhoea", "gi: diarrhoea (neratinib most); liver: hepatotoxicity; skin: hand–foot syndrome, rash; heart: falling ejection fraction (lapatinib); metab: raised creatinine without kidney injury (tucatinib)", "Loperamide prophylaxis with neratinib", "Liver tests, LVEF with lapatinib", "Strong CYP3A4 or CYP2C8 inhibitors"],
+  d_alki: ["Drug-specific", "eye: visual flashes and blurring (crizotinib); gi: nausea, diarrhoea, raised transaminases; muscle: myalgia and raised CK (alectinib, brigatinib); heart: bradycardia, QT prolongation (crizotinib); lung: early pneumonitis (brigatinib); metab: hypercholesterolemia and hypertriglyceridemia (lorlatinib), weight gain; nerve: mood and cognitive changes (lorlatinib); kidney: renal cysts (crizotinib)", "Statin for lorlatinib lipids; start brigatinib at a low dose for 7 days", "Liver tests, CK, lipids, heart rate, ECG", "Strong CYP3A inducers (lorlatinib: hepatotoxicity with rifampin)"],
+  d_krasi: ["Diarrhoea and hepatotoxicity", "gi: diarrhoea, nausea, vomiting; liver: raised transaminases, hepatitis (worse soon after checkpoint inhibitors); heart: QT prolongation (adagrasib); lung: interstitial lung disease", "Antidiarrhoeals; dose reduction", "Liver tests every 3 weeks for 3 months, ECG with adagrasib", "Recent checkpoint inhibitor (raises hepatotoxicity); acid-reducing drugs with sotorasib"],
+  d_brafi: ["Skin toxicity and fever", "cancer: cutaneous squamous cell carcinoma, keratoacanthoma, new melanomas (paradoxical MAPK activation); skin: photosensitivity (vemurafenib), rash, hand–foot reaction; other: pyrexia (dabrafenib); muscle: arthralgia; heart: QT prolongation (vemurafenib); eye: uveitis", "Combine with a MEK inhibitor; sun protection; stop and give antipyretics for fever", "Skin examination every 2 months, ECG and electrolytes", "BRAF wild-type tumours (may accelerate growth)"],
+  d_meki: ["Rash, diarrhoea and cardiac effects", "skin: acneiform rash; gi: diarrhoea; heart: reduced ejection fraction; eye: serous retinopathy, retinal vein occlusion; muscle: raised CK, rhabdomyolysis; vessel: hypertension, oedema; lung: pneumonitis", "Dose holds and reductions", "LVEF, eye examination for visual symptoms, CK, blood pressure", "Retinal vein occlusion"],
+  d_pi3ki: ["Hyperglycemia (α), colitis and hepatotoxicity (δ)", "endo: hyperglycemia, sometimes ketoacidosis (alpelisib, inavolisib); skin: rash, Stevens–Johnson syndrome; gi: diarrhoea, severe colitis (idelalisib, duvelisib); liver: hepatotoxicity; lung: pneumonitis; immune: serious infections, Pneumocystis and CMV (δ inhibitors)", "Optimise glucose first and use metformin; antihistamine prophylaxis for rash (alpelisib); Pneumocystis prophylaxis and CMV monitoring with δ inhibitors", "Fasting glucose and HbA1c, liver tests, stool frequency", "Uncontrolled diabetes; strong CYP3A inducers"],
+  d_mtori: ["Stomatitis and pneumonitis", "gi: stomatitis and mouth ulcers; lung: non-infectious pneumonitis; metab: hyperglycemia, hypercholesterolemia, hypertriglyceridemia; immune: infections; kidney: proteinuria; skin: rash, poor wound healing; marrow: anemia, thrombocytopenia", "Dexamethasone mouthwash prevents stomatitis; steroids for pneumonitis", "Glucose, lipids, CBC, urine protein, chest symptoms", "Strong CYP3A4 inhibitors or inducers; live vaccines"],
+  d_ruxo: ["Anemia and thrombocytopenia", "marrow: anemia, thrombocytopenia (dose-limiting), neutropenia; immune: herpes zoster, tuberculosis and hepatitis B reactivation, PML; cancer: non-melanoma skin cancer; metab: raised lipids, weight gain; nerve: Wernicke encephalopathy (fedratinib); gi: diarrhoea, nausea (fedratinib); other: symptom rebound if stopped suddenly", "Taper rather than stop; thiamine before and during fedratinib", "CBC every 2–4 weeks, lipids, thiamine (fedratinib)", "Strong CYP3A4 inhibitors without dose reduction"],
+  d_btki: ["Atrial fibrillation and bleeding", "heart: atrial fibrillation, ventricular arrhythmia and sudden death (ibrutinib), hypertension; vessel: bleeding and bruising (impaired platelet function); immune: infections; muscle: arthralgia; gi: diarrhoea; nerve: headache (acalabrutinib)", "Hold 3–7 days around surgery; choose a second-generation drug in heart disease", "Blood pressure, pulse and ECG, CBC", "Warfarin and dual antiplatelet therapy; strong CYP3A4 inhibitors"],
+  d_flt3i: ["Myelosuppression and QT prolongation", "marrow: myelosuppression; heart: QT prolongation (quizartinib, gilteritinib); other: differentiation syndrome (gilteritinib); nerve: posterior reversible encephalopathy (gilteritinib); gi: nausea, vomiting (midostaurin); liver: raised transaminases; lung: pneumonitis (midostaurin)", "Dexamethasone for differentiation syndrome; keep K⁺ and Mg²⁺ normal", "ECG, electrolytes, CBC, liver tests", "Other QT-prolonging drugs; strong CYP3A4 inhibitors"],
+  d_smoi: ["Muscle spasms and dysgeusia", "muscle: muscle spasms, raised CK; gi: loss of taste, weight loss, nausea; skin: alopecia; repro: embryo–fetal death and malformations, amenorrhea; other: premature epiphyseal closure in children", "Pregnancy test and two forms of contraception; no blood donation", "Pregnancy tests, CK", "Pregnancy"],
+  d_vegfmab: ["Hypertension and proteinuria", "vessel: hypertension, arterial thromboembolism (stroke, myocardial infarction), bleeding, hemoptysis in squamous lung cancer; kidney: proteinuria, nephrotic syndrome, thrombotic microangiopathy; gi: perforation, fistula; skin: impaired wound healing; nerve: posterior reversible encephalopathy; heart: heart failure; repro: ovarian failure", "Stop 4 weeks before and after surgery; treat blood pressure", "Blood pressure, urine protein (dipstick or protein–creatinine ratio)", "Recent surgery, hemoptysis, squamous lung histology, recent arterial thrombosis"],
+  d_mki: ["Hypertension, fatigue and hand–foot skin reaction", "vessel: hypertension, bleeding, arterial thrombosis; skin: hand–foot skin reaction, hair depigmentation (sunitinib, pazopanib); endo: hypothyroidism; liver: hepatotoxicity (pazopanib, regorafenib, boxed warning); kidney: proteinuria; heart: QT prolongation, heart failure; gi: diarrhoea, mucositis, perforation; muscle: osteonecrosis of the jaw (cabozantinib)", "Urea cream and thick-soled footwear; antihypertensives; stop before surgery", "Blood pressure, TSH, liver tests, urine protein, ECG", "Strong CYP3A4 inhibitors or inducers; recent surgery"],
+  d_venet: ["Tumour lysis syndrome and neutropenia", "metab: tumour lysis syndrome (hyperkalemia, hyperphosphatemia, hypocalcemia, hyperuricemia, kidney injury), sometimes within hours of a dose step; marrow: neutropenia, thrombocytopenia; immune: infections; gi: nausea, diarrhoea", "5-week dose ramp-up in CLL; hydration, allopurinol or rasburicase; hospital admission for high tumour burden", "K⁺, phosphate, calcium, uric acid and creatinine before and 6–8 and 24 hours after each new dose; CBC", "Strong CYP3A inhibitors (posaconazole, ketoconazole) during ramp-up; grapefruit; live vaccines"],
+  d_parpi: ["Anemia and other cytopenias", "marrow: anemia (often needs transfusion), thrombocytopenia (niraparib), neutropenia; cancer: myelodysplastic syndrome and AML; gi: nausea, vomiting; vessel: hypertension (niraparib), venous thromboembolism; lung: pneumonitis", "Dose holds and reductions; weight-based niraparib dosing", "CBC monthly, blood pressure with niraparib", "Strong CYP3A inhibitors (olaparib)"],
+  d_protinh: ["Peripheral neuropathy (bortezomib), cardiac toxicity (carfilzomib)", "nerve: painful sensory neuropathy, autonomic neuropathy with orthostatic hypotension (bortezomib); immune: herpes zoster reactivation; marrow: cyclic thrombocytopenia; heart: heart failure, ischemia, hypertension (carfilzomib); kidney: acute kidney injury and thrombotic microangiopathy (carfilzomib); lung: dyspnoea", "Acyclovir or valacyclovir prophylaxis; subcutaneous, weekly bortezomib; hydrate before carfilzomib", "Neurological examination, CBC, blood pressure and cardiac symptoms, creatinine", "Green tea extracts may block bortezomib; carfilzomib in uncontrolled heart failure"],
+  d_imid: ["Teratogenicity, thrombosis and myelosuppression", "repro: phocomelia and other severe birth defects; vessel: deep vein thrombosis and pulmonary embolism, more with dexamethasone or erythropoietin; marrow: neutropenia, thrombocytopenia (lenalidomide); nerve: peripheral neuropathy, sedation (thalidomide); gi: constipation (thalidomide); skin: rash; cancer: second primary cancers (lenalidomide)", "Restricted programmes with pregnancy tests and two contraceptive methods; aspirin or an anticoagulant for clot prophylaxis", "Pregnancy tests, CBC, symptoms of thrombosis", "Pregnancy; donating blood or sperm during treatment"],
+  d_idhi: ["Differentiation syndrome", "other: differentiation syndrome (fever, dyspnoea, pulmonary infiltrates, effusions, oedema, kidney injury); immune: leukocytosis; heart: QT prolongation (ivosidenib); liver: indirect hyperbilirubinemia (enasidenib, UGT1A1 inhibition), raised transaminases (vorasidenib); nerve: Guillain–Barré syndrome (ivosidenib, rare)", "Dexamethasone at the first sign of differentiation syndrome; hydroxyurea for leukocytosis", "Signs of differentiation syndrome, CBC, ECG, liver tests", "Strong CYP3A4 inhibitors (ivosidenib)"],
+  d_menini: ["Differentiation syndrome and QT prolongation", "other: differentiation syndrome; heart: QT prolongation (revumenib); marrow: cytopenias, febrile neutropenia; gi: nausea", "Dexamethasone for differentiation syndrome; dose adjustment with strong CYP3A4 inhibitors", "ECG, electrolytes, CBC", "Other QT-prolonging drugs"],
+  d_apl: ["Differentiation syndrome", "other: differentiation syndrome (fever, weight gain, dyspnoea, infiltrates, effusions, hypotension, kidney injury); heart: QT prolongation and torsades (arsenic); nerve: pseudotumour cerebri (ATRA, especially in young patients), neuropathy (arsenic); metab: hypertriglyceridemia, hyperleukocytosis; skin: dry skin and cheilitis (ATRA); repro: teratogenic (ATRA)", "Dexamethasone at the first sign, with prophylaxis when WBC is high; keep K⁺ above 4 and Mg²⁺ above 2", "ECG twice weekly with arsenic, electrolytes, coagulation tests, CBC, lipids", "Other QT-prolonging drugs; tetracyclines with ATRA (pseudotumour)"],
+  d_hdaci: ["Fatigue and thrombocytopenia", "marrow: thrombocytopenia; gi: nausea, diarrhoea, anorexia; heart: ECG T-wave and QT changes (romidepsin); vessel: venous thromboembolism (vorinostat); metab: hypokalemia, hypomagnesemia, hyperglycemia; other: fatigue", "Correct K⁺ and Mg²⁺ before romidepsin", "CBC, electrolytes, ECG", "Warfarin (raised INR with vorinostat)"],
+  // immunotherapy
+  d_pd1: ["Immune-related adverse events", "gi: colitis, diarrhoea; liver: hepatitis; lung: pneumonitis; skin: rash, pruritus, vitiligo, rarely Stevens–Johnson syndrome; endo: hypothyroidism after thyroiditis, hypophysitis, primary adrenal insufficiency, type 1 diabetes with ketoacidosis; kidney: interstitial nephritis; heart: myocarditis (rare, often fatal, may overlap with myositis and myasthenia); nerve: myasthenia, Guillain–Barré, encephalitis; muscle: arthritis, myositis; allergy: infusion reactions", "Hold the drug and give prednisone 0.5–2 mg/kg for grade 2 or worse events; infliximab for steroid-refractory colitis, mycophenolate for hepatitis; lifelong hormone replacement for endocrine damage", "TSH and free T4, glucose, liver tests, creatinine and electrolytes before each dose; cortisol; troponin when myocarditis is suspected", "Uncontrolled autoimmune disease; solid-organ transplant (rejection)"],
+  d_ctla4: ["Immune-related adverse events (more frequent than with PD-1)", "gi: colitis (the commonest serious event), with perforation risk; liver: hepatitis; endo: hypophysitis (headache, low ACTH, TSH and gonadotropins), thyroiditis, adrenal insufficiency; skin: rash, pruritus; eye: uveitis; nerve: neuropathy; kidney: nephritis", "Prednisone for grade 2 or worse; infliximab or vedolizumab for refractory colitis; hormone replacement", "Liver tests, TSH, cortisol and electrolytes before each dose; stool frequency", "Uncontrolled autoimmune disease"],
+  d_cd19: ["Cytokine release syndrome and neurotoxicity", "other: cytokine release syndrome (fever, hypotension, hypoxia, capillary leak); nerve: immune effector cell-associated neurotoxicity (confusion, aphasia, seizures, cerebral oedema); immune: B-cell aplasia, hypogammaglobulinemia, infections; marrow: prolonged cytopenias; other: hemophagocytic lymphohistiocytosis; cancer: T-cell malignancy after CAR T (rare)", "Tocilizumab for cytokine release, dexamethasone for neurotoxicity; seizure prophylaxis; step-up dosing and hospital start for blinatumomab; immune globulin replacement", "Temperature, blood pressure and oxygen, neurological checks (ICE score), CBC, IgG, ferritin, CRP", "Driving for 8 weeks after CAR T; live vaccines"],
+  d_brentux: ["Peripheral neuropathy", "nerve: peripheral sensory and motor neuropathy (cumulative); marrow: neutropenia; nerve: progressive multifocal leukoencephalopathy (rare); gi: pancreatitis, GI perforation; metab: hyperglycemia; skin: Stevens–Johnson syndrome; allergy: infusion reactions", "Dose reduction or delay for neuropathy; G-CSF with chemotherapy", "Neurological examination, CBC, glucose", "Bleomycin (pulmonary toxicity); strong CYP3A4 inhibitors"],
+  d_cd38: ["Infusion reactions", "allergy: infusion reactions, mostly with the first dose (cough, bronchospasm, hypotension); immune: infection, hepatitis B reactivation; marrow: neutropenia, thrombocytopenia; other: false-positive indirect antiglobulin test, and interference with serum protein electrophoresis in IgG-κ myeloma", "Premedicate with steroid, antihistamine and paracetamol; type and screen before the first dose and tell the blood bank (DTT-treated cells)", "Vital signs during infusion, CBC, hepatitis B serology", "Severe COPD or asthma (bronchospasm) without post-infusion medication"],
+  d_bcma: ["Cytokine release syndrome, neurotoxicity and infection", "other: cytokine release syndrome; nerve: immune effector cell-associated neurotoxicity, delayed parkinsonism, Guillain–Barré and cranial nerve palsies (ciltacabtagene); immune: severe and opportunistic infections, hypogammaglobulinemia; marrow: prolonged cytopenias; cancer: secondary hematological cancers after CAR T", "Step-up dosing in hospital for bispecifics; tocilizumab and dexamethasone; immune globulin replacement; Pneumocystis and antiviral prophylaxis", "Vital signs, neurological checks, CBC, IgG", "Active infection at the start of treatment; live vaccines"],
+  d_cd20: ["Infusion reactions and infection", "allergy: infusion reactions, worst with the first dose; immune: hepatitis B reactivation (fulminant hepatitis), hypogammaglobulinemia, infections, progressive multifocal leukoencephalopathy; marrow: late-onset neutropenia; metab: tumour lysis with high lymphocyte counts; skin: mucocutaneous reactions (rare, severe)", "Premedicate; screen for hepatitis B (HBsAg, anti-HBc) and give entecavir or tenofovir prophylaxis if positive", "Hepatitis B serology, CBC, IgG", "Active hepatitis B without antiviral cover; live vaccines"],
+  // ---- Anti-infective hub ----
+  // antivirals on the Hepatic hub
+  d_nuc: ["Hepatitis B flare on stopping; kidney and bone (tenofovir disoproxil)", "liver: severe hepatitis B flare when stopped; kidney: proximal tubulopathy and Fanconi syndrome, falling GFR (tenofovir disoproxil); muscle: loss of bone density (tenofovir disoproxil); metab: lactic acidosis (rare); other: entecavir resistance after prior lamivudine", "Tenofovir alafenamide in kidney or bone disease; never stop without a plan", "Creatinine, phosphate and urine protein; liver tests and HBV DNA", "Stopping abruptly; HIV coinfection without a full HIV regimen (resistance)"],
+  d_daa: ["Few; drug interactions", "heart: severe bradycardia with amiodarone (sofosbuvir); liver: hepatitis B reactivation; other: headache, fatigue", "Screen for hepatitis B (HBsAg, anti-HBc) before treatment", "HBV DNA if HBsAg-positive; liver tests", "Amiodarone; strong P-glycoprotein or CYP inducers (rifampin, carbamazepine, St John's wort)"],
+  // β-lactams and cell-wall drugs
+  d_pen: ["Hypersensitivity", "allergy: type I anaphylaxis and urticaria, type II hemolytic anemia, type III serum sickness, type IV rash, Stevens–Johnson syndrome; kidney: acute interstitial nephritis (nafcillin, methicillin); liver: hepatitis (oxacillin, nafcillin); nerve: seizures at high dose or in kidney failure; marrow: neutropenia with long courses; other: Jarisch–Herxheimer reaction in syphilis; local: phlebitis (nafcillin)", "Penicillin-allergy evaluation and skin testing; desensitisation when penicillin is essential (syphilis in pregnancy)", "CBC and liver tests on long IV courses; creatinine", "True IgE-mediated allergy without desensitisation"],
+  d_aminopen: ["Hypersensitivity and C. difficile", "allergy: rash, anaphylaxis; skin: non-allergic maculopapular rash in infectious mononucleosis; gi: diarrhoea, C. difficile colitis; liver: cholestatic hepatitis (amoxicillin–clavulanate); kidney: interstitial nephritis; marrow: neutropenia and thrombocytopenia (piperacillin); metab: hypokalemia (piperacillin)", "Take amoxicillin–clavulanate with food", "Liver tests with long amoxicillin–clavulanate courses, CBC, creatinine", "Penicillin allergy; ampicillin in mononucleosis"],
+  d_ceph: ["Hypersensitivity", "allergy: rash, anaphylaxis (low cross-reactivity with penicillins, mostly through shared side chains); gi: C. difficile colitis; vessel: hypoprothrombinemia and bleeding (cefotetan, cefoperazone, from their N-methylthiotetrazole side chain); other: disulfiram-like reaction (cefotetan); liver: biliary sludge and pseudolithiasis (ceftriaxone); nerve: encephalopathy and seizures (cefepime, especially in kidney failure); blood: immune hemolytic anemia (ceftriaxone)", "Vitamin K for prolonged courses of cefotetan; dose cefepime by creatinine clearance", "PT/INR, creatinine, mental status with cefepime", "Ceftriaxone with calcium-containing IV fluids in neonates (fatal precipitates) and in neonatal hyperbilirubinemia; alcohol with cefotetan"],
+  d_carba: ["Seizures (imipenem) and hypersensitivity", "nerve: seizures, most with imipenem at high dose or in kidney failure; allergy: rash, low cross-reactivity with penicillin; gi: C. difficile colitis, nausea; liver: raised transaminases; other: aztreonam has no cross-allergy except with ceftazidime", "Prefer meropenem in CNS infection or seizure risk; adjust for kidney function", "Creatinine, mental status", "Valproate (carbapenems drop its levels sharply, causing seizures)"],
+  d_bli: ["Those of the partner drug", "liver: cholestatic hepatitis (clavulanate, often delayed, in older men); gi: diarrhoea; allergy: rash", "Dose by kidney function", "Liver tests on long amoxicillin–clavulanate courses", "Past clavulanate-associated jaundice"],
+  d_glyco: ["Nephrotoxicity and infusion reactions", "kidney: acute kidney injury (trough- and AUC-related, worse with aminoglycosides, piperacillin–tazobactam, loop diuretics); allergy: vancomycin infusion reaction (flushing, pruritus, hypotension from direct histamine release, not allergy); ear: ototoxicity (rare); marrow: neutropenia, thrombocytopenia with long courses; skin: DRESS, linear IgA bullous dermatosis; other: taste disturbance and fetal risk (telavancin)", "Infuse over at least 60 minutes and premedicate with an antihistamine; AUC-guided dosing", "Trough or AUC levels, creatinine, CBC weekly on long courses", "Telavancin in pregnancy; other nephrotoxins"],
+  d_fosfo: ["Diarrhoea", "gi: diarrhoea, nausea; nerve: headache; metab: hypernatremia and hypokalemia (IV form, high sodium load)", "None needed for single oral doses", "Sodium and potassium with the IV form", "Pyelonephritis or bacteremia as single oral dose therapy"],
+  d_polymyx: ["Nephrotoxicity and neurotoxicity", "kidney: acute tubular necrosis (dose-related, very common); nerve: paresthesia, dizziness, neuromuscular blockade with respiratory arrest; lung: bronchospasm with inhaled colistin", "Loading dose with kidney-adjusted maintenance; avoid other nephrotoxins", "Creatinine daily, neurological examination", "Aminoglycosides, vancomycin, neuromuscular blockers"],
+  d_dapto: ["Myopathy", "muscle: myopathy and rhabdomyolysis; lung: eosinophilic pneumonia; nerve: peripheral neuropathy; other: falsely prolonged PT/INR with some reagents", "Pause statins during treatment", "CK weekly (more often with kidney impairment or statins)", "Pneumonia (surfactant inactivates it)"],
+  // protein synthesis inhibitors
+  d_amino: ["Nephrotoxicity and ototoxicity", "kidney: acute tubular necrosis, usually reversible, with Mg²⁺ and K⁺ wasting; ear: irreversible cochlear (hearing loss) and vestibular toxicity, more with loop diuretics, cisplatin and the mitochondrial MT-RNR1 m.1555A>G variant; nerve: neuromuscular blockade (worse in myasthenia or with paralytics); repro: fetal ototoxicity", "Once-daily dosing; short courses; avoid other nephrotoxins", "Trough levels, creatinine, audiometry and balance with long courses", "Pregnancy; myasthenia gravis; loop diuretics, vancomycin, cisplatin, polymyxins"],
+  d_tetra: ["GI upset, photosensitivity and pill oesophagitis", "gi: nausea, pill oesophagitis (take with water, sitting up), pancreatitis (tigecycline); skin: photosensitivity, blue-grey hyperpigmentation (minocycline); repro: tooth discolouration and enamel hypoplasia, inhibited bone growth (pregnancy and children under 8, though short doxycycline courses are allowed); liver: hepatotoxicity, acute fatty liver at high IV doses in pregnancy; nerve: pseudotumour cerebri, vertigo (minocycline); kidney: Fanconi syndrome with expired tetracycline; immune: drug-induced lupus (minocycline); other: higher mortality with tigecycline", "Separate from Ca²⁺, Mg²⁺, iron, antacids and milk by 2–3 hours", "Liver tests on long courses", "Pregnancy and children under 8 (except doxycycline for rickettsial disease); retinoids (pseudotumour cerebri)"],
+  d_macro: ["GI upset and QT prolongation", "gi: nausea, cramps and diarrhoea (motilin agonism), infantile hypertrophic pyloric stenosis (erythromycin in the first weeks of life); heart: QT prolongation, torsades; liver: cholestatic hepatitis (erythromycin estolate); ear: reversible hearing loss at high dose; allergy: rash; immune: worsens myasthenia gravis", "Azithromycin has fewer interactions", "ECG in those at risk, liver tests", "Erythromycin and clarithromycin with CYP3A4 substrates: statins (myopathy), colchicine, warfarin, carbamazepine, theophylline, cyclosporine; other QT-prolonging drugs"],
+  d_clinda: ["C. difficile colitis", "gi: diarrhoea and C. difficile colitis (pseudomembranous colitis); skin: rash, rarely Stevens–Johnson syndrome or DRESS; liver: raised transaminases; nerve: neuromuscular blockade", "Stop at the first sign of severe diarrhoea and test for C. difficile", "Stool frequency", "Past C. difficile infection where alternatives exist"],
+  d_linez: ["Myelosuppression after 2 weeks", "marrow: thrombocytopenia, anemia, neutropenia (reversible); nerve: peripheral and optic neuropathy with long courses (often irreversible); other: serotonin syndrome; metab: lactic acidosis, hypoglycemia; vessel: hypertensive reactions with tyramine", "Limit to 2–4 weeks where possible", "CBC weekly, vision with long courses", "SSRIs, SNRIs, MAO inhibitors and other serotonergic drugs; large amounts of tyramine-rich food"],
+  d_chloram: ["Bone marrow toxicity", "marrow: dose-related reversible anemia (blocks mitochondrial protein synthesis); marrow: idiosyncratic aplastic anemia, often fatal and unrelated to dose; other: gray baby syndrome (cyanosis, vomiting, flaccidity, circulatory collapse) because neonates lack UDP-glucuronosyltransferase; eye: optic neuritis", "Keep for situations with no alternative; dose by levels in neonates", "CBC twice weekly, drug levels in infants", "Neonates without level monitoring; CYP2C9 substrates (warfarin, phenytoin)"],
+  // nucleic acid drugs
+  d_fq: ["Tendinopathy, neuropathy and CNS effects (boxed warnings)", "muscle: tendinitis and Achilles tendon rupture (worse over 60, with steroids, after transplant), cartilage damage in children; nerve: peripheral neuropathy (possibly permanent), dizziness, insomnia, delirium, seizures, myasthenia gravis exacerbation; heart: QT prolongation; endo: hypoglycemia and hyperglycemia; vessel: aortic aneurysm and dissection; gi: C. difficile colitis; skin: photosensitivity", "Reserve for infections without good alternatives; stop at the first tendon pain", "Glucose in diabetes, ECG in those at risk", "Myasthenia gravis; pregnancy and children; antacids, iron, calcium and dairy (chelation); other QT drugs; ciprofloxacin raises theophylline and tizanidine levels"],
+  d_rif: ["Hepatotoxicity and drug interactions", "liver: hepatitis, cholestasis; other: orange-red urine, tears and sweat (stains contact lenses), flu-like syndrome with intermittent dosing; blood: hemolysis, thrombocytopenia and acute kidney injury on re-exposure (immune); allergy: rash; eye: uveitis (rifabutin)", "Always combine for treatment (resistance); review every co-medication", "Liver tests at baseline and when symptomatic or at risk, CBC", "Strong CYP3A4 and P-glycoprotein induction: lowers warfarin, oral contraceptives, HIV protease inhibitors, azoles, methadone, corticosteroids, DOACs and transplant drugs"],
+  d_fidax: ["Few", "gi: nausea, vomiting, abdominal pain, GI bleeding (rare); allergy: angioedema, rash (rare); marrow: neutropenia (rare)", "None", "Clinical response", "Known macrolide hypersensitivity (caution)"],
+  d_metro: ["Disulfiram-like reaction and neuropathy", "other: disulfiram-like reaction with alcohol (flushing, vomiting, tachycardia), metallic taste, dark urine; nerve: peripheral neuropathy with long courses, encephalopathy and cerebellar toxicity, seizures; gi: nausea; marrow: leukopenia", "No alcohol during and for 3 days after the course", "Neurological symptoms on long courses", "Alcohol; disulfiram; warfarin (raised INR via CYP2C9 inhibition); lithium"],
+  d_nitrof: ["Pulmonary and hepatic reactions", "lung: acute hypersensitivity pneumonitis (fever, dyspnoea, eosinophilia within days), chronic interstitial fibrosis with long use; liver: chronic active hepatitis, cholestasis; nerve: peripheral neuropathy, worse in kidney failure; blood: hemolysis in G6PD deficiency and in neonates; gi: nausea; other: brown urine", "Short courses; take with food", "Lung symptoms and liver tests in long-term prophylaxis", "Creatinine clearance below 30 mL/min (older labelling: 60); G6PD deficiency; late pregnancy (38–42 weeks) and neonates"],
+  // folate antagonists
+  d_sulfa: ["Hypersensitivity and hemolysis", "allergy: rash, fever, Stevens–Johnson syndrome and toxic epidermal necrolysis, DRESS, photosensitivity; blood: hemolysis in G6PD deficiency, methemoglobinemia (dapsone); marrow: agranulocytosis, aplastic anemia; kidney: crystalluria and stones (sulfadiazine), interstitial nephritis; liver: hepatitis; repro: kernicterus in neonates (displaces bilirubin from albumin); nerve: aseptic meningitis", "Hydration with sulfadiazine; G6PD testing before dapsone", "CBC, creatinine, liver tests, methemoglobin (dapsone)", "G6PD deficiency; late pregnancy and neonates; warfarin and phenytoin (displaced and inhibited: raised levels); sulfonylureas (hypoglycemia)"],
+  d_tmp: ["Hyperkalemia and megaloblastic anemia", "metab: hyperkalemia (ENaC blockade like amiloride), hyponatremia; kidney: rise in creatinine without a fall in GFR (blocks tubular secretion); marrow: megaloblastic anemia, leukopenia, thrombocytopenia; allergy: rash (more with sulfamethoxazole); repro: neural tube defects in the first trimester", "Leucovorin for marrow toxicity; folate in pregnancy", "K⁺ and creatinine (especially with ACE inhibitors, ARBs, spironolactone or kidney disease), CBC", "ACE inhibitors, ARBs, spironolactone (hyperkalemia); methotrexate (additive antifolate); first trimester"],
+  d_pyrim: ["Megaloblastic anemia and marrow suppression", "marrow: megaloblastic anemia, leukopenia, thrombocytopenia; skin: rash, Stevens–Johnson syndrome (with sulfadoxine); gi: nausea, mouth ulcers (proguanil); repro: possible teratogen in the first trimester", "Leucovorin (folinic acid, not folic acid) with every course of pyrimethamine", "CBC weekly during toxoplasmosis treatment", "Folic acid instead of folinic acid (it reduces activity against Toxoplasma); methotrexate and trimethoprim"],
+  // antituberculars
+  d_inh: ["Hepatitis and peripheral neuropathy", "liver: hepatitis (rises with age, alcohol, pregnancy and the postpartum period, and in slow acetylators); nerve: peripheral neuropathy and, in overdose, seizures refractory to benzodiazepines, from pyridoxine depletion; marrow: sideroblastic anemia; immune: drug-induced lupus (anti-histone antibodies); metab: overdose causes lactic acidosis", "Pyridoxine (B₆) daily for all at risk; IV pyridoxine gram-for-gram in overdose", "Liver tests at baseline and monthly when at risk; ask about symptoms of hepatitis", "Alcohol; inhibits CYP2C19 and CYP3A4 (raises phenytoin and carbamazepine)"],
+  d_emb: ["Optic neuritis", "eye: retrobulbar optic neuritis with reduced acuity, central scotoma and red–green colour blindness (dose-related, usually reversible if stopped early); metab: hyperuricemia; nerve: peripheral neuropathy", "Weight-based dosing, lower in kidney failure", "Visual acuity and colour vision (Ishihara) at baseline and monthly", "Young children who cannot report visual change (caution); poor kidney function without dose change"],
+  d_pza: ["Hepatotoxicity", "liver: hepatitis (the most hepatotoxic first-line antitubercular, dose-related); metab: hyperuricemia and acute gout (blocks urate secretion); muscle: arthralgia; skin: photosensitivity, rash; gi: nausea", "Stop at once for significant hepatitis", "Liver tests, uric acid", "Acute gout; severe liver disease"],
+  d_bdq: ["QT prolongation", "heart: QT prolongation (additive with moxifloxacin, clofazimine, delamanid); liver: hepatotoxicity; gi: nausea; muscle: arthralgia; other: higher mortality in an early trial (unexplained)", "Correct K⁺, Mg²⁺ and Ca²⁺", "ECG at baseline, 2, 12 and 24 weeks; electrolytes; liver tests", "Strong CYP3A4 inducers (rifampin) and inhibitors; alcohol"],
+  // antifungals
+  d_polyene: ["Nephrotoxicity and infusion reactions", "kidney: acute kidney injury from afferent vasoconstriction and tubular damage, distal renal tubular acidosis; metab: hypokalemia, hypomagnesemia; allergy: infusion fever, rigors and hypotension ('shake and bake'); marrow: normocytic anemia (low erythropoietin); heart: arrhythmia with low K⁺ or rapid infusion; local: thrombophlebitis; nerve: seizures with intrathecal use", "Saline loading, K⁺ and Mg²⁺ replacement; liposomal formulation; premedicate with paracetamol, an antihistamine and hydrocortisone, meperidine for rigors", "Creatinine, K⁺ and Mg²⁺ daily, CBC", "Other nephrotoxins (aminoglycosides, cyclosporine, cisplatin)"],
+  d_azole: ["Hepatotoxicity and drug interactions", "liver: hepatitis, rarely fulminant (ketoconazole most); heart: QT prolongation (not isavuconazole), heart failure (itraconazole); endo: adrenal insufficiency and gynecomastia (ketoconazole blocks steroidogenesis); eye: visual disturbance and photopsia (voriconazole); skin: photosensitivity and squamous cell carcinoma (voriconazole); muscle: periostitis with fluoride excess (voriconazole); nerve: hallucinations (voriconazole); metab: hypokalemia and hypertension (posaconazole); repro: teratogenic in the first trimester", "Therapeutic drug monitoring for voriconazole and posaconazole; check every co-medication", "Liver tests, ECG, voriconazole and posaconazole levels", "Strong CYP3A4 inhibition raises statins, warfarin, calcineurin inhibitors, vincristine, venetoclax, benzodiazepines; itraconazole in heart failure; pregnancy"],
+  d_allyl: ["Hepatotoxicity", "liver: hepatitis, rare liver failure; gi: taste and smell disturbance (can last), GI upset; skin: rash, Stevens–Johnson syndrome, drug-induced lupus; nerve: depression; marrow: neutropenia (rare)", "Treat only confirmed fungal nail infection", "Liver tests at baseline (and if symptoms)", "Chronic or active liver disease; CYP2D6 substrates (raises metoprolol, tricyclic and some SSRI levels)"],
+  d_echino: ["Few", "allergy: histamine-mediated flushing and rash with rapid infusion; liver: raised transaminases and alkaline phosphatase; local: phlebitis; other: infusion-related hypotension", "Slow the infusion", "Liver tests", "Cyclosporine with caspofungin (hepatotoxicity)"],
+  d_5fc: ["Myelosuppression", "marrow: leukopenia, thrombocytopenia (dose-related, worse when levels exceed 100 mg/L or with amphotericin-induced kidney injury); liver: hepatitis; gi: nausea, diarrhoea, enterocolitis; repro: teratogenic", "Adjust dose to creatinine clearance and levels", "Peak level 2 hours post dose, CBC twice weekly, liver tests, creatinine", "Pregnancy; kidney failure without level monitoring"],
+  d_griseo: ["Teratogenicity and enzyme induction", "repro: teratogen and aneuploidy risk (avoid conception for 1 month for women, 6 months for men); liver: hepatotoxicity; skin: photosensitivity, rash, lupus flare; nerve: headache, confusion; other: precipitates acute intermittent porphyria, disulfiram-like reaction with alcohol; marrow: leukopenia (rare)", "Take with a fatty meal", "Liver tests and CBC on long courses", "Pregnancy; porphyria; liver failure; CYP inducer that lowers warfarin and oral contraceptive levels"],
+  // antiretrovirals
+  d_marav: ["Hepatotoxicity", "liver: hepatotoxicity with systemic allergic features (rash, eosinophilia, raised IgE); vessel: orthostatic hypotension, especially in kidney impairment; immune: upper respiratory infections; muscle: myalgia", "Tropism test first", "Liver tests", "CXCR4- or dual-tropic virus; strong CYP3A4 inducers or inhibitors without dose change"],
+  d_enfuv: ["Injection-site reactions", "local: painful nodules and erythema at almost every injection site; lung: bacterial pneumonia; allergy: hypersensitivity (rash, fever, raised transaminases)", "Rotate sites", "Injection sites, respiratory symptoms", "Re-challenge after hypersensitivity"],
+  d_lena: ["Injection-site reactions", "local: injection-site nodules, induration, swelling and pain, occasionally lasting months; other: immune reconstitution inflammatory syndrome; gi: nausea", "Rotate abdominal sites", "HIV test before each PrEP injection (resistance if infection is missed)", "Strong CYP3A inducers (rifampin, carbamazepine) that drop its level"],
+  d_nrti: ["Mitochondrial toxicity and drug-specific effects", "metab: lactic acidosis with hepatic steatosis (stavudine, didanosine, zidovudine, rarely others), lipoatrophy; kidney: proximal tubulopathy, Fanconi syndrome and falling GFR (tenofovir disoproxil); muscle: loss of bone density (tenofovir disoproxil); allergy: abacavir hypersensitivity (fever, rash, GI and respiratory symptoms, fatal on re-challenge) in HLA-B*57:01 carriers; heart: possible myocardial infarction risk (abacavir); marrow: macrocytic anemia and neutropenia (zidovudine); muscle: myopathy (zidovudine); liver: hepatitis B flare when lamivudine, emtricitabine or tenofovir is stopped", "HLA-B*57:01 test before abacavir; tenofovir alafenamide in kidney or bone disease", "Creatinine, phosphate and urine protein (tenofovir), CBC (zidovudine), liver tests, HBV status", "Abacavir in HLA-B*57:01 carriers; zidovudine with ganciclovir (marrow); stopping in hepatitis B coinfection without cover"],
+  d_nnrti: ["Rash and hepatotoxicity", "skin: rash, Stevens–Johnson syndrome (nevirapine most, in the first 6 weeks); liver: severe hepatotoxicity (nevirapine, worse in women with CD4 above 250 and men above 400); nerve: vivid dreams, dizziness, depression, suicidality (efavirenz); heart: QT prolongation (efavirenz, rilpivirine); endo: gynecomastia (efavirenz); metab: raised lipids (efavirenz)", "Lead-in dosing of nevirapine; take efavirenz at bedtime on an empty stomach", "Liver tests in the first 18 weeks with nevirapine, mood", "PPIs with oral rilpivirine (absorption needs acid); CYP inducers and inhibitors; nevirapine at high CD4 counts"],
+  d_insti: ["Weight gain and sleep disturbance", "metab: weight gain, more with tenofovir alafenamide; nerve: insomnia, headache, depression; kidney: small rise in creatinine (OCT2 blockade, not true injury); muscle: raised CK, rhabdomyolysis (raltegravir); allergy: hypersensitivity with liver injury (dolutegravir, rare); liver: raised transaminases; local: injection-site reactions (cabotegravir)", "Separate from Ca²⁺, iron, Mg²⁺, aluminium and zinc by several hours (or take together with food for some)", "Weight, creatinine (expected small rise), liver tests", "Rifampin with bictegravir; dofetilide with dolutegravir; polyvalent cations at the same time"],
+  d_hivpi: ["Metabolic effects and drug interactions", "metab: hyperglycemia and insulin resistance, hyperlipidemia, lipodystrophy; liver: hepatotoxicity; gi: nausea, diarrhoea (lopinavir); liver: unconjugated hyperbilirubinemia and jaundice (atazanavir, UGT1A1 inhibition); kidney: nephrolithiasis and cholelithiasis (atazanavir, indinavir); heart: PR and QT prolongation (lopinavir, atazanavir); skin: rash (darunavir has a sulfonamide group); vessel: bleeding in hemophilia", "Lipid and glucose management; statin choice (pravastatin, low-dose rosuvastatin)", "Glucose, lipids, liver tests, bilirubin, urinalysis", "Rifampin; simvastatin and lovastatin; inhaled or intranasal fluticasone (Cushing syndrome); PPIs with atazanavir; ergots, midazolam, amiodarone, sildenafil at full dose"],
+  // herpes, influenza and COVID-19 antivirals
+  d_acv: ["Nephrotoxicity (IV acyclovir), myelosuppression (ganciclovir)", "kidney: crystalline nephropathy with rapid IV infusion or dehydration; nerve: tremor, confusion, hallucinations and seizures, especially in kidney failure; marrow: neutropenia, thrombocytopenia, anemia (ganciclovir, valganciclovir); repro: carcinogenic, teratogenic and suppresses sperm production (ganciclovir); gi: nausea; local: phlebitis", "IV hydration and slow infusion; dose by creatinine clearance; handle ganciclovir as a cytotoxic", "Creatinine, CBC twice weekly with ganciclovir", "Zidovudine, mycophenolate and other marrow suppressants with ganciclovir; pregnancy (ganciclovir)"],
+  d_foscar: ["Nephrotoxicity and electrolyte disturbance", "kidney: acute kidney injury (both), nephrogenic diabetes insipidus (foscarnet), proximal tubulopathy and Fanconi syndrome (cidofovir); metab: hypocalcemia (ionised), hypomagnesemia, hypokalemia, hypo- or hyperphosphatemia with foscarnet, causing paresthesia, tetany, seizures and arrhythmia; marrow: neutropenia (cidofovir); eye: uveitis and hypotony (cidofovir); repro: genital ulcers (foscarnet); metab: metabolic acidosis (cidofovir)", "Saline before each dose; probenecid with cidofovir; replace electrolytes", "Creatinine, ionised calcium, Mg²⁺, K⁺, phosphate, urine protein, CBC, intraocular pressure (cidofovir)", "Other nephrotoxins (aminoglycosides, amphotericin, IV pentamidine)"],
+  d_balox: ["Few", "gi: diarrhoea, nausea; allergy: rash, urticaria, rare anaphylaxis; other: treatment-emergent resistance (PA I38T)", "Avoid dairy, calcium, iron, magnesium and antacids around the dose", "Clinical response", "Polyvalent cation products at the same time"],
+  d_nai: ["Nausea (oseltamivir) and bronchospasm (zanamivir)", "gi: nausea and vomiting (take with food); lung: bronchospasm with inhaled zanamivir; nerve: delirium, self-injury and abnormal behaviour, mainly in children and adolescents in Japan (rare); skin: rare serious skin reactions", "Inhaled bronchodilator before zanamivir in airway disease", "Behaviour in children", "Zanamivir in asthma or COPD; live attenuated influenza vaccine within 2 days before to 2 weeks after"],
+  d_remde: ["Hepatotoxicity and infusion reactions", "liver: raised transaminases; allergy: infusion reactions, rarely anaphylaxis; heart: sinus bradycardia; other: excipient (cyclodextrin) accumulates in kidney failure", "Slow the infusion", "Liver tests and PT at baseline and during treatment", "ALT above 5–10 times normal; chloroquine or hydroxychloroquine (antagonise activation)"],
+  d_nirm: ["Drug interactions", "other: altered taste, symptom rebound; gi: diarrhoea; vessel: hypertension; allergy: rare anaphylaxis and severe skin reactions", "Check every co-medication; hold or adjust interacting drugs", "Kidney function (halve the dose with eGFR 30–60)", "Ritonavir inhibits CYP3A4: contraindicated with amiodarone, simvastatin, lovastatin, rivaroxaban at full dose, ergots, colchicine in kidney or liver impairment, St John's wort, rifampin and other strong inducers; tacrolimus needs specialist adjustment"],
+  d_ns5ai: ["Few; interactions", "heart: severe bradycardia with amiodarone (with sofosbuvir); liver: hepatitis B reactivation; other: headache, fatigue", "Screen for hepatitis B first", "HBV DNA if HBsAg-positive, liver tests, glucose in diabetes (control can improve quickly)", "Amiodarone; PPIs and H₂ blockers lower ledipasvir and velpatasvir absorption; strong P-gp and CYP inducers"],
+  d_ns3i: ["Hepatic decompensation in advanced cirrhosis", "liver: decompensation and failure in Child–Pugh B or C cirrhosis, raised bilirubin; liver: hepatitis B reactivation; other: headache, fatigue, nausea", "Screen for hepatitis B; assess Child–Pugh class", "Liver tests, bilirubin, HBV DNA if HBsAg-positive", "Decompensated cirrhosis; atazanavir, rifampin, carbamazepine; ethinylestradiol (ALT rise with glecaprevir–pibrentasvir)"],
+  // antiparasitics
+  d_quin: ["Retinopathy (chloroquine), cinchonism and hypoglycemia (quinine)", "eye: bull's-eye retinopathy with long use (hydroxychloroquine and chloroquine, dose and duration related); heart: QT prolongation, cardiomyopathy; other: cinchonism (tinnitus, hearing loss, headache, vertigo, blurred vision) with quinine; endo: hypoglycemia (quinine stimulates insulin release); blood: hemolysis in G6PD deficiency, thrombocytopenia and hemolytic uremic syndrome (quinine); nerve: neuropsychiatric effects (mefloquine); skin: pruritus in dark-skinned patients (chloroquine), psoriasis flare; muscle: myopathy", "Hydroxychloroquine at 5 mg/kg/day or less; glucose checks with IV quinine", "Retinal examination at baseline and yearly after 5 years, ECG, glucose (quinine), CBC", "Mefloquine in psychiatric disease or seizures; other QT drugs; quinine for leg cramps (FDA warning)"],
+  d_artem: ["Delayed hemolysis", "blood: post-artesunate delayed hemolysis 1–3 weeks after treatment of severe malaria; heart: QT prolongation with partners (piperaquine, lumefantrine); nerve: dizziness, headache; gi: nausea; allergy: rare hypersensitivity", "Take artemether–lumefantrine with fatty food", "Hemoglobin weekly for 4 weeks after IV artesunate; ECG with piperaquine", "Other QT-prolonging drugs (with piperaquine or lumefantrine)"],
+  d_atov: ["GI upset", "gi: nausea, vomiting, abdominal pain, diarrhoea; skin: rash; liver: raised transaminases; nerve: headache; gi: mouth ulcers (proguanil)", "Take with a fatty meal or milk", "Liver tests on long courses", "Severe kidney failure (proguanil); rifampin (lowers atovaquone levels)"],
+  d_iverm: ["Reactions to dying parasites", "other: Mazzotti reaction in onchocerciasis (fever, pruritus, lymphadenopathy, hypotension); nerve: encephalopathy with high Loa loa microfilarial loads, and neurotoxicity in overdose or with P-glycoprotein inhibitors; skin: itch; eye: transient ocular inflammation", "Screen for Loa loa before mass treatment in central Africa", "Loa loa microfilarial density in endemic areas", "Heavy Loa loa infection; children under 15 kg (caution)"],
+  d_benz: ["Few with short courses; marrow and liver with long courses", "gi: abdominal pain, nausea; liver: raised transaminases, hepatitis (long albendazole courses); marrow: neutropenia, pancytopenia and agranulocytosis (rare, long courses); skin: reversible alopecia; repro: embryotoxic and teratogenic in animals; nerve: seizures and raised pressure as neurocysticercosis cysts die", "Steroids with albendazole for neurocysticercosis; check for ocular and spinal cysts first", "CBC and liver tests every 2 weeks on long courses", "First trimester; ocular cysticercosis"],
+  d_pzq: ["Mild and transient", "nerve: headache, dizziness, drowsiness; nerve: seizures, raised intracranial pressure and stroke as cysts die in neurocysticercosis; gi: abdominal pain, nausea; allergy: urticaria, fever (dying worms); eye: retinal damage in ocular cysticercosis", "Steroids in neurocysticercosis; take with food", "Neurological status in neurocysticercosis", "Ocular cysticercosis; rifampin (abolishes levels); driving the day of treatment"],
+  d_pyran: ["Minimal", "gi: nausea, cramps, diarrhoea; nerve: headache, dizziness; liver: transient raised transaminases (rare)", "Treat the whole household for pinworm and repeat after 2 weeks", "None", "Piperazine (antagonistic)"],
+}).map(([id, [main, by, fix, mon, avoid]]) => {
+  const g = {};
+  by.split("; ").forEach((x) => { const i = x.indexOf(": "), o = x.slice(0, i), t = x.slice(i + 2); g[o] = g[o] ? `${g[o]}; ${t}` : t; });
+  return [id, { main, by: Object.keys(TOX_ORG).filter((o) => g[o]).map((o) => [o, g[o]]), fix, mon, avoid }];
+}));
+NODES.forEach((n) => { if (DRUG_TOX[n.id]) n.tox = DRUG_TOX[n.id]; });
+const toxText = (t) => (t ? [t.main, ...t.by.flat().map((x) => TOX_ORG[x] || x), t.fix, t.mon, t.avoid].join(" ") : "");
 /* ------------------------------ NBME laboratory reference values ------------------------------ */
 // key: [test, reference range, SI interval ("" when identical)]. Source: NBME Laboratory Reference Values.
 const LABS = {
@@ -1951,9 +2453,17 @@ Object.entries({
   t_ts: "wbc hb plt alt ast bilt", t_ppat: "wbc hb plt alt ast bilt ua", t_rnr: "wbc hb mcv plt", t_polym: "wbc hb plt alt ast cr", t_dnmt: "wbc hb plt",
   t_dnaalk: "wbc hb plt cr na alt ast", t_dnapt: "wbc hb plt cr na k mg ca", t_dnaint: "wbc plt alt ast bilt", t_dnabl: "po2 pco2 cr",
   t_top1: "wbc hb plt alt ast bilt", t_top2: "wbc hb plt tni alt ast bilt cr", t_asn: "glu amy lip alb alt ast bilt pt ptt", t_uric: "ua k phos ca cr ldh", t_csf3r: "wbc",
+  t_acrol: "cr", t_cdk46: "wbc alt ast", t_bcrabl: "wbc hb plt glu lip", t_egfr: "mg alt ast", t_her2: "plt alt ast", t_alk: "ck alt ast tc tg", t_kras: "alt ast", t_braf: "alt ast", t_mek: "ck",
+  t_pi3k: "glu a1c alt ast", t_mtor: "glu tg tc", t_btk: "plt wbc", t_flt3: "wbc alt ast", t_smo: "ck", t_vegf: "uprot cr", t_vegfr: "tsh uprot alt ast", t_bcl2: "ua k phos ca cr wbc", t_parp: "hb wbc plt",
+  t_prot: "plt cr", t_crbn: "wbc plt", t_idh: "wbc bilt alt ast", t_menin: "wbc k mg", t_rara: "pt ptt plt k mg tg", t_hdac: "plt", t_pd1: "tsh ft4 cort glu alt ast cr", t_ctla4: "tsh cort alt ast",
+  t_cd19: "igg wbc", t_cd30: "wbc", t_cd38: "igg wbc", t_bcma: "igg wbc",
+  t_pbp: "wbc cr", t_blact: "alt ast", t_dala: "cr bun", t_lps: "cr bun", t_gpmem: "ck", t_r30: "cr bun mg k", t_r50: "plt hb alt ast", t_gyrase: "glu", t_rnap: "alt ast bilt", t_bdna: "alt ast",
+  t_dhps: "k cr wbc hb bilt", t_bdhfr: "k cr hb mcv", t_inha: "alt ast", t_emb: "ua cr", t_pnca: "ua alt ast", t_atpsyn: "k mg ca alt ast", t_ergo: "k mg cr bun hco3 hb", t_cyp51: "alt ast bilt", t_sqle: "alt ast",
+  t_bgs: "alt ast alp", t_cdase: "wbc plt alt ast cr", t_ftub: "alt ast", t_hivrt: "cr phos alt ast hb mcv", t_hivin: "cr ck", t_hivpr: "glu tg tc ldl bilt alt ast", t_ccr5: "alt ast",
+  t_hsvpol: "cr bun wbc plt ca mg k phos", t_rdrp: "alt ast cr", t_ns5a: "alt ast bilt", t_ns3: "alt ast bilt", t_hemoz: "glu hb retic bilt", t_cytbc1: "alt ast", t_htub: "alt ast wbc",
 }).forEach(([id, ks]) => (LAB_OF[id] = ks.split(" ")));
 Object.entries({ chol: "tc ldl hdl tg", cholic: "alp bilt alt ast", t_va: "alt ast", t_vd: "ca phos alp pth uca", t_vk: "pt ptt", t_ve: "hb retic", t_b3: "tc ldl hdl tg glu ua alt ast", t_b6: "hb mcv alt ast", t_b9: "hb mcv retic", t_b12: "hb mcv retic k" }).forEach(([id, ks]) => (LAB_OF[id] = ks.split(" ")));
-const ORG_LAB = { cv: "tni ck ldh tc ldl hdl tg k", rn: "bun cr crcl na k cl hco3 osm uosm uprot ua", rs: "po2 pco2 ph", sk: "ca phos alp pth ck uca ua esr", gi: "amy lip", cn: "na", hp: "alt ast alp bilt bild prot alb", en: "glu glur a1c cort", on: "wbc hb plt mcv ua ldh cr alt ast bilt", im: "igg iga igm ige wbc esr prot alb", vt: "hb mcv retic ca phos alp pth uca pt ptt" };
+const ORG_LAB = { cv: "tni ck ldh tc ldl hdl tg k", rn: "bun cr crcl na k cl hco3 osm uosm uprot ua", rs: "po2 pco2 ph", sk: "ca phos alp pth ck uca ua esr", gi: "amy lip", cn: "na", hp: "alt ast alp bilt bild prot alb", en: "glu glur a1c cort", on: "wbc hb plt mcv ua ldh cr alt ast bilt", im: "igg iga igm ige wbc esr prot alb", vt: "hb mcv retic ca phos alp pth uca pt ptt", ai: "wbc cr bun alt ast bilt k mg" };
 DRUGS.forEach((d) => { const u = new Set(d[5].flatMap((f) => LAB_OF[f[0]] || [])); if (u.size) LAB_OF[d[0]] = [...u]; }); // a drug inherits its targets' monitoring labs
 Object.entries(ORGAN_SET).forEach(([o, set]) => { const u = new Set(ORG_LAB[o].split(" ")); set.forEach((id) => (LAB_OF[id] || []).forEach((k) => u.add(k))); LAB_OF["o_" + o] = [...u]; });
 Object.keys(LAB_OF).forEach((id) => (LAB_OF[id] = LAB_ORDER.filter((k) => LAB_OF[id].includes(k))));
@@ -1983,7 +2493,7 @@ const AA_NOTE = {
   asparagine: "Made from aspartate and glutamine by asparagine synthetase. N-linked glycosylation attaches to its amide nitrogen. Asparaginase removes circulating asparagine to starve leukaemic lymphoblasts, which lack the synthetase.",
 };
 Object.entries(AA_CLASS).forEach(([id, c]) => { const n = NODES.find((x) => x.id === id); if (n) { n.aa = c; if (AA_NOTE[id] && !n.note) n.note = AA_NOTE[id]; } });
-const tagText = (d) => [...(d.locs || []).map((l) => LOCS[l].label), ...(d.orgs || []).map((o) => ORGANS[o].label), ...(d.aa ? [`${AA_LABEL[d.aa]} amino acid`] : [])].join(" ");
+const tagText = (d) => [...(d.locs || []).map((l) => LOCS[l].label), ...(d.orgs || []).map((o) => ORGANS[o].label), ...(d.aa ? [`${AA_LABEL[d.aa]} amino acid`] : []), toxText(d.tox)].join(" ");
 
 const initialNodes = NODES.map((n) => ({
   id: n.id,
@@ -2091,6 +2601,8 @@ const RX_GLYPH = {
   vitf: "M12 3s6 6.5 6 11a6 6 0 0 1-12 0c0-4.5 6-11 6-11zM8.5 15h7",
   ligand: "M12 3a4 4 0 1 0 0 8 4 4 0 0 1 0-8zM12 15v6M9 18h6",
   protein: "M4 6h16M4 12h16M4 18h16",
+  ribosome: "M4 11a8 5 0 0 1 16 0zM7 14h10a5 4.5 0 0 1-10 0z",
+  sigprot: "M12 3l8 9-8 9-8-9zM12 8v8M8 12h8",
   nucleic: "M8 3c0 5 8 5 8 9s-8 4-8 9M16 3c0 5-8 5-8 9s8 4 8 9M9.5 6.5h5M9.5 17.5h5",
   metabolite: "M12 3a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM6 15a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM18 15a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM11 8l-4 7M13 8l4 7M8.5 17.5h7",
 };
@@ -2354,7 +2866,7 @@ function Bohr({ el, size = 210 }) {
   const c = size / 2, r = (i) => 14 + (i * (c - 20)) / 6;
   return (
     <svg viewBox={`0 0 ${size} ${size}`} width={size} height={size} role="img" aria-label={`Bohr model of ${el.name}: ${el.shells.join(", ")} electrons per shell`}>
-      {[0, 1, 2, 3, 4, 5, 6].map((i) => <circle key={i} cx={c} cy={c} r={r(i)} fill="none" stroke={i < el.shells.length ? "#9a9aa5" : "#34343a"} strokeWidth="1.4" />)}
+      {[0, 1, 2, 3, 4, 5, 6].map((i) => <circle key={i} cx={c} cy={c} r={r(i)} fill="none" stroke={i < el.shells.length ? "#A1A1AA" : "#34343a"} strokeWidth="1.4" />)}
       <circle cx={c} cy={c} r="4" fill={CHALK} />
       {el.shells.flatMap((n, i) =>
         Array.from({ length: n }, (_, j) => {
@@ -2659,7 +3171,7 @@ Object.assign(ENZN, {
   "Cholesterol 7α-hydroxylase (CYP7A1)": "ER cytochrome P450 of hepatocytes and the rate-limiting step of bile-acid synthesis. Bile acids return through FXR and FGF19 to repress it; bile-acid sequestrants and statins raise it.",
   "Desmolase (P450scc)": "CYP11A1, an inner-mitochondrial-membrane P450 that hydroxylates and cleaves the cholesterol side chain to pregnenolone and isocaproaldehyde. It is the rate-limiting step of steroidogenesis; ACTH and LH raise StAR and CYP11A1.",
 });
-const Pill = ({ children, onClick, c }) => <button className="omino-pill" style={{ "--c": c || "#8e8e99" }} onClick={onClick}>{children}</button>;
+const Pill = ({ children, onClick, c }) => <button className="omino-pill" style={{ "--c": c || "#A1A1AA" }} onClick={onClick}>{children}</button>;
 const Sec = ({ t, children }) => <section className="omino-ecard__sec"><h4>{t}</h4>{children}</section>;
 function CardShell({ c, sub, title, tags, onClose, onBack, label, children }) {
   return (
@@ -2798,6 +3310,29 @@ function FxLegend({ onHide }) {
     </div>
   );
 }
+function ToxBlock({ t }) {
+  return (
+    <Sec t="Toxicity">
+      <dl className="omino-ecard__facts">
+        <dt>Main</dt><dd>{t.main}</dd>
+        {t.fix && <><dt>Prevent, treat</dt><dd>{t.fix}</dd></>}
+        {t.mon && <><dt>Monitor</dt><dd>{t.mon}</dd></>}
+        {t.avoid && <><dt>Avoid</dt><dd>{t.avoid}</dd></>}
+      </dl>
+      <ul className="omino-ecard__list">{t.by.map(([o, x]) => <li key={o}><b>{TOX_ORG[o]}</b>{" · "}{x}</li>)}</ul>
+    </Sec>
+  );
+}
+// Hub card index: which of the hub's drugs hit each organ
+function ToxIndex({ dg, open }) {
+  const by = Object.keys(TOX_ORG).filter((o) => o !== "other").map((o) => [o, dg.filter((n) => DRUG_TOX[n.id]?.by.some((b) => b[0] === o))]).filter(([, l]) => l.length);
+  if (!by.length) return null;
+  return (
+    <Sec t="Toxicity by organ">
+      <ul className="omino-ecard__list">{by.map(([o, l]) => <li key={o}><b>{TOX_ORG[o]}</b><div className="omino-chiprow">{l.map((n) => <Pill key={n.id} c={RX_COLOR} onClick={() => open("drug", n.id)}>{n.label}</Pill>)}</div></li>)}</ul>
+    </Sec>
+  );
+}
 function DrugCard({ id, open, fit, shell }) {
   const d = NODE_BY[id], rx = RX_EFFECTS.filter((e) => e.drug === id);
   return (
@@ -2815,6 +3350,7 @@ function DrugCard({ id, open, fit, shell }) {
           </li>
         ))}</ul>
       </Sec>
+      {DRUG_TOX[id] && <ToxBlock t={DRUG_TOX[id]} />}
       <Tags id={id} open={open} />
       <button className="omino-ecard__show" onClick={() => fit([id, ...rx.map((e) => e.target)])}>Show in atlas</button>
     </CardShell>
@@ -2845,7 +3381,7 @@ function IgSketch({ n, j }) {
     <g transform={t} fill="none" stroke={C} strokeLinecap="round">
       <path d="M0 0V-26M0 -26L-15 -50M0 -26L15 -50" strokeWidth="5" />
       <path d="M-9 -34L-19 -48M9 -34L19 -48" strokeWidth="2" opacity=".55" />
-      <circle cx="-15" cy="-50" r="3.4" fill="#0a0a0a" strokeWidth="2" /><circle cx="15" cy="-50" r="3.4" fill="#0a0a0a" strokeWidth="2" />
+      <circle cx="-15" cy="-50" r="3.4" fill="#121212" strokeWidth="2" /><circle cx="15" cy="-50" r="3.4" fill="#121212" strokeWidth="2" />
     </g>
   );
   const units = n === 5 ? [0, 72, 144, 216, 288].map((a) => `translate(100 100) rotate(${a}) translate(0 -9)`) : n === 2 ? ["translate(100 128) rotate(-35)", "translate(100 128) rotate(35)"] : ["translate(100 140)"];
@@ -2892,6 +3428,8 @@ function TargetCard({ id, open, fit, shell }) {
   return (
     <CardShell {...shell} c={k.color} sub={`${k.label} · ${t.formula}`} title={t.label} label={`${t.label} target card`}
       tags={<><span style={{ "--c": k.color }}>{k.label}</span><Pill c={RX_COLOR} onClick={() => open("path", "pharm")}>Pharmacology</Pill></>}>
+      {t.dm && MOLS[t.dm] && <div className="omino-ecard__art"><Skeletal mol={MOLS[t.dm]} /></div>}
+      {t.dm && MOLS[t.dm]?.key && <div className="omino-ecard__hint">{MOLS[t.dm].key}</div>}
       <p className="omino-ecard__note">{t.note}</p>
       {IG[id] && <>
         <div className="omino-ecard__art"><IgSketch n={IG[id].n} j={IG[id].j} /></div>
@@ -2923,6 +3461,8 @@ function Tags({ id, open }) {
   const l = LOC_OF[id], o = ORG_OF[id];
   return (
     <>
+      {AIN[id] && <Sec t="Organism and site"><p className="omino-ecard__note" style={{ margin: 0 }}>{AIN[id][1]}</p></Sec>}
+      {ONT[id] && <Sec t="Targeted pathway"><p className="omino-ecard__note" style={{ margin: 0 }}>{ONT[id][1]}</p></Sec>}
       {ONC[id] && <Sec t="Cell-cycle phase"><p className="omino-ecard__note" style={{ margin: 0 }}>{ONC[id][1]}</p></Sec>}
       {REN[id] && <Sec t="Nephron site"><p className="omino-ecard__note" style={{ margin: 0 }}>{REN[id][1]}</p></Sec>}
       {l?.length > 0 && <Sec t="Cellular location"><div className="omino-chiprow">{l.map((k) => <Pill key={k} c={LOCS[k].color} onClick={() => open("loc", k)}>{LOCS[k].label}</Pill>)}</div></Sec>}
@@ -2956,6 +3496,9 @@ function OrganCard({ id, open, fit, shell }) {
       {dg.length > 0 && <Sec t="Drug classes"><div className="omino-chiprow">{dg.map((n) => <Pill key={n.id} c={RX_COLOR} onClick={() => open("drug", n.id)}>{n.label}</Pill>)}</div></Sec>}
       {code === "rn" && <Sec t="Along the nephron"><ul className="omino-ecard__list">{Object.entries(REN).sort((a, b) => a[1][0] - b[1][0]).map(([k, v]) => <li key={k}><button className="omino-link" onClick={() => open("target", k)}>{nm(k)}</button>{" · "}{v[1]}</li>)}</ul></Sec>}
       {code === "on" && <Sec t="Along the cell cycle"><ul className="omino-ecard__list">{Object.entries(ONC).sort((a, b) => a[1][0] - b[1][0]).map(([k, v]) => <li key={k}><button className="omino-link" onClick={() => open("target", k)}>{nm(k)}</button>{" · "}{v[1]}</li>)}</ul></Sec>}
+      {code === "on" && <Sec t="Targeted therapy and immunotherapy"><ul className="omino-ecard__list">{Object.entries(ONT).sort((a, b) => a[1][0] - b[1][0]).map(([k, v]) => <li key={k}><button className="omino-link" onClick={() => open("target", k)}>{nm(k)}</button>{" · "}{v[1]}</li>)}</ul></Sec>}
+      {(code === "on" || code === "ai") && <ToxIndex dg={dg} open={open} />}
+      {code === "ai" && <Sec t="By organism and site"><ul className="omino-ecard__list">{Object.entries(AIN).sort((a, b) => a[1][0] - b[1][0]).map(([k, v]) => <li key={k}><button className="omino-link" onClick={() => open("target", k)}>{nm(k)}</button>{" · "}{v[1]}</li>)}</ul></Sec>}
       <Tags id={id} open={open} />
       <button className="omino-ecard__show" onClick={() => fit([...ORGAN_SET[code]])}>Show in atlas</button>
     </CardShell>
@@ -3286,7 +3829,7 @@ function Atlas() {
         const faded =
           (matchIds && !edgeHits.has(e.id) && !(matchIds.has(e.source) && matchIds.has(e.target))) || (focus && e.data.path !== focus) || (locFocus && !(hasLoc(e.source, locFocus) && hasLoc(e.target, locFocus))) || (organFocus && !(ORGAN_SET[organFocus].has(e.source) && ORGAN_SET[organFocus].has(e.target)));
         const main = e.data.main;
-        const color = PATHWAYS[e.data.path]?.color || "#f4f4f5";
+        const color = PATHWAYS[e.data.path]?.color || "#FFFFFF";
         const stroke = main ? color : "#59626e";
         const fx = e.data.fx;
         if (fx) { // pharmacology lines: red dashed + flat head | green dashed | blue solid | grey dotted tether
@@ -3514,9 +4057,9 @@ function Atlas() {
           maxZoom={4}
           proOptions={{ hideAttribution: true }}
         >
-          <Background variant={BackgroundVariant.Dots} gap={28} size={1.4} color="#1e1e22" />
+          <Background variant={BackgroundVariant.Dots} gap={28} size={1.4} color="#27272A" />
           {showKey && wide && <Panel position="bottom-left"><FxLegend onHide={() => setShowKey(false)} /></Panel>}
-          {showMini && <MiniMap pannable zoomable maskColor="rgba(10,10,10,0.75)" nodeColor={(n) => PATHWAYS[n.data.path]?.color || KIND[n.data.kind].color} nodeStrokeWidth={0} />}
+          {showMini && <MiniMap pannable zoomable maskColor="rgba(0,0,0,0.75)" nodeColor={(n) => PATHWAYS[n.data.path]?.color || KIND[n.data.kind].color} nodeStrokeWidth={0} />}
           {showMini && <Panel position="bottom-right" className="omino-minix-panel"><button className="omino-fxlegend__x omino-minix" onClick={() => setShowMini(false)} aria-label="Hide overview" title="Hide overview (turn back on in Settings)">×</button></Panel>}
 
           <Panel position="top-left">
@@ -3603,11 +4146,25 @@ const CSS = `
 
 .omino-root {
   position: fixed; inset: 0; display: flex; flex-direction: column;
-  background: #0a0a0a;
+  background: #000000;
   font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
-  color: #f4f4f5;
+  color: #FFFFFF;
 }
-.omino-root .react-flow { --xy-background-color: #0a0a0a; background: #0a0a0a; }
+.omino-root .react-flow { --xy-background-color: #000000; background: #000000; }
+
+.omino-root .react-flow {
+  --xy-minimap-background-color: #121212;
+  --xy-minimap-mask-background-color: rgba(0,0,0,.75);
+  --xy-controls-button-background-color: #121212;
+  --xy-controls-button-background-color-hover: #1b1b1f;
+  --xy-controls-button-color: #FFFFFF;
+  --xy-controls-button-border-color: #27272A;
+  --xy-edge-label-background-color: #121212;
+  --xy-edge-label-color: #A1A1AA;
+  --xy-node-background-color: #121212;
+  --xy-node-border: 1px solid #27272A;
+  --xy-node-color: #FFFFFF;
+}
 
 .omino-node {
   box-sizing: border-box;
@@ -3631,34 +4188,34 @@ const CSS = `
   position: absolute; pointer-events: none;
   width: max-content; max-width: 170px;
   padding: 2px 6px; text-align: center; line-height: 1.25;
-  font-size: 11px; color: #8e8e99; background: #0a0a0a;
+  font-size: 11px; color: #A1A1AA; background: #121212;
 }
 .omino-edge-label.is-main { font-size: 12px; color: #ff7b6e; text-decoration: underline; text-underline-offset: 3px; }
 
 .omino-header {
   position: relative; z-index: 5; flex: none;
   display: grid; grid-template-columns: 1fr minmax(0, 720px) 1fr; align-items: center; gap: 16px;
-  padding: 14px 32px; background: #0a0a0a; border-bottom: 1px solid #1b1b1f;
+  padding: 14px 32px; background: #0a0a0a; border-bottom: 1px solid #27272A;
 }
 .omino-wordmark { font-size: 26px; font-weight: 700; letter-spacing: 0.01em; line-height: 1; }
 .omino-search { position: relative; }
-.omino-search > svg { position: absolute; left: 16px; top: 12px; color: #8e8e99; pointer-events: none; }
+.omino-search > svg { position: absolute; left: 16px; top: 12px; color: #A1A1AA; pointer-events: none; }
 .omino-search input {
   width: 100%; box-sizing: border-box; height: 44px; padding: 0 18px 0 46px;
-  font: inherit; font-size: 16px; color: #f4f4f5;
-  background: #111113; border: 1px solid #26262b; border-radius: 999px; outline: none;
+  font: inherit; font-size: 16px; color: #FFFFFF;
+  background: #121212; border: 1px solid #27272A; border-radius: 999px; outline: none;
 }
 .omino-search input:focus-visible { border-color: #38bdf8; box-shadow: 0 0 0 3px rgba(56,189,248,.25); }
-.omino-search input::placeholder { color: #6e6e78; }
+.omino-search input::placeholder { color: #A1A1AA; }
 .omino-search__meta {
   position: absolute; top: 52px; left: 0; right: 0; z-index: 6;
   display: flex; justify-content: space-between; gap: 10px; align-items: flex-start;
-  padding: 8px 14px; font-size: 12px; line-height: 1.4; color: #9a9aa5;
-  background: #111113; border: 1px solid #26262b; border-radius: 14px;
+  padding: 8px 14px; font-size: 12px; line-height: 1.4; color: #A1A1AA;
+  background: #121212; border: 1px solid #27272A; border-radius: 14px;
 }
 .omino-search__meta button {
-  flex: none; font: inherit; font-size: 12px; color: #f4f4f5; cursor: pointer;
-  background: transparent; border: 1px solid #34343a; border-radius: 6px; padding: 2px 8px;
+  flex: none; font: inherit; font-size: 12px; color: #FFFFFF; cursor: pointer;
+  background: transparent; border: 1px solid #27272A; border-radius: 6px; padding: 2px 8px;
 }
 .omino-search__meta button:hover { background: #1b1b1f; }
 .omino-canvas { flex: 1; min-height: 0; position: relative; }
@@ -3666,8 +4223,8 @@ const CSS = `
 .omino-tools { display: flex; flex-direction: column; gap: 8px; }
 .omino-tool {
   position: relative; width: 44px; height: 44px; display: grid; place-items: center; padding: 0;
-  font: inherit; color: #f4f4f5; cursor: pointer;
-  background: #111113; border: 1px solid #26262b; border-radius: 10px;
+  font: inherit; color: #FFFFFF; cursor: pointer;
+  background: #121212; border: 1px solid #27272A; border-radius: 10px;
 }
 .omino-tool:hover { background: #1b1b1f; }
 .omino-tool:focus-visible { outline: 2px solid #38bdf8; outline-offset: 2px; }
@@ -3678,18 +4235,18 @@ const CSS = `
 
 .omino-chips {
   display: flex; flex-wrap: nowrap; gap: 8px; max-width: min(900px, 90vw); padding: 2px 16px 6px;
-  overflow-x: auto; overscroll-behavior: contain; scrollbar-width: thin; scrollbar-color: #26262b transparent;
+  overflow-x: auto; overscroll-behavior: contain; scrollbar-width: thin; scrollbar-color: #27272A transparent;
   -webkit-mask-image: linear-gradient(90deg, transparent, #000 16px, #000 calc(100% - 16px), transparent);
   mask-image: linear-gradient(90deg, transparent, #000 16px, #000 calc(100% - 16px), transparent);
 }
 .omino-chip {
   flex: none; white-space: nowrap; display: inline-flex; align-items: center; gap: 7px; padding: 6px 12px;
-  font: inherit; font-size: 12px; color: #9a9aa5; cursor: pointer;
-  background: #111113; border: 1px solid #26262b; border-radius: 999px;
+  font: inherit; font-size: 12px; color: #A1A1AA; cursor: pointer;
+  background: #121212; border: 1px solid #27272A; border-radius: 999px;
 }
 .omino-chip i { width: 8px; height: 8px; border-radius: 50%; background: var(--c); }
 .omino-chip:hover { background: #1b1b1f; }
-.omino-chip.is-on { color: #f4f4f5; border-color: var(--c); }
+.omino-chip.is-on { color: #FFFFFF; border-color: var(--c); }
 
 .omino-pathtitle {
   font-size: 26px; font-weight: 600; text-align: center; line-height: 1.15;
@@ -3698,52 +4255,52 @@ const CSS = `
 .omino-pathtitle:hover { text-decoration: underline; text-underline-offset: 6px; }
 .omino-pathtitle.is-dim { opacity: .16; }
 
-.react-flow__controls { box-shadow: none; border: 1px solid #26262b; border-radius: 8px; overflow: hidden; }
-.react-flow__controls-button { background: #111113; border-bottom: 1px solid #26262b; fill: #f4f4f5; }
+.react-flow__controls { box-shadow: none; border: 1px solid #27272A; border-radius: 8px; overflow: hidden; }
+.react-flow__controls-button { background: #121212; border-bottom: 1px solid #27272A; fill: #FFFFFF; }
 .react-flow__controls-button:hover { background: #1b1b1f; }
-.react-flow__minimap { background: #111113; border: 1px solid #26262b; border-radius: 8px; }
+.react-flow__minimap { background: #121212; border: 1px solid #27272A; border-radius: 8px; }
 
 .omino-ptable, .omino-ecard {
   position: absolute; z-index: 8; box-sizing: border-box; overflow: auto; max-height: calc(100% - 24px);
-  background: #111113; border: 1px solid #26262b; border-radius: 14px; box-shadow: 0 12px 40px rgba(0,0,0,.5);
+  background: #121212; border: 1px solid #27272A; border-radius: 14px; box-shadow: 0 12px 40px rgba(0,0,0,.5);
 }
 .omino-ptable { top: 12px; left: 76px; padding: 12px; }
 .omino-ptable__bar { display: flex; gap: 8px; align-items: center; margin-bottom: 10px; }
 .omino-ptable__search { position: relative; flex: 1; }
-.omino-ptable__search > svg { position: absolute; left: 12px; top: 10px; color: #8e8e99; pointer-events: none; }
+.omino-ptable__search > svg { position: absolute; left: 12px; top: 10px; color: #A1A1AA; pointer-events: none; }
 .omino-ptable__search input {
-  width: 100%; box-sizing: border-box; height: 38px; padding: 0 14px 0 38px; font: inherit; font-size: 14px; color: #f4f4f5;
-  background: #0a0a0a; border: 1px solid #26262b; border-radius: 999px; outline: none;
+  width: 100%; box-sizing: border-box; height: 38px; padding: 0 14px 0 38px; font: inherit; font-size: 14px; color: #FFFFFF;
+  background: #0a0a0a; border: 1px solid #27272A; border-radius: 999px; outline: none;
 }
 .omino-ptable__search input:focus-visible { border-color: #38bdf8; box-shadow: 0 0 0 3px rgba(56,189,248,.25); }
 .omino-tool--sm { width: 38px; height: 38px; flex: none; }
 .omino-ptable__grid { display: grid; grid-template-columns: repeat(18, minmax(30px, 1fr)); grid-template-rows: repeat(7, clamp(40px, 6.4vh, 72px)) 12px clamp(40px, 6.4vh, 72px); gap: 4px; min-width: 600px; }
 .omino-cell__rx { position: absolute; top: 6px; right: 6px; width: 6px; height: 6px; border-radius: 50%; background: #e879f9; }
-.omino-cell--ph { align-items: center; justify-content: center; padding: 0; background: transparent; border: 1px dashed #26262b; color: #8e8e99; font: 10px var(--mono); pointer-events: none; }
-.omino-ptable__flabel { align-self: center; justify-self: end; padding-right: 6px; font: 10.5px var(--mono); color: #8e8e99; }
-.omino-ptable__rx { display: inline-flex; align-items: center; font: inherit; color: inherit; background: transparent; border: 1px solid #26262b; border-radius: 999px; padding: 2px 10px; cursor: pointer; }
+.omino-cell--ph { align-items: center; justify-content: center; padding: 0; background: transparent; border: 1px dashed #27272A; color: #A1A1AA; font: 10px var(--mono); pointer-events: none; }
+.omino-ptable__flabel { align-self: center; justify-self: end; padding-right: 6px; font: 10.5px var(--mono); color: #A1A1AA; }
+.omino-ptable__rx { display: inline-flex; align-items: center; font: inherit; color: inherit; background: transparent; border: 1px solid #27272A; border-radius: 999px; padding: 2px 10px; cursor: pointer; }
 .omino-ptable__rx:hover { background: #1b1b1f; }
-.omino-ptable__rx.is-on { border-color: var(--c); color: #f4f4f5; }
+.omino-ptable__rx.is-on { border-color: var(--c); color: #FFFFFF; }
 .omino-ptable__rx:focus-visible { outline: 2px solid #38bdf8; outline-offset: 2px; }
 .omino-cell {
-  position: relative; display: flex; align-items: flex-end; padding: 0 0 5px 5px; font: inherit; color: #f4f4f5; cursor: pointer;
-  background: #0a0a0a; border: 1px solid #1b1b1f; border-bottom: 2px solid var(--c); border-radius: 6px; transition: opacity .15s, background .15s;
+  position: relative; display: flex; align-items: flex-end; padding: 0 0 5px 5px; font: inherit; color: #FFFFFF; cursor: pointer;
+  background: #0a0a0a; border: 1px solid #27272A; border-bottom: 2px solid var(--c); border-radius: 6px; transition: opacity .15s, background .15s;
 }
-.omino-cell small { position: absolute; top: 3px; left: 5px; font-size: 9px; color: #8e8e99; }
+.omino-cell small { position: absolute; top: 3px; left: 5px; font-size: 9px; color: #A1A1AA; }
 .omino-cell b { font-size: 16px; font-weight: 600; line-height: 1; }
 .omino-cell:hover { background: #1b1b1f; }
 .omino-cell:focus-visible { outline: 2px solid #38bdf8; outline-offset: 1px; }
 .omino-cell.is-sel { border-color: var(--c); box-shadow: 0 0 0 1px var(--c); }
 .omino-cell.is-dim { opacity: .15; }
-.omino-ptable__legend { display: flex; flex-wrap: wrap; gap: 6px 14px; margin-top: 10px; font-size: 11px; color: #9a9aa5; }
+.omino-ptable__legend { display: flex; flex-wrap: wrap; gap: 6px 14px; margin-top: 10px; font-size: 11px; color: #A1A1AA; }
 .omino-ptable__legend i { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--c); margin-right: 6px; }
 
 .omino-ecard { top: 12px; right: 12px; width: 320px; padding: 16px; }
 .omino-ecard header { display: flex; justify-content: space-between; align-items: flex-start; }
-.omino-ecard__name { font-size: 15px; color: #9a9aa5; }
+.omino-ecard__name { font-size: 15px; color: #A1A1AA; }
 .omino-ecard__sym { font-size: 52px; font-weight: 600; line-height: 1.05; color: var(--c); }
-.omino-ecard__sym sup { margin-left: 4px; font-size: 14px; font-weight: 400; color: #f4f4f5; vertical-align: baseline; position: relative; top: -6px; }
-.omino-ecard__mass { font-size: 13px; color: #f4f4f5; }
+.omino-ecard__sym sup { margin-left: 4px; font-size: 14px; font-weight: 400; color: #FFFFFF; vertical-align: baseline; position: relative; top: -6px; }
+.omino-ecard__mass { font-size: 13px; color: #FFFFFF; }
 .omino-ecard__tags { display: flex; flex-wrap: wrap; gap: 6px; margin: 10px 0 4px; }
 .omino-ecard__tags span { padding: 3px 10px; font-size: 11px; color: var(--c); border: 1px solid var(--c); border-radius: 999px; }
 .omino-ecard__bohr { display: flex; justify-content: center; margin: 6px 0; }
@@ -3751,17 +4308,17 @@ const CSS = `
 .omino-ecard__stats span { display: block; font-size: 10px; letter-spacing: .06em; text-transform: uppercase; color: var(--c); }
 .omino-ecard__stats b { font-size: 28px; font-weight: 600; color: var(--c); }
 .omino-ecard__facts { display: grid; grid-template-columns: auto 1fr; gap: 4px 12px; margin: 12px 0 0; font-size: 12px; }
-.omino-ecard__facts dt { color: #8e8e99; }
+.omino-ecard__facts dt { color: #A1A1AA; }
 .omino-ecard__facts dd { margin: 0; text-align: right; }
-.omino-ecard__note { margin: 12px 0; font-size: 13px; line-height: 1.45; color: #d4d4d8; }
+.omino-ecard__note { margin: 12px 0; font-size: 13px; line-height: 1.45; color: #FFFFFF; }
 .omino-ecard__show {
-  width: 100%; height: 36px; margin-bottom: 10px; font: inherit; font-size: 13px; color: #f4f4f5; cursor: pointer;
+  width: 100%; height: 36px; margin-bottom: 10px; font: inherit; font-size: 13px; color: #FFFFFF; cursor: pointer;
   background: transparent; border: 1px solid var(--c); border-radius: 10px;
 }
 .omino-ecard__show:hover { background: #1b1b1f; }
-.omino-ecard footer { display: flex; justify-content: space-between; gap: 8px; border-top: 1px solid #1b1b1f; padding-top: 10px; }
-.omino-ecard footer button { display: inline-flex; align-items: center; gap: 4px; padding: 4px 6px; font: inherit; font-size: 12px; color: #9a9aa5; cursor: pointer; background: transparent; border: 0; border-radius: 6px; }
-.omino-ecard footer button:hover:not(:disabled) { background: #1b1b1f; color: #f4f4f5; }
+.omino-ecard footer { display: flex; justify-content: space-between; gap: 8px; border-top: 1px solid #27272A; padding-top: 10px; }
+.omino-ecard footer button { display: inline-flex; align-items: center; gap: 4px; padding: 4px 6px; font: inherit; font-size: 12px; color: #A1A1AA; cursor: pointer; background: transparent; border: 0; border-radius: 6px; }
+.omino-ecard footer button:hover:not(:disabled) { background: #1b1b1f; color: #FFFFFF; }
 
 .omino-edge-label.is-link { pointer-events: auto; cursor: pointer; border-radius: 4px; }
 .omino-edge-label.is-link:hover { background: #1b1b1f; }
@@ -3772,28 +4329,28 @@ const CSS = `
 .omino-ecard__title { font-size: 24px; font-weight: 600; line-height: 1.15; color: var(--c); }
 .omino-ecard__art { display: flex; justify-content: center; padding: 14px 0 6px; overflow: auto; }
 .omino-ecard__art svg { display: block; max-width: 100%; height: auto; }
-.omino-ecard__hint { text-align: center; font-size: 11px; color: #6e6e78; }
+.omino-ecard__hint { text-align: center; font-size: 11px; color: #A1A1AA; }
 .omino-ecard__sec { margin-top: 14px; }
-.omino-ecard__sec h4 { margin: 0 0 6px; font-size: 11px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: #8e8e99; }
+.omino-ecard__sec h4 { margin: 0 0 6px; font-size: 11px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: #A1A1AA; }
 .omino-chiprow { display: flex; flex-wrap: wrap; gap: 6px; }
-.omino-pill { padding: 3px 10px; font: inherit; font-size: 12px; color: #f4f4f5; cursor: pointer; background: transparent; border: 1px solid var(--c); border-radius: 999px; }
+.omino-pill { padding: 3px 10px; font: inherit; font-size: 12px; color: #FFFFFF; cursor: pointer; background: transparent; border: 1px solid var(--c); border-radius: 999px; }
 .omino-pill:hover { background: #1b1b1f; }
-.omino-ecard__list { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; font-size: 12px; color: #9a9aa5; }
-.omino-link { padding: 0; font: inherit; color: #f4f4f5; cursor: pointer; background: none; border: 0; text-decoration: underline; text-underline-offset: 3px; text-decoration-color: #34343a; }
+.omino-ecard__list { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; font-size: 12px; color: #A1A1AA; }
+.omino-link { padding: 0; font: inherit; color: #FFFFFF; cursor: pointer; background: none; border: 0; text-decoration: underline; text-underline-offset: 3px; text-decoration-color: #34343a; }
 .omino-link:hover { text-decoration-color: var(--c); }
 
 .omino-cof { cursor: pointer; border-bottom: 1px dotted currentColor; border-radius: 2px; padding: 0 1px; }
 .omino-cof:hover, .omino-cof:focus-visible { background: rgba(255,255,255,.14); outline: none; }
 .omino-ecard__art.is-big { justify-content: flex-start; }
 .omino-ecard__art.is-big svg { max-width: none; }
-.omino-ecard__zoom { display: block; margin: 0 auto 4px; padding: 2px 10px; font: inherit; font-size: 11px; color: #8e8e99; cursor: pointer; background: none; border: 1px solid #26262b; border-radius: 999px; }
-.omino-ecard__zoom:hover { color: #f4f4f5; background: #1b1b1f; }
-.omino-ecard__rx { padding: 8px 10px; font-size: 12.5px; line-height: 1.45; color: #d4d4d8; background: #16161a; border: 1px solid #26262b; border-radius: 6px; }
+.omino-ecard__zoom { display: block; margin: 0 auto 4px; padding: 2px 10px; font: inherit; font-size: 11px; color: #A1A1AA; cursor: pointer; background: none; border: 1px solid #27272A; border-radius: 999px; }
+.omino-ecard__zoom:hover { color: #FFFFFF; background: #1b1b1f; }
+.omino-ecard__rx { padding: 8px 10px; font-size: 12.5px; line-height: 1.45; color: #FFFFFF; background: #121212; border: 1px solid #27272A; border-radius: 6px; }
 
 
 /* ===== Oworld skin: shared with the sister app ===== */
 .omino-root { --sky: #38bdf8; --mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; -webkit-font-smoothing: antialiased; }
-.omino-root * { scrollbar-width: thin; scrollbar-color: #2a2a30 transparent; }
+.omino-root * { scrollbar-width: thin; scrollbar-color: #27272A transparent; }
 
 .omino-header { padding: 16px 32px 14px; border-bottom: 0; }
 .omino-wordmark { font-size: 26px; font-weight: 800; letter-spacing: -0.02em; }
@@ -3802,26 +4359,27 @@ const CSS = `
 .omino-search__meta { top: 54px; border-radius: 16px; font-family: var(--mono); font-size: 11.5px; }
 .omino-header { z-index: 9; }
 /* Pharmacology layer */
-.omino-rx { box-sizing: border-box; text-align: center; padding: 9px 16px 11px; background: #101013; border: 1.5px solid var(--accent); transition: opacity .2s, filter .2s; cursor: pointer; }
+.omino-rx { box-sizing: border-box; text-align: center; padding: 9px 16px 11px; background: #121212; border: 1.5px solid var(--accent); transition: opacity .2s, filter .2s; cursor: pointer; }
 .omino-rx--drug { border-radius: 22px; }
 .omino-rx--drug.has-mol { padding-bottom: 12px; }
 .omino-rx--drug .omino-rx__art svg { max-width: 100%; max-height: 140px; width: auto; height: auto; }
+.omino-rx--target .omino-rx__art svg { max-width: 100%; max-height: 150px; width: auto; height: auto; }
 .omino-rx--hug { width: max-content; min-width: 150px; max-width: 240px; }
 .omino-rx__art { display: flex; justify-content: center; margin: 8px 0 4px; }
 .omino-rx__art svg { display: block; max-width: 100%; height: auto; }
-.omino-rx__shown { margin-top: 5px; font-family: var(--mono); font-size: 10.5px; color: #8e8e99; }
-.omino-rx--target { border-radius: 12px; border-style: solid; background: #0e0e11; }
+.omino-rx__shown { margin-top: 5px; font-family: var(--mono); font-size: 10.5px; color: #A1A1AA; }
+.omino-rx--target { border-radius: 12px; border-style: solid; background: #121212; }
 .omino-rx.is-dim { opacity: .16; }
 .omino-rx.is-hit { filter: drop-shadow(0 0 14px color-mix(in srgb, var(--accent) 70%, transparent)); }
 .omino-rx.is-selected { filter: drop-shadow(0 0 10px rgba(255,255,255,.35)); }
 .omino-rx__tag { display: flex; align-items: center; justify-content: center; gap: 5px; font-size: 10px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); }
-.omino-rx__name { margin-top: 3px; font-size: 15px; font-weight: 600; line-height: 1.2; color: #f4f4f5; letter-spacing: -0.01em; }
-.omino-rx__sub { margin-top: 3px; font-family: var(--mono); font-size: 11px; line-height: 1.25; color: #9a9aa5; }
-.omino-edge-label.is-fx { font-family: 'Inter', system-ui, sans-serif; font-size: 11.5px; font-weight: 600; padding: 2px 9px; border-radius: 999px; background: color-mix(in srgb, currentColor 14%, #0a0a0a); }
-.omino-fxlegend { display: grid; gap: 7px; padding: 10px 13px 11px; background: #111113; border: 1px solid #26262b; border-radius: 12px; font-size: 12px; color: #d4d4d8; }
-.omino-fxlegend h5 { display: flex; align-items: center; justify-content: space-between; gap: 14px; margin: 0 0 1px; font-size: 10px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: #8e8e99; }
-.omino-fxlegend__x { flex: none; width: 20px; height: 20px; margin: -3px -5px -3px 0; padding: 0; display: grid; place-items: center; font: inherit; font-size: 15px; line-height: 1; color: #8e8e99; background: transparent; border: 0; border-radius: 50%; cursor: pointer; }
-.omino-fxlegend__x:hover { color: #f4f4f5; background: #1b1b1f; }
+.omino-rx__name { margin-top: 3px; font-size: 15px; font-weight: 600; line-height: 1.2; color: #FFFFFF; letter-spacing: -0.01em; }
+.omino-rx__sub { margin-top: 3px; font-family: var(--mono); font-size: 11px; line-height: 1.25; color: #A1A1AA; }
+.omino-edge-label.is-fx { font-family: 'Inter', system-ui, sans-serif; font-size: 11.5px; font-weight: 600; padding: 2px 9px; border-radius: 999px; background: color-mix(in srgb, currentColor 14%, #121212); }
+.omino-fxlegend { display: grid; gap: 7px; padding: 10px 13px 11px; background: #121212; border: 1px solid #27272A; border-radius: 12px; font-size: 12px; color: #FFFFFF; }
+.omino-fxlegend h5 { display: flex; align-items: center; justify-content: space-between; gap: 14px; margin: 0 0 1px; font-size: 10px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: #A1A1AA; }
+.omino-fxlegend__x { flex: none; width: 20px; height: 20px; margin: -3px -5px -3px 0; padding: 0; display: grid; place-items: center; font: inherit; font-size: 15px; line-height: 1; color: #A1A1AA; background: transparent; border: 0; border-radius: 50%; cursor: pointer; }
+.omino-fxlegend__x:hover { color: #FFFFFF; background: #1b1b1f; }
 .omino-fxlegend__x:focus-visible { outline: 2px solid #38bdf8; outline-offset: 1px; }
 .omino-minix-panel { width: 200px; height: 150px; margin: 15px; pointer-events: none; }
 .omino-minix { position: absolute; top: 5px; right: 5px; margin: 0; pointer-events: auto; z-index: 5; }
@@ -3844,7 +4402,7 @@ const CSS = `
 .omino-top .omino-round--ghost:hover { background: transparent; }
 @media (max-width: 639px) { .omino-top .omino-hdr-right { gap: 8px; } }
 /* OMINO wordmark = OWORLD logo: Inter 800, 22px (20px on phones), line-height 1.2, no tracking, 4px 2px box */
-.omino-header .omino-wordmark { font-family: 'Inter', Arial, 'Segoe UI', sans-serif; font-size: 22px; font-weight: 800; line-height: 1.2; letter-spacing: 0; padding: 4px 2px; color: #f4f4f5; }
+.omino-header .omino-wordmark { font-family: 'Inter', Arial, 'Segoe UI', sans-serif; font-size: 22px; font-weight: 800; line-height: 1.2; letter-spacing: 0; padding: 4px 2px; color: #FFFFFF; }
 @media (max-width: 639px) { .omino-header .omino-wordmark { font-size: 20px; } }
 /* Larger periodic table: bigger cells, type and search */
 .omino-ptable .omino-cell b { font-size: clamp(16px, 2.4vh, 24px); }
@@ -3852,39 +4410,39 @@ const CSS = `
 .omino-ptable .omino-ptable__search input { font-size: 15px; padding-top: 11px; padding-bottom: 11px; }
 .omino-ptable .omino-ptable__legend { font-size: 12px; gap: 8px 18px; margin-top: 14px; }
 /* Footnote (same text and type sizes as OWORLD's), tucked into the bottom of the periodic table panel */
-.omino-foot { margin-top: 14px; padding-top: 12px; border-top: 1px solid #1f1f23; text-align: center; font-family: 'Inter', Arial, 'Segoe UI', sans-serif; }
-.omino-foot p { margin: 0; font-size: 12px; color: #8e8e99; line-height: 1.7; }
-.omino-foot__by strong { color: #f4f4f5; font-weight: 700; }
-.omino-foot a { color: #D4D4D8; text-decoration: none; white-space: nowrap; }
-.omino-foot a:hover { color: #f4f4f5; }
+.omino-foot { margin-top: 14px; padding-top: 12px; border-top: 1px solid #27272A; text-align: center; font-family: 'Inter', Arial, 'Segoe UI', sans-serif; }
+.omino-foot p { margin: 0; font-size: 12px; color: #A1A1AA; line-height: 1.7; }
+.omino-foot__by strong { color: #FFFFFF; font-weight: 700; }
+.omino-foot a { color: #A1A1AA; text-decoration: none; white-space: nowrap; }
+.omino-foot a:hover { color: #FFFFFF; }
 .omino-foot__support { display: inline-flex; align-items: center; gap: 5px; font-size: 11.5px; }
 .omino-foot__dot { margin: 0 8px; }
 .omino-foot a:focus-visible { outline: 2px solid var(--sky); outline-offset: 2px; border-radius: 3px; }
 .omino-hdr-right { position: relative; display: flex; justify-content: flex-end; gap: 12px; }
 .omino-settings {
   position: absolute; top: 58px; right: 0; z-index: 20; width: 320px; box-sizing: border-box; padding: 20px;
-  background: #111113; border: 1px solid #26262b; border-radius: 20px; box-shadow: 0 24px 64px rgba(0,0,0,.65);
+  background: #121212; border: 1px solid #27272A; border-radius: 20px; box-shadow: 0 24px 64px rgba(0,0,0,.65);
 }
-.omino-settings h4 { margin: 0 0 6px; font-size: 12px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: #8e8e99; }
-.omino-settings__row { display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 14px 0; border-bottom: 1px solid #1f1f23; }
-.omino-settings__row b { display: block; font-size: 14px; font-weight: 600; letter-spacing: -0.01em; color: #f4f4f5; }
-.omino-settings__row span { display: block; margin-top: 2px; font-family: var(--mono); font-size: 10.5px; line-height: 1.4; color: #8e8e99; }
-.omino-switch { position: relative; flex: none; width: 42px; height: 24px; padding: 0; cursor: pointer; background: #26262b; border: 0; border-radius: 999px; transition: background .15s; }
-.omino-switch i { position: absolute; top: 3px; left: 3px; width: 18px; height: 18px; background: #f4f4f5; border-radius: 50%; transition: transform .15s; }
+.omino-settings h4 { margin: 0 0 6px; font-size: 12px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: #A1A1AA; }
+.omino-settings__row { display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 14px 0; border-bottom: 1px solid #27272A; }
+.omino-settings__row b { display: block; font-size: 14px; font-weight: 600; letter-spacing: -0.01em; color: #FFFFFF; }
+.omino-settings__row span { display: block; margin-top: 2px; font-family: var(--mono); font-size: 10.5px; line-height: 1.4; color: #A1A1AA; }
+.omino-switch { position: relative; flex: none; width: 42px; height: 24px; padding: 0; cursor: pointer; background: #27272A; border: 0; border-radius: 999px; transition: background .15s; }
+.omino-switch i { position: absolute; top: 3px; left: 3px; width: 18px; height: 18px; background: #FFFFFF; border-radius: 50%; transition: transform .15s; }
 .omino-switch.is-on { background: var(--sky); }
 .omino-switch.is-on i { transform: translateX(18px); background: #04141c; }
 .omino-switch:focus-visible, .omino-seg button:focus-visible, .omino-settings__export:focus-visible { outline: 2px solid var(--sky); outline-offset: 2px; }
-.omino-seg { flex: none; display: flex; padding: 3px; background: #0a0a0a; border: 1px solid #26262b; border-radius: 999px; }
-.omino-seg button { padding: 4px 12px; font: inherit; font-size: 12px; font-weight: 600; color: #9a9aa5; cursor: pointer; background: transparent; border: 0; border-radius: 999px; }
+.omino-seg { flex: none; display: flex; padding: 3px; background: #0a0a0a; border: 1px solid #27272A; border-radius: 999px; }
+.omino-seg button { padding: 4px 12px; font: inherit; font-size: 12px; font-weight: 600; color: #A1A1AA; cursor: pointer; background: transparent; border: 0; border-radius: 999px; }
 .omino-seg button.is-on { color: #04141c; background: var(--sky); }
 .omino-settings__export {
   display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; height: 44px; margin-top: 16px;
-  font: inherit; font-size: 14px; font-weight: 600; color: #f4f4f5; cursor: pointer; background: transparent; border: 1px solid #2c2c32; border-radius: 12px;
+  font: inherit; font-size: 14px; font-weight: 600; color: #FFFFFF; cursor: pointer; background: transparent; border: 1px solid #27272A; border-radius: 12px;
 }
 .omino-settings__export:hover { background: #1b1b1f; }
 .omino-round {
   position: relative; width: 46px; height: 46px; display: grid; place-items: center; padding: 0;
-  font: inherit; color: #f4f4f5; cursor: pointer; background: #111113; border: 1px solid #26262b; border-radius: 50%;
+  font: inherit; color: #FFFFFF; cursor: pointer; background: #121212; border: 1px solid #27272A; border-radius: 50%;
 }
 .omino-round:hover { background: #1b1b1f; }
 .omino-round:focus-visible { outline: 2px solid var(--sky); outline-offset: 2px; }
@@ -3893,7 +4451,7 @@ const CSS = `
 .omino-round i { position: absolute; top: 0; right: 0; width: 10px; height: 10px; background: #f5b14a; border: 2px solid #0a0a0a; border-radius: 50%; }
 
 .omino-canvas .react-flow__panel.top { top: 4px; }
-.omino-tool { border-radius: 14px; background: #111113; }
+.omino-tool { border-radius: 14px; background: #121212; }
 .omino-tool.is-off { color: var(--sky); border-color: var(--sky); background: rgba(56,189,248,.08); }
 .omino-tool b { font-family: var(--mono); font-weight: 500; }
 .react-flow__controls, .react-flow__minimap { border-radius: 12px; }
@@ -3905,21 +4463,21 @@ const CSS = `
 .omino-edge-label { font-family: var(--mono); font-size: 10.5px; }
 .omino-edge-label.is-main {
   font-family: 'Inter', system-ui, sans-serif; font-size: 12px; font-weight: 600; text-decoration: none;
-  padding: 4px 10px; border-radius: 999px; background: color-mix(in srgb, currentColor 14%, #0a0a0a);
+  padding: 4px 10px; border-radius: 999px; background: color-mix(in srgb, currentColor 14%, #121212);
 }
-.omino-edge-label.is-link:hover { background: color-mix(in srgb, currentColor 26%, #0a0a0a); }
+.omino-edge-label.is-link:hover { background: color-mix(in srgb, currentColor 26%, #121212); }
 
-.omino-ptable, .omino-ecard { background: #111113; border: 1px solid #26262b; border-radius: 20px; box-shadow: 0 24px 64px rgba(0,0,0,.65); }
+.omino-ptable, .omino-ecard { background: #121212; border: 1px solid #27272A; border-radius: 20px; box-shadow: 0 24px 64px rgba(0,0,0,.65); }
 .omino-ptable { top: 16px; padding: 18px; }
 .omino-ptable__search input { background: #0a0a0a; }
-.omino-cell { background: #0a0a0a; border-color: #1f1f23; border-radius: 8px; }
+.omino-cell { background: #0a0a0a; border-color: #27272A; border-radius: 8px; }
 .omino-cell small { font-family: var(--mono); }
 .omino-cell b { font-weight: 700; letter-spacing: -0.02em; }
 .omino-ptable__legend { font-family: var(--mono); font-size: 10.5px; }
 
 .omino-ecard { top: 16px; right: 16px; width: 348px; padding: 22px; max-height: calc(100% - 32px); }
-.omino-ecard__name { font-family: var(--mono); font-size: 12px; letter-spacing: .02em; color: #8e8e99; }
-.omino-ecard__title { font-size: 26px; font-weight: 700; letter-spacing: -0.03em; color: #f4f4f5; }
+.omino-ecard__name { font-family: var(--mono); font-size: 12px; letter-spacing: .02em; color: #A1A1AA; }
+.omino-ecard__title { font-size: 26px; font-weight: 700; letter-spacing: -0.03em; color: #FFFFFF; }
 .omino-ecard__sym { font-weight: 800; letter-spacing: -0.04em; }
 .omino-ecard__mass { font-family: var(--mono); font-size: 12px; }
 .omino-ecard__tags { gap: 8px; margin: 14px 0 6px; }
@@ -3932,26 +4490,26 @@ const CSS = `
 .omino-ecard__stats span { font-family: var(--mono); }
 .omino-ecard__stats b { font-weight: 700; letter-spacing: -0.03em; }
 .omino-ecard__facts { font-family: var(--mono); font-size: 12px; }
-.omino-ecard__note { margin: 16px 0 4px; font-size: 14px; line-height: 1.6; color: #a1a1ab; }
+.omino-ecard__note { margin: 16px 0 4px; font-size: 14px; line-height: 1.6; color: #A1A1AA; }
 .omino-ecard__hint { font-family: var(--mono); font-size: 10.5px; }
-.omino-ecard__sec { margin-top: 18px; padding-top: 16px; border-top: 1px solid #1f1f23; }
-.omino-ecard__sec h4 { margin-bottom: 10px; font-size: 12px; font-weight: 600; letter-spacing: .12em; color: #8e8e99; }
+.omino-ecard__sec { margin-top: 18px; padding-top: 16px; border-top: 1px solid #27272A; }
+.omino-ecard__sec h4 { margin-bottom: 10px; font-size: 12px; font-weight: 600; letter-spacing: .12em; color: #A1A1AA; }
 .omino-ecard__list { font-family: var(--mono); font-size: 12px; line-height: 1.5; }
-.omino-ecard__rx { font-family: var(--mono); font-size: 12px; background: #0a0a0a; border: 1px solid #26262b; border-radius: 12px; padding: 10px 12px; }
+.omino-ecard__rx { font-family: var(--mono); font-size: 12px; background: #0a0a0a; border: 1px solid #27272A; border-radius: 12px; padding: 10px 12px; }
 .omino-ecard__zoom { font-family: var(--mono); font-size: 10.5px; padding: 4px 12px; }
 .omino-ecard__show {
   height: 46px; margin: 20px 0 0; font-size: 15px; font-weight: 600; letter-spacing: -0.01em;
   color: #04141c; background: var(--sky); border: 0; border-radius: 12px;
 }
 .omino-ecard__show:hover { background: #63cdfb; }
-.omino-ecard footer { border-top-color: #1f1f23; }
+.omino-ecard footer { border-top-color: #27272A; }
 
 .omino-pill {
   display: inline-flex; align-items: center; gap: 8px; padding: 6px 12px; font-size: 13px; font-weight: 500;
-  color: #f4f4f5; background: transparent; border: 1px solid #2c2c32;
+  color: #FFFFFF; background: transparent; border: 1px solid #27272A;
 }
 .omino-pill::before { content: ""; flex: none; width: 8px; height: 8px; border-radius: 50%; background: var(--c); }
-.omino-pill:hover { background: #1b1b1f; border-color: color-mix(in srgb, var(--c) 70%, #2c2c32); }
+.omino-pill:hover { background: #1b1b1f; border-color: color-mix(in srgb, var(--c) 70%, #27272A); }
 .omino-link { text-decoration-color: #34343a; }
 
 .omino-chiprows { display: flex; flex-direction: column; align-items: center; gap: 4px; max-width: 100%; }
@@ -3960,13 +4518,13 @@ const CSS = `
 .omino-loc { display: flex; flex-wrap: wrap; justify-content: center; gap: 4px; margin-top: 7px; }
 .omino-loc button { padding: 2px 8px; font: inherit; font-family: var(--mono); font-size: 10px; color: var(--l); cursor: pointer; background: color-mix(in srgb, var(--l) 14%, transparent); border: 0; border-radius: 999px; }
 .omino-loc button:hover { background: color-mix(in srgb, var(--l) 28%, transparent); }
-.omino-rx__seg { margin-top: 5px; font-family: var(--mono); font-size: 10px; line-height: 1.3; color: #8e8e99; }
+.omino-rx__seg { margin-top: 5px; font-family: var(--mono); font-size: 10px; line-height: 1.3; color: #A1A1AA; }
 .omino-orgs { display: flex; justify-content: center; gap: 4px; margin-top: 6px; }
 .omino-orgs span { padding: 1px 7px; font-family: var(--mono); font-size: 10px; font-weight: 600; color: var(--o); border: 1px solid color-mix(in srgb, var(--o) 60%, transparent); border-radius: 6px; }
-.omino-organ { box-sizing: border-box; text-align: center; padding: 16px 18px 18px; cursor: pointer; background: color-mix(in srgb, var(--accent) 10%, #0a0a0a); border: 2px solid var(--accent); border-radius: 28px; transition: opacity .2s, filter .2s; }
+.omino-organ { box-sizing: border-box; text-align: center; padding: 16px 18px 18px; cursor: pointer; background: color-mix(in srgb, var(--accent) 10%, #121212); border: 2px solid var(--accent); border-radius: 28px; transition: opacity .2s, filter .2s; }
 .omino-organ__code { width: 44px; height: 44px; margin: 0 auto 8px; display: grid; place-items: center; font-family: var(--mono); font-size: 15px; font-weight: 700; color: #04141c; background: var(--accent); border-radius: 50%; }
-.omino-organ__name { font-size: 19px; font-weight: 700; letter-spacing: -0.02em; color: #f4f4f5; }
-.omino-organ__sub { margin-top: 2px; font-family: var(--mono); font-size: 11px; color: #9a9aa5; }
+.omino-organ__name { font-size: 19px; font-weight: 700; letter-spacing: -0.02em; color: #FFFFFF; }
+.omino-organ__sub { margin-top: 2px; font-family: var(--mono); font-size: 11px; color: #A1A1AA; }
 .omino-organ.is-dim { opacity: .16; }
 .omino-organ.is-hit { filter: drop-shadow(0 0 14px color-mix(in srgb, var(--accent) 70%, transparent)); }
 .omino-organ.is-selected { filter: drop-shadow(0 0 10px rgba(255,255,255,.35)); }
