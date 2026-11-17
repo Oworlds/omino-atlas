@@ -1,3 +1,4 @@
+// v6.4: Follow / Back / next-previous ignore the lines that lead to an organ-system (hub) card.
 // v6.3: Urinary crystals hub (13 crystals of urine sediment: calcium oxalate, uric acid, amorphous urates, ammonium biurate, struvite, calcium phosphate, cystine, cholesterol, bilirubin, leucine, tyrosine, sulfadiazine, acyclovir). Each node and card shows the compound's skeletal structure, the crystal habits under the microscope, urine pH, causes, stone data and treatment; thiazides, xanthine oxidase inhibitors, carbonic anhydrase and vitamins C and D are linked in, and crystal names and habits ('coffin lid', 'envelope', 'thorny apple') are searchable.
 // v6.2: the generic "Molecule" tag is gone. Every molecule card and search result now carries a pill for its chemical class (amino acid, sugar, sugar phosphate, lipid, fatty acid, acyl-CoA, CoA thioester, ketone body, organic acid, nucleotide, porphyrin, bile pigment, sterol, bile acid …) from the CLS / CLS_OF tables; searching "sugar" or "lipid" now finds them. Amino acids keep a separate Essential / Non-essential pill.
 // v4.9: true-to-size everywhere on the canvas: every structure is drawn at exact pixel size (CSS can no longer shrink it), and co-substrate chips (H₂O, CO₂, ATP, NADH, Fe²⁺ …) are drawn as structures at the same scale instead of text pills, so a chip is only bigger than another if the molecule is. CO₂ now has real C=O bond lengths.
@@ -2970,7 +2971,7 @@ function OminoEdge({ id, sourceX, sourceY, targetX, targetY, sourcePosition, tar
   const color = data.main ? data.color : data.fxColor || "#A1A1AA";
   return (
     <>
-      <BaseEdge id={id} path={path} markerEnd={mEnd} style={style} interactionWidth={34} />
+      <BaseEdge id={id} path={path} markerEnd={mEnd} style={style} interactionWidth={data.fx === "organ" ? 0 : 34} />
       {data.label && (!data.hideLabel || data.active) && <EdgeLabelRenderer>
         <div
           className={`omino-edge-label nodrag nopan ${data.main ? "is-main is-link" : ""} ${data.fx ? "is-fx" : ""} ${data.active ? "is-active" : ""}`}
@@ -4135,7 +4136,7 @@ function AtlasSearch({ q, setQ, scope, setScope, res, on, matchLine, onClear, on
 function Atlas() {
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const resetPositions = () => setNodes((ns) => ns.map((n) => { const o = HOME_POS.get(n.id); return o && (n.position.x !== o.x || n.position.y !== o.y) ? { ...n, position: { x: o.x, y: o.y } } : n; })); // P: moved elements go back to where the layout put them
-  const [edges, , onEdgesChange] = useEdgesState(initialEdges);
+  const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
   const [hoverEdge, setHoverEdge] = useState(null); // line under the pointer
   const hopped = useRef(false); // set when Back / Follow swaps the card, so the card-open recentring does not fire twice
   const [track, setTrack] = useState(null); // follower: { at: object id, inn: incoming line id, out: outgoing line id }
@@ -4314,6 +4315,7 @@ function Atlas() {
           return {
             ...e,
             hidden: !showRx || (!!e.data.org && !showOrgans) || (!!e.data.cross && organFocus !== e.data.org),
+            selectable: fx !== "organ", focusable: fx !== "organ", className: fx === "organ" ? "is-organline" : undefined, // lines to the organ cards cannot be selected
             animated: false,
             markerEnd: fx === "tether" || fx === "organ" || fx === "inhibit" ? undefined : { type: MarkerType.ArrowClosed, color: fxc, width: 16, height: 16 },
             style: { stroke: fxc, strokeWidth: fx === "tether" || fx === "organ" ? 1.6 : 2.4, strokeDasharray: fx === "inhibit" || fx === "activate" ? "7 6" : fx === "tether" ? "2 5" : undefined, opacity: faded ? 0.12 : 1 },
@@ -4348,7 +4350,7 @@ function Atlas() {
   // Neighbours of every visible object, main enzymatic steps first
   const edgeById = useMemo(() => Object.fromEntries(shownEdges.map((e) => [e.id, e])), [shownEdges]);
   const adj = useMemo(() => {
-    const hid = new Set(shownNodes.filter((n) => n.hidden).map((n) => n.id)), out = {}, inn = {};
+    const hid = new Set(shownNodes.filter((n) => n.hidden || n.type === "organ").map((n) => n.id)), out = {}, inn = {}; // organ-system (hub) cards are left out, so Back / Follow / next-previous never walk onto them
     shownEdges.forEach((e) => { if (e.hidden || hid.has(e.source) || hid.has(e.target)) return; (out[e.source] = out[e.source] || []).push(e); (inn[e.target] = inn[e.target] || []).push(e); });
     const rank = (e) => (e.data.main ? 0 : e.data.fx ? 2 : 1);
     [out, inn].forEach((m) => Object.values(m).forEach((l) => l.sort((x, y) => rank(x) - rank(y))));
@@ -4364,6 +4366,7 @@ function Atlas() {
   };
   const flyTo = (nid) => { const n = getNode(nid); if (!n) return; const z = Math.min(Math.max(getZoom(), 0.7), 1.5); setCenter(n.position.x + cardSpace() / 2 / z, n.position.y + 80 / z, { zoom: z, duration: 700 }); };
   const pickEdge = (ev, e) => { // stand on whichever end of the clicked line is nearer the click
+    if (e.data?.fx === "organ") return; // lines to the organ cards are not selectable
     if (track && (track.out === e.id || track.inn === e.id)) { setTrack(null); return; }
     const pt = screenToFlowPosition({ x: ev.clientX, y: ev.clientY }), a = getNode(e.source), b = getNode(e.target);
     if (!a || !b) return;
@@ -4433,6 +4436,13 @@ function Atlas() {
     if (!matchIds || matchIds.size === 0) return;
     fitView({ nodes: [...matchIds].map((id) => ({ id })), padding: 0.4, duration: 600, maxZoom: 1.3 });
   }, [matchIds, fitView]);
+
+  // OMINO (home) also drops every previous selection: the standing-point card, hovered / picked lines, search glow, and any selected node or line
+  const clearSelection = () => {
+    setTrack(null); setHoverEdge(null); setFlash([]);
+    setNodes((ns) => (ns.some((n) => n.selected) ? ns.map((n) => (n.selected ? { ...n, selected: false } : n)) : ns));
+    setEdges((es) => (es.some((e) => e.selected) ? es.map((e) => (e.selected ? { ...e, selected: false } : e)) : es));
+  };
 
   const clear = () => {
     setQuery("");
@@ -4552,7 +4562,7 @@ function Atlas() {
       <style>{CSS}</style>
       <div className="omino-top">
         <header className={`omino-header ${wide ? "is-wide" : ""}`}>
-          <button className="omino-wordmark" onClick={() => { setQuery(""); setFocus(null); setLocFocus(null); setOrganFocus(null); setStack([]); setSearchOpen(false); setViewport(homeViewport(), { duration: 600 }); }} aria-label="Home" title="Home">OMINO</button>
+          <button className="omino-wordmark" onClick={() => { setQuery(""); setFocus(null); setLocFocus(null); setOrganFocus(null); setStack([]); setSearchOpen(false); clearSelection(); setViewport(homeViewport(), { duration: 600 }); }} aria-label="Home" title="Home">OMINO</button>
           {wide && <AtlasSearch {...searchProps} wide />}
           <div className="omino-hdr-right">
           {!wide && (
@@ -4606,7 +4616,7 @@ function Atlas() {
         <ReactFlow
           nodes={nodesOut}
           edges={edgesOut}
-          onEdgeMouseEnter={(_, e) => setHoverEdge(e.id)}
+          onEdgeMouseEnter={(_, e) => { if (e.data?.fx !== "organ") setHoverEdge(e.id); }}
           onEdgeMouseLeave={() => setHoverEdge(null)}
           onEdgeClick={pickEdge}
           onPaneClick={() => setTrack(null)}
@@ -5082,6 +5092,7 @@ const CSS = `
 .omino-ecard__tags .omino-pill::before { display: none; }
 .omino-ecard__tags .omino-pill:hover { background: color-mix(in srgb, var(--c) 28%, transparent); border: 0; }
 .react-flow__edge-interaction { cursor: pointer; }
+.react-flow__edge.is-organline, .react-flow__edge.is-organline path { pointer-events: none !important; cursor: default; }
 .react-flow__edge.is-active path.react-flow__edge-path, .react-flow__edge.is-picked path.react-flow__edge-path { stroke-width: 4.5px !important; opacity: 1 !important; filter: drop-shadow(0 0 6px currentColor); }
 .react-flow__edge.is-active, .react-flow__edge.is-picked { opacity: 1 !important; }
 .omino-canvas.has-edge .react-flow__edge:not(.is-active):not(.is-picked) { opacity: .22; }
@@ -5190,7 +5201,7 @@ const CSS = `
 .omino-ptable .omino-foot { flex: none; }
 @media (max-width: 639px) {
   .omino-ptable, .omino-ecard { top: 12px; left: 76px; right: 12px; bottom: auto; width: auto !important; max-height: calc(100% - 24px); padding: 14px; border-radius: 18px; }
-  .omino-ecard { overflow: auto; overscroll-behavior: contain; }
+  .omino-ecard { overflow: auto; overscroll-behavior: contain; left: 12px; bottom: 12px; padding-bottom: max(14px, env(safe-area-inset-bottom, 0px)); } /* the description card is a full sheet: it covers the tool column on the left and the chip rows at the bottom */
   .omino-ptable__search { display: none; }
   .omino-ptable__bar { justify-content: flex-end; margin-bottom: 8px; }
   .omino-ptable__grid { display: flex; flex-wrap: wrap; gap: 4px; min-width: 0; }
