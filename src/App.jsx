@@ -1,3 +1,4 @@
+// v6.9: "Follow e⁻ and H" (round button in the top bar): one glucose followed step by step through glycolysis, pyruvate dehydrogenase, the TCA cycle, the electron transport chain and ATP synthase to O₂ and water. Each of the 24 steps is a balanced equation (hydrogen and charge are checked when the page loads), the route lights up on the canvas, and two running inventories show where the 24 electrons and the 12 hydrogens are after every step (the hydrogen total is always 12).
 // v6.4: Follow / Back / next-previous ignore the lines that lead to an organ-system (hub) card.
 // v6.3: Urinary crystals hub (13 crystals of urine sediment: calcium oxalate, uric acid, amorphous urates, ammonium biurate, struvite, calcium phosphate, cystine, cholesterol, bilirubin, leucine, tyrosine, sulfadiazine, acyclovir). Each node and card shows the compound's skeletal structure, the crystal habits under the microscope, urine pH, causes, stone data and treatment; thiazides, xanthine oxidase inhibitors, carbonic anhydrase and vitamins C and D are linked in, and crystal names and habits ('coffin lid', 'envelope', 'thorny apple') are searchable.
 // v6.2: the generic "Molecule" tag is gone. Every molecule card and search result now carries a pill for its chemical class (amino acid, sugar, sugar phosphate, lipid, fatty acid, acyl-CoA, CoA thioester, ketone body, organic acid, nucleotide, porphyrin, bile pigment, sterol, bile acid …) from the CLS / CLS_OF tables; searching "sugar" or "lipid" now finds them. Amino acids keep a separate Essential / Non-essential pill.
@@ -1765,6 +1766,180 @@ RX_ACTS.push({ target: "t_npc1l1", met: "chol" }, { target: "t_pcsk9", met: "cho
 RX_ACTS.forEach((a) => EDGES.push({ id: `rx_${a.target}_${a.met}`, source: a.target, target: a.met, label: "", fx: "tether", auto: true, path: "pharm" }));
 const RX_ANCHORS = new Set(RX_ACTS.map((a) => a.met));
 
+/* ---- electron transport chain: inner mitochondrial membrane, below the TCA ring (v6.8) ----
+   NADH and succinate hand electrons to ubiquinone (Q); Q → complex III → cytochrome c → complex IV → O₂.
+   Complexes I, III and IV pump H⁺, and the proton gradient turns ATP synthase (complex V). */
+PATHWAYS.etc = { label: "Electron transport chain", color: "#34d399" };
+MOLS.coq = (() => { // ubiquinone (coenzyme Q10): 2,3-dimethoxy-5-methyl-6-decaprenyl-1,4-benzoquinone, first two isoprene units of the tail drawn
+  const m = dmol("Ubiquinone (coenzyme Q10)", 0.62);
+  m.at("c1", 0, 0).ring("r", "c1", 0, 6, [1, 4]);                      // v0 C1 (C=O), v1 C2 (OMe), v2 C3 (OMe), v3 C4 (C=O), v4 C5 (CH₃), v5 C6 (tail)
+  m.to(m.id("r", 0), "o1", m.out("r", 0), "O", "O", 2);
+  m.to(m.id("r", 3), "o4", m.out("r", 3), "O", "O", 2);
+  m.to(m.id("r", 1), "oa", m.out("r", 1), "MeO", "O", 1, { align: "end" });
+  m.to(m.id("r", 2), "ob", m.out("r", 2), "OMe", "O", 1, { align: "start" });
+  m.to(m.id("r", 4), "me5", m.out("r", 4), null);
+  m.walk(m.id("r", 5), m.out("r", 5), -60, [["p1"], ["p2"], ["p3", null, null, 2], ["p4"], ["p5"], ["p6"], ["p7", null, null, 2], ["p8"], ["p9", "…H", "X", 1, { align: "start" }]]);
+  m.to("p3", "q3", 180, null);
+  m.to("p7", "q7", 180, null);
+  m.key = "Quinone head (two OCH₃, one CH₃) and a lipid tail of ten isoprene units in humans (CoQ10); only the first two units are drawn and … is the rest of the tail. Taking 2 e⁻ and 2 H⁺ turns the C=O groups into OH: ubiquinol, QH₂.";
+  return m;
+})();
+NODES.push(
+  M("coq", "C59H90O4", "Lipid-soluble electron carrier in the inner mitochondrial membrane: takes electrons from complexes I and II and hands them to complex III as ubiquinol"),
+  { id: "t_c1", kind: "enzyme", rx: "target", label: "Complex I (NADH dehydrogenase)", formula: "MT-ND1, MT-ND2, MT-ND4, MT-ND5, NDUFS1, NDUFV1", note: "NADH:ubiquinone oxidoreductase, the largest respiratory complex (about 45 subunits, 7 of them encoded by mitochondrial DNA). FMN takes two electrons from NADH, a chain of iron–sulfur clusters passes them to ubiquinone, and 4 H⁺ are pumped into the intermembrane space.", enz: null, w: 210 },
+  { id: "t_c2", kind: "enzyme", rx: "target", label: "Complex II (succinate dehydrogenase)", formula: "SDHA, SDHB, SDHC, SDHD", note: "The one TCA-cycle enzyme that sits in the inner membrane. FAD takes two electrons from succinate, iron–sulfur clusters pass them to ubiquinone, and no protons are pumped, so FADH₂ gives less ATP than NADH.", enz: null, w: 210 },
+  { id: "t_c3", kind: "enzyme", rx: "target", label: "Complex III (cytochrome bc₁)", formula: "MT-CYB, CYC1, UQCRFS1, UQCRC1", note: "Ubiquinol:cytochrome c oxidoreductase. It splits the two electrons of ubiquinol between two routes (the Q cycle): one electron goes on to cytochrome c, the other through cytochrome b to a second ubiquinone. Net, 4 H⁺ reach the intermembrane space for each ubiquinol oxidised.", enz: null, w: 210 },
+  { id: "t_cytc", kind: "enzyme", rx: "target", label: "Cytochrome c", formula: "CYCS", note: "Small heme protein in the intermembrane space that carries one electron at a time (Fe³⁺/Fe²⁺) from complex III to complex IV. If it leaks into the cytosol it binds Apaf-1 and starts caspase-dependent apoptosis.", enz: null, w: 210 },
+  { id: "t_c4", kind: "enzyme", rx: "target", label: "Complex IV (cytochrome c oxidase)", formula: "MT-CO1, MT-CO2, MT-CO3, COX4I1", note: "Receives electrons from cytochrome c through a copper centre (Cu_A) and hemes a and a₃ and uses them to reduce O₂ to water. About 2 H⁺ are pumped per electron pair. Cyanide, carbon monoxide, azide and hydrogen sulfide block it.", enz: null, w: 210 },
+  { id: "t_c5", kind: "enzyme", rx: "target", label: "Complex V (ATP synthase)", formula: "ATP5F1A, ATP5F1B, MT-ATP6, MT-ATP8", note: "F₁F₀ ATP synthase. Protons flowing back through the F₀ c-ring turn a central shaft that forces F₁ to join ADP and Pᵢ into ATP. It is a rotary motor, driven by the proton gradient rather than by electrons.", enz: null, w: 210 },
+  { id: "hgrad", kind: "ion", glyph: { symbol: "H", charge: "+" }, label: "Proton gradient (Δp)", formula: "H⁺", note: "Complexes I, III and IV pump H⁺ from the matrix into the intermembrane space. This leaves the matrix alkaline and negative, and the stored energy (about 200 mV) drives ATP synthase, ADP/ATP exchange and phosphate import." },
+);
+TARGETS.push(...["t_c1", "t_c2", "t_c3", "t_cytc", "t_c4", "t_c5"].map((id) => { const n = NODE_BY_ID(id); return [id, n.label, n.kind, n.formula, n.note, [], null, "r"]; }));
+function NODE_BY_ID(id) { return NODES.find((n) => n.id === id); }
+Object.assign(layout, { t_c1: [-2500, 7550], t_c2: [-2500, 8450], coq: [-1650, 8000], t_c3: [-800, 8000], t_cytc: [-80, 8000], t_c4: [-80, 8700], hgrad: [-1250, 9250], t_c5: [-1250, 9850] });
+[["c_e1", "+ NADH + H⁺ → NAD⁺", -2500, 7260], ["c_e2", "succinate → fumarate", -2500, 8740], ["c_e3", "+ 4 cyt c (Fe²⁺) + O₂ + 4 H⁺ → 2 H₂O", -80, 9050],
+  ["c_e4", "+ ADP + Pᵢ → ATP", -1250, 10250], ["c_e5", "+ 2 H⁺ in from the matrix", -1650, 8420]].forEach(([id, label, x, y]) => {
+  NODES.push({ id, kind: "cofactor", label, formula: "", note: "Co-substrate / co-product" });
+  layout[id] = [x, y]; PATH_OF[id] = "etc";
+});
+["coq", "t_c1", "t_c2", "t_c3", "t_cytc", "t_c4", "t_c5", "hgrad"].forEach((id) => (PATH_OF[id] = "etc"));
+NODES.push({ id: "t_etc", kind: "pathway", title: true, label: PATHWAYS.etc.label, formula: "", note: "", path: "etc" });
+layout.t_etc = [-1650, 7470];
+EDGES.push(
+  { id: "et_nadh", source: "t_c1", target: "coq", label: "2 e⁻ (FMN, Fe–S)", main: true, auto: true, how: "Electron transfer" },
+  { id: "et_sdh", source: "succinate", target: "t_c2", label: "Complex II is the TCA enzyme", main: true, sh: "l", th: "t", how: "Same enzyme" },
+  { id: "et_fad", source: "t_c2", target: "coq", label: "2 e⁻ (FAD, Fe–S)", main: true, auto: true, how: "Electron transfer" },
+  { id: "et_q3", source: "coq", target: "t_c3", label: "QH₂ (Q cycle)", main: true, auto: true, how: "Electron transfer" },
+  { id: "et_c3c", source: "t_c3", target: "t_cytc", label: "1 e⁻ (cyt c₁)", main: true, auto: true, how: "Electron transfer" },
+  { id: "et_cc4", source: "t_cytc", target: "t_c4", label: "1 e⁻ (Cu_A)", main: true, auto: true, how: "Electron transfer" },
+  { id: "et_p1", source: "t_c1", target: "hgrad", label: "pumps 4 H⁺", main: true, auto: true, how: "Proton pumping" },
+  { id: "et_p3", source: "t_c3", target: "hgrad", label: "4 H⁺ per QH₂", main: true, auto: true, how: "Proton pumping" },
+  { id: "et_p4", source: "t_c4", target: "hgrad", label: "pumps 2 H⁺", main: true, auto: true, how: "Proton pumping" },
+  { id: "et_p5", source: "hgrad", target: "t_c5", label: "H⁺ flows back", main: true, auto: true, how: "Proton flow" },
+);
+// inhibitors, poisons and uncouplers (pharmacology layer)
+[
+  ["d_etc_bg", "Biguanides", "Complex I inhibitors (mild)", "metformin, phenformin", "Accumulate in mitochondria and partly block complex I, so the AMP:ATP ratio rises and AMPK switches off hepatic gluconeogenesis. Metformin is first-line for type 2 diabetes. Risk: lactic acidosis, mainly with renal failure or hypoxia (phenformin was withdrawn for this reason).", [["t_c1", "inhibit", "Partial, reversible block of NADH oxidation; the cell makes less ATP from NADH and relies more on glycolysis."]], [-3250, 7330]],
+  ["d_etc_rot", "Rotenone and other complex I poisons", "Complex I inhibitors (toxic)", "rotenone (insecticide, fish poison), piericidin A, amobarbital", "Block the ubiquinone-binding channel of complex I. Rotenone exposure is linked to parkinsonism because dopaminergic neurons are very dependent on complex I; amobarbital (a barbiturate) does the same at high doses.", [["t_c1", "inhibit", "Electrons cannot leave NADH, so NADH builds up and ATP falls; succinate can still feed complex II."]], [-3250, 7800]],
+  ["d_etc_c3", "Complex III inhibitors", "Qo and Qi site blockers", "antimycin A, myxothiazol, stigmatellin, atovaquone (antimalarial)", "Antimycin A blocks the Qi site and myxothiazol and stigmatellin the Qo site. Atovaquone binds the Qo site of the parasite's cytochrome b with far more affinity than the human enzyme and is used for malaria and Pneumocystis prophylaxis.", [["t_c3", "inhibit", "Electrons back up behind the block, so complex I, II and Q stay reduced and reactive oxygen species rise."]], [-800, 7330]],
+  ["d_etc_cn", "Complex IV poisons", "Cytochrome oxidase inhibitors", "cyanide (CN⁻), azide, carbon monoxide, hydrogen sulfide, nitric oxide", "Bind the heme a₃–Cu_B site, where O₂ would bind. Cyanide poisoning gives a rapid lactic acidosis with headache, confusion, seizures and collapse; the venous blood stays bright red because tissues cannot use the oxygen. Antidotes: hydroxocobalamin (binds cyanide), or sodium nitrite plus sodium thiosulfate.", [["t_c4", "inhibit", "No electron sink for the chain, so every upstream carrier stays reduced and ATP production stops."]], [350, 8700]],
+  ["d_etc_olig", "F₀ inhibitors", "ATP synthase blockers", "oligomycin (research tool), bedaquiline (acts on the mycobacterial enzyme)", "Oligomycin plugs the proton channel of F₀; the gradient then cannot be used, so respiration slows. Bedaquiline binds the c-ring of Mycobacterium tuberculosis ATP synthase and is used in drug-resistant tuberculosis (QT prolongation is its main adverse effect).", [["t_c5", "inhibit", "Protons cannot flow back through F₀, so no ATP is made and the chain backs up."]], [-2300, 9850]],
+  ["d_etc_dnp", "Uncouplers", "Proton shuttles", "2,4-dinitrophenol (DNP), FCCP, salicylate overdose; UCP1 in brown fat does the same physiologically", "Lipid-soluble weak acids that carry H⁺ back across the membrane, so the gradient is lost as heat instead of making ATP. DNP was used for weight loss and caused fatal hyperthermia; aspirin overdose has a similar uncoupling component (fever, sweating, high anion-gap acidosis).", [["hgrad", "alter", "Dissipate the gradient; respiration speeds up with no ATP gain, and the energy leaves as heat."]], [-2300, 9250]],
+].forEach(([id, label, cls, ex, note, fx, [x, y]]) => {
+  layout[id] = [x, y];
+  NODES.push({ id, kind: "drug", rx: "drug", label, formula: cls, note: `${note} Examples: ${ex}.`, examples: ex, dm: null, shown: null, pharm: true });
+  PATH_OF[id] = "pharm";
+  DRUGS.push([id, label, cls, ex, note, fx, null]);
+  fx.forEach(([t, kind, detail]) => { RX_EFFECTS.push({ drug: id, target: t, fx: kind, detail }); EDGES.push({ id: `rx_${id}_${t}`, source: id, target: t, label: FX[kind].verb, fx: kind, auto: true, path: "pharm" }); });
+});
+
+/* ---- Follow e⁻ and H (v6.9) ------------------------------------------------------------------------------------------------
+   One molecule of glucose, followed through glycolysis, pyruvate dehydrogenase, the TCA cycle, the electron transport chain and ATP synthase
+   to O₂ and water. Every step is a balanced equation written at pH 7 (phosphates and carboxylates ionised), and the file checks each one for
+   hydrogen atoms and charge when it loads. Electrons are followed as pairs handed from one carrier to the next (24 per glucose), and hydrogen
+   is followed as a running inventory that always adds up to the 12 H of glucose. Step counts are per glucose: after aldolase every step runs twice.
+   Assumptions: the two cytosolic NADH reach complex I through the malate–aspartate shuttle (so the 10 NADH are counted at complex I), and
+   about 4 H⁺ flow through ATP synthase for each ATP (3 through F₀ + 1 for phosphate and ADP/ATP carriers), which gives ≈ 28 ATP from the chain. */
+// species: [name, H atoms, charge, H on the carbon skeleton, H held by a redox carrier]
+const RDX_SP = {
+  glc: ["Glucose", 12, 0, 12, 0], g6p: ["G6P", 11, -2, 11, 0], f6p: ["F6P", 11, -2, 11, 0], fbp: ["F1,6BP", 10, -4, 10, 0], gap: ["G3P", 5, -2, 5, 0], dhap: ["DHAP", 5, -2, 5, 0],
+  bpg: ["1,3-BPG", 4, -4, 4, 0], pg3: ["3-PG", 4, -3, 4, 0], pg2: ["2-PG", 4, -3, 4, 0], pep: ["PEP", 2, -3, 2, 0], pyr: ["Pyruvate", 3, -1, 3, 0],
+  accoa: ["Acetyl-CoA", 34, -4, 3, 0], oaa: ["Oxaloacetate", 2, -2, 2, 0], cit: ["Citrate", 5, -3, 5, 0], icit: ["Isocitrate", 5, -3, 5, 0], akg: ["α-Ketoglutarate", 4, -2, 4, 0],
+  succoa: ["Succinyl-CoA", 35, -5, 4, 0], suc: ["Succinate", 4, -2, 4, 0], fum: ["Fumarate", 2, -2, 2, 0], mal: ["Malate", 4, -2, 4, 0], co2: ["CO₂", 0, 0, 0, 0],
+  coa: ["CoA-SH", 32, -4, 0, 0], atp: ["ATP", 12, -4, 0, 0], adp: ["ADP", 12, -3, 0, 0], gtp: ["GTP", 12, -4, 0, 0], gdp: ["GDP", 12, -3, 0, 0], pi: ["Pᵢ", 1, -2, 0, 0],
+  nad: ["NAD⁺", 0, 1, 0, 0], nadh: ["NADH", 1, 0, 0, 1], fad: ["FAD", 0, 0, 0, 0], fadh2: ["FADH₂", 2, 0, 0, 2], q: ["Q", 0, 0, 0, 0], qh2: ["QH₂", 2, 0, 0, 2],
+  c3: ["cyt c (Fe³⁺)", 0, 3, 0, 0], c2: ["cyt c (Fe²⁺)", 0, 2, 0, 0], o2: ["O₂", 0, 0, 0, 0], h2o: ["H₂O", 2, 0, 0, 0],
+  h: ["H⁺", 1, 1, 0, 0], hM: ["H⁺ (matrix)", 1, 1, 0, 0], hI: ["H⁺ (space)", 1, 1, 0, 0],
+};
+const RDX_EL = [["glc", "Glucose C–H bonds"], ["nadh", "NADH"], ["fadh2", "FADH₂"], ["qh2", "Ubiquinol (QH₂)"], ["cytc", "Cytochrome c"], ["o2", "O₂ → water"]];
+const RDX_STAGES = [["gly", "Glycolysis", "Cytosol"], ["pdh", "Pyruvate → acetyl-CoA", "Matrix"], ["tca", "TCA cycle", "Matrix"], ["etc", "Electron transport", "Inner membrane"], ["atp", "ATP synthase", "Inner membrane"]];
+// [stage, enzyme, per-glucose multiplier, left, right, electron moves per run [from, to, n], canvas nodes, canvas lines, what happens]
+const RDX_STEPS = [
+  ["gly", "Hexokinase", 1, { glc: 1, atp: 1 }, { g6p: 1, adp: 1, h: 1 }, [], ["glucose", "g6p", "c_atp1", "c_adp1"], ["e1"],
+    "Glucose (12 H) receives a phosphate from ATP. No electrons move. The hydroxyl hydrogen that the phosphate replaces leaves as H⁺, so the sugar now holds 11 H."],
+  ["gly", "Phosphoglucose isomerase", 1, { g6p: 1 }, { f6p: 1 }, [], ["g6p", "f6p"], ["e2"],
+    "An aldose becomes a ketose. Hydrogen only moves from carbon 2 to carbon 1 inside the same molecule; nothing enters or leaves, and no electrons move."],
+  ["gly", "Phosphofructokinase-1", 1, { f6p: 1, atp: 1 }, { fbp: 1, adp: 1, h: 1 }, [], ["f6p", "fbp", "c_atp2", "c_adp2"], ["e3"],
+    "A second phosphate, and a second H⁺ released (11 H → 10 H). Still no electron transfer."],
+  ["gly", "Aldolase", 1, { fbp: 1 }, { gap: 1, dhap: 1 }, [], ["fbp", "gap", "dhap"], ["e4", "e4b"],
+    "The six-carbon sugar is cut in two. Its 10 H divide 5 + 5 between G3P and DHAP."],
+  ["gly", "Triose phosphate isomerase", 1, { dhap: 1 }, { gap: 1 }, [], ["dhap", "gap"], ["e4b"],
+    "DHAP is rearranged into a second G3P (5 H, no change), so both halves of glucose can continue. From the next step on, every reaction runs twice per glucose."],
+  ["gly", "G3P dehydrogenase", 2, { gap: 1, nad: 1, pi: 1 }, { bpg: 1, nadh: 1, h: 1 }, [["glc", "nadh", 2]], ["gap", "bpg13", "c_nad", "c_nadh"], ["e5"],
+    "The first oxidation. The hydrogen on the aldehyde carbon leaves as a hydride (one H carrying two electrons) and lands on NAD⁺ to make NADH. The carbon now holds a phosphate instead. One H⁺ is released. Two electrons are captured per triose, 4 per glucose."],
+  ["gly", "Phosphoglycerate kinase", 2, { bpg: 1, adp: 1 }, { pg3: 1, atp: 1 }, [], ["bpg13", "pg3", "c_adp3", "c_atp3"], ["e6"],
+    "The high-energy phosphate goes to ADP: substrate-level ATP. No electron or net hydrogen change (4 H on both sides)."],
+  ["gly", "Phosphoglycerate mutase", 2, { pg3: 1 }, { pg2: 1 }, [], ["pg3", "pg2"], ["e7"],
+    "The phosphate moves from carbon 3 to carbon 2. Hydrogen count unchanged."],
+  ["gly", "Enolase", 2, { pg2: 1 }, { pep: 1, h2o: 1 }, [], ["pg2", "pep", "c_h2o"], ["e8"],
+    "Dehydration. Two hydrogens leave with one oxygen as H₂O, forming the C=C bond of PEP (4 H → 2 H). The first water made on the route."],
+  ["gly", "Pyruvate kinase", 2, { pep: 1, adp: 1, h: 1 }, { pyr: 1, atp: 1 }, [], ["pep", "pyruvate", "c_adp4", "c_atp4"], ["e9"],
+    "Phosphate to ADP makes more ATP, and the unstable enol picks up one H⁺ and settles into the keto form (2 H → 3 H). End of glycolysis: 2 pyruvate (6 H) and 2 NADH, with 4 electrons already on carriers."],
+  ["pdh", "Pyruvate dehydrogenase complex", 2, { pyr: 1, coa: 1, nad: 1 }, { accoa: 1, co2: 1, nadh: 1 }, [["glc", "nadh", 2]], ["pyruvate", "acetylcoa"], ["e10"],
+    "The carboxyl carbon leaves as CO₂ and the remaining acetyl group is oxidised: its two electrons travel with a hydride onto NAD⁺ (through lipoamide and FAD in the complex). 2 more NADH per glucose. The thiol H of CoA ends up in the acetyl-CoA skeleton count."],
+  ["tca", "Citrate synthase", 2, { accoa: 1, oaa: 1, h2o: 1 }, { cit: 1, coa: 1, h: 1 }, [], ["acetylcoa", "oaa", "citrate"], ["t0", "t8"],
+    "No electrons. Acetyl joins oxaloacetate, and water cuts the thioester, which releases one H⁺ and frees CoA."],
+  ["tca", "Aconitase", 2, { cit: 1 }, { icit: 1 }, [], ["citrate", "isocitrate"], ["t1"],
+    "Water is removed and put back the other way round (through cis-aconitate), moving the OH to the neighbouring carbon. Net: the same 5 H, no electrons."],
+  ["tca", "Isocitrate dehydrogenase", 2, { icit: 1, nad: 1 }, { akg: 1, co2: 1, nadh: 1 }, [["glc", "nadh", 2]], ["isocitrate", "akg", "c_t1"], ["t2"],
+    "The alcohol carbon gives its C–H hydrogen as a hydride to NAD⁺ (2 e⁻), and the resulting keto acid loses CO₂. This is the first CO₂ of the cycle."],
+  ["tca", "α-Ketoglutarate dehydrogenase", 2, { akg: 1, coa: 1, nad: 1 }, { succoa: 1, co2: 1, nadh: 1 }, [["glc", "nadh", 2]], ["akg", "succoa", "c_t2"], ["t3"],
+    "The same chemistry as pyruvate dehydrogenase: CO₂ leaves, 2 electrons go with a hydride to NAD⁺, and the carbon is held on CoA."],
+  ["tca", "Succinyl-CoA synthetase", 2, { succoa: 1, gdp: 1, pi: 1 }, { suc: 1, coa: 1, gtp: 1 }, [], ["succoa", "succinate", "c_t3"], ["t4"],
+    "No electrons. The thioester energy makes GTP from GDP and phosphate."],
+  ["tca", "Succinate dehydrogenase (complex II)", 2, { suc: 1, fad: 1 }, { fum: 1, fadh2: 1 }, [["glc", "fadh2", 2]], ["succinate", "fumarate", "t_c2", "c_t4"], ["t5", "et_sdh"],
+    "Two hydrogen atoms (2 H⁺ + 2 e⁻) are taken off the CH₂–CH₂ unit and held on FAD as FADH₂ (4 H → 2 H on the carbon). This enzyme sits in the inner membrane and is also complex II."],
+  ["tca", "Fumarase", 2, { fum: 1, h2o: 1 }, { mal: 1 }, [], ["fumarate", "malate", "c_t5"], ["t6"],
+    "Water adds across the double bond: OH to one carbon and H to the other (2 H → 4 H). Water supplies hydrogen to the skeleton here; no electrons move."],
+  ["tca", "Malate dehydrogenase", 2, { mal: 1, nad: 1 }, { oaa: 1, nadh: 1, h: 1 }, [["glc", "nadh", 2]], ["malate", "oaa", "c_t6"], ["t7", "t8"],
+    "The last oxidation: the alcohol C–H goes as a hydride to NAD⁺ and the O–H proton is released. Oxaloacetate is back. The cycle has now captured 12 electron pairs per glucose: 10 NADH and 2 FADH₂, which is all 24 electrons."],
+  ["etc", "Complex I (NADH dehydrogenase)", 10, { nadh: 1, q: 1, hM: 5 }, { nad: 1, qh2: 1, hI: 4 }, [["nadh", "qh2", 2]], ["t_c1", "coq", "hgrad", "c_e1", "c_e5"], ["et_nadh", "et_p1"],
+    "NADH hands its hydride to FMN and the 2 electrons run along iron–sulfur clusters to ubiquinone, which takes 2 H⁺ from the matrix to become QH₂. The energy of the transfer pumps 4 H⁺ into the intermembrane space. NAD⁺ returns to the cycle. (The two cytosolic NADH are assumed to arrive through the malate–aspartate shuttle.)"],
+  ["etc", "Complex II (FADH₂ to Q)", 2, { fadh2: 1, q: 1 }, { fad: 1, qh2: 1 }, [["fadh2", "qh2", 2]], ["t_c2", "coq", "c_e2"], ["et_fad"],
+    "FADH₂ gives 2 electrons through three iron–sulfur clusters to ubiquinone, and its 2 H go on to QH₂. No protons are pumped, which is why FADH₂ yields less ATP than NADH."],
+  ["etc", "Complex III (Q cycle)", 12, { qh2: 1, c3: 2, hM: 2 }, { q: 1, c2: 2, hI: 4 }, [["qh2", "cytc", 2]], ["coq", "t_c3", "t_cytc", "hgrad"], ["et_q3", "et_c3c", "et_p3"],
+    "QH₂ releases its 2 H⁺ into the intermembrane space and splits its 2 electrons: one goes to cytochrome c, the other loops back to recycle Q. With 2 H⁺ taken up from the matrix, 4 H⁺ appear in the space per QH₂. Twelve QH₂ per glucose (10 from NADH, 2 from FADH₂)."],
+  ["etc", "Complex IV (cytochrome c oxidase)", 6, { c2: 4, o2: 1, hM: 8 }, { c3: 4, h2o: 2, hI: 4 }, [["cytc", "o2", 4]], ["t_cytc", "t_c4", "hgrad", "c_e3"], ["et_cc4", "et_p4"],
+    "Four cytochrome c deliver 4 electrons to O₂, which takes 4 H⁺ from the matrix and becomes 2 H₂O. This is where the electrons end: 24 per glucose, 6 O₂, 12 H₂O. Four more matrix H⁺ are pumped into the space."],
+  ["atp", "ATP synthase (complex V)", 28, { adp: 1, pi: 1, hM: 1, hI: 4 }, { atp: 1, h2o: 1, hM: 4 }, [], ["hgrad", "t_c5", "c_e4"], ["et_p5"],
+    "The 112 H⁺ pumped per glucose flow back into the matrix through F₀. Each turn of the rotor makes ATP from ADP and Pᵢ (taking one more H⁺ and releasing one H₂O). At about 4 H⁺ per ATP that is 28 ATP, on top of 2 ATP and 2 GTP made earlier, so ≈ 32 ATP-equivalents (30–32 in textbooks, after transport costs)."],
+].map(([stage, name, mult, L, R, em, nodes, edges, text]) => ({ stage, name, mult, L, R, em, nodes, edges, text }));
+
+const rdxPools = (v) => { // where the hydrogen sits, for a vector of species counts
+  const p = { sk: 0, ca: 0, ot: 0, fr: 0, im: 0, wa: 0 };
+  Object.entries(v).forEach(([k, n]) => {
+    const s = RDX_SP[k];
+    if (k === "h2o") p.wa += 2 * n; else if (k === "h" || k === "hM") p.fr += n; else if (k === "hI") p.im += n;
+    else { p.sk += s[3] * n; p.ca += s[4] * n; p.ot += (s[1] - s[3] - s[4]) * n; }
+  });
+  return p;
+};
+const rdxSum = (v, i) => Object.entries(v).reduce((a, [k, n]) => a + RDX_SP[k][i] * n, 0);
+const RDX_START = { net: { glc: 1 }, el: { glc: 24, nadh: 0, fadh2: 0, qh2: 0, cytc: 0, o2: 0 } };
+const RDX_STATE = (() => { // after step i: net species counts and where the 24 electrons are
+  let net = { ...RDX_START.net }, el = { ...RDX_START.el };
+  return RDX_STEPS.map((s) => {
+    net = { ...net };
+    Object.entries(s.L).forEach(([k, n]) => { net[k] = (net[k] || 0) - n * s.mult; });
+    Object.entries(s.R).forEach(([k, n]) => { net[k] = (net[k] || 0) + n * s.mult; });
+    el = { ...el };
+    s.em.forEach(([a, b, n]) => { el[a] -= n * s.mult; el[b] += n * s.mult; });
+    Object.keys(net).forEach((k) => { if (net[k] === 0) delete net[k]; });
+    return { net, el, pools: rdxPools(net) };
+  });
+})();
+RDX_START.pools = rdxPools(RDX_START.net);
+RDX_STEPS.forEach((s, i) => { // load-time check: hydrogen and charge balance of every step, and the totals along the route
+  if (rdxSum(s.L, 1) !== rdxSum(s.R, 1) || rdxSum(s.L, 2) !== rdxSum(s.R, 2)) console.warn(`Follow e⁻ and H: step ${i + 1} (${s.name}) does not balance`);
+  const p = RDX_STATE[i].pools, e = RDX_STATE[i].el;
+  if (p.sk + p.ca + p.ot + p.fr + p.im + p.wa !== 12 || Object.values(e).reduce((a, b) => a + b, 0) !== 24) console.warn(`Follow e⁻ and H: totals drift after step ${i + 1}`);
+});
+const RDX_LIT = (i) => { // canvas objects on the route so far, and those of the current step
+  const nodes = new Set(), edges = new Set();
+  RDX_STEPS.slice(0, i + 1).forEach((s) => { s.nodes.forEach((x) => nodes.add(x)); s.edges.forEach((x) => edges.add(x)); });
+  return { nodes, edges, curNodes: new Set(RDX_STEPS[i].nodes), curEdges: new Set(RDX_STEPS[i].edges) };
+};
+
 /* ------------------------------ cellular locations ------------------------------ */
 const LOCS = {
   cyt: { label: "Cytosol", short: "Cytosol", color: "#22d3ee", desc: "Aqueous interior of the cell. Hosts glycolysis, the pentose phosphate pathway, glycogen turnover, fatty acid synthesis and the later steps of the urea cycle and heme synthesis." },
@@ -1780,7 +1955,7 @@ const LOCS = {
 const LOC_OF = {};
 Object.entries({
   cyt: "hmgcoa mevalonate glucose g6p f6p fbp gap dhap bpg13 pg3 pg2 pep pyruvate lactate g1p glycogen udpglc p6gl p6g ru5p r5p xu5p s7p e4p alanine aspartate glutamate ornithine citrulline argsucc arginine urea glyc3p glycerol fa facyl malonyl acetylcoa glycine ala pbg hmb uro3 copro3 bilirubin biliverdin mg k p atp fe t_gk c_mev",
-  mit: "preg pyruvate acetylcoa citrate isocitrate akg succoa succinate fumarate malate oaa cp ornithine citrulline aspartate glutamate facyl acac glycine ala copro3 protogen protoporph heme fe atp t_pdc t_cps1 t_cpt1",
+  mit: "coq t_c1 t_c2 t_c3 t_cytc t_c4 t_c5 hgrad preg pyruvate acetylcoa citrate isocitrate akg succoa succinate fumarate malate oaa cp ornithine citrulline aspartate glutamate facyl acac glycine ala copro3 protogen protoporph heme fe atp t_pdc t_cps1 t_cpt1",
   er: "tag glyc3p biliverdin bilglu t_hmgcr t_ugt t_cox c_pg dhc7 chol cholic",
   nuc: "t_ppara t_pparg",
   ap: "t_sglt2",
@@ -2893,7 +3068,7 @@ const initialEdges = EDGES.map((e) => ({
   target: e.target,
   sourceHandle: handles(e)[0],
   targetHandle: handles(e)[1],
-  data: { main: !!e.main, label: e.label, path: e.path || PATH_OF[e.target] || PATH_OF[e.source], fx: e.fx, pharm: !!e.fx, org: e.org, cross: !!e.cross },
+  data: { main: !!e.main, how: e.how, label: e.label, path: e.path || PATH_OF[e.target] || PATH_OF[e.source], fx: e.fx, pharm: !!e.fx, org: e.org, cross: !!e.cross },
 }));
 
 /* ================================================================== */
@@ -2957,7 +3132,7 @@ function CompoundNode({ data, selected }) {
 function edgeHow(e) {
   const d = e.data || {}, fxd = d.fx && FX[d.fx];
   return {
-    how: d.main ? `Enzymatic step${d.label ? " · " + d.label : ""}` : fxd ? fxd.label : d.fx === "organ" ? "Organ link" : d.fx === "tether" ? "Drug action on this step" : "Cofactor / side link",
+    how: d.main ? `${d.how || "Enzymatic step"}${d.label ? " · " + d.label : ""}` : fxd ? fxd.label : d.fx === "organ" ? "Organ link" : d.fx === "tether" ? "Drug action on this step" : "Cofactor / side link",
     detail: d.fx ? RX_EFFECTS.find((x) => `rx_${x.drug}_${x.target}` === e.id)?.detail : "",
     color: d.main ? d.color : d.fxColor || "#A1A1AA",
   };
@@ -3110,6 +3285,7 @@ const ICON = {
   chevL: "M15 5l-7 7 7 7",
   chevR: "M9 5l7 7-7 7",
   search: "M11 4a7 7 0 1 0 0 14 7 7 0 0 0 0-14zM21 21l-4.5-4.5",
+  redox: "M4 8h14l-3.5-3.5M20 16H6l3.5 3.5",
 };
 const Icon = ({ d, size = 20 }) => (
   <svg viewBox="0 0 24 24" width={size} height={size} fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -3394,7 +3570,7 @@ function ElementCard({ el, onClose, onBack, onStep, onShow }) {
       <div className="omino-ecard__tags"><span style={{ "--c": cc }}>{cl}</span><span style={{ "--c": rc }}>{rl}</span></div>
       <div className="omino-ecard__bohr"><Bohr el={el} /></div>
       <div className="omino-ecard__stats">
-        {[["Electrons", el.z, "#ff5d6c"], ["Protons", el.z, "#ffb454"], ["Neutrons", el.n, "#6f93ff"]].map(([l, v, c]) => (
+        {[["Electrons", el.z, "#38bdf8"], ["Protons", el.z, "#ff5d6c"], ["Neutrons", el.n, "#4ade80"]].map(([l, v, c]) => (
           <div key={l} style={{ "--c": c }}><span>{l}</span><b>{v}</b></div>
         ))}
       </div>
@@ -3477,6 +3653,7 @@ const _kinds = {};
 const kindsOf = (id) => (_kinds[id] ||= classify(MOLS[id]));
 const NODE_BY = Object.fromEntries(NODES.map((n) => [n.id, n]));
 const nm = (id) => NODE_BY[id]?.label || id;
+const goNode = (open, fit, id) => (NODE_BY[id]?.rx === "target" ? open("target", id) : NODE_BY[id]?.mol || SPECIES[id] ? open("mol", id) : fit([id])); // molecule card, target card, or just centre on it
 const pathOfEdge = (e) => PATH_OF[e.target] || PATH_OF[e.source];
 
 
@@ -3581,6 +3758,7 @@ const PDESC = {
   amino: "Transaminases shuttle amino groups among α-keto acids and amino acids, linking glycolysis, the TCA cycle and the urea cycle.",
   aa: "The twenty protein amino acids. Nine are essential (valine, leucine, isoleucine, methionine, threonine, lysine, histidine, phenylalanine, tryptophan) because humans cannot make their carbon skeletons; the rest are made from glycolytic and TCA intermediates or from other amino acids, and a few become conditionally essential in illness or infancy. Alanine, aspartate, glutamate, glycine and arginine sit in the pathways they feed.",
   lipid: "Stores fatty acids as triacylglycerol on glycerol 3-phosphate, builds fatty acids from malonyl-CoA and breaks them down by β-oxidation.",
+  etc: "NADH and FADH₂ give their electrons to ubiquinone through complexes I and II; the electrons then pass through complex III, cytochrome c and complex IV to O₂, forming water. Complexes I, III and IV pump protons out of the matrix, and the gradient drives ATP synthase: about 2.5 ATP per NADH and 1.5 per FADH₂. Poisons that block a complex, and uncouplers that dissipate the gradient, are in the pharmacology layer.",
   ala: "Succinyl-CoA and glycine condense to 5-aminolevulinate in the mitochondrion. ALA synthase is the rate-limiting step of heme synthesis.",
   heme: "Eight enzymes, split between mitochondria and cytosol, build the porphyrin ring and insert iron. Genetic defects cause the porphyrias; lead inhibits two steps.",
   pharm: "Drugs (capsules) point at their targets: enzymes, transporters, receptors and, for chemotherapy, DNA itself. The coloured line shows the effect, and a dotted line joins each target to the metabolite it works on. Organ hubs group the targets by organ system; the Oncology hub groups chemotherapy by mechanism. Switch the layer off in Settings.",
@@ -3595,6 +3773,21 @@ Object.assign(EXPLAIN, {
   cholic: "One of the two primary bile acids (with chenodeoxycholic acid). The liver adds hydroxyl groups and shortens the side chain to a carboxylic acid, so the molecule has a water-loving face and a fat-loving face that emulsifies dietary fat. It is conjugated to glycine or taurine, stored in the gallbladder, and about 95% is recovered in the ileum and recycled (enterohepatic circulation). It feeds back on CYP7A1 through the FXR receptor. Bile-acid sequestrants (cholestyramine) interrupt the loop and make the liver spend cholesterol on new bile acid.",
   preg: "C21 steroid made when P450scc (CYP11A1, inner mitochondrial membrane) cuts the cholesterol side chain; this is the rate-limiting step of steroid hormone synthesis, driven by StAR carrying cholesterol into the mitochondrion. Pregnenolone becomes progesterone, then corticosteroids, androgens and estrogens in a tissue-specific way. Lipoid congenital adrenal hyperplasia (StAR defect) leaves all adrenal and gonadal steroids low.",
 });
+Object.assign(EXPLAIN, {
+  coq: "Ubiquinone (coenzyme Q10) is a benzoquinone head on a long isoprenoid tail, so it dissolves in the lipid bilayer and diffuses between complexes. It takes two electrons and two protons to become ubiquinol (QH₂), and can also sit halfway as a semiquinone radical. It is made by the same mevalonate route as cholesterol, so statins lower it a little; primary CoQ10 deficiency causes encephalomyopathy and nephrotic syndrome, and CoQ10 is also an antioxidant in membranes.",
+});
+Object.assign(ENZN, {
+  "2 e⁻ (FMN, Fe–S)": "Complex I takes a hydride from NADH onto FMN, then passes the two electrons one at a time along a chain of iron–sulfur clusters to ubiquinone.",
+  "Complex II is the TCA enzyme": "Complex II is succinate dehydrogenase, the same enzyme that oxidises succinate to fumarate in the TCA cycle. It is shown twice: in the cycle ring and here, handing its electrons to ubiquinone.",
+  "2 e⁻ (FAD, Fe–S)": "FAD in complex II takes two electrons from succinate; three iron–sulfur clusters then pass them to ubiquinone. Acyl-CoA dehydrogenases, glycerol 3-phosphate dehydrogenase and ETF-ubiquinone oxidoreductase also feed ubiquinone this way.",
+  "QH₂ (Q cycle)": "Ubiquinol diffuses in the membrane to complex III. At the Qo site one electron goes to the Rieske Fe–S and on to cytochrome c, and the other goes through cytochrome b to a second ubiquinone at the Qi site, so two QH₂ are used for each Q regenerated.",
+  "1 e⁻ (cyt c₁)": "Cytochrome c₁ of complex III passes one electron to soluble cytochrome c; two cytochrome c are reduced for each QH₂ oxidised.",
+  "1 e⁻ (Cu_A)": "Reduced cytochrome c docks on complex IV and gives one electron to the Cu_A centre, which relays it to heme a and then to the heme a₃–Cu_B site where O₂ is reduced.",
+  "pumps 4 H⁺": "Complex I uses the energy of the electron transfer to move 4 H⁺ from the matrix to the intermembrane space for every two electrons.",
+  "4 H⁺ per QH₂": "In the Q cycle complex III releases the two protons of QH₂ on the outer face and takes two from the matrix, which gives a net 4 H⁺ in the intermembrane space for each QH₂ oxidised.",
+  "pumps 2 H⁺": "Complex IV pumps about 2 H⁺ for each electron pair (4 per O₂), and 4 more H⁺ are taken from the matrix to make the water.",
+  "H⁺ flows back": "Protons return to the matrix through the F₀ c-ring of ATP synthase, which turns F₁ and makes ATP. Without the gradient (uncouplers) or without the channel (oligomycin) no ATP is made.",
+});
 Object.assign(ENZN, {
   "HMG-CoA synthase": "Condenses acetyl-CoA with acetoacetyl-CoA to give HMG-CoA. The cytosolic isoform feeds cholesterol synthesis; the mitochondrial isoform feeds ketogenesis.",
   "HMG-CoA reductase": "Rate-limiting step of cholesterol synthesis: HMG-CoA + 2 NADPH → mevalonate + CoA + 2 NADP⁺, in the ER membrane. Controlled by SREBP-2 (transcription), sterol-triggered degradation, and AMPK phosphorylation (inhibits). Statins compete with HMG-CoA for the active site.",
@@ -3603,6 +3796,20 @@ Object.assign(ENZN, {
   "Cholesterol 7α-hydroxylase (CYP7A1)": "ER cytochrome P450 of hepatocytes and the rate-limiting step of bile-acid synthesis. Bile acids return through FXR and FGF19 to repress it; bile-acid sequestrants and statins raise it.",
   "Desmolase (P450scc)": "CYP11A1, an inner-mitochondrial-membrane P450 that hydroxylates and cleaves the cholesterol side chain to pregnenolone and isocaproaldehyde. It is the rate-limiting step of steroidogenesis; ACTH and LH raise StAR and CYP11A1.",
 });
+const ETCI = {
+  t_c1: { facts: [["Reaction", "NADH + Q + 5 H⁺(matrix) → NAD⁺ + QH₂ + 4 H⁺(space)"], ["Prosthetic groups", "FMN and 8–9 Fe–S clusters"], ["H⁺ pumped", "4 per electron pair"], ["Genes", "7 mitochondrial (MT-ND) + about 38 nuclear"]],
+    clin: ["Leigh syndrome and MELAS: complex I deficiency is the commonest cause of mitochondrial disease", "Leber hereditary optic neuropathy: MT-ND1, ND4 or ND6 variants, sudden painless central vision loss in young men", "Rotenone and MPP⁺ (the toxic metabolite of MPTP) block it and cause parkinsonism", "Metformin inhibits it weakly; lactic acidosis if the drug accumulates"] },
+  t_c2: { facts: [["Reaction", "Succinate + Q → fumarate + QH₂"], ["Prosthetic groups", "FAD, 3 Fe–S clusters, heme b"], ["H⁺ pumped", "None"], ["Genes", "All four subunits nuclear (SDHA–SDHD)"]],
+    clin: ["Loss-of-function SDHx variants cause hereditary paraganglioma and pheochromocytoma and gastrointestinal stromal tumours: succinate builds up and stabilises HIF-1α", "Complex II deficiency can cause Leigh syndrome", "Malonate (competitive) and 3-nitropropionic acid (irreversible) inhibit it"] },
+  t_c3: { facts: [["Reaction", "QH₂ + 2 cyt c (Fe³⁺) + 2 H⁺(matrix) → Q + 2 cyt c (Fe²⁺) + 4 H⁺(space)"], ["Redox centres", "Hemes b_L, b_H and c₁, Rieske Fe–S"], ["H⁺ pumped", "4 released per QH₂ (Q cycle)"], ["Genes", "MT-CYB is the only mitochondrial one"]],
+    clin: ["MT-CYB variants: exercise intolerance, myopathy, sometimes cardiomyopathy", "Antimycin A, myxothiazol and stigmatellin block it; atovaquone does so selectively in Plasmodium"] },
+  t_cytc: { facts: [["Reaction", "Carries one electron: Fe³⁺ ⇄ Fe²⁺"], ["Size", "About 12 kDa, soluble, lies on the outer face of the inner membrane"], ["Gene", "CYCS (nuclear)"]],
+    clin: ["Release into the cytosol is a trigger of intrinsic apoptosis (BAX/BAK pores, apoptosome, caspase-9)", "Rare CYCS variants cause thrombocytopenia"] },
+  t_c4: { facts: [["Reaction", "4 cyt c (Fe²⁺) + O₂ + 8 H⁺(matrix) → 4 cyt c (Fe³⁺) + 2 H₂O + 4 H⁺(space)"], ["Redox centres", "Cu_A, heme a, heme a₃–Cu_B"], ["H⁺ pumped", "2 per electron pair (4 per O₂)"], ["Genes", "3 mitochondrial (MT-CO1–3) + 11 nuclear"]],
+    clin: ["Cyanide, azide, H₂S and carbon monoxide poisoning (hydroxocobalamin, or nitrite plus thiosulfate, for cyanide)", "SURF1 variants (assembly factor): Leigh syndrome; SCO2 variants: fatal infantile cardioencephalomyopathy", "Copper is required, so severe deficiency can impair it"] },
+  t_c5: { facts: [["Reaction", "ADP + Pᵢ + about 3 H⁺ → ATP + H₂O"], ["Structure", "F₁ (α₃β₃γδε) in the matrix, F₀ (a, c-ring) in the membrane"], ["H⁺ per ATP", "About 2.7 through the synthase, about 4 including Pᵢ and ADP/ATP exchange"], ["Genes", "MT-ATP6 and MT-ATP8, the rest nuclear"]],
+    clin: ["MT-ATP6 variants: NARP (neuropathy, ataxia, retinitis pigmentosa) and maternally inherited Leigh syndrome", "Oligomycin blocks F₀; bedaquiline blocks the bacterial enzyme", "Yield: about 2.5 ATP per NADH and 1.5 per FADH₂"] },
+};
 const Pill = ({ children, onClick, c }) => <button className="omino-pill" style={{ "--c": c || "#A1A1AA" }} onClick={onClick}>{children}</button>;
 const Sec = ({ t, children }) => <section className="omino-ecard__sec"><h4>{t}</h4>{children}</section>;
 function CardShell({ c, sub, title, tags, onClose, onBack, nav, label, children }) {
@@ -3647,7 +3854,7 @@ function MolCard({ id, open, fit, shell }) {
   const step = (e, other) => (
     <li key={e.id}>
       {e.label ? <button className="omino-link" onClick={() => open("enz", e.label)}>{e.label}</button> : <span>unlabelled step</span>}
-      {" · "}<button className="omino-link" onClick={() => open("mol", other)}>{nm(other)}</button>
+      {" · "}<button className="omino-link" onClick={() => goNode(open, fit, other)}>{nm(other)}</button>
     </li>
   );
   return (
@@ -3691,7 +3898,7 @@ function EnzCard({ label, open, fit, shell }) {
       tags={ps.map((p) => <Pill key={p} c={PATHWAYS[p].color} onClick={() => open("path", p)}>{PATHWAYS[p].label}</Pill>)}>
       <p className="omino-ecard__note">{ENZN[label] || `Catalyses the conversion of ${nm(es[0].source)} to ${nm(es[0].target)}${es.length > 1 ? `, and ${es.length - 1} similar step${es.length > 2 ? "s" : ""}` : ""}.`}</p>
       <Sec t={es.length > 1 ? "Reactions" : "Reaction"}>
-        <ul className="omino-ecard__list">{es.map((e) => <li key={e.id}><button className="omino-link" onClick={() => open("mol", e.source)}>{nm(e.source)}</button> → <button className="omino-link" onClick={() => open("mol", e.target)}>{nm(e.target)}</button></li>)}</ul>
+        <ul className="omino-ecard__list">{es.map((e) => <li key={e.id}><button className="omino-link" onClick={() => goNode(open, fit, e.source)}>{nm(e.source)}</button> → <button className="omino-link" onClick={() => goNode(open, fit, e.target)}>{nm(e.target)}</button></li>)}</ul>
       </Sec>
       {RX_EFFECTS.some((x) => NODE_BY[x.target].enz === label) && (
         <Sec t="Drugs acting here">
@@ -3899,7 +4106,7 @@ function TargetCard({ id, open, fit, shell }) {
   const t = NODE_BY[id], k = KIND[t.kind], rx = RX_EFFECTS.filter((e) => e.target === id), acts = RX_ACTS.filter((a) => a.target === id);
   return (
     <CardShell {...shell} c={k.color} sub={`${k.label} · ${t.formula}`} title={t.label} label={`${t.label} target card`}
-      tags={<><span style={{ "--c": k.color }}>{k.label}</span><Pill c={RX_COLOR} onClick={() => open("path", "pharm")}>Pharmacology</Pill></>}>
+      tags={<><span style={{ "--c": k.color }}>{k.label}</span>{PATH_OF[id] && PATH_OF[id] !== "pharm" && PATHWAYS[PATH_OF[id]] && <Pill c={PATHWAYS[PATH_OF[id]].color} onClick={() => open("path", PATH_OF[id])}>{PATHWAYS[PATH_OF[id]].label}</Pill>}<Pill c={RX_COLOR} onClick={() => open("path", "pharm")}>Pharmacology</Pill></>}>
       {t.dm && MOLS[t.dm] && <div className="omino-ecard__art"><Skeletal mol={MOLS[t.dm]} /></div>}
       {t.dm && MOLS[t.dm]?.key && <div className="omino-ecard__hint">{MOLS[t.dm].key}</div>}
       <p className="omino-ecard__note">{t.note}</p>
@@ -3908,6 +4115,10 @@ function TargetCard({ id, open, fit, shell }) {
         <dl className="omino-ecard__facts">{IG[id].facts.map(([a, b]) => <React.Fragment key={a}><dt>{a}</dt><dd>{b}</dd></React.Fragment>)}</dl>
         <Sec t="Functions"><ul className="omino-ecard__list">{IG[id].fn.map((x) => <li key={x}>{x}</li>)}</ul></Sec>
         <Sec t="Clinical"><ul className="omino-ecard__list">{IG[id].clin.map((x) => <li key={x}>{x}</li>)}</ul></Sec>
+      </>}
+      {ETCI[id] && <>
+        <dl className="omino-ecard__facts">{ETCI[id].facts.map(([a, b]) => <React.Fragment key={a}><dt>{a}</dt><dd>{b}</dd></React.Fragment>)}</dl>
+        <Sec t="Clinical"><ul className="omino-ecard__list">{ETCI[id].clin.map((x) => <li key={x}>{x}</li>)}</ul></Sec>
       </>}
       {VIT[id] && <VitBlock id={id} open={open} fit={fit} />}
       {UC[id] && <UcBlock id={id} open={open} />}
@@ -4133,6 +4344,83 @@ function AtlasSearch({ q, setQ, scope, setScope, res, on, matchLine, onClear, on
   );
 }
 
+/* Follow e⁻ and H panel: steps through RDX_STEPS, lights up the route on the canvas, and keeps the electron and hydrogen inventory */
+const rdxSpecies = (v) => Object.entries(v).map(([k, n]) => ({ k, n, name: RDX_SP[k][0], h: RDX_SP[k][3] })); // h: hydrogens on the carbon skeleton, shown beside intermediates
+const rdxSign = (n) => (n > 0 ? "+" : n < 0 ? "−" : "") + Math.abs(n);
+const rdxNum = (n) => (n < 0 ? "−" : "") + Math.abs(n);
+const RDX_H_ROWS = [["sk", "Carbon skeleton from glucose", "#6fa8ff"], ["ca", "Carried by NADH, FADH₂, QH₂", "#ff8a65"], ["fr", "Free H⁺ (cytosol, matrix), net", "#f2c94c"], ["im", "H⁺ pumped into the intermembrane space", "#c7a8ff"], ["wa", "In water, net formed", "#38bdf8"], ["ot", "In ATP, Pᵢ and CoA, net change", "#8b93a1"]];
+function RdxEq({ side }) {
+  const items = rdxSpecies(side);
+  return <>{items.map((s, i) => (
+    <React.Fragment key={s.k}>
+      {i > 0 && <span className="omino-rdx__plus">+</span>}
+      <span className={`omino-rdx__sp ${s.k === "nadh" || s.k === "fadh2" || s.k === "qh2" ? "is-red" : ""}`}>{s.n > 1 ? `${s.n} ` : ""}<b>{s.name}</b>{s.h > 0 && <i>{s.h} H</i>}</span>
+    </React.Fragment>
+  ))}</>;
+}
+function RedoxPanel({ i, setI, playing, setPlaying, onClose }) {
+  const n = RDX_STEPS.length, s = RDX_STEPS[i], st = RDX_STATE[i], pv = i ? RDX_STATE[i - 1] : RDX_START;
+  const stage = RDX_STAGES.find((x) => x[0] === s.stage);
+  const dp = (() => { const a = rdxPools(s.R), b = rdxPools(s.L); return Object.fromEntries(Object.keys(a).map((k) => [k, a[k] - b[k]])); })();
+  const moved = s.em.map(([a, b, c]) => [RDX_EL.find((x) => x[0] === a)[1], RDX_EL.find((x) => x[0] === b)[1], c]);
+  const last = i === n - 1;
+  const first = (stg) => RDX_STEPS.findIndex((x) => x.stage === stg);
+  const chg = { ...st.net }; Object.entries(RDX_START.net).forEach(([k, v]) => { chg[k] = (chg[k] || 0) - v; }); // net change over the whole route (the start inventory is subtracted)
+  const net = Object.entries(chg).reduce((m, [k, v]) => { const key = k === "hM" || k === "hI" ? "h" : k; m[key] = (m[key] || 0) + v; return m; }, {});
+  const first2 = (k) => (k === "glc" ? 0 : k === "o2" ? 1 : 2); // glucose and O₂ lead the left side
+  const netL = Object.entries(net).filter(([, v]) => v < 0).map(([k, v]) => [k, -v]).sort((a, b) => first2(a[0]) - first2(b[0])), netR = Object.entries(net).filter(([, v]) => v > 0);
+  const eqText = (l) => l.map(([k, v]) => `${v > 1 ? v + " " : ""}${RDX_SP[k][0]}`).join(" + ");
+  return (
+    <div className="omino-rdx nodrag nopan nowheel" role="dialog" aria-label="Follow electrons and hydrogens">
+      <div className="omino-rdx__top">
+        <div><b>Follow e⁻ and H</b><span>one glucose, start to finish</span></div>
+        <button className="omino-rdx__x" onClick={onClose} aria-label="Close" title="Close"><Icon d={ICON.close} size={16} /></button>
+      </div>
+      <div className="omino-rdx__stages" role="tablist">
+        {RDX_STAGES.map(([id, label]) => <button key={id} role="tab" aria-selected={s.stage === id} className={s.stage === id ? "is-on" : ""} onClick={() => { setPlaying(false); setI(first(id)); }}>{label}</button>)}
+      </div>
+      <div className="omino-rdx__body">
+        <div className="omino-rdx__step"><span>Step {i + 1} of {n} · {stage[2]}</span>{s.mult > 1 && <em>runs {s.mult}× per glucose</em>}</div>
+        <h3>{s.name}</h3>
+        <div className="omino-rdx__eq"><RdxEq side={s.L} /><span className="omino-rdx__arrow">→</span><RdxEq side={s.R} /></div>
+        <div className="omino-rdx__chk" title="Checked for every step when the page loads">
+          H {rdxNum(rdxSum(s.L, 1))} = {rdxNum(rdxSum(s.R, 1))} · charge {rdxNum(rdxSum(s.L, 2))} = {rdxNum(rdxSum(s.R, 2))} · per reaction, pH 7
+        </div>
+        <p className="omino-rdx__txt">{s.text}</p>
+        <div className="omino-rdx__moves">
+          {moved.length ? moved.map(([a, b, c], k) => <span key={k} className="is-e"><b>{c} e⁻</b> {a} → {b}{s.mult > 1 ? ` (×${s.mult} = ${c * s.mult})` : ""}</span>) : <span className="is-none">no electrons move</span>}
+          {[["sk", "skeleton"], ["ca", "carriers"], ["fr", "free H⁺"], ["im", "space H⁺"], ["wa", "water"], ["ot", "ATP / Pᵢ / CoA"]].filter(([k]) => dp[k]).map(([k, l]) => <span key={k} className="is-h"><b>{rdxSign(dp[k])} H</b> {l}</span>)}
+        </div>
+
+        <h4>Electrons, 24 per glucose</h4>
+        <div className="omino-rdx__rows">
+          {RDX_EL.map(([k, label]) => (
+            <div key={k} className="omino-rdx__row" title={`${label}: ${st.el[k]} e⁻`}>
+              <span>{label}</span><div className="omino-rdx__bar"><i style={{ width: `${(st.el[k] / 24) * 100}%` }} className={st.el[k] !== pv.el[k] ? "is-chg" : ""} /></div><b>{st.el[k]}</b>
+            </div>
+          ))}
+        </div>
+        <h4>Hydrogen, 12 H in glucose, always conserved</h4>
+        <div className="omino-rdx__rows omino-rdx__rows--h">
+          {RDX_H_ROWS.map(([k, label, c]) => (
+            <div key={k} className="omino-rdx__row" style={{ "--c": c }}>
+              <span>{label}</span><b className={st.pools[k] !== pv.pools[k] ? "is-chg" : ""}>{rdxNum(st.pools[k])}</b>
+            </div>
+          ))}
+          <div className="omino-rdx__row omino-rdx__row--sum"><span>Total</span><b>{Object.values(st.pools).reduce((a, b) => a + b, 0)}</b></div>
+        </div>
+        {last && <div className="omino-rdx__net"><b>Net, per glucose</b><span>{eqText(netL)} → {eqText(netR)}</span><small>The oxidation itself is C₆H₁₂O₆ + 6 O₂ → 6 CO₂ + 6 H₂O. The other 32 H₂O come from making 32 ATP-equivalents (ADP + Pᵢ + H⁺ → ATP + H₂O).</small></div>}
+      </div>
+      <div className="omino-rdx__ctl">
+        <button onClick={() => { setPlaying(false); setI(Math.max(0, i - 1)); }} disabled={i === 0} aria-label="Previous step"><Icon d={ICON.chevL} size={16} /></button>
+        <button className="is-play" onClick={() => { if (!playing && last) setI(0); setPlaying(!playing); }} aria-pressed={playing}>{playing ? "Pause" : last ? "Replay" : "Play"}</button>
+        <button onClick={() => { setPlaying(false); setI(Math.min(n - 1, i + 1)); }} disabled={last} aria-label="Next step"><Icon d={ICON.chevR} size={16} /></button>
+        <input type="range" min={0} max={n - 1} value={i} onChange={(e) => { setPlaying(false); setI(+e.target.value); }} aria-label="Step" />
+      </div>
+    </div>
+  );
+}
+
 function Atlas() {
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const resetPositions = () => setNodes((ns) => ns.map((n) => { const o = HOME_POS.get(n.id); return o && (n.position.x !== o.x || n.position.y !== o.y) ? { ...n, position: { x: o.x, y: o.y } } : n; })); // P: moved elements go back to where the layout put them
@@ -4150,6 +4438,9 @@ function Atlas() {
   const lockTimer = useRef(null), lockFired = useRef(false);
   const chipFit = (opts) => { if (!zoomLock) fitView(opts); };
   const [ptOpen, setPtOpen] = useState(false); // periodic table panel
+  const [rdx, setRdx] = useState(null); // Follow e⁻ and H: index of the step being shown, or null when the panel is closed
+  const [rdxPlay, setRdxPlay] = useState(false);
+  const rdxLit = useMemo(() => (rdx == null ? null : RDX_LIT(rdx)), [rdx]); // canvas objects on the route so far
   const [stOpen, setStOpen] = useState(false); // settings panel
   const [showMini, setShowMini] = useState(true); // overview (minimap)
   const [showPaths, setShowPaths] = useState(true); // pathway chip bar
@@ -4294,18 +4585,19 @@ function Atlas() {
           ...n.data,
           showLoc, showOrg: showOrgans,
           dim: (matchIds ? !matchIds.has(n.id) && !n.data.title : false) || (focus ? n.data.path !== focus && !(focus === "pharm" && RX_ANCHORS.has(n.id)) : false)
-            || (locFocus ? !n.data.title && !hasLoc(n.id, locFocus) : false) || (organFocus ? !n.data.title && !ORGAN_SET[organFocus].has(n.id) : false),
+            || (locFocus ? !n.data.title && !hasLoc(n.id, locFocus) : false) || (organFocus ? !n.data.title && !ORGAN_SET[organFocus].has(n.id) : false)
+            || (rdxLit ? !n.data.title && !rdxLit.nodes.has(n.id) : false),
           hit: (matchIds ? matchIds.has(n.id) : false) || flash.includes(n.id),
         },
       })),
-    [nodes, matchIds, focus, hideS, showRx, showOrgans, showLoc, locFocus, organFocus, flash]
+    [nodes, matchIds, focus, hideS, showRx, showOrgans, showLoc, locFocus, organFocus, flash, rdxLit]
   );
 
   const shownEdges = useMemo(
     () =>
       edges.map((e) => {
         const faded =
-          (matchIds && !edgeHits.has(e.id) && !(matchIds.has(e.source) && matchIds.has(e.target))) || (focus && e.data.path !== focus) || (locFocus && !(hasLoc(e.source, locFocus) && hasLoc(e.target, locFocus))) || (organFocus && !(ORGAN_SET[organFocus].has(e.source) && ORGAN_SET[organFocus].has(e.target)));
+          (matchIds && !edgeHits.has(e.id) && !(matchIds.has(e.source) && matchIds.has(e.target))) || (focus && e.data.path !== focus) || (locFocus && !(hasLoc(e.source, locFocus) && hasLoc(e.target, locFocus))) || (organFocus && !(ORGAN_SET[organFocus].has(e.source) && ORGAN_SET[organFocus].has(e.target))) || (rdxLit && !rdxLit.edges.has(e.id));
         const main = e.data.main;
         const color = PATHWAYS[e.data.path]?.color || "#FFFFFF";
         const stroke = main ? color : "#7b8594";
@@ -4330,22 +4622,26 @@ function Atlas() {
           data: { ...e.data, faded, color, hideLabel: hideG },
         };
       }),
-    [edges, matchIds, edgeHits, focus, hideG, showRx, showOrgans, locFocus, organFocus]
+    [edges, matchIds, edgeHits, focus, hideG, showRx, showOrgans, locFocus, organFocus, rdxLit]
   );
 
   // Hovered or clicked line: lift it above the rest and light up the two things it joins, wherever they are on the canvas.
   const picked = track ? [track.inn, track.out].filter(Boolean) : [];
   const activeEdge = hoverEdge || (track ? picked[0] : null);
-  const edgesOut = useMemo(() => (hoverEdge || picked.length)
+  const edgesBase = useMemo(() => (hoverEdge || picked.length)
     ? shownEdges.map((e) => (e.id === hoverEdge || picked.includes(e.id))
       ? { ...e, className: e.id === hoverEdge ? "is-active" : "is-picked", zIndex: 1000, data: { ...e.data, active: true } }
       : e)
     : shownEdges, [shownEdges, hoverEdge, track]); // eslint-disable-line react-hooks/exhaustive-deps
-  const nodesOut = useMemo(() => {
+  const nodesBase = useMemo(() => {
     const ae = hoverEdge && shownEdges.find((e) => e.id === hoverEdge);
     if (!ae && !track) return shownNodes;
     return shownNodes.map((n) => (ae && (n.id === ae.source || n.id === ae.target)) || (track && n.id === track.at) ? { ...n, className: "is-end" } : n);
   }, [shownNodes, shownEdges, hoverEdge, track]);
+  // Follow e⁻ and H: the lines and objects of the current step glow on top of the route so far
+  const edgesOut = useMemo(() => (rdxLit ? edgesBase.map((e) => (rdxLit.curEdges.has(e.id) ? { ...e, className: "is-picked", zIndex: 1000, data: { ...e.data, active: true, faded: false } } : e)) : edgesBase), [edgesBase, rdxLit]);
+  const nodesOut = useMemo(() => (rdxLit ? nodesBase.map((n) => (rdxLit.curNodes.has(n.id) ? { ...n, className: "is-end" } : n)) : nodesBase), [nodesBase, rdxLit]);
+  const toggleRdx = () => { if (rdx == null) { setHideS(false); setTrack(null); setPtOpen(false); setRdx(0); } else { setRdx(null); setRdxPlay(false); } };
 
   // Neighbours of every visible object, main enzymatic steps first
   const edgeById = useMemo(() => Object.fromEntries(shownEdges.map((e) => [e.id, e])), [shownEdges]);
@@ -4393,6 +4689,36 @@ function Atlas() {
     const d = nodes.find((x) => x.id === id)?.data, t = d?.mol ? "mol" : d?.rx;
     if (t && NODE_CARDS.includes(t) && !(cur.t === t && cur.id === id)) { hopped.current = true; swap(t, id); }
   };
+  // Follow e⁻ and H: fly to the objects of each step (keeping them clear of the panel), step with the arrow keys, play on a timer
+  useEffect(() => {
+    if (rdx == null) return;
+    const ids = RDX_STEPS[rdx].nodes.filter((id) => getNode(id)), cv = document.querySelector(".omino-canvas");
+    if (!ids.length || !cv) return;
+    const xs = [], ys = [];
+    ids.forEach((id) => { const n = getNode(id), w = n.width || 220, h = n.height || 140; xs.push(n.position.x - w / 2, n.position.x + w / 2); ys.push(n.position.y - h / 2, n.position.y + h / 2); });
+    const x0 = Math.min(...xs), x1 = Math.max(...xs), y0 = Math.min(...ys), y1 = Math.max(...ys), pn = document.querySelector(".omino-rdx");
+    const cw = cv.clientWidth, ch = cv.clientHeight, narrow = cw <= 760;
+    const pw = pn && !narrow ? pn.offsetWidth + 88 : 0, ph = pn && narrow ? pn.offsetHeight + 16 : 0; // canvas covered by the panel (left column, or bottom sheet on a phone)
+    const z = Math.min(1, Math.max(0.2, Math.min((cw - pw - 60) / Math.max(1, x1 - x0), (ch - ph - 60) / Math.max(1, y1 - y0))));
+    setCenter((x0 + x1) / 2 - pw / 2 / z, (y0 + y1) / 2 + ph / 2 / z, { zoom: z, duration: 700 });
+  }, [rdx]); // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => {
+    if (rdx == null) return;
+    const k = (ev) => {
+      if (ev.key === "Escape") { setRdx(null); setRdxPlay(false); return; }
+      if (ev.target.closest && ev.target.closest("input, textarea")) return;
+      if (ev.key === "ArrowRight") { setRdxPlay(false); setRdx((v) => Math.min(RDX_STEPS.length - 1, v + 1)); }
+      else if (ev.key === "ArrowLeft") { setRdxPlay(false); setRdx((v) => Math.max(0, v - 1)); }
+    };
+    window.addEventListener("keydown", k);
+    return () => window.removeEventListener("keydown", k);
+  }, [rdx == null]); // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => {
+    if (!rdxPlay) return;
+    const t = setInterval(() => setRdx((v) => (v == null ? v : Math.min(RDX_STEPS.length - 1, v + 1))), 4500);
+    return () => clearInterval(t);
+  }, [rdxPlay]);
+  useEffect(() => { if (rdxPlay && rdx === RDX_STEPS.length - 1) setRdxPlay(false); }, [rdx, rdxPlay]);
   // A card opened from the canvas, search or a link: slide that object into the middle of the free canvas beside it
   useEffect(() => {
     if (hopped.current) { hopped.current = false; return; } // a Back / Follow hop already flew there
@@ -4571,6 +4897,9 @@ function Atlas() {
           <button className={`omino-round ${ptOpen ? "is-on" : ""}`} onClick={() => setPtOpen((v) => !v)} aria-pressed={ptOpen} aria-label="Periodic table" title="Periodic table">
             <Icon d={ICON.table} />{ptOpen && <i />}
           </button>
+          <button className={`omino-round ${rdx != null ? "is-on" : ""}`} onClick={toggleRdx} aria-pressed={rdx != null} aria-label="Follow electrons and hydrogens" title="Follow electrons and hydrogens, glucose to water">
+            <Icon d={ICON.redox} />{rdx != null && <i />}
+          </button>
           <button data-settings className={`omino-round ${stOpen ? "is-on" : "is-sky"}`} onClick={() => setStOpen((v) => !v)} aria-pressed={stOpen} aria-expanded={stOpen} aria-label="Settings" title="Settings"><Icon d={ICON.settings} /></button>
           {stOpen && (
             <div className="omino-settings" role="dialog" aria-label="Settings">
@@ -4716,6 +5045,7 @@ function Atlas() {
           <PeriodicTable q={query.trim().toLowerCase()} sel={cur?.t === "el" ? cur.id : null} onPick={(e) => (cur?.t === "el" ? swap("el", e.sym) : open("el", e.sym))} onClose={() => setPtOpen(false)}
             width={cur ? "min(1120px, calc(100% - 440px))" : "min(1120px, calc(100% - 96px))"} />
         )}
+        {rdx != null && <RedoxPanel i={rdx} setI={setRdx} playing={rdxPlay} setPlaying={setRdxPlay} onClose={() => { setRdx(null); setRdxPlay(false); }} />}
         {cur && <InfoCard cur={cur} open={open} swap={swap} fit={fit} onBack={stack.length > 1 ? () => setStack((s) => s.slice(0, -1)) : null} onClose={() => setStack([])}
           nav={cardNode ? { canPrev: canStep("in"), canNext: canStep("out"), onPrev: () => stepCard("in"), onNext: () => stepCard("out") } : null} />}
       </div>
@@ -5214,8 +5544,71 @@ const CSS = `
   .omino-foot p { font-size: 10.5px; line-height: 1.55; }
   .omino-foot__dot { margin: 0 4px; }
 }
+.omino-rdx { position: absolute; z-index: 9; left: 76px; top: 12px; width: min(440px, calc(100% - 96px)); max-height: calc(100% - 24px); display: flex; flex-direction: column; box-sizing: border-box;
+  background: #121212; border: 1px solid #27272A; border-radius: 14px; box-shadow: 0 12px 40px rgba(0,0,0,.5); font-size: 12.5px; color: #E4E4E7; }
+.omino-rdx__top { display: flex; align-items: flex-start; justify-content: space-between; padding: 12px 12px 6px 14px; }
+.omino-rdx__top b { display: block; font-size: 15px; letter-spacing: -0.01em; color: #FFFFFF; }
+.omino-rdx__top span { color: #A1A1AA; font-size: 11.5px; }
+.omino-rdx__x { width: 28px; height: 28px; display: grid; place-items: center; background: none; border: 0; border-radius: 50%; color: #A1A1AA; cursor: pointer; }
+.omino-rdx__x:hover { background: #1b1b1f; color: #FFFFFF; }
+.omino-rdx__stages { display: flex; gap: 4px; padding: 2px 12px 8px; overflow-x: auto; scrollbar-width: none; }
+.omino-rdx__stages button { flex: none; padding: 4px 10px; font: inherit; font-size: 11.5px; color: #A1A1AA; background: transparent; border: 1px solid #27272A; border-radius: 999px; cursor: pointer; white-space: nowrap; }
+.omino-rdx__stages button:hover { color: #FFFFFF; background: #1b1b1f; }
+.omino-rdx__stages button.is-on { color: #FFFFFF; border-color: var(--sky); }
+.omino-rdx__body { overflow: auto; padding: 4px 14px 10px; border-top: 1px solid #1f1f23; }
+.omino-rdx__step { display: flex; gap: 8px; align-items: baseline; margin-top: 10px; font: 500 10.5px var(--mono); color: #A1A1AA; text-transform: uppercase; letter-spacing: .04em; }
+.omino-rdx__step em { font-style: normal; color: #f2c94c; }
+.omino-rdx h3 { margin: 2px 0 8px; font-size: 16px; font-weight: 700; letter-spacing: -0.01em; color: #FFFFFF; }
+.omino-rdx h4 { margin: 14px 0 6px; font-size: 10.5px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: #A1A1AA; }
+.omino-rdx__eq { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 5px; padding: 8px 10px; background: #0c0c0e; border: 1px solid #1f1f23; border-radius: 10px; }
+.omino-rdx__sp { display: inline-flex; align-items: baseline; gap: 4px; padding: 2px 7px; background: #18181b; border-radius: 7px; white-space: nowrap; }
+.omino-rdx__sp b { font-weight: 600; color: #FFFFFF; }
+.omino-rdx__sp i { font: normal 10px var(--mono); color: #A1A1AA; }
+.omino-rdx__sp.is-red { background: color-mix(in srgb, #ff8a65 18%, #18181b); }
+.omino-rdx__plus, .omino-rdx__arrow { color: #71717A; }
+.omino-rdx__arrow { margin: 0 2px; font-size: 15px; color: #FFFFFF; }
+.omino-rdx__chk { margin-top: 5px; font: 10.5px var(--mono); color: #6fe0b4; }
+.omino-rdx__chk::before { content: "✓ "; }
+.omino-rdx__txt { margin: 10px 0 8px; line-height: 1.55; color: #D4D4D8; }
+.omino-rdx__moves { display: flex; flex-wrap: wrap; gap: 5px; }
+.omino-rdx__moves span { padding: 3px 9px; font-size: 11.5px; color: #D4D4D8; border: 1px solid #27272A; border-radius: 999px; }
+.omino-rdx__moves b { font: 600 11px var(--mono); }
+.omino-rdx__moves .is-e { border-color: #38bdf8; } .omino-rdx__moves .is-e b { color: #38bdf8; }
+.omino-rdx__moves .is-h b { color: #f2c94c; }
+.omino-rdx__moves .is-none { color: #71717A; }
+.omino-rdx__rows { display: grid; gap: 4px; }
+.omino-rdx__row { display: grid; grid-template-columns: 1fr 120px 34px; align-items: center; gap: 8px; }
+.omino-rdx__rows--h .omino-rdx__row { grid-template-columns: 10px 1fr 44px; }
+.omino-rdx__rows--h .omino-rdx__row::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--c); grid-column: 1; grid-row: 1; }
+.omino-rdx__rows--h .omino-rdx__row > span { grid-column: 2; }
+.omino-rdx__rows--h .omino-rdx__row > b { grid-column: 3; }
+.omino-rdx__row > span { color: #A1A1AA; font-size: 12px; }
+.omino-rdx__row > b { text-align: right; font: 600 12px var(--mono); color: #FFFFFF; }
+.omino-rdx__row > b.is-chg { color: #f2c94c; }
+.omino-rdx__bar { height: 7px; background: #1b1b1f; border-radius: 4px; overflow: hidden; }
+.omino-rdx__bar i { display: block; height: 100%; background: #38bdf8; border-radius: 4px; transition: width .35s; }
+.omino-rdx__bar i.is-chg { background: #f2c94c; }
+.omino-rdx__row--sum { margin-top: 2px; padding-top: 5px; border-top: 1px solid #1f1f23; grid-template-columns: 1fr 44px !important; }
+.omino-rdx__row--sum::before { display: none !important; }
+.omino-rdx__row--sum > span { grid-column: 1 !important; color: #FFFFFF; }
+.omino-rdx__row--sum > b { grid-column: 2 !important; color: #6fe0b4; }
+.omino-rdx__net { margin-top: 12px; padding: 9px 11px; display: grid; gap: 4px; background: #0c0c0e; border: 1px solid #27272A; border-radius: 10px; }
+.omino-rdx__net b { font-size: 10.5px; letter-spacing: .06em; text-transform: uppercase; color: #A1A1AA; }
+.omino-rdx__net span { line-height: 1.5; color: #FFFFFF; }
+.omino-rdx__net small { font-size: 11px; line-height: 1.5; color: #A1A1AA; }
+.omino-rdx__ctl { display: flex; align-items: center; gap: 6px; padding: 8px 12px 12px; border-top: 1px solid #1f1f23; }
+.omino-rdx__ctl button { height: 30px; min-width: 34px; padding: 0 10px; display: grid; place-items: center; font-weight: 600; font-size: 12px; font-family: inherit; color: #FFFFFF; background: #18181b; border: 1px solid #27272A; border-radius: 999px; cursor: pointer; }
+.omino-rdx__ctl button:hover:not(:disabled) { background: #232328; }
+.omino-rdx__ctl button:disabled { opacity: .35; cursor: default; }
+.omino-rdx__ctl button.is-play { min-width: 64px; color: var(--sky); border-color: var(--sky); }
+.omino-rdx__ctl input[type=range] { flex: 1; min-width: 0; accent-color: #38bdf8; }
+@media (max-width: 760px) {
+  .omino-rdx { left: 8px; right: 8px; top: auto; bottom: 8px; width: auto; max-height: 52%; }
+  .omino-rdx__row { grid-template-columns: 1fr 70px 30px; }
+}
 @media (prefers-reduced-motion: reduce) {
   .omino-node { transition: none; }
+  .omino-rdx__bar i { transition: none; }
   .react-flow__edge.animated path { animation: none; }
 }
 `;
