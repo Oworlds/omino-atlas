@@ -2651,11 +2651,21 @@ ORG_OF.d_tamox = [...ORG_OF.d_tamox, "on"]; ORG_OF.d_colch = ORG_OF.d_colch.filt
 (() => { // placement: hubs in two columns to the right of the atlas; targets on a ring, their drugs just outside it
   const codes = Object.keys(ORGANS);
   const cur = [600, 600]; // next free y in the left / right column; clusters grow with their number of rows
+  // Cluster table: related hubs sit next to each other, top to bottom. Column 0 (inner, nearest the atlas) holds the hubs that connect to
+  // the metabolic core (urea cycle -> liver -> kidney -> crystals, then endocrine and vitamins); column 1 (outer) holds the rest, with
+  // Cardiovascular and Respiratory beside Renal and Immune / Oncology / Anti-infective grouped at the end. `uc` is added to ORGANS after
+  // the main table, so it is listed here explicitly. A hub missing from the table falls back to the old alternating rule (by its index in
+  // ORGANS) and goes below the listed hubs of that column.
+  const HUB_COLS = [["hp", "rn", "uc", "en", "vt"], ["cv", "rs", "sk", "cn", "gi", "im", "on", "ai"]];
+  const slot = {}; // code -> [column, order within the column]
+  HUB_COLS.forEach((col, c) => col.filter((o) => codes.includes(o)).forEach((o, k) => { slot[o] = [c, k]; }));
+  codes.forEach((o, i) => { if (!slot[o]) slot[o] = [i % 2, HUB_COLS[i % 2].length + i]; });
   // cluster sizes first, so large hubs (Oncology, Anti-infective) can be pushed clear of the atlas and of the other column
-  const geo = codes.map((o, i) => {
-    const n = ORGAN_RX.filter((r) => r[0] === o).length, rt = Math.max(560, (o === "vt" ? 56 : 40) * n), rd = rt + 520, ext = rd + 160, c = i % 2, hy = cur[c] + ext;
+  const geo = [];
+  [...codes].sort((a, b) => slot[a][0] - slot[b][0] || slot[a][1] - slot[b][1]).forEach((o) => { // stack each column in table order
+    const i = codes.indexOf(o), n = ORGAN_RX.filter((r) => r[0] === o).length, rt = Math.max(560, (o === "vt" ? 56 : 40) * n), rd = rt + 520, ext = rd + 160, c = slot[o][0], hy = cur[c] + ext;
     cur[c] = hy + ext + 200;
-    return { rt, rd, ext, c, hy, hx: c ? 8000 : Math.max(4800, 3400 + ext) };
+    geo[i] = { rt, rd, ext, c, hy, hx: c ? 8000 : Math.max(4800, 3400 + ext) };
   });
   geo.filter((g) => g.c).forEach((g) => { while (geo.some((h) => !h.c && Math.hypot(g.hx - h.hx, g.hy - h.hy) < g.ext + h.ext + 200)) g.hx += 40; });
   codes.forEach((o, i) => {
@@ -3118,7 +3128,7 @@ function CompoundNode({ data, selected }) {
     <div className={cls} style={{ "--accent": k.color, width: data.w }} title={data.note}>
       {handles}
       <div className="omino-node__art">
-        {drawing ? <img src={drawing.src} alt={data.label} draggable={false} /> : data.mol ? <Skeletal mol={MOLS[data.mol]} canvas /> : <AtomTile glyph={data.glyph} color={k.color} />}
+        {drawing ? <img src={drawing.src} alt={data.label} draggable={false} /> : data.mol ? <Skeletal mol={MOLS[data.mol]} canvas hit={false} /> : <AtomTile glyph={data.glyph} color={k.color} />}
       </div>
       <div className="omino-node__name">{data.label}</div>
       {data.kind !== "molecule" && <div className="omino-node__formula">{data.formula}</div>}
@@ -3232,7 +3242,7 @@ function RxNode({ data, selected }) {
     <div className={cls} style={{ "--accent": k.color, width: data.w }} title={data.note}>
       {hs}
       <div className="omino-rx__tag"><Icon d={RX_GLYPH[data.kind]} size={13} />{k.label}</div>
-      {m && <div className="omino-rx__art"><Skeletal mol={m} canvas /></div>}
+      {m && <div className="omino-rx__art"><Skeletal mol={m} canvas hit={false} /></div>}
       <div className="omino-rx__name">{data.label}</div>
       {data.formula && <div className="omino-rx__sub">{data.formula}</div>}
       {data.shown && <div className="omino-rx__shown">Structure shown: {data.shown}</div>}
@@ -3274,6 +3284,7 @@ const ICON = {
   pan: "M12 3v18M3 12h18M12 3l-3 3M12 3l3 3M12 21l-3-3M12 21l3-3M3 12l3-3M3 12l3 3M21 12l-3-3M21 12l-3 3",
   eyeOff: "M3 3l18 18M10.6 6.1A9.8 9.8 0 0 1 12 6c5 0 8.5 4 9.5 6a14 14 0 0 1-2.6 3.3M6.6 6.7A14 14 0 0 0 2.5 12c1 2 4.5 6 9.5 6 1.5 0 2.8-.4 4-.9M9.9 10a3 3 0 0 0 4.1 4.1",
   eye: "M2.5 12c1-2 4.5-6 9.5-6s8.5 4 9.5 6c-1 2-4.5 6-9.5 6s-8.5-4-9.5-6zM12 9a3 3 0 1 0 0 6 3 3 0 0 0 0-6z",
+  nav: "M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zM15.5 8.5l-2 5-5 2 2-5z",
   fit: "M3 9h6V3M21 9h-6V3M3 15h6v6M21 15h-6v6",
   lock: "M5 11h14v10H5zM8 11V7a4 4 0 0 1 8 0v4",
   download: "M12 3v12m0 0l-4-4m4 4l4-4M4 19h16",
@@ -4442,6 +4453,7 @@ function Atlas() {
   const [rdxPlay, setRdxPlay] = useState(false);
   const rdxLit = useMemo(() => (rdx == null ? null : RDX_LIT(rdx)), [rdx]); // canvas objects on the route so far
   const [stOpen, setStOpen] = useState(false); // settings panel
+  const [navOn, setNavOn] = useState(false); // navigation add-ons (tool column, minimap, legend, filter chips): the canvas opens clear and the round compass button in the top bar engages them
   const [showMini, setShowMini] = useState(true); // overview (minimap)
   const [showPaths, setShowPaths] = useState(true); // pathway chip bar
   const [showRx, setShowRx] = useState(true); // pharmacology layer (drugs, targets, effect lines)
@@ -4594,8 +4606,11 @@ function Atlas() {
   );
 
   const shownEdges = useMemo(
-    () =>
-      edges.map((e) => {
+    () => {
+      // Every line and arrowhead rests dimmed; hovering or picking a line lifts it to full strength, and while a search, pathway, location or organ
+      // filter (or Follow e⁻ and H) is on, the lines that match stay at full strength against the faded rest.
+      const REST = 0.4, filtering = !!(matchIds || focus || locFocus || organFocus || rdxLit);
+      return edges.map((e) => {
         const faded =
           (matchIds && !edgeHits.has(e.id) && !(matchIds.has(e.source) && matchIds.has(e.target))) || (focus && e.data.path !== focus) || (locFocus && !(hasLoc(e.source, locFocus) && hasLoc(e.target, locFocus))) || (organFocus && !(ORGAN_SET[organFocus].has(e.source) && ORGAN_SET[organFocus].has(e.target))) || (rdxLit && !rdxLit.edges.has(e.id));
         const main = e.data.main;
@@ -4610,7 +4625,7 @@ function Atlas() {
             selectable: fx !== "organ", focusable: fx !== "organ", className: fx === "organ" ? "is-organline" : undefined, // lines to the organ cards cannot be selected
             animated: false,
             markerEnd: fx === "tether" || fx === "organ" || fx === "inhibit" ? undefined : { type: MarkerType.ArrowClosed, color: fxc, width: 16, height: 16 },
-            style: { stroke: fxc, strokeWidth: fx === "tether" || fx === "organ" ? 1.6 : 2.4, strokeDasharray: fx === "inhibit" || fx === "activate" ? "7 6" : fx === "tether" ? "2 5" : undefined, opacity: faded ? 0.12 : 1 },
+            style: { stroke: fxc, strokeWidth: fx === "tether" || fx === "organ" ? 1.6 : 2.4, strokeDasharray: fx === "inhibit" || fx === "activate" ? "7 6" : fx === "tether" ? "2 5" : undefined, opacity: faded ? 0.12 : filtering ? 1 : REST },
             data: { ...e.data, faded, fxColor: fxc, hideLabel: false },
           };
         }
@@ -4618,10 +4633,11 @@ function Atlas() {
           ...e,
           animated: false,
           markerEnd: { type: MarkerType.ArrowClosed, color: stroke, width: 16, height: 16 },
-          style: { stroke, strokeWidth: main ? 2.4 : 1.7, strokeDasharray: main ? undefined : "5 5", opacity: faded ? 0.12 : 1 },
+          style: { stroke, strokeWidth: main ? 2.4 : 1.7, strokeDasharray: main ? undefined : "5 5", opacity: faded ? 0.12 : filtering ? 1 : REST },
           data: { ...e.data, faded, color, hideLabel: hideG },
         };
-      }),
+      });
+    },
     [edges, matchIds, edgeHits, focus, hideG, showRx, showOrgans, locFocus, organFocus, rdxLit]
   );
 
@@ -4879,7 +4895,7 @@ function Atlas() {
 
   const resetSettings = () => { // every switch and choice in the settings panel back to how Omino first opens
     setHideG(false); setHideS(false); setShowRx(true); setShowKey(true); setShowLoc(true); setShowOrgans(true);
-    setShowPaths(true); setShowMini(true); setScrollPans(false);
+    setShowPaths(true); setShowMini(true); setNavOn(false); setScrollPans(false);
   };
 
   return (
@@ -4894,6 +4910,9 @@ function Atlas() {
           {!wide && (
             <button className="omino-round omino-round--ghost" onClick={() => setSearchOpen((o) => !o)} aria-expanded={searchOpen} aria-label="Search" title="Search"><SearchGlyph size={15} /></button>
           )}
+          <button className={`omino-round ${navOn ? "is-on" : ""}`} onClick={() => setNavOn((v) => !v)} aria-pressed={navOn} aria-label="Navigation tools" title={navOn ? "Clear the canvas (hide navigation tools)" : "Show navigation tools"}>
+            <Icon d={ICON.nav} />{navOn && <i />}
+          </button>
           <button className={`omino-round ${ptOpen ? "is-on" : ""}`} onClick={() => setPtOpen((v) => !v)} aria-pressed={ptOpen} aria-label="Periodic table" title="Periodic table">
             <Icon d={ICON.table} />{ptOpen && <i />}
           </button>
@@ -4905,6 +4924,7 @@ function Atlas() {
             <div className="omino-settings" role="dialog" aria-label="Settings">
               <h4>Settings</h4>
               {[
+                ["Navigation tools", "Zoom and filter tools, minimap and legend over the canvas", navOn, () => setNavOn((v) => !v)],
                 ["Enzyme labels", "Names on the reaction arrows (G)", !hideG, () => setHideG((v) => !v)],
                 ["Substrates", "Co-substrates beside each molecule (S)", !hideS, () => setHideS((v) => !v)],
                 ["Pharmacology", "Drugs, their targets and effects", showRx, toggleRx],
@@ -4975,11 +4995,11 @@ function Atlas() {
           proOptions={{ hideAttribution: true }}
         >
           <Background variant={BackgroundVariant.Dots} gap={28} size={1.4} color="#27272A" />
-          {showKey && wide && <Panel position="bottom-left"><FxLegend onHide={() => setShowKey(false)} /></Panel>}
-          {showMini && <MiniMap pannable zoomable maskColor="rgba(0,0,0,0.75)" nodeColor={(n) => PATHWAYS[n.data.path]?.color || KIND[n.data.kind].color} nodeStrokeWidth={0} />}
-          {showMini && <Panel position="bottom-right" className="omino-minix-panel"><button className="omino-fxlegend__x omino-minix" onClick={() => setShowMini(false)} aria-label="Hide overview" title="Hide overview (turn back on in Settings)">×</button></Panel>}
+          {navOn && showKey && wide && <Panel position="bottom-left"><FxLegend onHide={() => setShowKey(false)} /></Panel>}
+          {navOn && showMini && <MiniMap pannable zoomable maskColor="rgba(0,0,0,0.75)" nodeColor={(n) => PATHWAYS[n.data.path]?.color || KIND[n.data.kind].color} nodeStrokeWidth={0} />}
+          {navOn && showMini && <Panel position="bottom-right" className="omino-minix-panel"><button className="omino-fxlegend__x omino-minix" onClick={() => setShowMini(false)} aria-label="Hide overview" title="Hide overview (turn back on in Settings)">×</button></Panel>}
 
-          <Panel position="top-left">
+          {navOn && <Panel position="top-left">
             <div className="omino-tools">
               <button className="omino-tool" onClick={() => zoomIn({ duration: 200 })} aria-label="Zoom in" title="Zoom in"><Icon d={ICON.zoomIn} /></button>
               <button
@@ -5017,14 +5037,14 @@ function Atlas() {
                 <Icon d={scrollPans ? ICON.pan : ICON.zoomIn} />
               </button>
             </div>
-          </Panel>
+          </Panel>}
 
           {track && (() => {
             const inE = edgeById[track.inn], outE = edgeById[track.out], ins = adj.inn[track.at] || [], outs = adj.out[track.at] || [];
             return <FollowCard at={track.at} inE={inE} outE={outE} nIn={ins.length} nOut={outs.length} iIn={Math.max(0, ins.findIndex((x) => x.id === track.inn))} iOut={Math.max(0, outs.findIndex((x) => x.id === track.out))}
               onBack={() => hop(inE, "in")} onFollow={() => hop(outE, "out")} onCycleIn={() => cycle("in")} onCycleOut={() => cycle("out")} onClose={() => setTrack(null)} open={open} />;
           })()}
-          {showChips && <Panel position="bottom-center"><div className="omino-chiprows">
+          {navOn && showChips && <Panel position="bottom-center"><div className="omino-chiprows">
             {showLoc && <div className="omino-chips nowheel nopan" onWheel={chipWheel}>
               {Object.entries(LOCS).map(([id, l]) => <button key={id} className={`omino-chip omino-chip--loc ${locFocus === id ? "is-on" : ""}`} style={{ "--c": l.color }} onClick={() => selectLoc(id)} aria-pressed={locFocus === id}><i />{l.label}</button>)}
             </div>}
