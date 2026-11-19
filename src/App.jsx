@@ -1,3 +1,19 @@
+// v7.19: β-oxidation part 7: a Peroxisome entry in the location filter (very-long-chain and branched-chain oxidation and the ACOX1 target); carnitine is placed in the cytosol and the CPT2 target in mitochondria; Pharmacology-layer targets for propionyl-CoA carboxylase, methylmalonyl-CoA mutase and ACOX1. Catalase for the peroxisomal H₂O₂ is still only described on the ACOX1 card.
+// v7.18: β-oxidation part 6: carnitine uptake (OCTN2, primary carnitine deficiency) drawn as a new carnitine node feeding CPT1; the mitochondrial trifunctional protein (HADHA/HADHB) shown as a chip beside the long-chain hydratase, hydroxyacyl dehydrogenase and thiolase steps; hypoglycin (Jamaican vomiting sickness) on the acyl-CoA dehydrogenase card; and a dashed line from the FADH₂ chip to coenzyme Q (via ETF and ETF-QO). Catalase for the peroxisomal H₂O₂ is described on the ACOX1 card but not drawn.
+// v7.17: β-oxidation part 5: peroxisomal oxidation. Very-long-chain fatty acids (ABCD1 import, acyl-CoA oxidase ACOX1 making H₂O₂, D-bifunctional protein, peroxisomal thiolase) are shortened and sent on to the mitochondrial pathway; phytanic acid (Refsum disease) goes through α-oxidation to pristanoyl-CoA and joins the same spiral. Structures, chips, cards and route lighting added. Not done: a Peroxisome entry in the location filter.
+// v7.16: β-oxidation part 4: unsaturated fatty acids. A cis-Δ3 double bond is moved by enoyl-CoA isomerase to the trans-Δ2 enoyl-CoA the spiral expects; an even-numbered (Δ4) double bond gives a 2,4-dienoyl-CoA that 2,4-dienoyl-CoA reductase (NADPH) turns into trans-Δ3-enoyl-CoA, which the same isomerase then fixes. Structures, cards, chip and route lighting added; the FAD cofactor card now links to the matrix acyl-CoA. Still to do: peroxisomal and very-long-chain oxidation, remaining deficiencies.
+// v7.15: β-oxidation part 3: odd-chain route. The last thiolase turn of an odd-chain fatty acid releases propionyl-CoA, which is carboxylated (propionyl-CoA carboxylase, biotin, ATP) to D-methylmalonyl-CoA, epimerised to the L form and rearranged by methylmalonyl-CoA mutase (adenosylcobalamin, B₁₂) to succinyl-CoA in the TCA cycle. Dashed lines bring in valine, isoleucine, methionine and threonine, which also make propionyl-CoA. Cards, deficiencies (propionic acidaemia, methylmalonic acidaemia, B₁₂) and route lighting added; the biotin and B₁₂ vitamin cards now point to these steps. Still to do: unsaturated and peroxisomal variants, remaining deficiencies, ETF link.
+// v7.14: β-oxidation part 2: the carnitine shuttle. Cytosolic fatty acyl-CoA → acylcarnitine (CPT1, outer membrane, inhibited by malonyl-CoA, drawn as a dashed line) → matrix fatty acyl-CoA (translocase CACT, then CPT2), which is where the spiral now starts and ends. Cards for CPT1, CACT/CPT2 and the shuttle molecules, a CPT2 Pharmacology target, and the shuttle is part of the route lit by β-oxidation. Still to do: odd-chain, unsaturated and peroxisomal variants, more deficiencies, AMPK and feedback regulation.
+// v7.13: β-oxidation part 1: the one summary arrow is replaced by the four-step spiral (acyl-CoA dehydrogenase → trans-Δ2-enoyl-CoA, enoyl-CoA hydratase → L-3-hydroxyacyl-CoA, 3-hydroxyacyl-CoA dehydrogenase → 3-ketoacyl-CoA, thiolase → acyl-CoA two carbons shorter + acetyl-CoA) with structures, FADH₂, NADH, H₂O and CoA chips, cards, title and route lighting. Still to do: carnitine shuttle (CPT1, CACT, CPT2), odd-chain, unsaturated and very-long-chain / peroxisomal variants, MCAD and other deficiencies, regulation, Pharmacology links (see the end of the reply).
+// v7.12: Glycogenolysis part 1: new pathway (fuchsia) with its own colour, legend chip and title. Glycogen phosphorylase (glycogen + Pᵢ → G1P) is recoloured into it, a new debranching-enzyme line runs glycogen → free glucose, and chips show Pᵢ and H₂O. Phosphoglucomutase (G1P → G6P) and glucose 6-phosphatase (G6P → glucose) are shared and listed in GL_EDGES. Part 2: pathway card (net equation, branch handling, hormonal control, liver vs muscle, glycogen storage diseases), enzyme cards (phosphorylase, debranching enzyme, phosphoglucomutase) and richer glycogen and G1P cards; choosing Glycogenolysis (legend chip, pathway card or search) now lights glycogen → G1P → G6P → glucose and everything else dims. Part 3: glycogen phosphorylase and the debranching enzyme are now Pharmacology-layer targets with their own clickable cards. Part 4: lysosomal route for Pompe disease drawn (glycogen → glycogen in lysosome → glucose by acid α-glucosidase), with its own enzyme card and Pharmacology target; it lights with Glycogenolysis.
+// v7.11: the way back up is drawn parallel to glycolysis: every reversible step has an amber line 55 px to the left of its glycolysis line running the other way (pep to glucose), with the two bypass enzymes labelled on it. The pyruvate carboxylase and PEPCK lines still loop out to the left through the mitochondrial oxaloacetate.
+// v7.10: searching for Gluconeogenesis now frames and lights the same route as its legend chip.
+// v7.9: Gluconeogenesis part 5: choosing Gluconeogenesis (legend chip or pathway card) now lights the whole route, including the shared glycolysis molecules and lines it runs backwards through, the entry molecules (lactate, glycerol, alanine, glutamate, aspartate, malate) and the bypass chips; everything else dims. The pathway card lists the same molecules.
+// v7.8: Gluconeogenesis part 4: the four bypass enzymes (pyruvate carboxylase, PEPCK, FBPase-1, glucose 6-phosphatase) are now Pharmacology-layer targets, so they get their own clickable cards beside the molecules they act on. Not done: a Follow route (the e⁻/H route is built for one glucose being oxidised, with fixed stages and totals).
+// v7.7: Gluconeogenesis part 3: mitochondria-to-cytosol shuttle (malate export, two PEPCK isoforms) in the enzyme and molecule cards, hormonal control and the Cori and glucose-alanine cycles on the pathway card, net equation, and cards for lactate, glycerol and malate.
+// v7.6: Gluconeogenesis part 2: co-substrate chips on the four bypass lines (ATP + HCO₃⁻ → ADP + Pᵢ; GTP → GDP + CO₂; H₂O → Pᵢ twice) and the return lines lactate, alanine, glycerol-3-P, glutamate and aspartate back into pyruvate, DHAP, α-KG and oxaloacetate; alcohol and metformin note on the pathway card.
+// v7.5: Gluconeogenesis pathway (amber). The four steps that bypass glycolysis are drawn as their own lines: pyruvate carboxylase (pyruvate to oxaloacetate), PEP carboxykinase (oxaloacetate to PEP), fructose 1,6-bisphosphatase (FBP to F6P) and glucose 6-phosphatase (G6P to glucose). The seven reversible glycolytic steps are shared and keep the glycolysis lines. Pathway card, enzyme cards and title added.
+// v7.3: Purine synthesis pathway (PRPP to IMP in ten steps, then the AMP and GMP branches) with skeletal structures, enzymes, co-substrates, clinical notes and a tether from PPAT; hubs placed by an explicit cluster table (hp, rn, uc, en, vt inner; cv, rs, sk, cn, gi, im, on, ai outer).
 // v6.9: "Follow e⁻ and H" (round button in the top bar): one glucose followed step by step through glycolysis, pyruvate dehydrogenase, the TCA cycle, the electron transport chain and ATP synthase to O₂ and water. Each of the 24 steps is a balanced equation (hydrogen and charge are checked when the page loads), the route lights up on the canvas, and two running inventories show where the 24 electrons and the 12 hydrogens are after every step (the hydrogen total is always 12).
 // v6.4: Follow / Back / next-previous ignore the lines that lead to an organ-system (hub) card.
 // v6.3: Urinary crystals hub (13 crystals of urine sediment: calcium oxalate, uric acid, amorphous urates, ammonium biurate, struvite, calcium phosphate, cystine, cholesterol, bilirubin, leucine, tyrosine, sulfadiazine, acyclovir). Each node and card shows the compound's skeletal structure, the crystal habits under the microscope, urine pH, causes, stone data and treatment; thiazides, xanthine oxidase inhibitors, carbonic anhydrase and vitamins C and D are linked in, and crystal names and habits ('coffin lid', 'envelope', 'thorny apple') are searchable.
@@ -218,6 +234,9 @@ const MOLS = {
     ] },
   fa: { name: "Fatty acid", ...zig(6, [[5, "COO"]]) },
   facyl: { name: "Fatty acyl-CoA", ...zig(5, [[4, "SCoA"]]) },
+  enoyl: { name: "trans-Δ2-Enoyl-CoA", ...zig(5, [[4, "SCoA"]], 26, [3]) },
+  hacyl: { name: "L-3-Hydroxyacyl-CoA", ...zig(5, [[4, "SCoA"], [2, "OH"]]) },
+  kacyl: { name: "3-Ketoacyl-CoA", ...zig(5, [[4, "SCoA"], [2, "=O"]]) },
   malonyl: { name: "Malonyl-CoA", ...zig(3, [[0, "COOL"], [2, "SCoA"]]) },
   acac: { name: "Acetoacetate", ...zig(4, [[1, "=O"], [3, "COO"]]) },
   pg3: { name: "3-Phosphoglycerate", ...zig(3, [[0, "OP"], [1, "OH"], [2, "COO"]]) },
@@ -485,6 +504,151 @@ MOLS.adp = nucleotide("ADP", "A", 2);
 MOLS.gtp = nucleotide("GTP", "G", 3);
 MOLS.udp = nucleotide("UDP", "U", 2);
 MOLS.utp = nucleotide("UTP", "U", 3);
+
+/* ---- purine synthesis: 5-phosphoribosyl intermediates and the purine nucleotides, all drawn in the ATP ribose frame ---- */
+// ribose 5-phosphate (C1′ at the top left, 5′-phosphate at the right) plus whatever `build` hangs on C1′; the first atom off C1′ sits at [54.5, 24.3], where N9 is in ATP
+function ribotide(name, build, keepBase = []) {
+  const keep = new Set(["C1p", "C2p", "C3p", "C4p", "O4p", "O2p", "O3p", "C5p", "O5p", ...keepBase]), t = tail(1);
+  const atoms = [...MOLS.atp.atoms.filter((a) => keep.has(a.id)).map((a) => ({ ...a })), ...t.at];
+  const bonds = [...MOLS.atp.bonds.filter((b) => keep.has(b[0]) && keep.has(b[1])).map((b) => [...b]), ...t.bd];
+  build(atoms, bonds);
+  return { ...(name ? { name } : {}), scale: 0.8, atoms, bonds };
+}
+// open-chain tail off C1′ that runs left in a zigzag: N–C(=X)–CH2–NH(–CHO) as in GAR, FGAR and FGAM
+const glycinamide = (atoms, bonds, { formyl, amidine }) => {
+  atoms.push(A("Na", [54.5, 24.3], "NH", "N"), C("Cc", [28.5, 9.3]), amidine ? A("Oc", [28.5, -20.7], "NH", "N") : A("Oc", [28.5, -20.7], "O", "O"), C("Ck", [2.5, 24.3]));
+  bonds.push(["C1p", "Na"], ["Na", "Cc"], ["Cc", "Oc", 2], ["Cc", "Ck"]);
+  if (formyl) { atoms.push(A("Ng", [-23.5, 9.3], "NH", "N"), C("Cf", [-49.5, 24.3]), A("Of", [-49.5, 54.3], "O", "O")); bonds.push(["Ck", "Ng"], ["Ng", "Cf"], ["Cf", "Of", 2]); }
+  else { atoms.push(A("Ng", [-23.5, 9.3], "H2N", "N", { align: "end" })); bonds.push(["Ck", "Ng"]); }
+};
+// 5-aminoimidazole ring (the imidazole half of the purine drawing), N1 on C1′; ring double bonds C4=C5 and N3=C2
+const imidazole = (b4) => (atoms, bonds) => {
+  const keep = new Set(["C4", "C5", "N7", "C8", "N9"]);
+  atoms.push(...MOLS.atp.atoms.filter((a) => keep.has(a.id)).map((a) => ({ ...a })));
+  bonds.push(...MOLS.atp.bonds.filter((b) => keep.has(b[0]) && keep.has(b[1])).map((b) => (b[0] === "C4" && b[1] === "C5" ? ["C4", "C5", 2, [46.6, 0]] : [...b])), ["N9", "C1p"]);
+  b4(atoms, bonds);
+};
+const amino5 = (atoms, bonds) => { atoms.push(A("Nam", [0, 30], "H2N", "N", { align: "end" })); bonds.push(["C4", "Nam"]); };
+const amideOn5 = (atoms, bonds, N) => { // C(=O)–N… hanging off C5 of the ring
+  atoms.push(C("Cq", [0, -30]), A("Oq", [0, -60], "O", "O"), N);
+  bonds.push(["C5", "Cq"], ["Cq", "Oq", 2], ["Cq", N.id]);
+};
+// purine nucleotide on the adenosine frame, with a 5′-monophosphate; `edit` turns adenine into the other base
+function purineP(name, edit) {
+  const b = nucleoside("A"), t = tail(1), atoms = [...b.atoms, ...t.at], bonds = [...b.bonds, ...t.bd];
+  edit(atoms, bonds);
+  return { ...(name ? { name } : {}), scale: 0.8, atoms, bonds };
+}
+const hypoxanthine = (atoms, bonds) => { // C6=O, N1–H
+  atoms.forEach((a, i) => { if (a.id === "NH2") atoms[i] = A("O6", [a.x, a.y], "O", "O"); if (a.id === "N1") atoms[i] = A("N1", [a.x, a.y], "NH", "N"); });
+  bonds.forEach((b, i) => { if (b[0] === "C6" && b[1] === "N1") bonds[i] = ["C6", "N1"]; if (b[0] === "C6" && b[1] === "NH2") bonds[i] = ["C6", "O6", 2]; });
+};
+Object.assign(MOLS, {
+  prpp: { name: "5-Phosphoribosyl 1-pyrophosphate (PRPP)", ...ribotide("", (atoms, bonds) => {
+    atoms.push(A("O1", [54.5, 24.3], "O", "O"),
+      A("Qp", [28.5, 9.3], "P", "P"), A("Qd", [28.5, -20.7], "O", "O"), A("Qm", [28.5, 39.3], "O", "O", { q: "−" }), A("Qb", [2.5, 24.3], "O", "O"),
+      A("Rp", [-23.5, 9.3], "P", "P"), A("Rd", [-23.5, -20.7], "O", "O"), A("Rm", [-23.5, 39.3], "O", "O", { q: "−" }), A("Rt", [-49.5, 24.3], "O", "O", { q: "−" }));
+    bonds.push(["C1p", "O1"], ["O1", "Qp"], ["Qp", "Qd", 2], ["Qp", "Qm"], ["Qp", "Qb"], ["Qb", "Rp"], ["Rp", "Rd", 2], ["Rp", "Rm"], ["Rp", "Rt"]);
+  }) },
+  pra: { name: "5-Phosphoribosylamine (PRA)", ...ribotide("", (atoms, bonds) => { atoms.push(A("Nr", [54.5, 24.3], "H2N", "N", { align: "end" })); bonds.push(["C1p", "Nr"]); }) },
+  gar: { name: "Glycinamide ribonucleotide (GAR)", ...ribotide("", (a, b) => glycinamide(a, b, {})) },
+  fgar: { name: "Formylglycinamide ribonucleotide (FGAR)", ...ribotide("", (a, b) => glycinamide(a, b, { formyl: true })) },
+  fgam: { name: "Formylglycinamidine ribonucleotide (FGAM)", ...ribotide("", (a, b) => glycinamide(a, b, { formyl: true, amidine: true })) },
+  air: { name: "5-Aminoimidazole ribonucleotide (AIR)", ...ribotide("", imidazole(amino5)) },
+  cair: { name: "Carboxyaminoimidazole ribonucleotide (CAIR)", ...ribotide("", imidazole((atoms, bonds) => {
+    amino5(atoms, bonds);
+    atoms.push(C("Cq", [0, -30]), A("Oq", [0, -60], "O", "O"), A("Om", [-26, -15], "O", "O", { q: "−" }));
+    bonds.push(["C5", "Cq"], ["Cq", "Oq", 2], ["Cq", "Om"]);
+  })) },
+  saicar: { name: "SAICAR (succinylaminoimidazole carboxamide ribonucleotide)", ...ribotide("", imidazole((atoms, bonds) => {
+    amino5(atoms, bonds);
+    amideOn5(atoms, bonds, A("Nq", [-26, -15], "NH", "N"));
+    atoms.push(C("Ca", [-52, -30]), C("Cb", [-52, -60]), A("Ob", [-52, -90], "O", "O"), A("Obm", [-78, -45], "O", "O", { q: "−" }),
+      C("Cg", [-78, -15]), C("Cd", [-104, -30]), A("Od", [-104, -60], "O", "O"), A("Odm", [-130, -15], "O", "O", { q: "−" }));
+    bonds.push(["Nq", "Ca"], ["Ca", "Cb"], ["Cb", "Ob", 2], ["Cb", "Obm"], ["Ca", "Cg"], ["Cg", "Cd"], ["Cd", "Od", 2], ["Cd", "Odm"]);
+  })) },
+  aicar: { name: "AICAR (aminoimidazole carboxamide ribonucleotide)", ...ribotide("", imidazole((atoms, bonds) => { amino5(atoms, bonds); amideOn5(atoms, bonds, A("Nq", [-26, -15], "H2N", "N", { align: "end" })); })) },
+  faicar: { name: "FAICAR (formamidoimidazole carboxamide ribonucleotide)", ...ribotide("", imidazole((atoms, bonds) => {
+    atoms.push(A("Nam", [0, 30], "NH", "N"), C("Cf", [-26, 45]), A("Of", [-26, 75], "O", "O"));
+    bonds.push(["C4", "Nam"], ["Nam", "Cf"], ["Cf", "Of", 2]);
+    amideOn5(atoms, bonds, A("Nq", [-26, -15], "H2N", "N", { align: "end" }));
+  })) },
+  imp: { name: "Inosine monophosphate (IMP)", ...purineP("", hypoxanthine) },
+  xmp: { name: "Xanthosine monophosphate (XMP)", ...purineP("", (atoms, bonds) => {
+    hypoxanthine(atoms, bonds);
+    atoms.forEach((a, i) => { if (a.id === "N3") atoms[i] = A("N3", [a.x, a.y], "NH", "N"); });
+    bonds.forEach((b, i) => { if (b[0] === "C2" && b[1] === "N3") bonds[i] = ["C2", "N3"]; });
+    atoms.push(A("O2x", [-52, 30], "O", "O")); bonds.push(["C2", "O2x", 2]);
+  }) },
+  gmp: nucleotide("GMP", "G", 1),
+  amp_n: { ...MOLS.amp }, gmp_n: nucleotide("GMP", "G", 1), // the AMP and GMP end nodes of the pathway reuse these drawings under their own ids
+  sucamp: { name: "Adenylosuccinate", ...purineP("", (atoms, bonds) => { // AMP with its 6-amino group carrying a succinyl group
+    atoms.forEach((a, i) => { if (a.id === "NH2") atoms[i] = A("NH2", [a.x, a.y], "NH", "N"); });
+    atoms.push(C("Sa", [-26, -75]), C("Sb", [-26, -105]), A("Sbo", [-26, -135], "O", "O"), A("Sbm", [0, -120], "O", "O", { q: "−" }),
+      C("Sg", [-52, -60]), C("Sd", [-78, -75]), A("Sdo", [-78, -105], "O", "O"), A("Sdm", [-104, -60], "O", "O", { q: "−" }));
+    bonds.push(["NH2", "Sa"], ["Sa", "Sb"], ["Sb", "Sbo", 2], ["Sb", "Sbm"], ["Sa", "Sg"], ["Sg", "Sd"], ["Sd", "Sdo", 2], ["Sd", "Sdm"]);
+  }) },
+});
+
+/* ---- pyrimidine synthesis & salvage: ring and open-chain intermediates, uracil / cytosine / thymine nucleotides, nucleosides and bases ---- */
+// nucleotide or nucleoside on the uridine frame: n phosphates on O5′ (0 = free 5′-OH), uracil, cytosine or thymine, ribose or 2′-deoxyribose
+function pyrNt(name, { base = "U", deoxy = false, n = 1 }) {
+  const b = nucleoside("U");
+  let atoms = b.atoms.map((a) => ({ ...a })), bonds = b.bonds.map((x) => [...x]);
+  if (deoxy) { atoms = atoms.filter((a) => a.id !== "O2p"); bonds = bonds.filter((x) => x[0] !== "O2p" && x[1] !== "O2p"); }
+  if (n) { const t = tail(n); atoms.push(...t.at); bonds.push(...t.bd); }
+  else atoms = atoms.map((a) => (a.id === "O5p" ? A("O5p", [a.x, a.y], "OH", "O", { align: "start" }) : a));
+  if (base === "C") { // 4-oxo becomes 4-amino and N3=C4
+    atoms = atoms.filter((a) => a.id !== "O4").map((a) => (a.id === "N3" ? A("N3", [a.x, a.y], "N", "N") : a));
+    atoms.push(A("N4", [58, -66], "NH2", "N"));
+    bonds = bonds.filter((x) => !(x[0] === "C4" && x[1] === "O4")).map((x) => (x[0] === "N3" && x[1] === "C4" ? ["N3", "C4", 2, [58, -6]] : x));
+    bonds.push(["C4", "N4"]);
+  }
+  if (base === "T") { atoms.push(C("Me", [110, -36])); bonds.push(["C5", "Me"]); }
+  return { ...(name ? { name } : {}), scale: 0.8, atoms, bonds };
+}
+// free pyrimidine ring, pointy-top hexagon: N1 upper left, C6 top; dbl = C5=C6, coo = carboxylate on C6 (orotate), me = methyl on C5 (thymine)
+function pyrBase({ dbl = true, coo = false, me = false }) {
+  const atoms = [A("N1", [-26, -15], "NH", "N"), C("C2", [-26, 15]), A("N3", [0, 30], "NH", "N"), C("C4", [26, 15]), C("C5", [26, -15]), C("C6", [0, -30]), A("O2", [-52, 30], "O", "O"), A("O4", [52, 30], "O", "O")];
+  const bonds = [["N1", "C2"], ["C2", "N3"], ["N3", "C4"], ["C4", "C5"], ["C6", "N1"], ["C2", "O2", 2], ["C4", "O4", 2], dbl ? ["C5", "C6", 2, [0, 0]] : ["C5", "C6"]];
+  if (coo) { atoms.push(C("Cq", [0, -60]), A("Oq", [-26, -75], "O", "O"), A("Om", [26, -75], "O", "O", { q: "−" })); bonds.push(["C6", "Cq"], ["Cq", "Oq", 2], ["Cq", "Om"]); }
+  if (me) { atoms.push(C("Me", [52, -30])); bonds.push(["C5", "Me"]); }
+  return { atoms, bonds };
+}
+// OMP: orotate on C1′ of ribose 5-phosphate. The ring is tilted so that the C6 carboxylate clears the sugar.
+function orotidylate() {
+  const t = tail(1), keep = new Set(["C1p", "C2p", "C3p", "C4p", "O4p", "O2p", "O3p", "C5p", "O5p"]);
+  const atoms = [...MOLS.atp.atoms.filter((a) => keep.has(a.id)).map((a) => ({ ...a })), ...t.at];
+  const bonds = [...MOLS.atp.bonds.filter((b) => keep.has(b[0]) && keep.has(b[1])).map((b) => [...b]), ...t.bd];
+  const cx = 45.2, cy = -4.2, at = (deg, r = 30, [ox, oy] = [cx, cy]) => [Math.round((ox + r * Math.cos((deg * Math.PI) / 180)) * 10) / 10, Math.round((oy + r * Math.sin((deg * Math.PI) / 180)) * 10) / 10];
+  const q = at(11.9, 60);
+  atoms.push(A("N1", at(71.9), "N", "N"), C("C2", at(131.9)), A("N3", at(-168.1), "NH", "N"), C("C4", at(-108.1)), C("C5", at(-48.1)), C("C6", at(11.9)),
+    A("O2", at(131.9, 60), "O", "O"), A("O4", at(-108.1, 60), "O", "O"), C("Cq", q), A("Oq", at(-48.1, 30, q), "O", "O"), A("Om", at(11.9, 30, q), "O", "O", { q: "−" }));
+  bonds.push(["C1p", "N1"], ["N1", "C2"], ["C2", "O2", 2], ["C2", "N3"], ["N3", "C4"], ["C4", "O4", 2], ["C4", "C5"], ["C5", "C6", 2, [cx, cy]], ["C6", "N1"], ["C6", "Cq"], ["Cq", "Oq", 2], ["Cq", "Om"]);
+  return { atoms, bonds };
+}
+Object.assign(MOLS, {
+  carbasp: { name: "N-Carbamoylaspartate", scale: 0.8, atoms: [
+    A("Nu", [0, 15], "H2N", "N", { align: "end" }), C("Cu", [26, 0]), A("Ou", [26, -30], "O", "O"), A("Nh", [52, 15], "NH", "N"), C("Ca", [78, 0]),
+    C("Cb", [78, -30]), A("Ob", [78, -60], "O", "O"), A("Obm", [104, -45], "O", "O", { q: "−" }), C("Cg", [104, 15]), C("Cd", [130, 0]), A("Od", [130, -30], "O", "O"), A("Odm", [156, 15], "O", "O", { q: "−" })],
+    bonds: [["Nu", "Cu"], ["Cu", "Ou", 2], ["Cu", "Nh"], ["Nh", "Ca"], ["Ca", "Cb"], ["Cb", "Ob", 2], ["Cb", "Obm"], ["Ca", "Cg"], ["Cg", "Cd"], ["Cd", "Od", 2], ["Cd", "Odm"]] },
+  dhoa: { name: "Dihydroorotate", scale: 0.8, ...pyrBase({ dbl: false, coo: true }) },
+  orotate: { name: "Orotate", scale: 0.8, ...pyrBase({ coo: true }) },
+  omp: { name: "Orotidine 5′-monophosphate (OMP)", scale: 0.8, ...orotidylate() },
+  ump: pyrNt("UMP", { n: 1 }),
+  udp_n: { ...MOLS.udp }, utp_n: { ...MOLS.utp }, // the UDP and UTP nodes of the pathway reuse these drawings under their own ids
+  ctp: pyrNt("CTP", { base: "C", n: 3 }),
+  dudp: pyrNt("dUDP", { deoxy: true, n: 2 }),
+  dump: pyrNt("dUMP", { deoxy: true, n: 1 }),
+  dtmp: pyrNt("dTMP", { base: "T", deoxy: true, n: 1 }),
+  uridine: pyrNt("Uridine", { n: 0 }),
+  cytidine: pyrNt("Cytidine", { base: "C", n: 0 }),
+  thymidine: pyrNt("Thymidine", { base: "T", deoxy: true, n: 0 }),
+  uracil: { name: "Uracil", scale: 0.8, ...pyrBase({}) },
+  thymine: { name: "Thymine", scale: 0.8, ...pyrBase({ me: true }) },
+  bala: { name: "β-Alanine", ...zig(3, [[0, "NH3"], [2, "COO"]]) },
+  baib: (() => { const m = zig(3, [[0, "NH3"], [2, "COO"]]); m.atoms.push(C("me", [26, -30])); m.bonds.push(["c1", "me"]); return { name: "β-Aminoisobutyrate", ...m }; })(),
+});
 
 // swap the 2′ or 3′ OH of the adenosine ribose for a phosphate
 function ribosePhosphate(atoms, bonds, o, c, id) {
@@ -814,6 +978,9 @@ const PATHWAYS = {
   amino: { label: "Amino acid exchange", color: "#ff7ab6" },
   lipid: { label: "Triacylglycerol & fatty acids", color: "#f2c94c" },
   aa: { label: "Amino acids", color: "#fb7185" },
+  gluconeogenesis: { label: "Gluconeogenesis", color: "#ff9f1c" },
+  glycogenolysis: { label: "Glycogenolysis", color: "#e879f9" },
+  box: { label: "β-oxidation", color: "#84cc16" },
 };
 const PATH_OF = {};
 Object.entries({
@@ -827,6 +994,20 @@ Object.entries({
   aa: ["valine", "leucine", "isoleucine", "methionine", "threonine", "lysine", "histidine", "phenylalanine", "tryptophan", "serine", "cysteine", "tyrosine", "proline", "glutamine", "asparagine"],
 }).forEach(([p, ids]) => ids.forEach((i) => (PATH_OF[i] = p)));
 
+MOLS.carn = { name: "Carnitine", ...zig(4, [[0, "COOL"], [2, "OH"]], 26, [], { 3: "Me₃N⁺" }) };
+MOLS.vlcfa = { name: "Very-long-chain acyl-CoA", ...zig(8, [[7, "SCoA"]]) };
+MOLS.pxenoyl = { ...MOLS.enoyl, name: "trans-Δ2-Enoyl-CoA (peroxisome)" };
+MOLS.pxkacyl = { ...MOLS.kacyl, name: "3-Ketoacyl-CoA (peroxisome)" };
+MOLS.phyt = { name: "Phytanoyl-CoA", ...zig(6, [[5, "SCoA"]]) };
+MOLS.prist = { name: "Pristanoyl-CoA", ...zig(5, [[4, "SCoA"]]) };
+MOLS.cis3 = { name: "cis-Δ3-Enoyl-CoA", ...zig(5, [[4, "SCoA"]], 26, [2]) };
+MOLS.trans3 = { name: "trans-Δ3-Enoyl-CoA", ...zig(5, [[4, "SCoA"]], 26, [2]) };
+MOLS.dienoyl = { name: "2,4-Dienoyl-CoA", ...zig(5, [[4, "SCoA"]], 26, [3, 1]) };
+MOLS.propcoa = { name: "Propionyl-CoA", ...zig(3, [[2, "SCoA"]]) };
+MOLS.mmd = (() => { const m = zig(3, [[0, "COOL"], [2, "SCoA"]]); return { name: "D-Methylmalonyl-CoA", atoms: [...m.atoms, C("me", [26, -30])], bonds: [...m.bonds, ["c1", "me"]] }; })();
+MOLS.mml = { ...MOLS.mmd, name: "L-Methylmalonyl-CoA" };
+MOLS.acylcarn = { name: "Acylcarnitine", ...zig(5, [[4, "EST"]]) };
+MOLS.facylm = { ...MOLS.facyl, name: "Fatty acyl-CoA (matrix)" };
 const M = (id, formula, note) => ({ id, kind: "molecule", mol: id, label: MOLS[id].name, formula, note });
 const NODES = [
   M("g1p", "C6H13O9P", "Glucose 1-phosphate, from glycogen breakdown"),
@@ -872,6 +1053,23 @@ const NODES = [
   M("tag", "C3H5(OCOR)3", "Storage fat: glycerol + 3 fatty acids"),
   M("fa", "RCOO⁻", "Free fatty acid"),
   M("facyl", "RCO–SCoA", "Activated fatty acid; β-oxidation substrate"),
+  M("acylcarn", "RCO–O–carnitine", "Long-chain acyl group carried across the inner mitochondrial membrane on carnitine"),
+  M("facylm", "RCO–SCoA", "Acyl-CoA re-formed in the matrix by CPT2; the substrate of the β-oxidation spiral"),
+  M("carn", "(CH₃)₃N⁺–CH₂–CH(OH)–CH₂–COO⁻", "Made in liver and kidney from lysine and methionine, and taken from meat and dairy; muscle and heart import it through the OCTN2 transporter"),
+  M("vlcfa", "C≥22 acyl–SCoA", "Very-long-chain fatty acids (C22 and longer) cannot be oxidised in mitochondria; ABCD1 imports them into peroxisomes"),
+  M("pxenoyl", "RCH=CH–CO–SCoA", "Made by acyl-CoA oxidase, which passes the electrons to O₂ and so makes H₂O₂ instead of FADH₂ for the electron transport chain"),
+  M("pxkacyl", "RCO–CH₂–CO–SCoA", "Peroxisomal thiolase cleaves it, releasing acetyl-CoA and a shorter acyl-CoA that is exported to mitochondria"),
+  M("phyt", "Branched acyl–SCoA (methyl groups on odd carbons)", "From chlorophyll in dairy, ruminant fat and fish; the β-methyl group blocks β-oxidation, so the first step is α-oxidation (removes one carbon)"),
+  M("prist", "Branched acyl–SCoA", "One carbon shorter than phytanoyl-CoA, with the methyl group now on an even carbon, so peroxisomal β-oxidation can proceed"),
+  M("cis3", "RCH=CH–CH₂–CO–SCoA", "cis double bond between C3 and C4, left by an odd-numbered double bond of an unsaturated fatty acid; the spiral cannot continue until it is moved"),
+  M("trans3", "RCH=CH–CH₂–CO–SCoA", "Product of 2,4-dienoyl-CoA reductase; enoyl-CoA isomerase moves its double bond to C2"),
+  M("dienoyl", "RCH=CH–CH=CH–CO–SCoA", "Two double bonds (C2=C3 and C4=C5) after acyl-CoA dehydrogenase acts on an even-numbered double bond"),
+  M("propcoa", "CH₃CH₂–CO–SCoA", "Three-carbon acyl-CoA from the last thiolase turn of odd-chain fatty acids and from valine, isoleucine, methionine and threonine"),
+  M("mmd", "⁻OOC–CH(CH₃)–CO–SCoA", "D-form made by propionyl-CoA carboxylase; the epimerase converts it to the L-form"),
+  M("mml", "⁻OOC–CH(CH₃)–CO–SCoA", "L-form, the substrate of methylmalonyl-CoA mutase (needs adenosylcobalamin, vitamin B₁₂)"),
+  M("enoyl", "RCH=CH–CO–SCoA", "Double bond between C2 and C3 (trans), made by acyl-CoA dehydrogenase"),
+  M("hacyl", "RCH(OH)CH₂–CO–SCoA", "L-isomer; hydroxyl on C3, the β carbon that gives the pathway its name"),
+  M("kacyl", "RCO–CH₂–CO–SCoA", "β-ketoacyl-CoA; thiolase cleaves it between C2 and C3"),
   M("malonyl", "C24H38N7O19P3S", "Fatty acid synthesis building block (ACC)"),
   M("acac", "C4H6O3", "Ketone body"),
   M("glycogen", "(C6H10O5)n", "Storage polymer of α-glucose; each unit is a ring"),
@@ -924,7 +1122,6 @@ const EDGES = [
     ["glyc3p", "tag", "Acyltransferases"], ["facyl", "tag", ""], ["tag", "glycerol", "Lipase"], ["tag", "fa", "Lipase"],
     ["glycerol", "glyc3p", "Glycerol kinase"], ["fa", "facyl", "Acyl-CoA synthetase"], ["acetylcoa", "malonyl", "Acetyl-CoA carboxylase"],
     ["malonyl", "facyl", "Fatty acid synthase"]].map(([source, target, label], i) => ({ id: "l" + i, source, target, label, main: true, auto: true })),
-  { id: "boxid", source: "facyl", target: "acetylcoa", label: "β-oxidation", main: true, sh: "l", th: "r" },
   { id: "x1", source: "atp", target: "g6p", label: "phosphate donor", sh: "r", th: "l" },
   ...["g6p", "f6p", "bpg13", "pg2"].map((t, i) => ({ id: "m" + i, source: "mg", target: t, label: "cofactor", sh: "l", th: "r" })),
   ...["pep", "pyruvate"].map((t, i) => ({ id: "k" + i, source: "k", target: t, label: "cofactor", sh: "l", th: "r" })),
@@ -1176,15 +1373,221 @@ EDGES.push(
     ["chol", "cholic", "Cholesterol 7α-hydroxylase (CYP7A1)"], ["chol", "preg", "Desmolase (P450scc)"]].map(([source, target, label], i) => ({ id: "ch" + (i + 1), source, target, label, main: true, auto: true })),
 );
 
+/* ---- purine synthesis (north-east of the pentose phosphate pathway): PRPP → … → IMP, then the AMP and GMP branches ---- */
+PATHWAYS.purine = { label: "Purine synthesis", color: "#818cf8" };
+NODES.push(
+  M("prpp", "C5H13O14P3", "Activated ribose: made from ribose 5-phosphate by PRPP synthetase (ATP gives up its pyrophosphate, so AMP is released). Feeds purine and pyrimidine synthesis and the salvage pathways."),
+  M("pra", "C5H12NO7P", "Amine replaces the pyrophosphate at C1: the first committed purine intermediate (PPAT, glutamine is the nitrogen donor). Unstable, with a half-life of seconds."),
+  M("gar", "C7H15N2O8P", "Glycine is added to the amine (ATP-dependent); it contributes C4, C5 and N7 of the purine ring."),
+  M("fgar", "C8H15N2O9P", "N¹⁰-formyl-THF gives the formyl group that becomes C8 of the purine ring."),
+  M("fgam", "C8H16N3O8P", "Amidination: a second glutamine nitrogen (the future N3) turns the formyl amide into an amidine."),
+  M("air", "C8H14N3O7P", "The imidazole ring closes (ATP-dependent): the five-membered half of the purine is now complete."),
+  M("cair", "C9H14N3O9P", "Carboxylation adds C6 of the purine ring. No biotin and no ATP are needed in humans; CO₂ is added directly."),
+  M("saicar", "C13H19N4O12P", "Aspartate is condensed onto the carboxyl group (ATP-dependent); its nitrogen becomes N1 of the purine ring."),
+  M("aicar", "C9H15N4O8P", "Adenylosuccinate lyase removes the carbon skeleton of aspartate as fumarate. AICAR also activates AMP-activated protein kinase."),
+  M("faicar", "C10H15N4O9P", "A second N¹⁰-formyl-THF gives C2 of the ring; IMP cyclohydrolase then closes the six-membered ring."),
+  M("imp", "C10H13N4O8P", "First complete purine nucleotide (hypoxanthine base) and the branch point to AMP and GMP. Its base is also the product of salvage by HGPRT."),
+  M("sucamp", "C14H18N5O11P", "IMP with aspartate attached at C6; adenylosuccinate lyase then releases fumarate, leaving AMP."),
+  M("xmp", "C10H13N4O9P", "IMP oxidised at C2 by IMP dehydrogenase, the rate-limiting step of GMP synthesis."),
+  { id: "amp_n", kind: "molecule", mol: "amp_n", label: "AMP", formula: "C10H14N5O7P", note: "Adenine nucleotide: the end of the adenine branch. GTP drives its synthesis from IMP; AMP in turn inhibits PPAT and adenylosuccinate synthetase." },
+  { id: "gmp_n", kind: "molecule", mol: "gmp_n", label: "GMP", formula: "C10H14N5O8P", note: "Guanine nucleotide: the end of the guanine branch. ATP drives its synthesis from IMP; GMP inhibits PPAT and IMP dehydrogenase." },
+);
+// The chain runs UP from PRPP in one column (the space north-east of the pentose phosphate pathway is empty; below it sit the pharmacology targets).
+// PRPP is reached from ribose 5-phosphate along the gap between sedoheptulose 7-phosphate and erythrose 4-phosphate; IMP forks to AMP (left) and GMP (right).
+const PU_X = 2400, PU_Y0 = 1815;
+layout.prpp = [PU_X, PU_Y0];
+["pra", "gar", "fgar", "fgam", "air", "cair", "saicar", "aicar", "faicar", "imp"].forEach((id, i) => { layout[id] = [PU_X, PU_Y0 - (i + 1) * STEP]; });
+layout.sucamp = [PU_X - 650, layout.imp[1] - STEP]; layout.amp_n = [PU_X - 650, layout.imp[1] - 2 * STEP];
+layout.xmp = [PU_X + 650, layout.imp[1] - STEP]; layout.gmp_n = [PU_X + 650, layout.imp[1] - 2 * STEP];
+// [id, label, anchor, dx, dy]: each step has what it takes in on the left and what it gives off on the right; anchors are the upper node of the step
+const PCOS = [
+  ["c_pu1", "+ glutamine", "pra", -330, STEP / 2], ["c_pu2", "→ glutamate + PPᵢ", "pra", 330, STEP / 2],
+  ["c_pu3", "+ glycine + ATP", "gar", -330, STEP / 2], ["c_pu4", "→ ADP + Pᵢ", "gar", 330, STEP / 2],
+  ["c_pu5", "+ N¹⁰-formyl-THF", "fgar", -330, STEP / 2], ["c_pu6", "→ THF", "fgar", 330, STEP / 2],
+  ["c_pu7", "+ glutamine + ATP", "fgam", -330, STEP / 2], ["c_pu8", "→ glutamate + ADP + Pᵢ", "fgam", 330, STEP / 2],
+  ["c_pu9", "+ ATP", "air", -330, STEP / 2], ["c_pu10", "→ ADP + Pᵢ", "air", 330, STEP / 2],
+  ["c_pu11", "+ CO₂", "cair", -330, STEP / 2],
+  ["c_pu12", "+ aspartate + ATP", "saicar", -330, STEP / 2], ["c_pu13", "→ ADP + Pᵢ", "saicar", 330, STEP / 2],
+  ["c_pu14", "→ fumarate", "aicar", 330, STEP / 2],
+  ["c_pu15", "+ N¹⁰-formyl-THF", "faicar", -330, STEP / 2], ["c_pu16", "→ THF", "faicar", 330, STEP / 2],
+  ["c_pu17", "→ H₂O", "imp", 330, STEP / 2],
+  ["c_pu18", "+ NAD⁺", "xmp", 330, STEP / 2], ["c_pu19", "+ glutamine + ATP", "gmp_n", 330, STEP / 2],
+  ["c_pu20", "+ aspartate + GTP", "sucamp", -330, STEP / 2], ["c_pu21", "→ fumarate", "amp_n", -330, STEP / 2],
+];
+PCOS.forEach(([id, label, at, dx, dy]) => {
+  NODES.push({ id, kind: "cofactor", label, formula: "", note: "Co-substrate / co-product" });
+  place.branch(at, [id], dx, dy);
+});
+NODES.push({ id: "t_purine", kind: "pathway", title: true, label: PATHWAYS.purine.label, formula: "", note: "", path: "purine" });
+layout.t_purine = [PU_X, PU_Y0 + 235];
+Object.entries({
+  purine: ["prpp", "pra", "gar", "fgar", "fgam", "air", "cair", "saicar", "aicar", "faicar", "imp", "sucamp", "xmp", "amp_n", "gmp_n", ...PCOS.map((c) => c[0])],
+}).forEach(([p, ids]) => ids.forEach((i) => (PATH_OF[i] = p)));
+EDGES.push(
+  { id: "pu0", source: "r5p", target: "prpp", label: "Ribose-phosphate pyrophosphokinase (PRPS1)", main: true, sh: "b", th: "l" }, // down, then right through the gap between s7p and e4p
+  ...[["prpp", "pra", "Amidophosphoribosyltransferase (PPAT)"], ["pra", "gar", "GAR synthetase"], ["gar", "fgar", "GAR transformylase"], ["fgar", "fgam", "FGAM synthetase (PFAS)"],
+    ["fgam", "air", "AIR synthetase"], ["air", "cair", "AIR carboxylase (PAICS)"], ["cair", "saicar", "SAICAR synthetase (PAICS)"], ["saicar", "aicar", "Adenylosuccinate lyase (ADSL)"],
+    ["aicar", "faicar", "AICAR transformylase (ATIC)"], ["faicar", "imp", "IMP cyclohydrolase (ATIC)"], ["imp", "xmp", "IMP dehydrogenase (IMPDH)"], ["xmp", "gmp_n", "GMP synthetase (GMPS)"],
+    ["imp", "sucamp", "Adenylosuccinate synthetase (ADSS)"], ["sucamp", "amp_n", "Adenylosuccinate lyase (ADSL)"]]
+    .map(([source, target, label], i) => ({ id: "pu" + (i + 1), source, target, label, main: true, sh: "t", th: "b" })), // every step runs upward
+);
+
+/* ---- pyrimidine synthesis & salvage (above the organ hubs, right of the purine column): carbamoyl aspartate → … → UTP, CTP and dTMP, with salvage and breakdown ---- */
+PATHWAYS.pyrim = { label: "Pyrimidine synthesis & salvage", color: "#22d3ee" };
+NODES.push(
+  M("carbasp", "C5H8N2O5", "Made in the cytosol from carbamoyl phosphate (the CPS II product, not the mitochondrial urea-cycle one) and aspartate by aspartate transcarbamoylase, the committed and regulated step."),
+  M("dhoa", "C5H6N2O4", "Ring closure by dihydroorotase. The first three enzymes (CPS II, ATCase, dihydroorotase) are one protein, CAD."),
+  M("orotate", "C5H4N2O4", "Oxidised by DHODH on the outer face of the inner mitochondrial membrane (ubiquinone is the electron acceptor); leflunomide and teriflunomide block it. Orotic aciduria is the failure of the next two steps."),
+  M("omp", "C10H13N2O11P", "Orotate takes ribose 5-phosphate from PRPP (the same donor as in purine synthesis); the ring is attached to the sugar only at this step."),
+  M("ump", "C9H13N2O9P", "First pyrimidine nucleotide. OMP decarboxylase removes CO₂; the last two steps are the two activities of UMP synthase (UMPS). Feedback inhibits CPS II."),
+  { id: "udp_n", kind: "molecule", mol: "udp_n", label: "UDP", formula: "C9H14N2O12P2", note: "Made from UMP by a UMP/CMP kinase; ribonucleotide reductase turns it into dUDP for DNA." },
+  { id: "utp_n", kind: "molecule", mol: "utp_n", label: "UTP", formula: "C9H15N2O15P3", note: "Used for RNA and to make UDP-sugars (UDP-glucose, UDP-glucuronate); amidated to CTP. UTP inhibits CPS II." },
+  M("ctp", "C9H16N3O14P3", "CTP synthase adds an amino group from glutamine to UTP; CTP inhibits it by feedback. Needed for RNA and for CDP-choline and CDP-diacylglycerol."),
+  M("dudp", "C9H14N2O11P2", "Ribonucleotide reductase removes the 2′-OH of UDP (and of the other ribonucleoside diphosphates); hydroxyurea blocks it."),
+  M("dump", "C9H13N2O8P", "Formed from dUDP by a kinase and then dUTPase, which also keeps uracil out of DNA. It is the substrate of thymidylate synthase."),
+  M("dtmp", "C10H15N2O8P", "Methyl group added to C5 by thymidylate synthase, using N⁵,N¹⁰-methylene-THF. Fluorouracil (as FdUMP) and pemetrexed block this step; DHFR must regenerate THF."),
+  M("uridine", "C9H12N2O6", "Uracil plus ribose; phosphorylated by uridine-cytidine kinase back to UMP. Pyrimidines are mostly salvaged in tissues that cannot make them fast."),
+  M("uracil", "C4H4N2O2", "Free base: salvaged to uridine, or broken down by DPD to β-alanine. Also the base that cytosine deamination leaves in DNA."),
+  M("cytidine", "C9H13N3O5", "Deaminated to uridine by cytidine deaminase, or phosphorylated to CMP by uridine-cytidine kinase. Cytarabine and gemcitabine are cytidine analogues."),
+  M("thymidine", "C10H14N2O5", "Thymine deoxyriboside; thymidine kinase 1 (high in S phase) phosphorylates it to dTMP. Free thymidine is a salvage source for DNA synthesis."),
+  M("thymine", "C5H6N2O2", "The 5-methyl uracil of DNA; salvaged to thymidine by thymidine phosphorylase or broken down by DPD to β-aminoisobutyrate."),
+  M("bala", "C3H7NO2", "End product of uracil and cytosine breakdown (after DPD, dihydropyrimidinase and β-ureidopropionase); it can be used for coenzyme A and carnosine and is otherwise excreted or oxidised."),
+  M("baib", "C4H9NO2", "End product of thymine breakdown; urinary excretion rises with high DNA turnover (cell death, chemotherapy)."),
+);
+const PY_X = 5300, PY_Y0 = 300, PY_X2 = 6400;
+["carbasp", "dhoa", "orotate", "omp", "ump", "udp_n", "utp_n", "ctp"].forEach((id, i) => { layout[id] = [PY_X, PY_Y0 - i * STEP]; });
+["dudp", "dump", "dtmp"].forEach((id, i) => { layout[id] = [PY_X2, layout.udp_n[1] - i * STEP]; });
+layout.uracil = [PY_X - 1000, layout.omp[1]]; layout.uridine = [PY_X - 1000, layout.ump[1]]; layout.cytidine = [PY_X - 1000, layout.udp_n[1]];
+layout.bala = [PY_X - 1800, layout.omp[1]];
+layout.thymine = [PY_X2 + 750, layout.dump[1]]; layout.thymidine = [PY_X2 + 750, layout.dtmp[1]]; layout.baib = [PY_X2 + 1500, layout.dump[1]];
+// [id, label, anchor, dx, dy]: what each step takes in on the left and gives off on the right (anchors are the upper node of a step)
+const PYCOS = [
+  ["c_py1", "carbamoyl phosphate + aspartate →", "carbasp", -420, 0], ["c_py2", "→ Pᵢ", "carbasp", 300, 0],
+  ["c_py3", "→ H₂O", "dhoa", 330, STEP / 2],
+  ["c_py4", "+ ubiquinone", "orotate", -330, STEP / 2], ["c_py5", "→ ubiquinol", "orotate", 330, STEP / 2],
+  ["c_py6", "+ PRPP", "omp", -330, STEP / 2], ["c_py7", "→ PPᵢ", "omp", 330, STEP / 2],
+  ["c_py8", "→ CO₂", "ump", 330, STEP / 2],
+  ["c_py9", "+ ATP", "udp_n", -330, STEP / 2], ["c_py10", "→ ADP", "udp_n", 330, STEP / 2],
+  ["c_py11", "+ ATP", "utp_n", -330, STEP / 2], ["c_py12", "→ ADP", "utp_n", 330, STEP / 2],
+  ["c_py13", "+ glutamine + ATP", "ctp", -330, STEP / 2], ["c_py14", "→ glutamate + ADP + Pᵢ", "ctp", 330, STEP / 2],
+  ["c_py15", "→ H₂O", "dudp", -325, 105],
+  ["c_py16", "→ PPᵢ", "dump", 330, STEP / 2],
+  ["c_py17", "+ N⁵,N¹⁰-methylene-THF", "dtmp", -330, STEP / 2], ["c_py18", "→ DHF", "dtmp", 330, STEP / 2],
+  ["c_py19", "+ ribose 1-phosphate", "uridine", -330, STEP / 2], ["c_py20", "→ Pᵢ", "uridine", 330, STEP / 2],
+  ["c_py21", "+ H₂O", "cytidine", -330, STEP / 2], ["c_py22", "→ NH₃", "cytidine", 330, STEP / 2],
+  ["c_py23", "+ ATP → ADP", "uridine", 500, -200],
+  ["c_py24", "+ NADPH", "bala", 400, -170], ["c_py25", "→ NH₃ + CO₂", "bala", 400, 170],
+  ["c_py26", "+ deoxyribose 1-phosphate", "thymidine", 330, STEP / 2], ["c_py27", "→ Pᵢ", "thymidine", -330, STEP / 2],
+  ["c_py28", "+ ATP → ADP", "thymidine", -375, -170],
+  ["c_py29", "+ NADPH", "baib", -400, -170], ["c_py30", "→ NH₃ + CO₂", "baib", -400, 170],
+];
+PYCOS.forEach(([id, label, at, dx, dy]) => {
+  NODES.push({ id, kind: "cofactor", label, formula: "", note: "Co-substrate / co-product" });
+  place.branch(at, [id], dx, dy);
+});
+NODES.push({ id: "t_pyrim", kind: "pathway", title: true, label: PATHWAYS.pyrim.label, formula: "", note: "", path: "pyrim" });
+layout.t_pyrim = [PY_X, PY_Y0 + 235];
+const PYNODES = ["carbasp", "dhoa", "orotate", "omp", "ump", "udp_n", "utp_n", "ctp", "dudp", "dump", "dtmp", "uridine", "uracil", "cytidine", "thymidine", "thymine", "bala", "baib"];
+[...PYNODES, ...PYCOS.map((c) => c[0])].forEach((i) => (PATH_OF[i] = "pyrim"));
+EDGES.push(
+  ...[["carbasp", "dhoa", "Dihydroorotase (CAD)"], ["dhoa", "orotate", "Dihydroorotate dehydrogenase (DHODH)"], ["orotate", "omp", "Orotate phosphoribosyltransferase (UMPS)"],
+    ["omp", "ump", "OMP decarboxylase (UMPS)"], ["ump", "udp_n", "UMP/CMP kinase (CMPK1)"], ["udp_n", "utp_n", "Nucleoside diphosphate kinase (NME)"], ["utp_n", "ctp", "CTP synthase (CTPS1)"]]
+    .map(([source, target, label], i) => ({ id: "py" + (i + 1), source, target, label, main: true, sh: "t", th: "b" })), // every step runs upward
+  { id: "py8", source: "udp_n", target: "dudp", label: "Ribonucleotide reductase (RRM1/RRM2)", main: true, sh: "r", th: "l" },
+  { id: "py9", source: "dudp", target: "dump", label: "NDP kinase, then dUTPase (DUT)", main: true, sh: "t", th: "b" },
+  { id: "py10", source: "dump", target: "dtmp", label: "Thymidylate synthase (TYMS)", main: true, sh: "t", th: "b" },
+  { id: "py11", source: "uridine", target: "ump", label: "Uridine-cytidine kinase (UCK)", main: true, sh: "r", th: "l" },
+  { id: "py12", source: "uracil", target: "uridine", label: "Uridine phosphorylase (UPP1)", main: true, sh: "t", th: "b" },
+  { id: "py13", source: "cytidine", target: "uridine", label: "Cytidine deaminase (CDA)", main: true, sh: "b", th: "t" },
+  { id: "py14", source: "thymine", target: "thymidine", label: "Thymidine phosphorylase (TYMP)", main: true, sh: "t", th: "b" },
+  { id: "py15", source: "thymidine", target: "dtmp", label: "Thymidine kinase (TK1)", main: true, sh: "l", th: "r" },
+  { id: "py16", source: "uracil", target: "bala", label: "Dihydropyrimidine dehydrogenase (DPD), then two more steps", main: true, sh: "l", th: "r" },
+  { id: "py17", source: "thymine", target: "baib", label: "Dihydropyrimidine dehydrogenase (DPD), then two more steps", main: true, sh: "r", th: "l" },
+);
+
+// Gluconeogenesis: the four bypass steps. Molecules are shared with glycolysis and the TCA cycle, so only edges and a title are new.
+EDGES.push(
+  { id: "gn1", source: "pyruvate", target: "oaa", label: "Pyruvate carboxylase", main: true, sh: "l", th: "t", path: "gluconeogenesis" },
+  { id: "gn2", source: "oaa", target: "pep", label: "PEP carboxykinase (PEPCK)", main: true, sh: "l", th: "l", path: "gluconeogenesis" },
+  { id: "gn3", source: "fbp", target: "f6p", label: "Fructose 1,6-bisphosphatase", main: true, sh: "tg", th: "bg", lshift: true, path: "gluconeogenesis" },
+  { id: "gn4", source: "g6p", target: "glucose", label: "Glucose 6-phosphatase", main: true, sh: "tg", th: "bg", lshift: true, path: "gluconeogenesis" },
+  // the reversible glycolytic steps, run upward in the lane beside glycolysis (same enzymes, so no label)
+  ...[["pep", "pg2"], ["pg2", "pg3"], ["pg3", "bpg13"], ["bpg13", "gap"], ["gap", "fbp"], ["f6p", "g6p"]].map(([source, target], i) => ({ id: "gp" + i, source, target, label: "", main: true, sh: "tg", th: "bg", path: "gluconeogenesis" })),
+);
+// Co-substrate chips beside the bypass lines, and the return lines that feed gluconeogenesis (same enzymes as the forward steps, so unlabelled)
+[["c_gn1", "+ ATP + HCO₃⁻ → ADP + Pᵢ", -300, 3440], ["c_gn2", "+ GTP → GDP + CO₂", -950, 4250], ["c_gn3", "+ H₂O → Pᵢ", -520, 1150], ["c_gn4", "+ H₂O → Pᵢ", -520, 495]]
+  .forEach(([id, label, x, y]) => { NODES.push({ id, kind: "cofactor", label, formula: "", note: "Co-substrate / co-product" }); layout[id] = [x, y]; });
+[["lactate", "pyruvate"], ["alanine", "pyruvate"], ["glyc3p", "dhap"], ["glutamate", "akg"], ["aspartate", "oaa"]]
+  .forEach(([source, target], i) => EDGES.push({ id: "gnr" + i, source, target, label: "", main: true, auto: true }));
+// What "Gluconeogenesis" lights when it is chosen: the route is shared with glycolysis and the TCA cycle, so it is listed rather than read from PATH_OF
+const GN_NODES = new Set(["lactate", "alanine", "glycerol", "glyc3p", "glutamate", "aspartate", "akg", "malate", "pyruvate", "oaa", "pep", "pg2", "pg3", "bpg13", "gap", "dhap", "fbp", "f6p", "g6p", "glucose", "c_gn1", "c_gn2", "c_gn3", "c_gn4"]);
+const GN_EDGES = new Set(["gn1", "gn2", "gn3", "gn4", "gnr0", "gnr1", "gnr2", "gnr3", "gnr4", "gp0", "gp1", "gp2", "gp3", "gp4", "gp5", "e4b", "l4", "t7"]);
+// Glycogenolysis: phosphorylase (edge n0) is recoloured; the debranching enzyme is a new line from glycogen to free glucose (~10 % of the glucose released).
+EDGES.find((e) => e.id === "n0").path = "glycogenolysis";
+EDGES.push({ id: "gl1", source: "glycogen", target: "glucose", label: "Debranching enzyme (α-1,6-glucosidase)", main: true, sh: "l", th: "l", path: "glycogenolysis" });
+[["c_gl1", "+ Pᵢ", "glycogen", -260, 165], ["c_gl2", "+ H₂O", "glycogen", -640, 330]]
+  .forEach(([id, label, at, dx, dy]) => { NODES.push({ id, kind: "cofactor", label, formula: "", note: "Co-substrate / co-product" }); layout[id] = [layout[at][0] + dx, layout[at][1] + dy]; });
+// Lysosomal route (Pompe disease): glycogen is taken up by autophagy and broken down to glucose by acid α-glucosidase, without phosphorylase.
+NODES.push({ id: "lysglyc", kind: "cofactor", label: "Glycogen in lysosome", formula: "", note: "Glycogen taken up into lysosomes by autophagy. Acid α-glucosidase (GAA) hydrolyses its α-1,4 and α-1,6 bonds there, releasing free glucose. Deficiency is Pompe disease (glycogen storage disease type II): glycogen builds up in lysosomes of heart and muscle, causing cardiomegaly, hypotonia and, in infants, early death; enzyme replacement (alglucosidase alfa) is the treatment.", w: 300 });
+layout.lysglyc = [-1100, 0];
+PATH_OF.lysglyc = "glycogenolysis";
+EDGES.push(
+  { id: "gl2", source: "glycogen", target: "lysglyc", label: "Autophagy (lysosomal uptake)", main: true, auto: true, path: "glycogenolysis" },
+  { id: "gl3", source: "lysglyc", target: "glucose", label: "Lysosomal acid α-glucosidase (GAA)", main: true, auto: true, path: "glycogenolysis" },
+);
+// Route lit by "Glycogenolysis": glycogen → G1P → G6P → glucose (shared with glycolysis and gluconeogenesis), plus the free-glucose branch
+const GL_NODES = new Set(["glycogen", "g1p", "g6p", "glucose", "c_gl1", "c_gl2", "lysglyc"]);
+const GL_EDGES = new Set(["n0", "e0", "gl1", "gl2", "gl3", "gn4"]);
+// β-oxidation: the spiral, placed to the right of fatty acyl-CoA (mitochondrial matrix); thiolase returns an acyl-CoA two carbons shorter to the start and releases acetyl-CoA.
+place.branch("facyl", ["facylm", "enoyl", "hacyl", "kacyl"], 1700, -STEP);
+place.branch("facyl", ["acylcarn"], 850, -STEP);
+place.branch("kacyl", ["vlcfa", "pxenoyl", "pxkacyl"], 1800, -2 * STEP);  // peroxisome column, right of the odd-chain route
+place.branch("vlcfa", ["phyt", "prist"], 900, 0);
+place.branch("acylcarn", ["carn"], 0, -STEP);
+place.branch("enoyl", ["cis3", "dienoyl", "trans3"], -500, 0);  // unsaturated fatty acids: isomerase and reductase side route back to trans-Δ2-enoyl-CoA
+place.branch("kacyl", ["propcoa", "mmd", "mml"], 900, 0);  // odd-chain route: propionyl-CoA down to L-methylmalonyl-CoA, then back to succinyl-CoA on the TCA ring
+[["c_bx13", "Long chains: trifunctional protein (HADHA / HADHB)", "hacyl", -700, 165], ["c_bx10", "+ O₂ → H₂O₂", "pxenoyl", 300, -165], ["c_bx11", "+ H₂O → NADH", "pxkacyl", 300, -165], ["c_bx12", "+ CoA → acetyl-CoA", "pxkacyl", 300, 165], ["c_bx9", "+ NADPH", "dienoyl", -260, 165], ["c_bx7", "+ HCO₃⁻ + ATP → ADP + Pᵢ", "propcoa", 340, 165], ["c_bx8", "needs vitamin B₁₂", "mml", 300, 165], ["c_bx5", "+ carnitine → CoA", "facyl", 420, 40], ["c_bx6", "+ CoA → carnitine", "facylm", -425, 150], ["c_bx1", "+ FADH₂", "enoyl", -260, -165], ["c_bx2", "+ H₂O", "enoyl", 260, 165], ["c_bx3", "+ NADH", "hacyl", 260, 165], ["c_bx4", "+ CoA → acetyl-CoA", "kacyl", 300, -165]]
+  .forEach(([id, label, at, dx, dy]) => { NODES.push({ id, kind: "cofactor", label, formula: "", note: "Co-substrate / co-product" }); place.branch(at, [id], dx, dy); PATH_OF[id] = "box"; });
+["facylm", "acylcarn", "enoyl", "hacyl", "kacyl", "propcoa", "mmd", "mml", "cis3", "trans3", "dienoyl", "vlcfa", "pxenoyl", "pxkacyl", "phyt", "prist", "carn"].forEach((i) => (PATH_OF[i] = "box"));
+EDGES.push(
+  { id: "bx1", source: "facylm", target: "enoyl", label: "Acyl-CoA dehydrogenase", main: true, auto: true, path: "box" },
+  { id: "bx2", source: "enoyl", target: "hacyl", label: "Enoyl-CoA hydratase", main: true, auto: true, path: "box" },
+  { id: "bx3", source: "hacyl", target: "kacyl", label: "3-Hydroxyacyl-CoA dehydrogenase", main: true, auto: true, path: "box" },
+  { id: "bx4", source: "kacyl", target: "facylm", label: "Thiolase (β-ketothiolase)", main: true, auto: true, path: "box" },
+  { id: "bx6", source: "facyl", target: "acylcarn", label: "Carnitine palmitoyltransferase I (CPT1)", main: true, auto: true, path: "box" },
+  { id: "bx7", source: "acylcarn", target: "facylm", label: "CACT, then CPT2", main: true, auto: true, path: "box" },
+  { id: "bxm", source: "malonyl", target: "acylcarn", label: "Malonyl-CoA inhibits CPT1", main: true, auto: true, dash: true, path: "box" },
+  { id: "bx8", source: "kacyl", target: "propcoa", label: "Thiolase (last turn of an odd-chain fatty acid)", main: true, auto: true, path: "box" },
+  { id: "bx9", source: "propcoa", target: "mmd", label: "Propionyl-CoA carboxylase", main: true, auto: true, path: "box" },
+  { id: "bx10", source: "mmd", target: "mml", label: "Methylmalonyl-CoA epimerase", main: true, auto: true, path: "box" },
+  { id: "bx11", source: "mml", target: "succoa", label: "Methylmalonyl-CoA mutase", main: true, auto: true, path: "box" },
+  ...["valine", "isoleucine", "methionine", "threonine"].map((a, i) => ({ id: "bxa" + i, source: a, target: "propcoa", label: i ? "" : "Amino acid catabolism (several steps)", main: true, auto: true, dash: true, path: "box" })),
+  { id: "bu1", source: "facylm", target: "cis3", label: "Turns of the spiral (odd-numbered double bond)", main: true, auto: true, dash: true, path: "box" },
+  { id: "bu2", source: "facylm", target: "dienoyl", label: "Turns of the spiral (even-numbered double bond)", main: true, auto: true, dash: true, path: "box" },
+  { id: "bu3", source: "cis3", target: "enoyl", label: "Enoyl-CoA isomerase", main: true, auto: true, path: "box" },
+  { id: "bu4", source: "dienoyl", target: "trans3", label: "2,4-Dienoyl-CoA reductase", main: true, auto: true, path: "box" },
+  { id: "bu5", source: "trans3", target: "enoyl", label: "", main: true, auto: true, path: "box" },
+  { id: "bp1", source: "fa", target: "vlcfa", label: "ABCD1 import, then very-long-chain acyl-CoA synthetase", main: true, auto: true, dash: true, path: "box" },
+  { id: "bp2", source: "vlcfa", target: "pxenoyl", label: "Acyl-CoA oxidase (ACOX1)", main: true, auto: true, path: "box" },
+  { id: "bp3", source: "pxenoyl", target: "pxkacyl", label: "D-bifunctional protein (hydratase + dehydrogenase)", main: true, auto: true, path: "box" },
+  { id: "bp4", source: "pxkacyl", target: "facyl", label: "Peroxisomal thiolase (shortened acyl-CoA to mitochondria)", main: true, auto: true, path: "box" },
+  { id: "bp5", source: "phyt", target: "prist", label: "Phytanoyl-CoA hydroxylase (α-oxidation)", main: true, auto: true, path: "box" },
+  { id: "bp6", source: "prist", target: "pxenoyl", label: "Branched-chain acyl-CoA oxidase (ACOX2)", main: true, auto: true, path: "box" },
+  { id: "bc1", source: "carn", target: "acylcarn", label: "Carnitine uptake (OCTN2), then CPT1", main: true, auto: true, path: "box" },
+  { id: "bxetf", source: "c_bx1", target: "coq", label: "ETF → ETF-QO → coenzyme Q", main: true, auto: true, dash: true, path: "box" },
+  { id: "bx5", source: "kacyl", target: "acetylcoa", label: "", main: true, auto: true, path: "box" },
+);
+const BX_NODES = new Set(["facyl", "acylcarn", "facylm", "malonyl", "enoyl", "hacyl", "kacyl", "acetylcoa", "c_bx1", "c_bx2", "c_bx3", "c_bx4", "c_bx5", "c_bx6", "c_bx7", "c_bx8", "c_bx9", "c_bx10", "c_bx11", "c_bx12", "c_bx13", "carn", "coq", "vlcfa", "pxenoyl", "pxkacyl", "phyt", "prist", "fa", "cis3", "trans3", "dienoyl", "propcoa", "mmd", "mml", "succoa", "valine", "isoleucine", "methionine", "threonine"]);
+const BX_EDGES = new Set(["bx1", "bx2", "bx3", "bx4", "bx5", "bx6", "bx7", "bxm", "bx8", "bx9", "bx10", "bx11", "bu1", "bu2", "bu3", "bu4", "bu5", "bp1", "bp2", "bp3", "bp4", "bp5", "bp6", "bc1", "bxetf", "bxa0", "bxa1", "bxa2", "bxa3"]);
 // Big pathway titles sit in or beside their pathway, like the labels on a metro map
-[["glycolysis", -560, 1650], ["glycogen", 350, -480], ["ppp", 1275, 430], ["tca", 0, RING.cy], ["urea", U.x, U.y],
+[["glycolysis", -560, 1650], ["gluconeogenesis", -1100, 3700], ["glycogen", 350, -480], ["glycogenolysis", -450, -480], ["ppp", 1275, 430], ["tca", 0, RING.cy], ["urea", U.x, U.y],
   ["amino", -1000, 4550], ["aa", -6300, 4850]
   ].forEach(([p, x, y]) => {
   NODES.push({ id: "t_" + p, kind: "pathway", title: true, label: PATHWAYS[p].label, formula: "", note: "", path: p });
   layout["t_" + p] = [x, y];
 });
 // ...and the titles of chains placed by `place` hang off a node of the chain: [pathway, anchor, dx, dy]
-[["lipid", "tag", 250, STEP], ["ala", "ala", 300, -STEP], ["heme", "uro3", 800, STEP / 2], ["bili", "biliverdin", -800, STEP / 2], ["chol", "hmgcoa", 0, -STEP]].forEach(([p, at, dx, dy]) => {
+[["lipid", "tag", 250, STEP], ["ala", "ala", 300, -STEP], ["heme", "uro3", 800, STEP / 2], ["bili", "biliverdin", -800, STEP / 2], ["chol", "hmgcoa", 0, -STEP], ["box", "facylm", 0, -STEP]].forEach(([p, at, dx, dy]) => {
   NODES.push({ id: "t_" + p, kind: "pathway", title: true, label: PATHWAYS[p].label, formula: "", note: "", path: p });
   place.branch(at, ["t_" + p], dx, dy);
 });
@@ -1196,6 +1599,7 @@ const TOK = [
   ["UTP", ["mol", "utp"]], ["UDP", ["mol", "udp"]], ["CoA", ["mol", "coa"]], ["PPᵢ", ["mol", "ppi"]], ["Pᵢ", ["mol", "pi"]],
   ["H₂O₂", ["mol", "h2o2"]], ["H₂O", ["mol", "h2o"]], ["CO₂", ["mol", "co2"]], ["CO", ["mol", "co"]], ["NH₃", ["mol", "nh3"]],
   ["O₂", ["mol", "o2"]], ["H⁺", ["mol", "hplus"]], ["Fe²⁺", ["el", "Fe"]], ["NADP⁺", ["mol", "nadp"]], ["vitamin D", ["target", "t_vd"]],
+  ["glutamine", ["mol", "glutamine"]], ["glutamate", ["mol", "glutamate"]], ["glycine", ["mol", "glycine"]], ["aspartate", ["mol", "aspartate"]],
 ];
 const TOKMAP = Object.fromEntries(TOK);
 const TOK_RE = new RegExp("(" + TOK.map((t) => t[0]).sort((a, b) => b.length - a.length).join("|") + ")");
@@ -1683,7 +2087,11 @@ const TARGETS = [
   ["t_cps1", "Carbamoyl phosphate synthetase I", "enzyme", "CPS1", "First and rate-limiting step of the urea cycle (liver mitochondria): ammonia and bicarbonate become carbamoyl phosphate. It needs N-acetylglutamate as an allosteric activator.", ["cp"], null, "l"],
   ["t_ugt", "UDP-glucuronosyltransferase", "enzyme", "UGT1A1, 1A6, 1A9", "Attaches glucuronate to bilirubin (UGT1A1) and to many drugs, making them water-soluble for bile or urine. Drugs and bilirubin compete for it; low UGT1A1 activity causes Gilbert syndrome.", ["bilirubin"], "UDP-glucuronosyltransferase", "l"],
   ["t_cox", "Cyclooxygenase (COX-1, COX-2)", "enzyme", "PTGS1, PTGS2", "Converts arachidonic acid to prostaglandin H₂, the precursor of prostaglandins and thromboxane A₂. COX-1 makes platelet thromboxane; COX-2 is induced in inflammation.", ["c_pg"], null, "r"],
-  ["t_cpt1", "Carnitine palmitoyltransferase I", "enzyme", "CPT1A", "Outer mitochondrial membrane enzyme that moves the acyl group of fatty acyl-CoA onto carnitine so long-chain fatty acids can enter mitochondria. It is the rate-limiting step of β-oxidation and is inhibited by malonyl-CoA.", ["facyl"], "β-oxidation", "r"],
+  ["t_cpt1", "Carnitine palmitoyltransferase I", "enzyme", "CPT1A", "Outer mitochondrial membrane enzyme that moves the acyl group of fatty acyl-CoA onto carnitine so long-chain fatty acids can enter mitochondria. It is the rate-limiting step of β-oxidation and is inhibited by malonyl-CoA.", ["facyl", "acylcarn"], "Carnitine palmitoyltransferase I (CPT1)", "r"],
+  ["t_pcc", "Propionyl-CoA carboxylase", "enzyme", "PCCA, PCCB", "Biotin-dependent mitochondrial enzyme that carboxylates propionyl-CoA to D-methylmalonyl-CoA. Deficiency is propionic acidaemia: neonatal vomiting, acidosis, hyperammonaemia and raised propionylcarnitine; treatment is protein restriction, carnitine and, in some, biotin trial.", ["propcoa", "mmd"], "Propionyl-CoA carboxylase", "r"],
+  ["t_mcm", "Methylmalonyl-CoA mutase", "enzyme", "MMUT (MUT)", "Mitochondrial enzyme that needs adenosylcobalamin (vitamin B₁₂) to turn L-methylmalonyl-CoA into succinyl-CoA. Deficiency or B₁₂ defects cause methylmalonic acidaemia; B₁₂ deficiency raises methylmalonic acid, a useful test.", ["mml", "succoa"], "Methylmalonyl-CoA mutase", "r"],
+  ["t_acox1", "Acyl-CoA oxidase 1", "enzyme", "ACOX1", "First step of peroxisomal β-oxidation of very-long-chain fatty acids; its FADH₂ is re-oxidised by O₂, making H₂O₂. Deficiency causes a neonatal disorder with seizures, hypotonia and very-long-chain fatty acid accumulation. PPARα agonists (fibrates) raise its expression.", ["vlcfa", "pxenoyl"], "Acyl-CoA oxidase (ACOX1)", "r"],
+  ["t_cpt2", "Carnitine palmitoyltransferase II", "enzyme", "CPT2", "Inner mitochondrial membrane (matrix side): turns acylcarnitine back into acyl-CoA, freeing carnitine for the translocase. Deficiency causes exercise-induced rhabdomyolysis and myoglobinuria (adult form) or a severe infant form with hypoketotic hypoglycaemia and cardiomyopathy.", ["acylcarn", "facylm"], "CACT, then CPT2", "r"],
 ];
 // id, name, class, examples, note, effects [target, kind, detail], structure shown (key of DRUG_MOLS)
 const DRUGS = [
@@ -1740,6 +2148,15 @@ function placeBeside(anchorId, w, h, side, d0) {
 }
 const RX_TARGET_W = 210, RX_TARGET_H = 96;
 const RX_EFFECTS = [], RX_ACTS = [];
+TARGETS.push(
+  ["t_pc", "Pyruvate carboxylase", "enzyme", "PC", "Biotin-dependent mitochondrial enzyme that makes oxaloacetate from pyruvate, HCO₃⁻ and ATP. It refills the TCA cycle and starts gluconeogenesis; acetyl-CoA activates it. Deficiency causes lactic acidosis, hypoglycaemia and developmental delay.", ["pyruvate", "oaa"], "Pyruvate carboxylase", "r"],
+  ["t_pepck", "PEP carboxykinase", "enzyme", "PCK1 (cytosolic), PCK2 (mitochondrial)", "Converts oxaloacetate to phosphoenolpyruvate using GTP. Glucagon and cortisol raise its transcription and insulin lowers it; it is a main control point for how much glucose the liver makes.", ["oaa", "pep"], "PEP carboxykinase (PEPCK)", "l"],
+  ["t_fbpase", "Fructose 1,6-bisphosphatase", "enzyme", "FBP1", "Rate-limiting enzyme of gluconeogenesis: removes the C1 phosphate from fructose 1,6-bisphosphate. AMP and fructose 2,6-bisphosphate inhibit it, citrate activates it. Deficiency causes fasting hypoglycaemia and lactic acidosis.", ["fbp", "f6p"], "Fructose 1,6-bisphosphatase", "r"],
+  ["t_g6pase", "Glucose 6-phosphatase", "enzyme", "G6PC1 with the SLC37A4 transporter", "Endoplasmic-reticulum enzyme of liver, kidney and intestine that releases free glucose into the blood. Absent in muscle. Deficiency is von Gierke disease: fasting hypoglycaemia, hepatomegaly, lactic acidosis, high urate and lipids.", ["g6p", "glucose"], "Glucose 6-phosphatase", "r"],
+  ["t_pyg", "Glycogen phosphorylase", "enzyme", "PYGL (liver), PYGM (muscle), PYGB (brain)", "Rate-limiting enzyme of glycogenolysis: releases glucose 1-phosphate from the ends of glycogen using Pᵢ and pyridoxal phosphate. Phosphorylase kinase activates it (glucagon, adrenaline, Ca²⁺); AMP activates muscle phosphorylase b; ATP, glucose 6-phosphate and, in liver, glucose inhibit it. Deficiency causes Hers disease (liver) and McArdle disease (muscle: exercise cramps, myoglobinuria, no rise in lactate).", ["glycogen", "g1p"], "Glycogen phosphorylase", "r"],
+  ["t_gaa", "Acid α-glucosidase", "enzyme", "GAA", "Lysosomal enzyme that breaks down glycogen taken up by autophagy. Deficiency is Pompe disease, treated with enzyme replacement (alglucosidase alfa).", ["lysglyc", "glucose"], "Lysosomal acid α-glucosidase (GAA)", "l"],
+  ["t_agl", "Debranching enzyme", "enzyme", "AGL", "Moves three of the four glucose units left at a branch onto a free end, then hydrolyses the α-1,6 bond to release free glucose. Deficiency is Cori (Forbes) disease, glycogen storage disease type III: fasting hypoglycaemia, hepatomegaly, short-branched glycogen (limit dextrin), with normal lactate and urate.", ["glycogen", "glucose"], "Debranching enzyme (α-1,6-glucosidase)", "l"],
+);
 TARGETS.forEach(([id, label, type, gene, note, acts, enz, side]) => {
   const anchor = acts[0];
   layout[id] = placeBeside(anchor, RX_TARGET_W, RX_TARGET_H, side, 460);
@@ -1762,7 +2179,7 @@ DRUGS.forEach(([id, label, cls, examples, note, fx, molKey]) => {
   PATH_OF[id] = "pharm";
 });
 RX_EFFECTS.forEach((e) => EDGES.push({ id: `rx_${e.drug}_${e.target}`, source: e.drug, target: e.target, label: e.fx === "activate" && e.detail.startsWith("Indirect") ? "activates (via PDK)" : FX[e.fx].verb, fx: e.fx, auto: true, path: "pharm" }));
-RX_ACTS.push({ target: "t_npc1l1", met: "chol" }, { target: "t_pcsk9", met: "chol" }, { target: "t_fxr", met: "cholic" }, { target: "t_idh", met: "akg" }, { target: "t_hemoz", met: "heme" }); // hub targets defined later
+RX_ACTS.push({ target: "t_npc1l1", met: "chol" }, { target: "t_pcsk9", met: "chol" }, { target: "t_fxr", met: "cholic" }, { target: "t_idh", met: "akg" }, { target: "t_hemoz", met: "heme" }, { target: "t_ppat", met: "pra" }); // hub targets defined later
 RX_ACTS.forEach((a) => EDGES.push({ id: `rx_${a.target}_${a.met}`, source: a.target, target: a.met, label: "", fx: "tether", auto: true, path: "pharm" }));
 const RX_ANCHORS = new Set(RX_ACTS.map((a) => a.met));
 
@@ -1944,6 +2361,7 @@ const RDX_LIT = (i) => { // canvas objects on the route so far, and those of the
 const LOCS = {
   cyt: { label: "Cytosol", short: "Cytosol", color: "#22d3ee", desc: "Aqueous interior of the cell. Hosts glycolysis, the pentose phosphate pathway, glycogen turnover, fatty acid synthesis and the later steps of the urea cycle and heme synthesis." },
   mit: { label: "Mitochondria", short: "Mito", color: "#fb923c", desc: "Double-membrane organelle. The matrix holds the TCA cycle, pyruvate dehydrogenase, β-oxidation, the first steps of the urea cycle, ALA synthase and ferrochelatase." },
+  per: { label: "Peroxisome", short: "Peroxisome", color: "#eab308", desc: "Single-membrane organelle that shortens very-long-chain and branched-chain fatty acids (acyl-CoA oxidase makes H₂O₂ and catalase destroys it), makes the first steps of ether-lipid and bile-acid synthesis, and carries out phytanic acid α-oxidation. Defects cause Zellweger spectrum disease, X-linked adrenoleukodystrophy and Refsum disease." },
   er: { label: "Endoplasmic reticulum", short: "ER", color: "#a3e635", desc: "Membrane network and lumen. Triacylglycerol is assembled here, UGT conjugates drugs and bilirubin, and heme oxygenase and HMG-CoA reductase sit in its membrane. In muscle its counterpart, the sarcoplasmic reticulum, stores the calcium that triggers contraction." },
   nuc: { label: "Nucleus", short: "Nucleus", color: "#c084fc", desc: "Houses DNA. Nuclear receptors such as the PPARs, the mineralocorticoid receptor and the glucocorticoid receptor change gene transcription once activated." },
   pm: { label: "Plasma membrane", short: "Membrane", color: "#94a3b8", desc: "Cell-surface membrane. Transporters, channels and G-protein-coupled receptors sit here, so most drug targets of the organ hubs live in this compartment." },
@@ -1954,10 +2372,11 @@ const LOCS = {
 };
 const LOC_OF = {};
 Object.entries({
-  cyt: "hmgcoa mevalonate glucose g6p f6p fbp gap dhap bpg13 pg3 pg2 pep pyruvate lactate g1p glycogen udpglc p6gl p6g ru5p r5p xu5p s7p e4p alanine aspartate glutamate ornithine citrulline argsucc arginine urea glyc3p glycerol fa facyl malonyl acetylcoa glycine ala pbg hmb uro3 copro3 bilirubin biliverdin mg k p atp fe t_gk c_mev",
-  mit: "coq t_c1 t_c2 t_c3 t_cytc t_c4 t_c5 hgrad preg pyruvate acetylcoa citrate isocitrate akg succoa succinate fumarate malate oaa cp ornithine citrulline aspartate glutamate facyl acac glycine ala copro3 protogen protoporph heme fe atp t_pdc t_cps1 t_cpt1",
+  cyt: "carn hmgcoa mevalonate glucose g6p f6p fbp gap dhap bpg13 pg3 pg2 pep pyruvate lactate g1p glycogen udpglc p6gl p6g ru5p r5p xu5p s7p e4p alanine aspartate glutamate ornithine citrulline argsucc arginine urea glyc3p glycerol fa facyl malonyl acetylcoa glycine ala pbg hmb uro3 copro3 bilirubin biliverdin mg k p atp fe t_gk c_mev prpp pra gar fgar fgam air cair saicar aicar faicar imp sucamp xmp amp_n gmp_n",
+  mit: "coq t_c1 t_c2 t_c3 t_cytc t_c4 t_c5 hgrad preg pyruvate acetylcoa citrate isocitrate akg succoa succinate fumarate malate oaa cp ornithine citrulline aspartate glutamate facyl facylm acylcarn cis3 trans3 dienoyl propcoa mmd mml enoyl hacyl kacyl acac glycine ala copro3 protogen protoporph heme fe atp t_pdc t_cps1 t_cpt1 t_cpt2 t_pcc t_mcm",
   er: "tag glyc3p biliverdin bilglu t_hmgcr t_ugt t_cox c_pg dhc7 chol cholic",
   nuc: "t_ppara t_pparg",
+  per: "vlcfa pxenoyl pxkacyl phyt prist t_acox1",
   ap: "t_sglt2",
   ext: "glucose lactate alanine acac fa glycerol urea bilirubin bilglu t_lipase",
 }).forEach(([l, ids]) => ids.split(" ").forEach((id) => (LOC_OF[id] = [...(LOC_OF[id] || []), l])));
@@ -2086,8 +2505,8 @@ const VIT = {
     fn: ["Electron transfer in the respiratory chain and β-oxidation", "Antioxidant defence (glutathione reductase)", "Activates vitamin B₆ and helps make niacin from tryptophan"],
     def: ["Ariboflavinosis: cheilosis, angular stomatitis, magenta tongue (glossitis), seborrheic dermatitis, corneal vascularisation, normocytic anaemia", "Phototherapy for neonatal jaundice breaks down riboflavin", "Causes: alcohol use disorder, malabsorption, anorexia"],
     ex: ["No toxicity; bright yellow-orange urine"],
-    cof2: { mol: ["fad", "fadh2"], enz: ["Succinate dehydrogenase", "β-oxidation", "Pyruvate dehydrogenase complex", "α-KG dehydrogenase"], el: [] },
-    links: [["succinate", "cofactor (FAD)"], ["facyl", "cofactor (acyl-CoA DH)"], ["pyruvate", "cofactor (PDH E3)"]], relDrugs: [], drug: null,
+    cof2: { mol: ["fad", "fadh2"], enz: ["Succinate dehydrogenase", "Acyl-CoA dehydrogenase", "Pyruvate dehydrogenase complex", "α-KG dehydrogenase"], el: [] },
+    links: [["succinate", "cofactor (FAD)"], ["facylm", "cofactor (acyl-CoA DH)"], ["pyruvate", "cofactor (PDH E3)"]], relDrugs: [], drug: null,
   },
   t_b3: {
     name: "Vitamin B₃ (niacin)", kind: "vitw", gene: "Cofactor: NAD⁺ and NADP⁺", locs: ["cyt", "mit"],
@@ -2113,7 +2532,7 @@ const VIT = {
     fn: ["Acyl-group transfer for fatty acid synthesis and oxidation", "TCA cycle entry as acetyl-CoA", "Cholesterol, ketone body and heme synthesis"],
     def: ["Very rare: burning feet (paraesthesia), fatigue, irritability, GI upset, seen in severe malnutrition", "Pantothenate kinase-associated neurodegeneration (PKAN) is a genetic block in CoA synthesis with iron build-up in the globus pallidus"],
     ex: ["No toxicity; very large doses may cause diarrhoea"],
-    cof2: { mol: ["coa"], enz: ["Succinyl-CoA synthetase", "Acyl-CoA synthetase", "Citrate synthase", "Acetyl-CoA carboxylase", "Fatty acid synthase", "β-oxidation"], el: [] },
+    cof2: { mol: ["coa"], enz: ["Succinyl-CoA synthetase", "Acyl-CoA synthetase", "Citrate synthase", "Acetyl-CoA carboxylase", "Fatty acid synthase", "Thiolase (β-ketothiolase)"], el: [] },
     links: [["acetylcoa", "part of CoA"], ["succoa", "part of CoA"], ["malonyl", "part of CoA"], ["facyl", "part of CoA"]], relDrugs: [], drug: null,
   },
   t_b6: {
@@ -2141,8 +2560,8 @@ const VIT = {
     fn: ["Gluconeogenesis (pyruvate carboxylase)", "Fatty acid synthesis (acetyl-CoA carboxylase)", "Propionate and leucine catabolism"],
     def: ["Rare: periorificial scaly rash, alopecia, conjunctivitis, brittle nails, enteritis; in infants with biotinidase deficiency also hypotonia, seizures and lactic acidosis (multiple carboxylase deficiency)", "Causes: raw egg white (avidin binds biotin), prolonged TPN without biotin, long-term anticonvulsants, biotinidase deficiency"],
     ex: ["No known toxicity", "High-dose supplements interfere with biotin–streptavidin immunoassays (troponin, TSH, free T4, PTH, hCG): results read falsely high or low depending on assay format, for example low TSH with high free T4 that mimics Graves disease"],
-    more: ["Pyruvate carboxylase, propionyl-CoA carboxylase and 3-methylcrotonyl-CoA carboxylase are not drawn as steps in the atlas."],
-    cof2: { mol: [], enz: ["Acetyl-CoA carboxylase"], el: [] },
+    more: ["Pyruvate carboxylase is drawn in gluconeogenesis; propionyl-CoA carboxylase is drawn in the β-oxidation odd-chain route; 3-methylcrotonyl-CoA carboxylase is not drawn as a step in the atlas."],
+    cof2: { mol: [], enz: ["Acetyl-CoA carboxylase", "Pyruvate carboxylase"], el: [] },
     links: [["malonyl", "cofactor (ACC)"], ["pyruvate", "cofactor (pyruvate carboxylase)"], ["oaa", "cofactor (pyruvate carboxylase)"]], relDrugs: [], drug: null,
   },
   t_b9: {
@@ -2173,9 +2592,9 @@ const VIT = {
     fn: ["Homocysteine to methionine; recycling of folate", "Methylmalonyl-CoA to succinyl-CoA", "Myelin maintenance"],
     def: ["Megaloblastic anaemia as in folate deficiency, plus subacute combined degeneration (dorsal columns and lateral corticospinal tracts: loss of vibration and position sense, spastic weakness), paraesthesias, dementia", "High homocysteine and high methylmalonic acid", "Causes: pernicious anaemia (anti-intrinsic factor and anti-parietal cell antibodies), gastrectomy, ileal disease or resection (Crohn), Diphyllobothrium latum, strict veganism, chronic metformin or PPI use, nitrous oxide", "Folate 'methyl trap': N⁵-methyl-THF cannot give up its methyl without B₁₂, so folate is stuck in an unusable form"],
     ex: ["No known toxicity; excess is excreted"],
-    more: ["Methylmalonyl-CoA and homocysteine are not drawn; the links go to methionine and succinyl-CoA."],
+    more: ["Methylmalonyl-CoA is drawn in β-oxidation (odd-chain route); homocysteine is not, and the other links go to methionine and succinyl-CoA."],
     cof2: { mol: [], enz: [], el: ["Co"] },
-    links: [["methionine", "methylcobalamin: methionine synthase"], ["succoa", "adenosylcobalamin: mutase"]], relDrugs: [],
+    links: [["methionine", "methylcobalamin: methionine synthase"], ["mml", "adenosylcobalamin: mutase"], ["succoa", "adenosylcobalamin: mutase"]], relDrugs: [],
     drug: ["d_b12", "Cobalamin", "Vitamin B₁₂ replacement", "cyanocobalamin, hydroxocobalamin",
       "IM or high-dose oral replacement in pernicious anaemia, ileal disease and after gastric bypass; lifelong in pernicious anaemia. Hydroxocobalamin is also the antidote for cyanide poisoning, because it binds cyanide. Potassium can fall in the first days as the marrow recovers.",
       "activate", "Restores methionine synthase and methylmalonyl-CoA mutase activity."],
@@ -2993,7 +3412,7 @@ Object.entries({
   coa:     ["acetylcoa", "succoa", "hmgcoa"],
   ketone:  ["acac"],
   organic: ["pyruvate", "lactate", "bpg13", "pg3", "pg2", "pep", "citrate", "isocitrate", "akg", "succinate", "fumarate", "malate", "oaa", "mevalonate"],
-  nuc:     ["atp"],
+  nuc:     ["atp", "prpp", "pra", "gar", "fgar", "fgam", "air", "cair", "saicar", "aicar", "faicar", "imp", "sucamp", "xmp", "amp_n", "gmp_n"],
   nitro:   ["cp", "urea"],
   porph:   ["pbg", "hmb", "uro3", "copro3", "protogen", "protoporph", "heme"],
   pigment: ["biliverdin", "bilirubin", "bilglu"],
@@ -3078,7 +3497,7 @@ const initialEdges = EDGES.map((e) => ({
   target: e.target,
   sourceHandle: handles(e)[0],
   targetHandle: handles(e)[1],
-  data: { main: !!e.main, how: e.how, label: e.label, path: e.path || PATH_OF[e.target] || PATH_OF[e.source], fx: e.fx, pharm: !!e.fx, org: e.org, cross: !!e.cross },
+  data: { main: !!e.main, how: e.how, label: e.label, path: e.path || PATH_OF[e.target] || PATH_OF[e.source], fx: e.fx, pharm: !!e.fx, org: e.org, cross: !!e.cross, lshift: !!e.lshift },
 }));
 
 /* ================================================================== */
@@ -3086,14 +3505,17 @@ const initialEdges = EDGES.map((e) => ({
 /* ================================================================== */
 
 const handleStyle = { opacity: 0, width: 8, height: 8 };
+const PARALLEL_DX = 55; // px the gluconeogenesis lane sits to the left of the glycolysis lane
 
 function CompoundNode({ data, selected }) {
   const open = React.useContext(OpenCtx);
   const k = KIND[data.kind];
   const cls = `omino-node ${data.dim ? "is-dim" : ""} ${data.hit ? "is-hit" : ""} ${selected ? "is-selected" : ""}`;
-  const handles = ["t", "l", "r", "b"].map((id, i) => (
+  const handles = [...["t", "l", "r", "b"].map((id, i) => (
     <Handle key={id} id={id} type="source" position={[Position.Top, Position.Left, Position.Right, Position.Bottom][i]} style={handleStyle} />
-  ));
+  )), ...[["tg", Position.Top], ["bg", Position.Bottom]].map(([id, pos]) => (
+    <Handle key={id} id={id} type="source" position={pos} style={{ ...handleStyle, left: `calc(50% - ${PARALLEL_DX}px)` }} />
+  ))];
   if (data.kind === "cofactor") {
     const parts = chipParts(data.label);
     if (parts.some((p) => p.mol || p.tile)) return (
@@ -3161,7 +3583,7 @@ function OminoEdge({ id, sourceX, sourceY, targetX, targetY, sourcePosition, tar
         <div
           className={`omino-edge-label nodrag nopan ${data.main ? "is-main is-link" : ""} ${data.fx ? "is-fx" : ""} ${data.active ? "is-active" : ""}`}
           onClick={() => data.main && open("enz", data.label)}
-          style={{ transform: `translate(-50%, -50%) translate(${lx}px, ${ly}px)`, opacity: data.faded ? 0.15 : 1, color }}
+          style={{ transform: `translate(-50%, -50%) translate(${lx + (data.lshift ? -(10 + data.label.length * 3.4) : 0)}px, ${ly}px)`, opacity: data.faded ? 0.15 : 1, color }}
         >
           {data.label}
         </div>
@@ -3731,9 +4153,26 @@ const EXPLAIN = {
   acetylcoa: "The common two-carbon currency of metabolism, a thioester with high group-transfer potential. It feeds the TCA cycle, fatty acid synthesis and ketogenesis.",
   atp: "The cell's energy carrier. Hydrolysing its terminal phosphoanhydride bond (about −30 kJ/mol) powers kinases and many other reactions.",
   citrate: "First product of the TCA cycle and a sign of energy abundance: it inhibits phosphofructokinase-1 and activates acetyl-CoA carboxylase.",
+  lactate: "End product of anaerobic glycolysis. Red cells and working muscle release it; the liver turns it back into pyruvate and then glucose (Cori cycle). Liver failure or metformin with kidney failure can leave it accumulating as lactic acidosis.",
+  glycerol: "Released with fatty acids when triacylglycerol is broken down. The liver phosphorylates it and feeds it into gluconeogenesis at DHAP; adipose lacks glycerol kinase, so it cannot reuse it.",
+  malate: "TCA intermediate, and the carrier that carries oxaloacetate carbon out of mitochondria for gluconeogenesis: the cytosolic form is re-oxidised to oxaloacetate, giving NADH.",
   oaa: "Regenerated at the end of each TCA turn; it is also the precursor of aspartate and, in gluconeogenesis, of glucose.",
   urea: "The main nitrogen waste in mammals. It is small, neutral and very soluble, so the kidney clears it easily.",
-  glycogen: "Branched storage polymer of glucose, mostly in liver and muscle. The ring drawn is one α-glucose unit, with the chain running on at C1 and C4.",
+  glycogen: "Branched storage polymer of glucose, mostly in liver (about 10 % of its weight) and muscle (1–2 %). The ring drawn is one α-glucose unit, with the chain running on at C1 and C4; α-1,6 branches every 8–12 units give many free ends, so phosphorylase can release glucose from many ends at once. Glycogenolysis releases it as G1P (about 90 %) and free glucose at the branches (about 10 %).",
+  carn: "Carries long-chain acyl groups across the mitochondrial membrane. Primary carnitine deficiency (OCTN2, SLC22A5 defect): carnitine is lost in urine, so cardiomyopathy, muscle weakness and fasting hypoketotic hypoglycaemia develop; oral carnitine treats it.",
+  vlcfa: "Very-long-chain fatty acids accumulate in X-linked adrenoleukodystrophy (ABCD1 transporter defect): cerebral demyelination in boys, adrenal insufficiency, raised C26:0. They are shortened in peroxisomes to medium-chain acyl-CoAs and then finished in mitochondria.",
+  cis3: "Natural unsaturated fatty acids (oleate, linoleate) have cis double bonds at odd positions. After enough turns the bond sits at C3–C4, where the hydratase cannot act; enoyl-CoA isomerase moves it to trans-C2–C3, skipping the dehydrogenase step, so one FADH₂ is lost for each odd-numbered double bond.",
+  dienoyl: "Even-numbered double bonds (as in linoleate, C18:2) give a 2,4-dienoyl-CoA after the first dehydrogenation. The reductase uses NADPH to reduce it to trans-Δ3-enoyl-CoA.",
+  trans3: "Made by 2,4-dienoyl-CoA reductase; the same enoyl-CoA isomerase that handles cis-Δ3 bonds converts it to trans-Δ2-enoyl-CoA, which re-enters the spiral at the hydratase.",
+  propcoa: "Three carbons. Comes from the last turn of odd-chain fatty acids (dairy, ruminant fat, some plants), from the catabolism of valine, isoleucine, methionine and threonine, and from gut bacteria. It cannot enter the TCA cycle directly: carboxylation, epimerisation and a B₁₂-dependent rearrangement turn it into succinyl-CoA. Raised in propionic acidaemia.",
+  mmd: "Made by propionyl-CoA carboxylase from propionyl-CoA, HCO₃⁻ and ATP. Methylmalonyl-CoA epimerase flips it to the L-form, because the mutase only accepts that isomer.",
+  mml: "Methylmalonyl-CoA mutase (adenosylcobalamin) moves the carboxyl-bearing carbon to make succinyl-CoA. If the mutase or B₁₂ is lacking, methylmalonic acid builds up: methylmalonic acidaemia, or raised methylmalonic acid in B₁₂ deficiency.",
+  acylcarn: "Made by CPT1 on the outer membrane; carnitine-acylcarnitine translocase (CACT) swaps it for free carnitine across the inner membrane. Only long-chain acyl groups need this; medium and short chains enter freely. Carnitine deficiency or CPT/CACT defects stop long-chain fatty acid use, so fasting causes hypoketotic hypoglycaemia.",
+  facylm: "The same acyl-CoA as in the cytosol, but in the matrix, where the CoA pool is separate. It is the start of the spiral, and thiolase returns each shortened acyl-CoA to this pool.",
+  enoyl: "First product of each turn: acyl-CoA dehydrogenase removes two hydrogens from C2 and C3, passing the electrons to FAD (then to the electron transport chain via ETF), leaving a trans double bond.",
+  hacyl: "Enoyl-CoA hydratase adds water across the double bond, putting the OH on C3 (the β carbon) as the L-isomer. Long-chain forms are handled by the trifunctional protein.",
+  kacyl: "Made by 3-hydroxyacyl-CoA dehydrogenase, which gives NADH. Thiolase then attacks C3 with a new CoA, releasing acetyl-CoA and an acyl-CoA two carbons shorter that goes round again.",
+  g1p: "Product of glycogen phosphorylase, made with inorganic phosphate rather than ATP, so the phosphate bond energy of glycogen is kept. Phosphoglucomutase converts it to glucose 6-phosphate, which muscle burns in glycolysis and liver can dephosphorylate to glucose.",
   heme: "An iron–porphyrin that carries O₂ in haemoglobin and myoglobin and passes electrons in cytochromes. Free heme is toxic, so it is bound to protein or degraded.",
   bilirubin: "Yellow, lipophilic breakdown product of heme. It travels on albumin to the liver; a build-up causes jaundice.",
   glutamate: "The amino-group hub: transaminases pass nitrogen to and from α-ketoglutarate, and glutamate dehydrogenase releases it as ammonia.",
@@ -3741,6 +4180,10 @@ const EXPLAIN = {
 const ENZN = {
   "Phenylalanine hydroxylase": "Adds a hydroxyl group to the ring of phenylalanine to make tyrosine, using O₂ and tetrahydrobiopterin (BH₄). Deficiency is phenylketonuria; some forms respond to BH₄ (sapropterin). Tyrosine then becomes an essential amino acid.",
   "Hexokinase / Glucokinase": "Traps glucose as glucose 6-phosphate using ATP. Glucokinase (liver, β-cells) has a high Km and is not inhibited by G6P, so it tracks blood glucose; hexokinase is inhibited by its product.",
+  "Pyruvate carboxylase": "Mitochondrial first step of gluconeogenesis: pyruvate + HCO₃⁻ + ATP → oxaloacetate. Needs biotin; acetyl-CoA activates it, so fatty acid oxidation switches it on. Oxaloacetate cannot cross the inner mitochondrial membrane, so it is reduced to malate, exported, and re-oxidised to oxaloacetate in the cytosol (generating the NADH that 1,3-BPG needs).",
+  "PEP carboxykinase (PEPCK)": "Turns oxaloacetate into phosphoenolpyruvate with GTP, releasing CO₂. Two isoforms: cytosolic (PEPCK-C, the main one in liver and kidney) and mitochondrial (PEPCK-M), so PEP can be made before or after the malate shuttle. Induced by glucagon and cortisol, repressed by insulin.",
+  "Fructose 1,6-bisphosphatase": "Rate-limiting step of gluconeogenesis, the reverse of phosphofructokinase-1. Inhibited by AMP and fructose 2,6-bisphosphate; citrate activates it.",
+  "Glucose 6-phosphatase": "Last step of gluconeogenesis and glycogenolysis, in the endoplasmic reticulum of liver, kidney and intestine. Muscle lacks it. Deficiency is von Gierke disease (glycogen storage disease type I).",
   "Phosphofructokinase-1": "The committed step of glycolysis. Activated by AMP and fructose 2,6-bisphosphate; inhibited by ATP and citrate.",
   "Pyruvate kinase": "Moves phosphate from PEP to ADP, making ATP at the substrate level. Fructose 1,6-bisphosphate activates it; in liver, glucagon-driven phosphorylation inhibits it.",
   "Pyruvate dehydrogenase complex": "Links glycolysis to the TCA cycle. Needs thiamine, lipoate, CoA, FAD and NAD⁺; inhibited by its products and by PDH kinase.",
@@ -3748,7 +4191,29 @@ const ENZN = {
   "Isocitrate dehydrogenase": "The main rate-limiting step of the TCA cycle. Activated by ADP and Ca²⁺; inhibited by ATP and NADH.",
   "α-KG dehydrogenase": "Uses the same cofactors as pyruvate dehydrogenase, including the lipoate that arsenite attacks. Inhibited by succinyl-CoA and NADH.",
   "G6P dehydrogenase": "Rate-limiting step of the pentose phosphate pathway and source of the first NADPH. NADPH inhibits it; deficiency causes haemolytic anaemia under oxidative stress.",
-  "Glycogen phosphorylase": "Releases glucose 1-phosphate from the ends of glycogen. Activated by phosphorylation (glucagon, adrenaline) and by AMP.",
+  "Glycogen phosphorylase": "Rate-limiting step of glycogenolysis: phosphorolysis of α-1,4 bonds from the free ends, using Pᵢ and pyridoxal phosphate (vitamin B₆), giving glucose 1-phosphate. It stops four glucose units short of each α-1,6 branch. Phosphorylase kinase turns phosphorylase b into the active a (glucagon and adrenaline via cAMP and PKA; Ca²⁺ in contracting muscle); AMP activates b in muscle; ATP, glucose 6-phosphate and, in liver, glucose inhibit it; insulin opposes it. Isoforms: PYGL (liver), PYGM (muscle), PYGB (brain). Deficiency: Hers disease (liver) and McArdle disease (muscle).",
+  "Debranching enzyme (α-1,6-glucosidase)": "AGL, one protein with two activities. Its transferase moves three of the four glucose units left at a branch onto a free end; its α-1,6-glucosidase then hydrolyses the last unit, releasing free glucose (about 10 % of the total, and the only glucose that does not pass through G1P). Deficiency is Cori (Forbes) disease, glycogen storage disease type III: fasting hypoglycaemia, hepatomegaly, abnormal short-branched glycogen (limit dextrin).",
+  "Lysosomal acid α-glucosidase (GAA)": "Acid hydrolase in lysosomes that cuts both α-1,4 and α-1,6 bonds of glycogen taken up by autophagy, giving free glucose. Not regulated by hormones. Deficiency is Pompe disease (type II): lysosomal glycogen build-up, cardiomegaly and hypotonia; the only glycogen storage disease with a lysosomal defect.",
+  "Carnitine palmitoyltransferase I (CPT1)": "Rate-limiting step of β-oxidation, on the outer mitochondrial membrane: moves the acyl group from CoA to carnitine. Malonyl-CoA, made by acetyl-CoA carboxylase when fed, inhibits it so that newly made fatty acids are not burned at once; AMPK lowers malonyl-CoA and so lifts the block. Liver (CPT1A), muscle (CPT1B) and brain isoforms exist.",
+  "CACT, then CPT2": "Carnitine-acylcarnitine translocase (SLC25A20) exchanges acylcarnitine for carnitine across the inner membrane; CPT2 then rebuilds acyl-CoA in the matrix. CACT deficiency is severe, with neonatal hypoglycaemia, arrhythmia and hyperammonaemia; CPT2 deficiency is the commonest cause of inherited rhabdomyolysis on prolonged exercise or fasting.",
+  "Malonyl-CoA inhibits CPT1": "Fed state: insulin raises malonyl-CoA (fatty acid synthesis), which blocks CPT1 so synthesis and oxidation do not run together.",
+  "Acyl-CoA oxidase (ACOX1)": "First and rate-limiting peroxisomal step: FAD-dependent, but the FADH₂ is re-oxidised by O₂, giving H₂O₂ (catalase removes it), so this step yields no ATP. Deficiency causes a neonatal peroxisomal disorder with very-long-chain fatty acid accumulation.",
+  "D-bifunctional protein (hydratase + dehydrogenase)": "Peroxisomal protein (HSD17B4) that does both the hydratase and 3-hydroxyacyl dehydrogenase steps, giving NADH. Deficiency causes a Zellweger-like severe neonatal disease.",
+  "Peroxisomal thiolase (shortened acyl-CoA to mitochondria)": "Peroxisomal thiolase (ACAA1, or SCPx for branched chains) releases acetyl-CoA; the chain-shortened acyl-CoA leaves as carnitine or free acid for mitochondrial β-oxidation.",
+  "ABCD1 import, then very-long-chain acyl-CoA synthetase": "ABCD1 imports very-long-chain fatty acids into peroxisomes, where they are activated to CoA esters. ABCD1 mutations cause X-linked adrenoleukodystrophy.",
+  "Phytanoyl-CoA hydroxylase (α-oxidation)": "PHYH (Fe²⁺, α-ketoglutarate, ascorbate) hydroxylates C2 of phytanoyl-CoA; further steps remove one carbon as formyl-CoA and give pristanoyl-CoA. Deficiency is Refsum disease: retinitis pigmentosa, anosmia, ataxia, neuropathy, ichthyosis; phytanic acid builds up, so dairy and ruminant fat are restricted.",
+  "Branched-chain acyl-CoA oxidase (ACOX2)": "Acts on pristanoyl-CoA (and bile-acid precursors) and joins the peroxisomal spiral at the D-bifunctional protein.",
+  "Enoyl-CoA isomerase": "Moves a cis- or trans-Δ3 double bond to trans-Δ2, so the hydratase can act. Acts on odd-numbered double bonds directly and on the product of the dienoyl reductase for even-numbered ones.",
+  "2,4-Dienoyl-CoA reductase": "NADPH-dependent (DECR1, mitochondrial). Reduces the 2,4-dienoyl-CoA from even-numbered double bonds to trans-Δ3-enoyl-CoA. A rare deficiency causes hypolipidaemia-like acylcarnitine changes and encephalopathy.",
+  "Thiolase (last turn of an odd-chain fatty acid)": "With a 5-carbon acyl-CoA the final thiolase cleavage gives acetyl-CoA plus propionyl-CoA instead of two acetyl-CoA, so odd-chain fatty acids make one propionyl-CoA each.",
+  "Propionyl-CoA carboxylase": "Mitochondrial, biotin-dependent: propionyl-CoA + HCO₃⁻ + ATP → D-methylmalonyl-CoA. Deficiency is propionic acidaemia: vomiting, acidosis, hyperammonaemia and lethargy in the first days of life, with raised propionylcarnitine.",
+  "Methylmalonyl-CoA epimerase": "Converts D- to L-methylmalonyl-CoA (also called the racemase), so the mutase can act.",
+  "Methylmalonyl-CoA mutase": "Needs 5′-deoxyadenosylcobalamin (vitamin B₁₂). Makes succinyl-CoA, the only route by which odd-chain fatty acid carbon enters the TCA cycle. Deficiency (mut⁰ or mut⁻) or B₁₂ defects cause methylmalonic acidaemia: acidosis, hyperammonaemia, failure to thrive; in adults B₁₂ deficiency raises methylmalonic acid and, with the methionine synthase block, homocysteine.",
+  "Acyl-CoA dehydrogenase": "Step 1 of each turn, on the inner mitochondrial membrane side, FAD-dependent; passes electrons to ETF and on to coenzyme Q. Separate isoenzymes act on very-long (VLCAD), long (LCAD), medium (MCAD) and short (SCAD) chains. Hypoglycin A (unripe ackee fruit, Jamaican vomiting sickness) is converted to a metabolite that inactivates these dehydrogenases, causing vomiting, hypoglycaemia and encephalopathy. MCAD deficiency, the commonest, causes fasting hypoketotic hypoglycaemia, vomiting and lethargy in children, with dicarboxylic aciduria.",
+  "Enoyl-CoA hydratase": "Step 2 (long chains: the mitochondrial trifunctional protein, HADHA, also carries this activity): adds H₂O across the trans-Δ2 double bond to give L-3-hydroxyacyl-CoA (crotonase for short chains).",
+  "3-Hydroxyacyl-CoA dehydrogenase": "Step 3 (long chains: HADHA, the LCHAD activity of the trifunctional protein): NAD⁺-dependent oxidation of the C3 hydroxyl to a ketone, giving NADH. Long-chain deficiency (LCHAD, part of the trifunctional protein) can cause hypoglycaemia, cardiomyopathy and, in pregnancy, maternal fatty liver.",
+  "Thiolase (β-ketothiolase)": "Step 4 (long chains: HADHB of the trifunctional protein; medium and short chains use separate thiolases): thiolytic cleavage of 3-ketoacyl-CoA by a new CoA, releasing acetyl-CoA and an acyl-CoA two carbons shorter. Each turn therefore makes 1 FADH₂, 1 NADH and 1 acetyl-CoA.",
+  "Phosphoglucomutase": "Moves the phosphate of glucose 1-phosphate from C1 to C6, giving glucose 6-phosphate; it works through a glucose 1,6-bisphosphate intermediate. Reversible, so the same enzyme feeds glycogen synthesis from G6P.",
   "Glycogen synthase": "Adds glucose from UDP-glucose to growing chains. Phosphorylation inactivates it; insulin promotes its dephosphorylation.",
   "Acetyl-CoA carboxylase": "Commits acetyl-CoA to fatty acid synthesis. Needs biotin; citrate and insulin activate it, palmitoyl-CoA and AMPK inhibit it.",
   "Arginase": "Last step of the urea cycle, in liver cytosol: it cleaves arginine to urea and ornithine. Mn²⁺ is its cofactor.",
@@ -3761,7 +4226,10 @@ const ENZN = {
   "UDP-glucuronosyltransferase": "Conjugates bilirubin with glucuronate in the liver so it can enter bile. Reduced in Gilbert syndrome, absent in Crigler–Najjar type I.",
 };
 const PDESC = {
+  gluconeogenesis: "Net: 2 pyruvate + 4 ATP + 2 GTP + 2 NADH + 2 H⁺ + 6 H₂O → glucose + 4 ADP + 2 GDP + 6 Pᵢ + 2 NAD⁺. Glucagon and cortisol switch it on (lower fructose 2,6-bisphosphate, induce PEPCK and glucose 6-phosphatase); insulin switches it off. Two cycles supply it: the Cori cycle (muscle lactate to liver glucose) and the glucose–alanine cycle (muscle alanine to liver glucose, urea cycle takes the nitrogen). Makes glucose from lactate, glycerol, alanine and other amino acids, mainly in the liver (and kidney in fasting). Seven glycolytic steps run backwards; four bypass enzymes get round the irreversible ones. Costs 4 ATP + 2 GTP per glucose. Alcohol (excess NADH diverts pyruvate and oxaloacetate) and metformin suppress it, so fasting hypoglycaemia can follow.",
   glycolysis: "Splits glucose into two pyruvate in the cytosol, netting 2 ATP and 2 NADH. Phosphofructokinase-1 is the committed, most regulated step.",
+  box: "Very-long-chain and branched fatty acids are first shortened in peroxisomes (acyl-CoA oxidase makes H₂O₂ instead of FADH₂), then sent to mitochondria. Unsaturated fatty acids use two extra enzymes: enoyl-CoA isomerase (odd-numbered double bonds) and 2,4-dienoyl-CoA reductase with NADPH (even-numbered ones), drawn as the dashed side route. Long-chain fatty acids enter mitochondria on carnitine (CPT1, translocase, CPT2). Then a repeating four-step spiral in the mitochondrial matrix: dehydrogenase (FADH₂), hydratase, hydroxyacyl dehydrogenase (NADH), thiolase (acetyl-CoA); the shortened acyl-CoA goes round again. Palmitoyl-CoA (C16) takes 7 turns: 8 acetyl-CoA + 7 FADH₂ + 7 NADH, about 106 ATP net of the 2 used to activate it. The acetyl-CoA feeds the TCA cycle or, in liver, ketogenesis.",
+  glycogenolysis: "Net: glycogen(n) + Pᵢ → glycogen(n−1) + glucose 1-phosphate, then G1P → G6P. Phosphorylase works from the free ends and stops four units from a branch; debranching enzyme moves three units and releases the last as free glucose. In liver, glucose 6-phosphatase (endoplasmic reticulum) makes free glucose for the blood; muscle lacks it, so G6P stays for glycolysis. Glucagon (liver) and adrenaline (liver and muscle) switch it on through cAMP, PKA and phosphorylase kinase, Ca²⁺ does so in contracting muscle, and insulin switches it off. Glycogen storage diseases: von Gierke I (glucose 6-phosphatase), Pompe II (lysosomal acid α-glucosidase, the separate lysosomal route drawn to the left), Cori III (debranching), McArdle V (muscle phosphorylase), Hers VI (liver phosphorylase).",
   glycogen: "Stores glucose as a branched polymer. Glycogen synthase uses UDP-glucose; phosphorylase releases glucose 1-phosphate.",
   ppp: "The oxidative branch makes NADPH (via G6P dehydrogenase) and ribose 5-phosphate; the non-oxidative branch interconverts sugars and returns carbon to glycolysis.",
   tca: "Oxidises acetyl-CoA to CO₂ in the mitochondrial matrix, capturing electrons as NADH and FADH₂ and making GTP at succinyl-CoA synthetase.",
@@ -3773,6 +4241,7 @@ const PDESC = {
   ala: "Succinyl-CoA and glycine condense to 5-aminolevulinate in the mitochondrion. ALA synthase is the rate-limiting step of heme synthesis.",
   heme: "Eight enzymes, split between mitochondria and cytosol, build the porphyrin ring and insert iron. Genetic defects cause the porphyrias; lead inhibits two steps.",
   pharm: "Drugs (capsules) point at their targets: enzymes, transporters, receptors and, for chemotherapy, DNA itself. The coloured line shows the effect, and a dotted line joins each target to the metabolite it works on. Organ hubs group the targets by organ system; the Oncology hub groups chemotherapy by mechanism. Switch the layer off in Settings.",
+  purine: "Builds IMP on a ribose 5-phosphate scaffold in ten steps, then branches to AMP and GMP. Ring atoms: N1 from aspartate, C2 and C8 from N¹⁰-formyl-THF, N3 and N9 from glutamine, C4, C5 and N7 from glycine, C6 from CO₂. PPAT is the committed step; AMP, GMP and IMP switch it off.",
   bili: "Heme oxygenase opens the ring to biliverdin (releasing CO and iron), biliverdin reductase makes bilirubin, and the liver conjugates it with glucuronate for bile.",
 };
 
@@ -3785,7 +4254,38 @@ Object.assign(EXPLAIN, {
   preg: "C21 steroid made when P450scc (CYP11A1, inner mitochondrial membrane) cuts the cholesterol side chain; this is the rate-limiting step of steroid hormone synthesis, driven by StAR carrying cholesterol into the mitochondrion. Pregnenolone becomes progesterone, then corticosteroids, androgens and estrogens in a tissue-specific way. Lipoid congenital adrenal hyperplasia (StAR defect) leaves all adrenal and gonadal steroids low.",
 });
 Object.assign(EXPLAIN, {
+  prpp: "Ribose 5-phosphate with a pyrophosphate on C1, made by PRPP synthetase (ATP gives up its β,γ-pyrophosphate, so AMP is released). It is the sugar donor for de novo purine and pyrimidine synthesis and for the salvage enzymes (HGPRT, APRT). PRPP synthetase is inhibited by ADP and GDP; superactive mutants make too much PRPP and cause hyperuricemia and gout. Lesch–Nyhan syndrome (HGPRT deficiency) also raises PRPP, because salvage no longer uses it.",
+  pra: "5-Phosphoribosylamine: the amide nitrogen of glutamine replaces the pyrophosphate on C1 (inverting the anomeric centre to β). Amidophosphoribosyltransferase (PPAT) is the committed and rate-limiting step; AMP, GMP and IMP inhibit it and PRPP activates it. PRA is very unstable and passes straight to GAR.",
+  gar: "Glycine is joined to the amine of PRA with ATP. The glycine contributes C4, C5 and N7 of the finished ring. In humans GAR synthetase, GAR transformylase and AIR synthetase are one trifunctional protein (GART). Pemetrexed and lometrexol inhibit the transformylase step.",
+  fgar: "The amino group of the glycine is formylated by N¹⁰-formyl-tetrahydrofolate; the formyl carbon becomes C8. This is one of two folate-dependent steps, so methotrexate and other antifolates (and folate or B₁₂ trapping) slow purine synthesis in dividing cells.",
+  fgam: "FGAM synthetase uses glutamine and ATP to convert the formyl amide into an amidine. The new nitrogen becomes N3 of the purine ring. Azaserine and 6-diazo-5-oxo-norleucine, glutamine analogues, block this and other glutamine-dependent steps.",
+  air: "ATP-dependent ring closure forms the five-membered imidazole ring: the six-membered ring is built onto it, so the ribose stays attached from the first step to the last. AIR synthetase is part of the GART protein.",
+  cair: "A carboxyl group adds to C4 of the imidazole; it becomes C6 of the purine ring. In vertebrates AIR carboxylase takes CO₂ directly, with no biotin and no ATP.",
+  saicar: "Aspartate is attached to the carboxyl group with ATP, by SAICAR synthetase. The aspartate nitrogen becomes N1 of the ring; its carbon skeleton is removed in the next step as fumarate, which links the pathway to the TCA cycle. AIR carboxylase and SAICAR synthetase are one protein (PAICS) in humans.",
+  aicar: "AICAR is released when adenylosuccinate lyase takes fumarate off SAICAR. It is a purine precursor and also an AMP mimic: it activates AMP-activated protein kinase (AMPK). It accumulates when ATIC is missing, which causes AICA-ribosiduria.",
+  faicar: "N¹⁰-formyl-THF gives the second formyl carbon (C2) on the 5-amino group. IMP cyclohydrolase, the other half of the bifunctional ATIC protein, then closes the six-membered ring with loss of water. Methotrexate polyglutamates inhibit ATIC.",
+  imp: "The first complete purine nucleotide. Its base is hypoxanthine. IMP is the branch point: GTP drives conversion to AMP (adenylosuccinate synthetase uses GTP) and ATP drives conversion to GMP (GMP synthetase uses ATP), so each nucleotide supports synthesis of the other and the two stay balanced. Salvage (HGPRT: hypoxanthine + PRPP → IMP) feeds the same pool.",
+  sucamp: "IMP with the amino group of aspartate attached to C6 by adenylosuccinate synthetase (GTP is used and GDP + Pᵢ are released). Adenylosuccinate lyase, the same enzyme that acts on SAICAR, removes fumarate to leave AMP.",
+  xmp: "IMP oxidised at C2 by IMP dehydrogenase with NAD⁺. This is the rate-limiting step of guanine nucleotide synthesis, and proliferating lymphocytes depend on it, so mycophenolic acid (mycophenolate mofetil) and ribavirin act here.",
+  amp_n: "Adenosine monophosphate: the end of the adenine branch, made from IMP by adenylosuccinate synthetase and adenylosuccinate lyase. It inhibits PPAT and adenylosuccinate synthetase, and it is phosphorylated to ADP and ATP. The AMP/ATP card in the cofactor list describes its roles in energy sensing.",
+  gmp_n: "Guanosine monophosphate: the end of the guanine branch. GMP synthetase adds an amino group from glutamine to XMP (ATP is used and AMP + PPᵢ are released). GMP inhibits PPAT and IMP dehydrogenase, and it is phosphorylated to GDP and GTP.",
   coq: "Ubiquinone (coenzyme Q10) is a benzoquinone head on a long isoprenoid tail, so it dissolves in the lipid bilayer and diffuses between complexes. It takes two electrons and two protons to become ubiquinol (QH₂), and can also sit halfway as a semiquinone radical. It is made by the same mevalonate route as cholesterol, so statins lower it a little; primary CoQ10 deficiency causes encephalomyopathy and nephrotic syndrome, and CoQ10 is also an antioxidant in membranes.",
+});
+Object.assign(ENZN, {
+  "Ribose-phosphate pyrophosphokinase (PRPS1)": "PRPP synthetase transfers the pyrophosphate group of ATP to C1 of ribose 5-phosphate, giving PRPP and AMP. It is inhibited by ADP and GDP and activated by phosphate. PRPS1 gain-of-function causes PRPP and uric acid overproduction (gout, sometimes with deafness).",
+  "Amidophosphoribosyltransferase (PPAT)": "Replaces the pyrophosphate of PRPP with the amide nitrogen of glutamine, making 5-phosphoribosylamine, glutamate and PPᵢ. It is the committed step, activated by PRPP and inhibited by AMP, GMP and IMP; thiopurine nucleotides (from azathioprine and mercaptopurine) also switch it off. Hyperuricemia can follow when it is overactive.",
+  "GAR synthetase": "Adds glycine to the amine of PRA with ATP (ADP and Pᵢ are released). Carried by the trifunctional GART protein, together with the transformylase and AIR synthetase steps.",
+  "GAR transformylase": "Transfers a formyl group from N¹⁰-formyl-tetrahydrofolate to the glycine amine (THF is released). This is one of two folate-dependent steps; the antifolates pemetrexed and lometrexol inhibit GART.",
+  "FGAM synthetase (PFAS)": "Uses glutamine (as nitrogen donor) and ATP to convert the formylglycinamide into the amidine FGAM. Blocked by the glutamine analogue azaserine.",
+  "AIR synthetase": "ATP-dependent dehydration that closes the imidazole ring. In humans it is the third activity of the trifunctional GART protein.",
+  "AIR carboxylase (PAICS)": "Adds CO₂ to C4 of the imidazole, which becomes C6 of the purine. In vertebrates this needs neither ATP nor biotin; PAICS also carries the next step (SAICAR synthetase).",
+  "SAICAR synthetase (PAICS)": "Condenses aspartate onto the carboxyl group of CAIR with ATP (ADP and Pᵢ are released), forming the amide SAICAR.",
+  "Adenylosuccinate lyase (ADSL)": "One enzyme for two steps: it removes fumarate from SAICAR (giving AICAR) and from adenylosuccinate (giving AMP). Fumarate enters the TCA cycle. Deficiency causes a rare neurological disease with succinylpurines in urine and CSF.",
+  "AICAR transformylase (ATIC)": "Transfers the second formyl group, from N¹⁰-formyl-THF, to the amino group of AICAR. The same ATIC protein carries the next step (IMP cyclohydrolase).",
+  "IMP cyclohydrolase (ATIC)": "Closes the six-membered ring of FAICAR by loss of water, forming IMP. Same protein as AICAR transformylase (ATIC).",
+  "IMP dehydrogenase (IMPDH)": "Oxidises IMP at C2 with NAD⁺ to give XMP (NADH is released). It is rate-limiting for guanine nucleotide synthesis and is inhibited by mycophenolic acid and ribavirin; GMP and GTP feed back on it.",
+  "GMP synthetase (GMPS)": "Converts XMP to GMP by amination at C2: glutamine supplies the nitrogen and ATP is cleaved to AMP and PPᵢ. Inhibited by the glutamine antagonists acivicin and azaserine.",
+  "Adenylosuccinate synthetase (ADSS)": "Joins aspartate to C6 of IMP, using GTP (GDP and Pᵢ are released), to give adenylosuccinate. Using GTP here and ATP in the GMP branch keeps adenine and guanine nucleotides in balance. AMP inhibits it.",
 });
 Object.assign(ENZN, {
   "2 e⁻ (FMN, Fe–S)": "Complex I takes a hydride from NADH onto FMN, then passes the two electrons one at a time along a chain of iron–sulfur clusters to ubiquinone.",
@@ -3932,7 +4432,7 @@ function PathCard({ p, open, shell }) {
       </CardShell>
     );
   }
-  const pc = PATHWAYS[p], mols = NODES.filter((n) => n.mol && PATH_OF[n.id] === p);
+  const pc = PATHWAYS[p], mols = NODES.filter((n) => n.mol && (PATH_OF[n.id] === p || (p === "gluconeogenesis" && GN_NODES.has(n.id)) || (p === "glycogenolysis" && GL_NODES.has(n.id)) || (p === "box" && BX_NODES.has(n.id))));
   const enz = [...new Set(EDGES.filter((e) => e.main && e.label && pathOfEdge(e) === p).map((e) => e.label))];
   return (
     <CardShell {...shell} c={pc.color} sub="Pathway" title={pc.label} label={`${pc.label} pathway card`}>
@@ -4596,7 +5096,7 @@ function Atlas() {
         data: {
           ...n.data,
           showLoc, showOrg: showOrgans,
-          dim: (matchIds ? !matchIds.has(n.id) && !n.data.title : false) || (focus ? n.data.path !== focus && !(focus === "pharm" && RX_ANCHORS.has(n.id)) : false)
+          dim: (matchIds ? !matchIds.has(n.id) && !n.data.title : false) || (focus ? !(n.data.path === focus || (focus === "gluconeogenesis" && GN_NODES.has(n.id)) || (focus === "glycogenolysis" && GL_NODES.has(n.id)) || (focus === "box" && BX_NODES.has(n.id))) && !(focus === "pharm" && RX_ANCHORS.has(n.id)) : false)
             || (locFocus ? !n.data.title && !hasLoc(n.id, locFocus) : false) || (organFocus ? !n.data.title && !ORGAN_SET[organFocus].has(n.id) : false)
             || (rdxLit ? !n.data.title && !rdxLit.nodes.has(n.id) : false),
           hit: (matchIds ? matchIds.has(n.id) : false) || flash.includes(n.id),
@@ -4612,7 +5112,7 @@ function Atlas() {
       const REST = 0.4, filtering = !!(matchIds || focus || locFocus || organFocus || rdxLit);
       return edges.map((e) => {
         const faded =
-          (matchIds && !edgeHits.has(e.id) && !(matchIds.has(e.source) && matchIds.has(e.target))) || (focus && e.data.path !== focus) || (locFocus && !(hasLoc(e.source, locFocus) && hasLoc(e.target, locFocus))) || (organFocus && !(ORGAN_SET[organFocus].has(e.source) && ORGAN_SET[organFocus].has(e.target))) || (rdxLit && !rdxLit.edges.has(e.id));
+          (matchIds && !edgeHits.has(e.id) && !(matchIds.has(e.source) && matchIds.has(e.target))) || (focus && !(e.data.path === focus || (focus === "gluconeogenesis" && GN_EDGES.has(e.id)) || (focus === "glycogenolysis" && GL_EDGES.has(e.id)) || (focus === "box" && BX_EDGES.has(e.id)))) || (locFocus && !(hasLoc(e.source, locFocus) && hasLoc(e.target, locFocus))) || (organFocus && !(ORGAN_SET[organFocus].has(e.source) && ORGAN_SET[organFocus].has(e.target))) || (rdxLit && !rdxLit.edges.has(e.id));
         const main = e.data.main;
         const color = PATHWAYS[e.data.path]?.color || "#FFFFFF";
         const stroke = main ? color : "#7b8594";
@@ -4843,7 +5343,7 @@ function Atlas() {
     else if (kind === "sp") cardT = "mol";
     else if (kind === "bond") cardT = "bond";
     else if (kind === "loc") { ids = nodes.filter((n) => hasLoc(n.id, r.id) && !n.data.title).map((n) => n.id); cardT = "loc"; }
-    else if (kind === "pth") { ids = nodes.filter((n) => n.data.path === r.id).map((n) => n.id); cardT = "path"; }
+    else if (kind === "pth") { ids = nodes.filter((n) => n.data.path === r.id || (r.id === "gluconeogenesis" && GN_NODES.has(n.id)) || (r.id === "glycogenolysis" && GL_NODES.has(n.id)) || (r.id === "box" && BX_NODES.has(n.id))).map((n) => n.id); cardT = "path"; }
     const hasMap = ids.length > 0, hasCard = !!cardT;
     const doMap = hasMap && (wantMap || !hasCard), doCard = hasCard && (wantCard || !hasMap);
     if (kind === "pth" && doMap) { // a pathway is shown by isolating it
