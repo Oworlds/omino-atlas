@@ -1,3 +1,9 @@
+// v8.5: substrates (the co-substrate chips beside each molecule) are hidden on the canvas by default. The S button, the Substrates setting or the S key shows them; Default Settings hides them again. Opening a card or search result for a co-substrate still reveals them.
+// v8.4: periodic table panel runs down to the bottom of the canvas (rows stretch to fill it), and a Medically relevant / All elements toggle sits in its top bar. Medically relevant (default) shows the 71 elements with a body, drug, imaging or toxic role; All elements shows all 118. The legend lists only the categories on show.
+// v8.3: the periodic table lists all 118 elements (63 added: the rest of the lanthanides, the actinides, period 7 to oganesson, and the missing main-group and transition elements), with an actinide row and a 89–103 placeholder. New "Actinide" category and "No known biological role" tag; elements with a drug, imaging or toxic story (Ge, Kr, Ru, Pd, Cs, Ho, Re, Ir, At, Ac, Be, Po, Rn, Th, U, Pu) carry In drugs / Toxicity text. The panel is wider (up to 1680 px) and its rows scale with window height so the whole table fits over the canvas.
+// v7.43: Appearance is Light / Dark only; Dark is the default and no longer follows the device setting. The choice is remembered on this device and Default Settings puts it back to Dark.
+// v7.42: Settings has an Appearance control; the choice is remembered on this device.
+// v7.41: light mode with the navy/paper palette (LIGHT object near the CSS): paper page, white cards, navy top bar, blue accent, ink text; molecule drawings, element colours, lines, arrowheads, minimap and pathway text are re-toned for contrast on paper. Dark mode is unchanged.
 // v7.40: no two cards on the canvas overlap. A second pass (enforceNoOverlap, after resolveOverlaps) moves the less fixed card of any overlapping pair (chip/title, then target/drug/hub, then molecule) to the nearest free spot, with a 28 px gap; checked on all 949 cards. Includes the v7.9 load fix (mitochondrial HMG-CoA now defined after HMG-CoA).
 // v7.39: lines (vectors) highlight only when selected by click; pointer hover no longer lights them or the two things they join.
 // v7.38: "Open OWORLD" pill button in the top bar with the OWORLD app icon (embedded, 96 px) opening https://app.oworld.pro in a new tab; the label hides on phones, leaving the icon.
@@ -90,9 +96,9 @@ import "reactflow/dist/style.css";
 /*    implicit: an atom with no `text` is a skeletal vertex.           */
 /* ================================================================== */
 
-const CHALK = "#FFFFFF";
+const CHALK = "var(--o-chalk)";
 const OpenCtx = React.createContext(() => {}); // open(type, id): show an explanation card
-const EL_COLOR = { O: "#ff7a7a", N: "#7fb0ff", P: "#ffb454", S: "#f2d95c", X: "#c7a8ff", M: "#ff9d5c", F: "#8ee0a0", Cl: "#6fe08c" };
+const EL_COLOR = { O: "var(--el-O)", N: "var(--el-N)", P: "var(--el-P)", S: "var(--el-S)", X: "var(--el-X)", M: "var(--el-M)", F: "var(--el-F)", Cl: "var(--el-Cl)" };
 
 const S = 40; // chair unit
 // True-to-size canvas: every structure on the canvas is drawn at one scale. A C–C bond (1.54 Å) is 30 units, so 1 Å = 19.48 units, and CANVAS_K turns
@@ -4387,9 +4393,9 @@ const Icon = ({ d, size = 20 }) => (
 const CATS = {
   nonmetal: ["Nonmetal", "#6fe0b4"], alkali: ["Alkali metal", "#ff7ab6"], alkaline: ["Alkaline earth metal", "#6fa8ff"],
   transition: ["Transition metal", "#ff8a65"], post: ["Post-transition metal", "#f2c94c"], metalloid: ["Metalloid", "#c7a8ff"], halogen: ["Halogen", "#a3e36f"],
-  noble: ["Noble gas", "#7de3f4"], lanthanide: ["Lanthanide", "#c9a27e"],
+  noble: ["Noble gas", "#7de3f4"], lanthanide: ["Lanthanide", "#c9a27e"], actinide: ["Actinide", "#c98fa0"],
 };
-const ROLES = { bulk: ["Bulk element", "#6fe0b4"], major: ["Major mineral", "#6fa8ff"], trace: ["Trace element", "#ffb454"], toxic: ["Toxic", "#ff5d6c"], drug: ["Drug / imaging element", RX_COLOR] };
+const ROLES = { bulk: ["Bulk element", "#6fe0b4"], major: ["Major mineral", "#6fa8ff"], trace: ["Trace element", "#ffb454"], toxic: ["Toxic", "#ff5d6c"], drug: ["Drug / imaging element", RX_COLOR], none: ["No known biological role", "#8b93a7"] };
 // [symbol, name, Z, mass, group, period, category, electrons per shell, neutrons (commonest isotope), role, note]
 // Where each element turns up in drugs and diagnostic agents (shown as "In drugs" on its card, and searchable)
 const EL_RX = {
@@ -4507,6 +4513,8 @@ const EL_TOX = {
   Bi: "Bismuth encephalopathy with excessive chronic use; salicylate toxicity from bismuth subsalicylate (avoided in children with viral illness because of Reye syndrome); black tongue and stool.",
   Ra: "α-emitter that deposits in bone: osteosarcoma and jaw necrosis in the radium dial painters. ²²³Ra therapy: myelosuppression and diarrhoea.",
 };
+Object.assign(EL_RX, {"Ge": "⁶⁸Ge decays to ⁶⁸Ga in generators that supply gallium PET tracers such as ⁶⁸Ga-DOTATATE and ⁶⁸Ga-PSMA-11.", "Kr": "⁸¹ᵐKr gas for lung ventilation scans.", "Ru": "¹⁰⁶Ru plaques treat uveal melanoma; ruthenium complexes are in trials as anticancer agents.", "Pd": "¹⁰³Pd seeds for prostate and other brachytherapy.", "Cs": "¹³¹Cs seeds for brachytherapy; ¹³⁷Cs sources for blood irradiators.", "Ho": "¹⁶⁶Ho microspheres for liver-tumour radioembolisation; Ho:YAG lasers fragment kidney stones.", "Re": "¹⁸⁶Re and ¹⁸⁸Re β-emitters for bone-metastasis pain and radiosynovectomy.", "Ir": "¹⁹²Ir wires and seeds for high-dose-rate brachytherapy.", "At": "²¹¹At, an α-emitter, is in trials for targeted radiotherapy.", "Ac": "²²⁵Ac, an α-emitter, is in clinical trials of targeted radioligands such as PSMA-directed agents."});
+Object.assign(EL_TOX, {"Be": "Chronic beryllium disease: granulomatous lung disease that mimics sarcoidosis, from inhaled dust (confirmed with the beryllium lymphocyte proliferation test). Acute exposure causes pneumonitis; beryllium is a lung carcinogen.", "Po": "²¹⁰Po is an α-emitter: ingestion causes acute radiation syndrome with GI and marrow failure. It is hard to detect because α-particles do not leave the body.", "Rn": "Inhaled radon progeny irradiate the airways. Radon is the second leading cause of lung cancer after smoking and the leading cause in never-smokers.", "U": "Heavy-metal toxicity to the proximal tubule (acute tubular necrosis), plus a radiological hazard.", "Pu": "Deposits on bone surfaces and in the liver; α radiation raises the risk of bone, liver and lung cancer. Chelate with DTPA.", "Th": "Thorotrast (thorium dioxide), an old contrast agent, stayed in the reticuloendothelial system for decades; hepatic angiosarcoma and leukaemia followed.", "Ge": "Germanium dioxide supplements have caused kidney failure."});
 const ELEMENTS = [
   ["H", "Hydrogen", 1, 1.008, 1, 1, "nonmetal", [1], 0, "bulk", "In water and every organic molecule; carried as NADH and FADH₂, and the proton gradient drives ATP synthase."],
   ["Li", "Lithium", 3, 6.94, 1, 2, "alkali", [2, 1], 4, "trace", "Lithium salts are a mood stabiliser with a narrow therapeutic window."],
@@ -4563,7 +4571,70 @@ const ELEMENTS = [
   ["Tl", "Thallium", 81, 204.38, 13, 6, "post", [2, 8, 18, 32, 18, 3], 124, "drug", "Tl⁺ mimics K⁺ and enters heart muscle through the Na⁺/K⁺-ATPase; thallium is highly toxic."],
   ["Bi", "Bismuth", 83, 208.98, 15, 6, "post", [2, 8, 18, 32, 18, 5], 126, "drug", "Bismuth salts coat the ulcer base and are bactericidal to Helicobacter pylori."],
   ["Ra", "Radium", 88, 226.025, 2, 7, "alkaline", [2, 8, 18, 32, 18, 8, 2], 138, "drug", "No stable isotope; bone-seeking like calcium. ²²³Ra emits α-particles that kill cells within a few cell diameters."],
-].map(([sym, name, z, mass, g, p, cat, shells, n, role, note]) => ({ sym, name, z, mass, g, p, cat, shells, n, role, note, rx: EL_RX[sym] || "", tox: EL_TOX[sym] || "", gc: cat === "lanthanide" ? z - 54 : g, gr: cat === "lanthanide" ? 9 : p })) // gc/gr = grid column and row; the lanthanides sit in their own row under the table
+  ["Be", "Beryllium", 4, 9.0122, 2, 2, "alkaline", [2, 2], 5, "toxic", "No biological role. Beryllium compounds are toxic; the metal is used in X-ray tube windows and light alloys."],
+  ["Ne", "Neon", 10, 20.18, 18, 2, "noble", [2, 8], 10, "none", "Inert gas with no biological role; used in lasers and signs."],
+  ["Ar", "Argon", 18, 39.95, 18, 3, "noble", [2, 8, 8], 22, "none", "Inert gas, about 1% of air, with no biological role."],
+  ["Sc", "Scandium", 21, 44.956, 3, 4, "transition", [2, 8, 9, 2], 24, "none", "No known biological role; used in light aluminium alloys."],
+  ["Ge", "Germanium", 32, 72.63, 14, 4, "metalloid", [2, 8, 18, 4], 42, "drug", "A semiconductor metalloid with no established biological role."],
+  ["Kr", "Krypton", 36, 83.798, 18, 4, "noble", [2, 8, 18, 8], 48, "drug", "Inert gas with no biological role."],
+  ["Nb", "Niobium", 41, 92.906, 5, 5, "transition", [2, 8, 18, 12, 1], 52, "none", "No biological role; niobium–titanium wire carries the current in MRI magnets."],
+  ["Ru", "Ruthenium", 44, 101.07, 8, 5, "transition", [2, 8, 18, 15, 1], 58, "drug", "No biological role; a platinum-group metal."],
+  ["Rh", "Rhodium", 45, 102.906, 9, 5, "transition", [2, 8, 18, 16, 1], 58, "none", "No biological role; a platinum-group metal used as a catalyst and plating."],
+  ["Pd", "Palladium", 46, 106.42, 10, 5, "transition", [2, 8, 18, 18], 60, "drug", "No biological role; a platinum-group metal."],
+  ["Te", "Tellurium", 52, 127.6, 16, 5, "metalloid", [2, 8, 18, 18, 6], 78, "none", "No established biological role. Absorbed tellurium is exhaled as dimethyl telluride, which gives the breath a garlic smell."],
+  ["Cs", "Caesium", 55, 132.905, 1, 6, "alkali", [2, 8, 18, 18, 8, 1], 78, "drug", "Cs⁺ resembles K⁺ and enters cells through potassium pathways."],
+  ["Ce", "Cerium", 58, 140.116, 3, 6, "lanthanide", [2, 8, 18, 19, 9, 2], 82, "none", "A lanthanide with no biological role; cerium oxide nanoparticles are studied as antioxidants."],
+  ["Pr", "Praseodymium", 59, 140.908, 3, 6, "lanthanide", [2, 8, 18, 21, 8, 2], 82, "none", "A lanthanide with no biological role."],
+  ["Nd", "Neodymium", 60, 144.242, 3, 6, "lanthanide", [2, 8, 18, 22, 8, 2], 82, "none", "A lanthanide with no biological role; Nd:YAG lasers are used in surgery and ophthalmology."],
+  ["Pm", "Promethium", 61, 144.913, 3, 6, "lanthanide", [2, 8, 18, 23, 8, 2], 84, "none", "A radioactive lanthanide with no stable isotope and no biological role."],
+  ["Eu", "Europium", 63, 151.964, 3, 6, "lanthanide", [2, 8, 18, 25, 8, 2], 90, "none", "A lanthanide with no biological role; europium chelates are long-lived fluorescent labels in time-resolved immunoassays."],
+  ["Tb", "Terbium", 65, 158.925, 3, 6, "lanthanide", [2, 8, 18, 27, 8, 2], 94, "none", "A lanthanide with no biological role; terbium chelates are luminescent probes."],
+  ["Dy", "Dysprosium", 66, 162.5, 3, 6, "lanthanide", [2, 8, 18, 28, 8, 2], 98, "none", "A lanthanide with no biological role; strongly paramagnetic."],
+  ["Ho", "Holmium", 67, 164.93, 3, 6, "lanthanide", [2, 8, 18, 29, 8, 2], 98, "drug", "A lanthanide with no biological role."],
+  ["Er", "Erbium", 68, 167.259, 3, 6, "lanthanide", [2, 8, 18, 30, 8, 2], 98, "none", "A lanthanide with no biological role; Er:YAG lasers are used in dentistry and dermatology."],
+  ["Tm", "Thulium", 69, 168.934, 3, 6, "lanthanide", [2, 8, 18, 31, 8, 2], 100, "none", "A lanthanide with no biological role; thulium lasers are used in urology."],
+  ["Yb", "Ytterbium", 70, 173.045, 3, 6, "lanthanide", [2, 8, 18, 32, 8, 2], 104, "none", "A lanthanide with no biological role; ¹⁶⁹Yb is used in brachytherapy sources."],
+  ["Hf", "Hafnium", 72, 178.486, 4, 6, "transition", [2, 8, 18, 32, 10, 2], 108, "none", "No biological role; hafnium oxide is studied as a radiosensitiser."],
+  ["Ta", "Tantalum", 73, 180.948, 5, 6, "transition", [2, 8, 18, 32, 11, 2], 108, "none", "Inert and biocompatible; used in implants and as a radio-opaque marker."],
+  ["W", "Tungsten", 74, 183.84, 6, 6, "transition", [2, 8, 18, 32, 12, 2], 110, "none", "Some bacteria and archaea use it in enzymes, but humans do not; X-ray tube anodes are tungsten."],
+  ["Re", "Rhenium", 75, 186.207, 7, 6, "transition", [2, 8, 18, 32, 13, 2], 112, "drug", "No biological role."],
+  ["Os", "Osmium", 76, 190.23, 8, 6, "transition", [2, 8, 18, 32, 14, 2], 116, "none", "No biological role; osmium tetroxide fixes and stains lipids for electron microscopy, and its vapour is toxic."],
+  ["Ir", "Iridium", 77, 192.217, 9, 6, "transition", [2, 8, 18, 32, 15, 2], 116, "drug", "No biological role; one of the densest elements."],
+  ["Po", "Polonium", 84, 208.982, 16, 6, "post", [2, 8, 18, 32, 18, 6], 125, "toxic", "Radioactive, with no stable isotope; discovered by the Curies. ²¹⁰Po emits α-particles."],
+  ["At", "Astatine", 85, 209.987, 17, 6, "halogen", [2, 8, 18, 32, 18, 7], 125, "drug", "The rarest naturally occurring element, with no stable isotope. Like iodine, it is taken up by the thyroid."],
+  ["Rn", "Radon", 86, 222.018, 18, 6, "noble", [2, 8, 18, 32, 18, 8], 136, "toxic", "A radioactive noble gas formed in the uranium decay chain; no stable isotope."],
+  ["Fr", "Francium", 87, 223.02, 1, 7, "alkali", [2, 8, 18, 32, 18, 8, 1], 136, "none", "Extremely rare and radioactive; its longest-lived isotope has a half-life of about 22 minutes."],
+  ["Ac", "Actinium", 89, 227.028, 3, 7, "actinide", [2, 8, 18, 32, 18, 9, 2], 138, "drug", "Radioactive, with no stable isotope and no biological role."],
+  ["Th", "Thorium", 90, 232.038, 3, 7, "actinide", [2, 8, 18, 32, 18, 10, 2], 142, "toxic", "Radioactive but very long-lived (²³²Th half-life about 14 billion years); no biological role."],
+  ["Pa", "Protactinium", 91, 231.036, 3, 7, "actinide", [2, 8, 18, 32, 20, 9, 2], 140, "none", "A rare radioactive element with no biological role."],
+  ["U", "Uranium", 92, 238.029, 3, 7, "actinide", [2, 8, 18, 32, 21, 9, 2], 146, "toxic", "A radioactive heavy metal with no biological role; nuclear fuel."],
+  ["Np", "Neptunium", 93, 237.048, 3, 7, "actinide", [2, 8, 18, 32, 22, 9, 2], 144, "none", "A transuranic element made in reactors; no biological role."],
+  ["Pu", "Plutonium", 94, 244.064, 3, 7, "actinide", [2, 8, 18, 32, 24, 8, 2], 150, "toxic", "A transuranic element made in reactors; ²³⁹Pu is the fissile isotope. No biological role."],
+  ["Am", "Americium", 95, 243.061, 3, 7, "actinide", [2, 8, 18, 32, 25, 8, 2], 148, "none", "A transuranic element; ²⁴¹Am is the α-source in smoke detectors."],
+  ["Cm", "Curium", 96, 247.07, 3, 7, "actinide", [2, 8, 18, 32, 25, 9, 2], 151, "none", "A strongly radioactive transuranic element made in reactors; no biological role."],
+  ["Bk", "Berkelium", 97, 247.07, 3, 7, "actinide", [2, 8, 18, 32, 27, 8, 2], 150, "none", "A synthetic transuranic element with no biological role."],
+  ["Cf", "Californium", 98, 251.08, 3, 7, "actinide", [2, 8, 18, 32, 28, 8, 2], 153, "none", "Synthetic; ²⁵²Cf is a compact neutron source."],
+  ["Es", "Einsteinium", 99, 252.083, 3, 7, "actinide", [2, 8, 18, 32, 29, 8, 2], 153, "none", "Synthetic; first found in the debris of the 1952 hydrogen-bomb test."],
+  ["Fm", "Fermium", 100, 257.095, 3, 7, "actinide", [2, 8, 18, 32, 30, 8, 2], 157, "none", "Synthetic; first found in the debris of the 1952 test, with einsteinium."],
+  ["Md", "Mendelevium", 101, 258.098, 3, 7, "actinide", [2, 8, 18, 32, 31, 8, 2], 157, "none", "Synthetic; made in atom-at-a-time quantities."],
+  ["No", "Nobelium", 102, 259.101, 3, 7, "actinide", [2, 8, 18, 32, 32, 8, 2], 157, "none", "Synthetic; made in atom-at-a-time quantities."],
+  ["Lr", "Lawrencium", 103, 266.12, 3, 7, "actinide", [2, 8, 18, 32, 32, 8, 3], 163, "none", "Synthetic; the last of the actinides, made in atom-at-a-time quantities."],
+  ["Rf", "Rutherfordium", 104, 267, 4, 7, "transition", [2, 8, 18, 32, 32, 10, 2], 163, "none", "Synthetic superheavy element made a few atoms at a time; short-lived, with no biological role."],
+  ["Db", "Dubnium", 105, 268, 5, 7, "transition", [2, 8, 18, 32, 32, 11, 2], 163, "none", "Synthetic superheavy element made a few atoms at a time; short-lived, with no biological role."],
+  ["Sg", "Seaborgium", 106, 269, 6, 7, "transition", [2, 8, 18, 32, 32, 12, 2], 163, "none", "Synthetic superheavy element made a few atoms at a time; short-lived, with no biological role."],
+  ["Bh", "Bohrium", 107, 270, 7, 7, "transition", [2, 8, 18, 32, 32, 13, 2], 163, "none", "Synthetic superheavy element made a few atoms at a time; short-lived, with no biological role."],
+  ["Hs", "Hassium", 108, 277, 8, 7, "transition", [2, 8, 18, 32, 32, 14, 2], 169, "none", "Synthetic superheavy element made a few atoms at a time; short-lived, with no biological role."],
+  ["Mt", "Meitnerium", 109, 278, 9, 7, "transition", [2, 8, 18, 32, 32, 15, 2], 169, "none", "Synthetic superheavy element made a few atoms at a time; short-lived, with no biological role."],
+  ["Ds", "Darmstadtium", 110, 281, 10, 7, "transition", [2, 8, 18, 32, 32, 17, 1], 171, "none", "Synthetic superheavy element made a few atoms at a time; short-lived, with no biological role."],
+  ["Rg", "Roentgenium", 111, 282, 11, 7, "transition", [2, 8, 18, 32, 32, 18, 1], 171, "none", "Synthetic superheavy element made a few atoms at a time; short-lived, with no biological role."],
+  ["Cn", "Copernicium", 112, 285, 12, 7, "transition", [2, 8, 18, 32, 32, 18, 2], 173, "none", "Synthetic superheavy element made a few atoms at a time; short-lived, with no biological role."],
+  ["Nh", "Nihonium", 113, 286, 13, 7, "post", [2, 8, 18, 32, 32, 18, 3], 173, "none", "Synthetic superheavy element made a few atoms at a time; short-lived, with no biological role."],
+  ["Fl", "Flerovium", 114, 289, 14, 7, "post", [2, 8, 18, 32, 32, 18, 4], 175, "none", "Synthetic superheavy element made a few atoms at a time; short-lived, with no biological role."],
+  ["Mc", "Moscovium", 115, 290, 15, 7, "post", [2, 8, 18, 32, 32, 18, 5], 175, "none", "Synthetic superheavy element made a few atoms at a time; short-lived, with no biological role."],
+  ["Lv", "Livermorium", 116, 293, 16, 7, "post", [2, 8, 18, 32, 32, 18, 6], 177, "none", "Synthetic superheavy element made a few atoms at a time; short-lived, with no biological role."],
+  ["Ts", "Tennessine", 117, 294, 17, 7, "halogen", [2, 8, 18, 32, 32, 18, 7], 177, "none", "Synthetic superheavy element made a few atoms at a time; short-lived, with no biological role."],
+  ["Og", "Oganesson", 118, 294, 18, 7, "noble", [2, 8, 18, 32, 32, 18, 8], 176, "none", "The heaviest known element; only a few atoms have been made, each lasting under a millisecond."],
+].map(([sym, name, z, mass, g, p, cat, shells, n, role, note]) => ({ sym, name, z, mass, g, p, cat, shells, n, role, note, rx: EL_RX[sym] || "", tox: EL_TOX[sym] || "", gc: cat === "lanthanide" ? z - 54 : cat === "actinide" ? z - 86 : g, gr: cat === "lanthanide" ? 9 : cat === "actinide" ? 10 : p })) // gc/gr = grid column and row; the lanthanides sit in their own row under the table
   .sort((a, b) => a.z - b.z);
 const EL_LAB = Object.fromEntries(Object.entries({ H: "ph", C: "pco2", N: "bun", O: "po2", Na: "na osm", Mg: "mg", P: "phos", Cl: "cl", K: "k", Ca: "ca uca", Fe: "iron tibc trf fer", I: "tsh t4 ft4 t3 i123" }).map(([s, ks]) => [s, LAB_ORDER.filter((k) => ks.split(" ").includes(k))])); // NBME tests that follow each element
 const EL_NODE = { Mg: "mg", K: "k", P: "p", Fe: "fe" }; // elements that are also nodes in the atlas
@@ -4572,7 +4643,7 @@ function Bohr({ el, size = 210 }) {
   const c = size / 2, r = (i) => 14 + (i * (c - 20)) / 6;
   return (
     <svg viewBox={`0 0 ${size} ${size}`} width={size} height={size} role="img" aria-label={`Bohr model of ${el.name}: ${el.shells.join(", ")} electrons per shell`}>
-      {[0, 1, 2, 3, 4, 5, 6].map((i) => <circle key={i} cx={c} cy={c} r={r(i)} fill="none" stroke={i < el.shells.length ? "#A1A1AA" : "#34343a"} strokeWidth="1.4" />)}
+      {[0, 1, 2, 3, 4, 5, 6].map((i) => <circle key={i} cx={c} cy={c} r={r(i)} fill="none" stroke={i < el.shells.length ? "var(--o-muted)" : "var(--o-line2)"} strokeWidth="1.4" />)}
       <circle cx={c} cy={c} r="4" fill={CHALK} />
       {el.shells.map((n, i) => ( // each shell is its own group turning counterclockwise about the nucleus: inner shells faster
         <g key={i} className="omino-orbit" style={{ "--dur": `${7 + i * 4}s`, animationDirection: "reverse" }}>
@@ -4608,17 +4679,25 @@ function Footnote() {
 
 function PeriodicTable({ q, sel, onPick, onClose, width }) { // q comes from the main search bar: matching elements stay lit, the rest dim
   const [rxOnly, setRxOnly] = useState(false); // highlight the elements added for drugs and imaging
+  const [showAll, setShowAll] = useState(false); // false = medically relevant elements only (default); true = all 118
+  const shown = showAll ? ELEMENTS : ELEMENTS.filter((e) => e.role !== "none"); // "none" = no known biological, drug, imaging or toxic role
   const hit = (e) => (!q || [e.sym, e.name, e.z, CATS[e.cat][0], ROLES[e.role][0], e.note, e.rx, e.tox].join(" ").toLowerCase().includes(q)) && (!rxOnly || e.role === "drug");
   return (
     <section className="omino-ptable" style={{ width }} aria-label="Periodic table">
       <div className="omino-ptable__bar">
+        <div className="omino-ptable__mode" role="group" aria-label="Elements shown">
+          <button className={showAll ? "" : "is-on"} aria-pressed={!showAll} onClick={() => setShowAll(false)} title="Elements with a role in the body, in drugs and imaging, or in poisoning">Medically relevant · {ELEMENTS.filter((e) => e.role !== "none").length}</button>
+          <button className={showAll ? "is-on" : ""} aria-pressed={showAll} onClick={() => setShowAll(true)} title="All 118 elements">All elements · {ELEMENTS.length}</button>
+        </div>
         <button className="omino-tool omino-tool--sm" onClick={onClose} aria-label="Close periodic table" title="Close"><Icon d={ICON.close} size={18} /></button>
       </div>
       <div className="omino-ptable__body">
       <div className="omino-ptable__grid">
         <div className="omino-cell omino-cell--ph" style={{ gridColumn: 3, gridRow: 6 }} aria-hidden="true">57–71</div>
+        <div className="omino-cell omino-cell--ph" style={{ gridColumn: 3, gridRow: 7 }} aria-hidden="true">89–103</div>
         <span className="omino-ptable__flabel" style={{ gridColumn: "1 / 3", gridRow: 9 }}>Lanthanides</span>
-        {ELEMENTS.map((e) => (
+        <span className="omino-ptable__flabel" style={{ gridColumn: "1 / 3", gridRow: 10 }}>Actinides</span>
+        {shown.map((e) => (
           <button key={e.sym} className={`omino-cell ${sel === e.sym ? "is-sel" : ""} ${hit(e) ? "" : "is-dim"}`}
             style={{ gridColumn: e.gc, gridRow: e.gr, "--c": CATS[e.cat][1] }} onClick={() => onPick(e)} title={`${e.name} (${e.z})`} aria-label={`${e.name}, atomic number ${e.z}`}>
             <small>{e.z}</small><b>{e.sym}</b><i className="omino-cell__cat" aria-hidden="true" />{e.role === "drug" && <i className="omino-cell__rx" aria-hidden="true" />}
@@ -4626,7 +4705,7 @@ function PeriodicTable({ q, sel, onPick, onClose, width }) { // q comes from the
         ))}
       </div>
       <div className="omino-ptable__legend">
-        {Object.values(CATS).map(([l, c]) => <span key={l} style={{ "--c": c }}><i />{l}</span>)}
+        {Object.entries(CATS).filter(([k]) => shown.some((e) => e.cat === k)).map(([k, [l, c]]) => <span key={l} style={{ "--c": c }}><i />{l}</span>)}
         <button className={`omino-ptable__rx ${rxOnly ? "is-on" : ""}`} style={{ "--c": RX_COLOR }} aria-pressed={rxOnly} onClick={() => setRxOnly((v) => !v)} title="Elements that are here because of drugs and imaging agents">
           <i />Drug / imaging elements
         </button>
@@ -4666,7 +4745,7 @@ function ElementCard({ el, onClose, onBack, onStep, onShow }) {
       </div>
       <dl className="omino-ecard__facts">
         <dt>Electron shell</dt><dd>{el.shells.map((n, k) => "KLMNOPQ"[k] + n).join("-")}</dd>
-        <dt>Group · period</dt><dd>{el.cat === "lanthanide" ? "f-block" : el.g} · {el.p}</dd>
+        <dt>Group · period</dt><dd>{el.cat === "lanthanide" || el.cat === "actinide" ? "f-block" : el.g} · {el.p}</dd>
       </dl>
       <p className="omino-ecard__note">{el.note}</p>
       {el.rx && <Sec t="In drugs"><p className="omino-ecard__note" style={{ margin: 0 }}>{el.rx}</p></Sec>}
@@ -5338,7 +5417,7 @@ function IgSketch({ n, j }) {
     <g transform={t} fill="none" stroke={C} strokeLinecap="round">
       <path d="M0 0V-26M0 -26L-15 -50M0 -26L15 -50" strokeWidth="5" />
       <path d="M-9 -34L-19 -48M9 -34L19 -48" strokeWidth="2" opacity=".55" />
-      <circle cx="-15" cy="-50" r="3.4" fill="#121212" strokeWidth="2" /><circle cx="15" cy="-50" r="3.4" fill="#121212" strokeWidth="2" />
+      <circle cx="-15" cy="-50" r="3.4" fill="var(--o-card)" strokeWidth="2" /><circle cx="15" cy="-50" r="3.4" fill="var(--o-card)" strokeWidth="2" />
     </g>
   );
   const units = n === 5 ? [0, 72, 144, 216, 288].map((a) => `translate(100 100) rotate(${a}) translate(0 -9)`) : n === 2 ? ["translate(100 128) rotate(-35)", "translate(100 128) rotate(35)"] : ["translate(100 140)"];
@@ -5367,7 +5446,7 @@ function UcSketch({ shapes }) {
       {shapes.map(([k, label], i) => (
         <g key={k + i} transform={`translate(${i * W + 16} 2)`}>
           <path d={UC_SHAPES[k]} fill="none" stroke={C} strokeWidth={k === "granules" ? 5 : 2} strokeLinecap="round" strokeLinejoin="round" />
-          <text x="32" y="76" textAnchor="middle" fontSize="9" fill="#A1A1AA">{label}</text>
+          <text x="32" y="76" textAnchor="middle" fontSize="9" fill="var(--o-muted)">{label}</text>
         </g>
       ))}
     </svg>
@@ -5560,7 +5639,7 @@ function useViewport() {
 
 // Search bar, built to behave exactly like OWORLD's universal search: pill field, clear button, a dropdown panel with "Search in" scope chips,
 // This page = filter the atlas in place as you type; Everywhere / Elements / Pathways = list matches, tap one to jump to it.
-const OT = { card: "#121212", border: "#27272A", ink: "#FFFFFF", muted: "#A1A1AA", sel: "#71717A", blue: "#38BDF8", blueLight: "#1F1F23" };
+const OT = { card: "var(--o-card)", border: "var(--o-border)", ink: "var(--o-ink)", muted: "var(--o-muted)", sel: "var(--o-faint)", blue: "var(--o-accent)", blueLight: "var(--o-line-soft)" };
 const SEARCH_FONT = "'Inter', Arial, 'Segoe UI', sans-serif";
 const LucideSvg = ({ size, color, children, style }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color || "currentColor"} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" style={style}>{children}</svg>
@@ -5769,7 +5848,7 @@ function Atlas() {
   const [track, setTrack] = useState(null); // follower: { at: object id, inn: incoming line id, out: outgoing line id }
   const [query, setQuery] = useState("");
   const [hideG, setHideG] = useState(false); // G: enzymes (edge labels)
-  const [hideS, setHideS] = useState(false); // S: substrates / co-substrates
+  const [hideS, setHideS] = useState(true); // S: substrates / co-substrates (hidden by default; the S button or the Substrates setting shows them)
   const [focus, setFocus] = useState(null); // highlighted pathway
   const [scrollPans, setScrollPans] = useState(false); // scroll wheel / trackpad: zoom (default) or pan
   const { fitView, zoomIn, zoomOut, getViewport, setViewport, getNode, setCenter, getZoom, screenToFlowPosition } = useReactFlow();
@@ -5806,6 +5885,9 @@ function Atlas() {
     setShowRx((v) => !v);
   };
   const vp = useViewport();
+  const [themePref, setThemePref] = useState(loadThemePref); // "dark" (default) or "light"
+  const light = themePref === "light";
+  useEffect(() => { saveThemePref(themePref); }, [themePref]);
   const wide = vp.w >= 960; // same breakpoint as OWORLD: search bar centered in the top bar
   const [searchOpen, setSearchOpen] = useState(false); // narrow screens: search drops down as its own row under the top bar
   const [pickMode, setPickMode] = useState("both"); // what picking a search result does: show it on the canvas, open its card, or both
@@ -5947,11 +6029,11 @@ function Atlas() {
         const faded =
           (matchIds && !edgeHits.has(e.id) && !(matchIds.has(e.source) && matchIds.has(e.target))) || (focus && !(e.data.path === focus || (focus === "gluconeogenesis" && GN_EDGES.has(e.id)) || (focus === "glycogenolysis" && GL_EDGES.has(e.id)) || (focus === "box" && BX_EDGES.has(e.id)) || (focus === "keto" && KT_EDGES.has(e.id)) || (focus === "fol" && FL_EDGES.has(e.id)) || (focus === "stero" && ST_EDGES.has(e.id)))) || (locFocus && !(hasLoc(e.source, locFocus) && hasLoc(e.target, locFocus))) || (organFocus && !(ORGAN_SET[organFocus].has(e.source) && ORGAN_SET[organFocus].has(e.target))) || (rdxLit && !rdxLit.edges.has(e.id));
         const main = e.data.main;
-        const color = PATHWAYS[e.data.path]?.color || "#FFFFFF";
+        const color = toneHex(PATHWAYS[e.data.path]?.color || (light ? LIGHT.ink : "#FFFFFF"), light);
         const stroke = main ? color : "#7b8594";
         const fx = e.data.fx;
         if (fx) { // pharmacology lines: red dashed + flat head | green dashed | blue solid | grey dotted tether
-          const fxc = fx === "tether" ? "#59626e" : fx === "organ" ? ORGANS[e.data.org].color : FX[fx].color;
+          const fxc = toneHex(fx === "tether" ? "#59626e" : fx === "organ" ? ORGANS[e.data.org].color : FX[fx].color, light);
           return {
             ...e,
             hidden: !showRx || (!!e.data.org && !showOrgans) || (!!e.data.cross && organFocus !== e.data.org),
@@ -5971,7 +6053,7 @@ function Atlas() {
         };
       });
     },
-    [edges, matchIds, edgeHits, focus, hideG, showRx, showOrgans, locFocus, organFocus, rdxLit]
+    [edges, matchIds, edgeHits, focus, hideG, showRx, showOrgans, locFocus, organFocus, rdxLit, light]
   );
 
   // Hovered or clicked line: lift it above the rest and light up the two things it joins, wherever they are on the canvas.
@@ -6227,13 +6309,13 @@ function Atlas() {
   }, [getViewport]);
 
   const resetSettings = () => { // every switch and choice in the settings panel back to how Omino first opens
-    setHideG(false); setHideS(false); setShowRx(true); setShowKey(true); setShowLoc(true); setShowOrgans(true);
-    setShowPaths(true); setShowMini(true); setNavOn(false); setScrollPans(false);
+    setHideG(false); setHideS(true); setShowRx(true); setShowKey(true); setShowLoc(true); setShowOrgans(true);
+    setShowPaths(true); setShowMini(true); setNavOn(false); setScrollPans(false); setThemePref("dark");
   };
 
   return (
     <OpenCtx.Provider value={open}>
-    <div className="omino-root">
+    <div className="omino-root" data-theme={light ? "light" : "dark"}>
       <style>{CSS}</style>
       <div className="omino-top">
         <header className={`omino-header ${wide ? "is-wide" : ""}`}>
@@ -6276,6 +6358,14 @@ function Atlas() {
                 </div>
               ))}
               {showKey && !wide && <div className="omino-settings__legend"><FxLegend /></div>}
+              <div className="omino-settings__row">
+                <div><b>Appearance</b><span>Light or dark theme</span></div>
+                <div className="omino-seg" role="group" aria-label="Appearance">
+                  {[["light", "Light"], ["dark", "Dark"]].map(([v, t]) => (
+                    <button key={v} className={themePref === v ? "is-on" : ""} aria-pressed={themePref === v} onClick={() => setThemePref(v)}>{t}</button>
+                  ))}
+                </div>
+              </div>
               <div className="omino-settings__row">
                 <div><b>Scroll wheel</b><span>What scrolling does on the canvas</span></div>
                 <div className="omino-seg" role="group" aria-label="Scroll wheel">
@@ -6328,9 +6418,9 @@ function Atlas() {
           maxZoom={4}
           proOptions={{ hideAttribution: true }}
         >
-          <Background variant={BackgroundVariant.Dots} gap={28} size={1.4} color="#27272A" />
+          <Background variant={BackgroundVariant.Dots} gap={28} size={1.4} color="var(--o-border)" />
           {navOn && showKey && wide && <Panel position="bottom-left"><FxLegend onHide={() => setShowKey(false)} /></Panel>}
-          {navOn && showMini && <MiniMap pannable zoomable maskColor="rgba(0,0,0,0.75)" nodeColor={(n) => PATHWAYS[n.data.path]?.color || KIND[n.data.kind].color} nodeStrokeWidth={0} />}
+          {navOn && showMini && <MiniMap pannable zoomable maskColor="var(--o-mask)" nodeColor={(n) => toneHex(PATHWAYS[n.data.path]?.color || KIND[n.data.kind].color, light)} nodeStrokeWidth={0} />}
           {navOn && showMini && <Panel position="bottom-right" className="omino-minix-panel"><button className="omino-fxlegend__x omino-minix" onClick={() => setShowMini(false)} aria-label="Hide overview" title="Hide overview (turn back on in Settings)">×</button></Panel>}
 
           {navOn && <Panel position="top-left">
@@ -6397,7 +6487,7 @@ function Atlas() {
         </ReactFlow>
         {ptOpen && (
           <PeriodicTable q={query.trim().toLowerCase()} sel={cur?.t === "el" ? cur.id : null} onPick={(e) => (cur?.t === "el" ? swap("el", e.sym) : open("el", e.sym))} onClose={() => setPtOpen(false)}
-            width={cur ? "min(1120px, calc(100% - 440px))" : "min(1120px, calc(100% - 96px))"} />
+            width={cur ? "min(1680px, calc(100% - 440px))" : "min(1680px, calc(100% - 96px))"} />
         )}
         {rdx != null && <RedoxPanel i={rdx} setI={setRdx} playing={rdxPlay} setPlaying={setRdxPlay} onClose={() => { setRdx(null); setRdxPlay(false); }} />}
         {cur && <InfoCard cur={cur} open={open} swap={swap} fit={fit} onBack={stack.length > 1 ? () => setStack((s) => s.slice(0, -1)) : null} onClose={() => setStack([])}
@@ -6422,29 +6512,83 @@ export default function Omino() {
 /* 5. Styles                                                           */
 /* ================================================================== */
 
+/* ------------------------------ system light mode ------------------------------ */
+// Light palette (navy chrome on paper). Every token is also exposed to the CSS as a custom property on .omino-root[data-theme="light"].
+const LIGHT = {
+  navy: "#1B3A56", navyDeep: "#12283D", paper: "#F4F6F8", card: "#FFFFFF", border: "#C9D3DA", ink: "#16232E", muted: "#5B6B76", mutedBg: "#EBEEF0",
+  blue: "#2D6CB4", blueDeep: "#1F5290", blueLight: "#DCEAF6", onBlue: "#FFFFFF",
+  green: "#2E7D4F", greenLight: "#E1F0E5", greenStrong: "#C2E2CD", greenSoft: "#E8F4EC",
+  red: "#B23B35", redLight: "#F5DEDC", redStrong: "#EBBDB9", redSoft: "#F8E8E6",
+  amber: "#9C6510", amberLight: "#F5E7CE", purple: "#7B3FB8", purpleLight: "#EBDDF6", flagRed: "#C0392B",
+  link: "#2D6CB4", linkStrong: "#1F5290", sel: "#2D6CB4", isDark: false,
+};
+const LIGHT_CSS = `
+.omino-root[data-theme="light"] {
+  color-scheme: light;
+  --o-bg: ${LIGHT.paper}; --o-bar: ${LIGHT.navy}; --o-sunk: ${LIGHT.paper}; --o-card: ${LIGHT.card}; --o-soft: ${LIGHT.mutedBg}; --o-soft2: ${LIGHT.paper};
+  --o-hover: ${LIGHT.mutedBg}; --o-hover2: ${LIGHT.blueLight}; --o-line-soft: ${LIGHT.mutedBg}; --o-border: ${LIGHT.border}; --o-line2: ${LIGHT.border};
+  --o-ink: ${LIGHT.ink}; --o-ink2: ${LIGHT.ink}; --o-muted: ${LIGHT.muted}; --o-faint: #8796A0; --o-chalk: ${LIGHT.ink};
+  --o-accent: ${LIGHT.blue}; --o-accent-hover: ${LIGHT.blueDeep}; --o-accent-bg: ${LIGHT.blueLight}; --o-ring: rgba(45,108,180,.28); --o-on-accent: ${LIGHT.onBlue};
+  --o-warn: ${LIGHT.amber}; --o-ok: ${LIGHT.green}; --o-keep: 64%;
+  --o-glow: rgba(45,108,180,.55); --o-glow2: rgba(45,108,180,.75); --o-veil: rgba(22,35,46,.07); --o-veil2: rgba(22,35,46,.10); --o-veil3: rgba(45,108,180,.35);
+  --o-shadow: rgba(18,40,61,.18); --o-shadow2: rgba(18,40,61,.28); --o-mask: rgba(18,40,61,.22);
+  --el-O: ${LIGHT.flagRed}; --el-N: ${LIGHT.blue}; --el-P: ${LIGHT.amber}; --el-S: #7d6a00; --el-X: ${LIGHT.purple}; --el-M: #b4531a; --el-F: ${LIGHT.green}; --el-Cl: ${LIGHT.green};
+}
+/* the navy top bar keeps light-on-dark text and dark inputs */
+.omino-root[data-theme="light"] .omino-top {
+  --o-ink: #FFFFFF; --o-ink2: #E6ECF1; --o-muted: #BCC9D4; --o-faint: #93A6B5; --o-card: ${LIGHT.navyDeep}; --o-sunk: ${LIGHT.navyDeep}; --o-soft: ${LIGHT.navyDeep};
+  --o-hover: #244B6E; --o-border: #3B5B79; --o-line2: #3B5B79; --o-accent: #8CC4F5; --sky: #8CC4F5; --o-ring: rgba(140,196,245,.35); --o-on-accent: ${LIGHT.navyDeep};
+}
+.omino-root[data-theme="light"] .omino-edge-label { text-shadow: none; }
+`;
+// Darken a #rrggbb colour toward the light-theme ink so pathway colours keep contrast on paper (used for lines, arrowheads, minimap)
+const toneHex = (c, light) => {
+  if (!light || typeof c !== "string" || !/^#[0-9a-fA-F]{6}$/.test(c)) return c;
+  const t = [0x16, 0x23, 0x2e], k = 0.36;
+  const v = [1, 3, 5].map((i, j) => Math.round(parseInt(c.slice(i, i + 2), 16) * (1 - k) + t[j] * k));
+  return "#" + v.map((n) => n.toString(16).padStart(2, "0")).join("");
+};
+const THEME_KEY = "omino.theme.v1";
+const loadThemePref = () => { try { return localStorage.getItem(THEME_KEY) === "light" ? "light" : "dark"; } catch (e) { return "dark"; } };
+const saveThemePref = (v) => { try { if (v === "dark") localStorage.removeItem(THEME_KEY); else localStorage.setItem(THEME_KEY, v); } catch (e) { /* storage unavailable: the choice just lasts for this visit */ } };
+
 const CSS = `
+
+/* ---- themes: dark is the original look; light is chosen in Settings (data-theme on the root) ---- */
+.omino-root {
+  color-scheme: dark;
+  --o-bg: #000000; --o-bar: #0a0a0a; --o-sunk: #0a0a0a; --o-card: #121212; --o-soft: #18181b; --o-soft2: #0c0c0e;
+  --o-hover: #1b1b1f; --o-hover2: #232328; --o-line-soft: #1f1f23; --o-border: #27272A; --o-line2: #34343a;
+  --o-ink: #FFFFFF; --o-ink2: #D4D4D8; --o-muted: #A1A1AA; --o-faint: #71717A; --o-chalk: #FFFFFF;
+  --o-accent: #38bdf8; --o-accent-hover: #63cdfb; --o-accent-bg: rgba(56,189,248,.08); --o-ring: rgba(56,189,248,.25); --o-on-accent: #04141c;
+  --o-warn: #f2c94c; --o-ok: #6fe0b4; --o-keep: 100%;
+  --o-glow: rgba(255,255,255,.35); --o-glow2: rgba(255,255,255,.65); --o-veil: rgba(255,255,255,.1); --o-veil2: rgba(255,255,255,.14); --o-veil3: rgba(255,255,255,.28);
+  --o-shadow: rgba(0,0,0,.5); --o-shadow2: rgba(0,0,0,.65); --o-mask: rgba(0,0,0,.75);
+  --el-O: #ff7a7a; --el-N: #7fb0ff; --el-P: #ffb454; --el-S: #f2d95c; --el-X: #c7a8ff; --el-M: #ff9d5c; --el-F: #8ee0a0; --el-Cl: #6fe08c;
+}
+${LIGHT_CSS}
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
 
 .omino-root {
   position: fixed; inset: 0; display: flex; flex-direction: column;
-  background: #000000;
+  background: var(--o-bg);
   font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
-  color: #FFFFFF;
+  color: var(--o-ink);
 }
-.omino-root .react-flow { --xy-background-color: #000000; background: #000000; }
+.omino-root .react-flow { --xy-background-color: var(--o-bg); background: var(--o-bg); }
 
 .omino-root .react-flow {
-  --xy-minimap-background-color: #121212;
-  --xy-minimap-mask-background-color: rgba(0,0,0,.75);
-  --xy-controls-button-background-color: #121212;
-  --xy-controls-button-background-color-hover: #1b1b1f;
-  --xy-controls-button-color: #FFFFFF;
-  --xy-controls-button-border-color: #27272A;
-  --xy-edge-label-background-color: #121212;
-  --xy-edge-label-color: #A1A1AA;
-  --xy-node-background-color: #121212;
-  --xy-node-border: 1px solid #27272A;
-  --xy-node-color: #FFFFFF;
+  --xy-minimap-background-color: var(--o-card);
+  --xy-minimap-mask-background-color: var(--o-mask);
+  --xy-controls-button-background-color: var(--o-card);
+  --xy-controls-button-background-color-hover: var(--o-hover);
+  --xy-controls-button-color: var(--o-ink);
+  --xy-controls-button-border-color: var(--o-border);
+  --xy-edge-label-background-color: var(--o-card);
+  --xy-edge-label-color: var(--o-muted);
+  --xy-node-background-color: var(--o-card);
+  --xy-node-border: 1px solid var(--o-border);
+  --xy-node-color: var(--o-ink);
 }
 
 .omino-node {
@@ -6454,198 +6598,198 @@ const CSS = `
   cursor: grab;
 }
 .omino-node:active { cursor: grabbing; }
-.omino-node.is-selected { filter: drop-shadow(0 0 10px rgba(255,255,255,.35)); }
-.omino-aac { width: fit-content; margin: 5px auto 0; padding: 1px 9px; font-size: 10px; font-weight: 600; letter-spacing: .05em; text-transform: uppercase; color: var(--c); border: 1px solid color-mix(in srgb, var(--c) 55%, transparent); border-radius: 999px; }
+.omino-node.is-selected { filter: drop-shadow(0 0 10px var(--o-glow)); }
+.omino-aac { width: fit-content; margin: 5px auto 0; padding: 1px 9px; font-size: 10px; font-weight: 600; letter-spacing: .05em; text-transform: uppercase; color: color-mix(in srgb, var(--c) var(--o-keep), var(--o-ink)); border: 1px solid color-mix(in srgb, var(--c) 55%, transparent); border-radius: 999px; }
 .omino-node.is-hit { filter: drop-shadow(0 0 14px color-mix(in srgb, var(--accent) 70%, transparent)); }
 .omino-node.is-dim { opacity: .16; }
 
 .omino-node__art { display: flex; justify-content: center; align-items: center; margin: 0 0 8px; }
 .omino-node__art svg { display: block; flex: none; } /* structures keep their true pixel size: no max-width / max-height / auto sizing */
 .omino-node__art img { display: block; max-width: 100%; max-height: 140px; width: auto; height: auto; }
-.omino-chip { display: flex; align-items: center; justify-content: center; gap: 8px; white-space: nowrap; color: var(--accent); }
+.omino-chip { display: flex; align-items: center; justify-content: center; gap: 8px; white-space: nowrap; color: color-mix(in srgb, var(--accent) var(--o-keep), var(--o-ink)); }
 .omino-chip__txt { font-size: 15px; font-weight: 500; }
 .omino-chipmol { display: flex; flex-direction: column; align-items: center; gap: 2px; cursor: pointer; border-radius: 6px; }
-.omino-chipmol:hover, .omino-chipmol:focus-visible { background: rgba(255,255,255,.1); outline: none; }
+.omino-chipmol:hover, .omino-chipmol:focus-visible { background: var(--o-veil); outline: none; }
 .omino-chipmol__cap { font-size: 11px; line-height: 14px; font-weight: 500; }
 .omino-node__name { font-size: 15px; font-weight: 400; line-height: 1.2; }
-.omino-node__formula { margin-top: 3px; font-size: 12px; color: var(--accent); }
-.omino-node__cofactor { font-size: 15px; font-weight: 500; color: var(--accent); white-space: nowrap; }
+.omino-node__formula { margin-top: 3px; font-size: 12px; color: color-mix(in srgb, var(--accent) var(--o-keep), var(--o-ink)); }
+.omino-node__cofactor { font-size: 15px; font-weight: 500; color: color-mix(in srgb, var(--accent) var(--o-keep), var(--o-ink)); white-space: nowrap; }
 
 .omino-edge-label {
   position: absolute; pointer-events: none;
   width: max-content; max-width: 170px;
   padding: 2px 6px; text-align: center; line-height: 1.25;
-  font-size: 11px; color: #A1A1AA; background: #121212;
+  font-size: 11px; color: var(--o-muted); background: var(--o-card);
 }
 .omino-edge-label.is-main { font-size: 12px; color: #ff7b6e; text-decoration: underline; text-underline-offset: 3px; }
 
 .omino-header {
   position: relative; z-index: 5; flex: none;
   display: grid; grid-template-columns: 1fr minmax(0, 720px) 1fr; align-items: center; gap: 16px;
-  padding: 14px 32px; background: #0a0a0a; border-bottom: 1px solid #27272A;
+  padding: 14px 32px; background: var(--o-sunk); border-bottom: 1px solid var(--o-border);
 }
 .omino-wordmark { font-size: 26px; font-weight: 700; letter-spacing: 0.01em; line-height: 1; }
 .omino-search { position: relative; }
-.omino-search > svg { position: absolute; left: 16px; top: 12px; color: #A1A1AA; pointer-events: none; }
+.omino-search > svg { position: absolute; left: 16px; top: 12px; color: var(--o-muted); pointer-events: none; }
 .omino-search input {
   width: 100%; box-sizing: border-box; height: 44px; padding: 0 18px 0 46px;
-  font: inherit; font-size: 16px; color: #FFFFFF;
-  background: #121212; border: 1px solid #27272A; border-radius: 999px; outline: none;
+  font: inherit; font-size: 16px; color: var(--o-ink);
+  background: var(--o-card); border: 1px solid var(--o-border); border-radius: 999px; outline: none;
 }
-.omino-search input:focus-visible { border-color: #38bdf8; box-shadow: 0 0 0 3px rgba(56,189,248,.25); }
-.omino-search input::placeholder { color: #A1A1AA; }
+.omino-search input:focus-visible { border-color: var(--o-accent); box-shadow: 0 0 0 3px var(--o-ring); }
+.omino-search input::placeholder { color: var(--o-muted); }
 .omino-search__meta {
   position: absolute; top: 52px; left: 0; right: 0; z-index: 6;
   display: flex; justify-content: space-between; gap: 10px; align-items: flex-start;
-  padding: 8px 14px; font-size: 12px; line-height: 1.4; color: #A1A1AA;
-  background: #121212; border: 1px solid #27272A; border-radius: 14px;
+  padding: 8px 14px; font-size: 12px; line-height: 1.4; color: var(--o-muted);
+  background: var(--o-card); border: 1px solid var(--o-border); border-radius: 14px;
 }
 .omino-search__meta button {
-  flex: none; font: inherit; font-size: 12px; color: #FFFFFF; cursor: pointer;
-  background: transparent; border: 1px solid #27272A; border-radius: 6px; padding: 2px 8px;
+  flex: none; font: inherit; font-size: 12px; color: var(--o-ink); cursor: pointer;
+  background: transparent; border: 1px solid var(--o-border); border-radius: 6px; padding: 2px 8px;
 }
-.omino-search__meta button:hover { background: #1b1b1f; }
+.omino-search__meta button:hover { background: var(--o-hover); }
 .omino-canvas { flex: 1; min-height: 0; position: relative; }
 
 .omino-tools { display: flex; flex-direction: column; gap: 8px; }
 .omino-tool {
   position: relative; width: 44px; height: 44px; display: grid; place-items: center; padding: 0;
-  font: inherit; color: #FFFFFF; cursor: pointer;
-  background: #121212; border: 1px solid #27272A; border-radius: 10px;
+  font: inherit; color: var(--o-ink); cursor: pointer;
+  background: var(--o-card); border: 1px solid var(--o-border); border-radius: 10px;
 }
-.omino-tool:hover { background: #1b1b1f; }
-.omino-tool:focus-visible { outline: 2px solid #38bdf8; outline-offset: 2px; }
-.omino-tool.is-off { color: #38bdf8; border-color: #38bdf8; }
-.omino-tool.is-locked { color: #38bdf8; border-color: #38bdf8; background: rgba(56,189,248,.08); }
+.omino-tool:hover { background: var(--o-hover); }
+.omino-tool:focus-visible { outline: 2px solid var(--o-accent); outline-offset: 2px; }
+.omino-tool.is-off { color: var(--o-accent); border-color: var(--o-accent); }
+.omino-tool.is-locked { color: var(--o-accent); border-color: var(--o-accent); background: var(--o-accent-bg); }
 .omino-tool__lock { position: absolute; right: 4px; bottom: 3px; display: flex; line-height: 0; }
 .omino-tool b { position: absolute; right: 5px; bottom: 3px; font-size: 11px; font-weight: 600; }
 
 .omino-chips {
   display: flex; flex-wrap: nowrap; gap: 8px; max-width: min(900px, 90vw); padding: 2px 16px 6px;
-  overflow-x: auto; overscroll-behavior: contain; scrollbar-width: thin; scrollbar-color: #27272A transparent;
+  overflow-x: auto; overscroll-behavior: contain; scrollbar-width: thin; scrollbar-color: var(--o-border) transparent;
   -webkit-mask-image: linear-gradient(90deg, transparent, #000 16px, #000 calc(100% - 16px), transparent);
   mask-image: linear-gradient(90deg, transparent, #000 16px, #000 calc(100% - 16px), transparent);
 }
 .omino-chip {
   flex: none; white-space: nowrap; display: inline-flex; align-items: center; gap: 7px; padding: 6px 12px;
-  font: inherit; font-size: 12px; color: #A1A1AA; cursor: pointer;
-  background: #121212; border: 1px solid #27272A; border-radius: 999px;
+  font: inherit; font-size: 12px; color: var(--o-muted); cursor: pointer;
+  background: var(--o-card); border: 1px solid var(--o-border); border-radius: 999px;
 }
 .omino-chip i { width: 8px; height: 8px; border-radius: 50%; background: var(--c); }
-.omino-chip:hover { background: #1b1b1f; }
-.omino-chip.is-on { color: #FFFFFF; border-color: var(--c); }
+.omino-chip:hover { background: var(--o-hover); }
+.omino-chip.is-on { color: var(--o-ink); border-color: color-mix(in srgb, var(--c) var(--o-keep), var(--o-ink)); }
 
 .omino-pathtitle {
   font-size: 26px; font-weight: 600; text-align: center; line-height: 1.15;
-  color: var(--c); cursor: pointer; transition: opacity .2s;
+  color: color-mix(in srgb, var(--c) var(--o-keep), var(--o-ink)); cursor: pointer; transition: opacity .2s;
 }
 .omino-pathtitle:hover { text-decoration: underline; text-underline-offset: 6px; }
 .omino-pathtitle.is-dim { opacity: .16; }
 
-.react-flow__controls { box-shadow: none; border: 1px solid #27272A; border-radius: 8px; overflow: hidden; }
-.react-flow__controls-button { background: #121212; border-bottom: 1px solid #27272A; fill: #FFFFFF; }
-.react-flow__controls-button:hover { background: #1b1b1f; }
-.react-flow__minimap { background: #121212; border: 1px solid #27272A; border-radius: 8px; }
+.react-flow__controls { box-shadow: none; border: 1px solid var(--o-border); border-radius: 8px; overflow: hidden; }
+.react-flow__controls-button { background: var(--o-card); border-bottom: 1px solid var(--o-border); fill: var(--o-ink); }
+.react-flow__controls-button:hover { background: var(--o-hover); }
+.react-flow__minimap { background: var(--o-card); border: 1px solid var(--o-border); border-radius: 8px; }
 
 .omino-ptable, .omino-ecard {
   position: absolute; z-index: 8; box-sizing: border-box; overflow: auto; max-height: calc(100% - 24px);
-  background: #121212; border: 1px solid #27272A; border-radius: 14px; box-shadow: 0 12px 40px rgba(0,0,0,.5);
+  background: var(--o-card); border: 1px solid var(--o-border); border-radius: 14px; box-shadow: 0 12px 40px var(--o-shadow);
 }
 .omino-ptable { top: 12px; left: 76px; padding: 12px; }
 .omino-ptable__bar { display: flex; gap: 8px; align-items: center; justify-content: flex-end; margin-bottom: 10px; }
 .omino-ptable__search { position: relative; flex: 1; }
-.omino-ptable__search > svg { position: absolute; left: 12px; top: 10px; color: #A1A1AA; pointer-events: none; }
+.omino-ptable__search > svg { position: absolute; left: 12px; top: 10px; color: var(--o-muted); pointer-events: none; }
 .omino-ptable__search input {
-  width: 100%; box-sizing: border-box; height: 38px; padding: 0 14px 0 38px; font: inherit; font-size: 14px; color: #FFFFFF;
-  background: #0a0a0a; border: 1px solid #27272A; border-radius: 999px; outline: none;
+  width: 100%; box-sizing: border-box; height: 38px; padding: 0 14px 0 38px; font: inherit; font-size: 14px; color: var(--o-ink);
+  background: var(--o-sunk); border: 1px solid var(--o-border); border-radius: 999px; outline: none;
 }
-.omino-ptable__search input:focus-visible { border-color: #38bdf8; box-shadow: 0 0 0 3px rgba(56,189,248,.25); }
+.omino-ptable__search input:focus-visible { border-color: var(--o-accent); box-shadow: 0 0 0 3px var(--o-ring); }
 .omino-tool--sm { width: 38px; height: 38px; flex: none; }
-.omino-ptable__grid { display: grid; grid-template-columns: repeat(18, minmax(30px, 1fr)); grid-template-rows: repeat(7, clamp(40px, 6.4vh, 72px)) 12px clamp(40px, 6.4vh, 72px); gap: 4px; min-width: 600px; }
+.omino-ptable__grid { display: grid; grid-template-columns: repeat(18, minmax(30px, 1fr)); grid-template-rows: repeat(7, minmax(36px, 1fr)) 12px repeat(2, minmax(36px, 1fr)); flex: 1 1 auto; gap: 4px; min-width: 600px; }
 .omino-cell__cat { position: absolute; top: 6px; right: 6px; width: 6px; height: 6px; border-radius: 50%; background: var(--c); } /* category colour, as in the legend */
 .omino-cell__rx { position: absolute; bottom: 8px; right: 6px; width: 6px; height: 6px; border-radius: 50%; background: #e879f9; }
-.omino-cell--ph { align-items: center; justify-content: center; padding: 0; background: transparent; border: 1px dashed #27272A; color: #A1A1AA; font: 10px var(--mono); pointer-events: none; }
-.omino-ptable__flabel { align-self: center; justify-self: end; padding-right: 6px; font: 10.5px var(--mono); color: #A1A1AA; }
-.omino-ptable__rx { display: inline-flex; align-items: center; font: inherit; color: inherit; background: transparent; border: 1px solid #27272A; border-radius: 999px; padding: 2px 10px; cursor: pointer; }
-.omino-ptable__rx:hover { background: #1b1b1f; }
-.omino-ptable__rx.is-on { border-color: var(--c); color: #FFFFFF; }
-.omino-ptable__rx:focus-visible { outline: 2px solid #38bdf8; outline-offset: 2px; }
+.omino-cell--ph { align-items: center; justify-content: center; padding: 0; background: transparent; border: 1px dashed var(--o-border); color: var(--o-muted); font: 10px var(--mono); pointer-events: none; }
+.omino-ptable__flabel { align-self: center; justify-self: end; padding-right: 6px; font: 10.5px var(--mono); color: var(--o-muted); }
+.omino-ptable__rx { display: inline-flex; align-items: center; font: inherit; color: inherit; background: transparent; border: 1px solid var(--o-border); border-radius: 999px; padding: 2px 10px; cursor: pointer; }
+.omino-ptable__rx:hover { background: var(--o-hover); }
+.omino-ptable__rx.is-on { border-color: color-mix(in srgb, var(--c) var(--o-keep), var(--o-ink)); color: var(--o-ink); }
+.omino-ptable__rx:focus-visible { outline: 2px solid var(--o-accent); outline-offset: 2px; }
 .omino-cell {
-  position: relative; display: flex; align-items: flex-end; padding: 0 0 5px 5px; font: inherit; color: #FFFFFF; cursor: pointer;
-  background: #0a0a0a; border: 1px solid #27272A; border-bottom: 2px solid var(--c); border-radius: 6px; transition: opacity .15s, background .15s;
+  position: relative; display: flex; align-items: flex-end; padding: 0 0 5px 5px; font: inherit; color: var(--o-ink); cursor: pointer;
+  background: var(--o-sunk); border: 1px solid var(--o-border); border-bottom: 2px solid var(--c); border-radius: 6px; transition: opacity .15s, background .15s;
 }
-.omino-cell small { position: absolute; top: 3px; left: 5px; font-size: 9px; color: #A1A1AA; }
+.omino-cell small { position: absolute; top: 3px; left: 5px; font-size: 9px; color: var(--o-muted); }
 .omino-cell b { font-size: 16px; font-weight: 600; line-height: 1; }
-.omino-cell:hover { background: #1b1b1f; }
-.omino-cell:focus-visible { outline: 2px solid #38bdf8; outline-offset: 1px; }
-.omino-cell.is-sel { border-color: var(--c); box-shadow: 0 0 0 1px var(--c); }
+.omino-cell:hover { background: var(--o-hover); }
+.omino-cell:focus-visible { outline: 2px solid var(--o-accent); outline-offset: 1px; }
+.omino-cell.is-sel { border-color: color-mix(in srgb, var(--c) var(--o-keep), var(--o-ink)); box-shadow: 0 0 0 1px var(--c); }
 .omino-cell.is-dim { opacity: .15; }
-.omino-ptable__legend { display: flex; flex-wrap: wrap; gap: 6px 14px; margin-top: 10px; font-size: 11px; color: #A1A1AA; }
+.omino-ptable__legend { display: flex; flex-wrap: wrap; gap: 6px 14px; margin-top: 10px; font-size: 11px; color: var(--o-muted); }
 .omino-ptable__legend i { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--c); margin-right: 6px; }
 
 .omino-ecard { top: 12px; right: 12px; width: 320px; padding: 16px; }
 .omino-ecard header { display: flex; justify-content: space-between; align-items: flex-start; }
-.omino-ecard__name { font-size: 15px; color: #A1A1AA; }
-.omino-ecard__sym { font-size: 52px; font-weight: 600; line-height: 1.05; color: var(--c); }
-.omino-ecard__sym sup { margin-left: 4px; font-size: 14px; font-weight: 400; color: #FFFFFF; vertical-align: baseline; position: relative; top: -6px; }
-.omino-ecard__mass { font-size: 13px; color: #FFFFFF; }
+.omino-ecard__name { font-size: 15px; color: var(--o-muted); }
+.omino-ecard__sym { font-size: 52px; font-weight: 600; line-height: 1.05; color: color-mix(in srgb, var(--c) var(--o-keep), var(--o-ink)); }
+.omino-ecard__sym sup { margin-left: 4px; font-size: 14px; font-weight: 400; color: var(--o-ink); vertical-align: baseline; position: relative; top: -6px; }
+.omino-ecard__mass { font-size: 13px; color: var(--o-ink); }
 .omino-ecard__tags { display: flex; flex-wrap: wrap; gap: 6px; margin: 10px 0 4px; }
-.omino-ecard__tags span { padding: 3px 10px; font-size: 11px; color: var(--c); border: 1px solid var(--c); border-radius: 999px; }
+.omino-ecard__tags span { padding: 3px 10px; font-size: 11px; color: color-mix(in srgb, var(--c) var(--o-keep), var(--o-ink)); border: 1px solid var(--c); border-radius: 999px; }
 .omino-ecard__bohr { display: flex; justify-content: center; margin: 6px 0; }
 .omino-ecard__stats { display: grid; grid-template-columns: repeat(3, 1fr); text-align: center; gap: 6px; }
-.omino-ecard__stats span { display: block; font-size: 10px; letter-spacing: .06em; text-transform: uppercase; color: var(--c); }
-.omino-ecard__stats b { font-size: 28px; font-weight: 600; color: var(--c); }
+.omino-ecard__stats span { display: block; font-size: 10px; letter-spacing: .06em; text-transform: uppercase; color: color-mix(in srgb, var(--c) var(--o-keep), var(--o-ink)); }
+.omino-ecard__stats b { font-size: 28px; font-weight: 600; color: color-mix(in srgb, var(--c) var(--o-keep), var(--o-ink)); }
 .omino-ecard__facts { display: grid; grid-template-columns: auto 1fr; gap: 4px 12px; margin: 12px 0 0; font-size: 12px; }
-.omino-ecard__facts dt { color: #A1A1AA; }
+.omino-ecard__facts dt { color: var(--o-muted); }
 .omino-ecard__facts dd { margin: 0; text-align: right; }
-.omino-ecard__note { margin: 12px 0; font-size: 13px; line-height: 1.45; color: #FFFFFF; }
+.omino-ecard__note { margin: 12px 0; font-size: 13px; line-height: 1.45; color: var(--o-ink); }
 .omino-ecard__show {
-  width: 100%; height: 36px; margin-bottom: 10px; font: inherit; font-size: 13px; color: #FFFFFF; cursor: pointer;
+  width: 100%; height: 36px; margin-bottom: 10px; font: inherit; font-size: 13px; color: var(--o-ink); cursor: pointer;
   background: transparent; border: 1px solid var(--c); border-radius: 10px;
 }
-.omino-ecard__show:hover { background: #1b1b1f; }
-.omino-ecard footer { display: flex; justify-content: space-between; gap: 8px; border-top: 1px solid #27272A; padding-top: 10px; }
-.omino-ecard footer button { display: inline-flex; align-items: center; gap: 4px; padding: 4px 6px; font: inherit; font-size: 12px; color: #A1A1AA; cursor: pointer; background: transparent; border: 0; border-radius: 6px; }
-.omino-ecard footer button:hover:not(:disabled) { background: #1b1b1f; color: #FFFFFF; }
+.omino-ecard__show:hover { background: var(--o-hover); }
+.omino-ecard footer { display: flex; justify-content: space-between; gap: 8px; border-top: 1px solid var(--o-border); padding-top: 10px; }
+.omino-ecard footer button { display: inline-flex; align-items: center; gap: 4px; padding: 4px 6px; font: inherit; font-size: 12px; color: var(--o-muted); cursor: pointer; background: transparent; border: 0; border-radius: 6px; }
+.omino-ecard footer button:hover:not(:disabled) { background: var(--o-hover); color: var(--o-ink); }
 
 .omino-edge-label.is-link { pointer-events: auto; cursor: pointer; border-radius: 4px; }
-.omino-edge-label.is-link:hover { background: #1b1b1f; }
+.omino-edge-label.is-link:hover { background: var(--o-hover); }
 .omino-bondhit line { stroke: transparent; cursor: pointer; pointer-events: stroke; }
-.omino-bondhit line:hover { stroke: rgba(255,255,255,.28); }
+.omino-bondhit line:hover { stroke: var(--o-veil3); }
 
 .omino-ecard__btns { display: flex; gap: 6px; }
-.omino-ecard__title { font-size: 24px; font-weight: 600; line-height: 1.15; color: var(--c); }
+.omino-ecard__title { font-size: 24px; font-weight: 600; line-height: 1.15; color: color-mix(in srgb, var(--c) var(--o-keep), var(--o-ink)); }
 .omino-ecard__art { display: flex; justify-content: center; padding: 14px 0 6px; overflow: auto; }
 .omino-ecard__art svg { display: block; max-width: 100%; height: auto; }
-.omino-ecard__hint { text-align: center; font-size: 11px; color: #A1A1AA; }
+.omino-ecard__hint { text-align: center; font-size: 11px; color: var(--o-muted); }
 .omino-ecard__sec { margin-top: 14px; }
-.omino-ecard__sec h4 { margin: 0 0 6px; font-size: 11px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: #A1A1AA; }
+.omino-ecard__sec h4 { margin: 0 0 6px; font-size: 11px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--o-muted); }
 .omino-chiprow { display: flex; flex-wrap: wrap; gap: 6px; }
-.omino-pill { padding: 3px 10px; font: inherit; font-size: 12px; color: #FFFFFF; cursor: pointer; background: transparent; border: 1px solid var(--c); border-radius: 999px; }
-.omino-pill:hover { background: #1b1b1f; }
-.omino-ecard__list { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; font-size: 12px; color: #A1A1AA; }
-.omino-dz { margin-top: 8px; border: 1px solid #27272A; border-left: 3px solid #c4b5fd; border-radius: 10px; background: #18181B; }
+.omino-pill { padding: 3px 10px; font: inherit; font-size: 12px; color: var(--o-ink); cursor: pointer; background: transparent; border: 1px solid var(--c); border-radius: 999px; }
+.omino-pill:hover { background: var(--o-hover); }
+.omino-ecard__list { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; font-size: 12px; color: var(--o-muted); }
+.omino-dz { margin-top: 8px; border: 1px solid var(--o-border); border-left: 3px solid #c4b5fd; border-radius: 10px; background: var(--o-soft); }
 .omino-dz > summary { cursor: pointer; padding: 9px 12px; font-size: 13px; font-weight: 600; list-style: none; display: flex; justify-content: space-between; align-items: baseline; gap: 10px; }
 .omino-dz > summary::-webkit-details-marker { display: none; }
-.omino-dz > summary small { font-weight: 400; color: #A1A1AA; font-size: 11px; text-align: right; }
+.omino-dz > summary small { font-weight: 400; color: var(--o-muted); font-size: 11px; text-align: right; }
 .omino-dz__body { padding: 0 12px 12px; }
-.omino-dz__body h5 { margin: 12px 0 4px; font-size: 11px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: #A1A1AA; }
-.omino-dz__body p { margin: 0; font-size: 12px; line-height: 1.5; color: #D4D4D8; }
-.omino-link { padding: 0; font: inherit; color: #FFFFFF; cursor: pointer; background: none; border: 0; text-decoration: underline; text-underline-offset: 3px; text-decoration-color: #34343a; }
-.omino-link:hover { text-decoration-color: var(--c); }
+.omino-dz__body h5 { margin: 12px 0 4px; font-size: 11px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--o-muted); }
+.omino-dz__body p { margin: 0; font-size: 12px; line-height: 1.5; color: var(--o-ink2); }
+.omino-link { padding: 0; font: inherit; color: var(--o-ink); cursor: pointer; background: none; border: 0; text-decoration: underline; text-underline-offset: 3px; text-decoration-color: var(--o-line2); }
+.omino-link:hover { text-decoration-color: color-mix(in srgb, var(--c) var(--o-keep), var(--o-ink)); }
 
 .omino-cof { cursor: pointer; border-bottom: 1px dotted currentColor; border-radius: 2px; padding: 0 1px; }
-.omino-cof:hover, .omino-cof:focus-visible { background: rgba(255,255,255,.14); outline: none; }
+.omino-cof:hover, .omino-cof:focus-visible { background: var(--o-veil2); outline: none; }
 .omino-ecard__art.is-big { justify-content: flex-start; }
 .omino-ecard__art.is-big svg { max-width: none; }
-.omino-ecard__zoom { display: block; margin: 0 auto 4px; padding: 2px 10px; font: inherit; font-size: 11px; color: #A1A1AA; cursor: pointer; background: none; border: 1px solid #27272A; border-radius: 999px; }
-.omino-ecard__zoom:hover { color: #FFFFFF; background: #1b1b1f; }
-.omino-ecard__rx { padding: 8px 10px; font-size: 12.5px; line-height: 1.45; color: #FFFFFF; background: #121212; border: 1px solid #27272A; border-radius: 6px; }
+.omino-ecard__zoom { display: block; margin: 0 auto 4px; padding: 2px 10px; font: inherit; font-size: 11px; color: var(--o-muted); cursor: pointer; background: none; border: 1px solid var(--o-border); border-radius: 999px; }
+.omino-ecard__zoom:hover { color: var(--o-ink); background: var(--o-hover); }
+.omino-ecard__rx { padding: 8px 10px; font-size: 12.5px; line-height: 1.45; color: var(--o-ink); background: var(--o-card); border: 1px solid var(--o-border); border-radius: 6px; }
 
 
 /* ===== Oworld skin: shared with the sister app ===== */
-.omino-root { --sky: #38bdf8; --mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; -webkit-font-smoothing: antialiased; }
-.omino-root * { scrollbar-width: thin; scrollbar-color: #27272A transparent; }
+.omino-root { --sky: var(--o-accent); --mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; -webkit-font-smoothing: antialiased; }
+.omino-root * { scrollbar-width: thin; scrollbar-color: var(--o-border) transparent; }
 
 .omino-header { padding: 16px 32px 14px; border-bottom: 0; }
 .omino-wordmark { font-size: 26px; font-weight: 800; letter-spacing: -0.02em; }
@@ -6654,7 +6798,7 @@ const CSS = `
 .omino-search__meta { top: 54px; border-radius: 16px; font-family: var(--mono); font-size: 11.5px; }
 .omino-header { z-index: 9; }
 /* Pharmacology layer */
-.omino-rx { box-sizing: border-box; text-align: center; padding: 9px 16px 11px; background: #121212; border: 1.5px solid var(--accent); transition: opacity .2s, filter .2s; cursor: pointer; }
+.omino-rx { box-sizing: border-box; text-align: center; padding: 9px 16px 11px; background: var(--o-card); border: 1.5px solid var(--accent); transition: opacity .2s, filter .2s; cursor: pointer; }
 .omino-rx--drug { border-radius: 22px; }
 .omino-rx--drug.has-mol { padding-bottom: 12px; }
 .omino-rx--drug .omino-rx__art svg { flex: none; }
@@ -6662,27 +6806,27 @@ const CSS = `
 .omino-rx--hug { width: max-content; min-width: 150px; max-width: 240px; }
 .omino-rx__art { display: flex; justify-content: center; margin: 8px 0 4px; }
 .omino-rx__art svg { display: block; flex: none; }
-.omino-rx__shown { margin-top: 5px; font-family: var(--mono); font-size: 10.5px; color: #A1A1AA; }
-.omino-rx--target { border-radius: 12px; border-style: solid; background: #121212; }
+.omino-rx__shown { margin-top: 5px; font-family: var(--mono); font-size: 10.5px; color: var(--o-muted); }
+.omino-rx--target { border-radius: 12px; border-style: solid; background: var(--o-card); }
 .omino-rx.is-dim { opacity: .16; }
 .omino-rx.is-hit { filter: drop-shadow(0 0 14px color-mix(in srgb, var(--accent) 70%, transparent)); }
-.omino-rx.is-selected { filter: drop-shadow(0 0 10px rgba(255,255,255,.35)); }
-.omino-rx__tag { display: flex; align-items: center; justify-content: center; gap: 5px; font-size: 10px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); }
-.omino-rx__name { margin-top: 3px; font-size: 15px; font-weight: 600; line-height: 1.2; color: #FFFFFF; letter-spacing: -0.01em; }
-.omino-rx__sub { margin-top: 3px; font-family: var(--mono); font-size: 11px; line-height: 1.25; color: #A1A1AA; }
-.omino-edge-label.is-fx { font-family: 'Inter', system-ui, sans-serif; font-size: 11.5px; font-weight: 600; padding: 2px 9px; border-radius: 999px; background: color-mix(in srgb, currentColor 14%, #121212); }
-.omino-fxlegend { display: grid; gap: 7px; padding: 10px 13px 11px; background: #121212; border: 1px solid #27272A; border-radius: 12px; font-size: 12px; color: #FFFFFF; }
-.omino-fxlegend h5 { display: flex; align-items: center; justify-content: space-between; gap: 14px; margin: 0 0 1px; font-size: 10px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: #A1A1AA; }
-.omino-fxlegend__x { flex: none; width: 20px; height: 20px; margin: -3px -5px -3px 0; padding: 0; display: grid; place-items: center; font: inherit; font-size: 15px; line-height: 1; color: #A1A1AA; background: transparent; border: 0; border-radius: 50%; cursor: pointer; }
-.omino-fxlegend__x:hover { color: #FFFFFF; background: #1b1b1f; }
-.omino-fxlegend__x:focus-visible { outline: 2px solid #38bdf8; outline-offset: 1px; }
+.omino-rx.is-selected { filter: drop-shadow(0 0 10px var(--o-glow)); }
+.omino-rx__tag { display: flex; align-items: center; justify-content: center; gap: 5px; font-size: 10px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: color-mix(in srgb, var(--accent) var(--o-keep), var(--o-ink)); }
+.omino-rx__name { margin-top: 3px; font-size: 15px; font-weight: 600; line-height: 1.2; color: var(--o-ink); letter-spacing: -0.01em; }
+.omino-rx__sub { margin-top: 3px; font-family: var(--mono); font-size: 11px; line-height: 1.25; color: var(--o-muted); }
+.omino-edge-label.is-fx { font-family: 'Inter', system-ui, sans-serif; font-size: 11.5px; font-weight: 600; padding: 2px 9px; border-radius: 999px; background: color-mix(in srgb, currentColor 14%, var(--o-card)); }
+.omino-fxlegend { display: grid; gap: 7px; padding: 10px 13px 11px; background: var(--o-card); border: 1px solid var(--o-border); border-radius: 12px; font-size: 12px; color: var(--o-ink); }
+.omino-fxlegend h5 { display: flex; align-items: center; justify-content: space-between; gap: 14px; margin: 0 0 1px; font-size: 10px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--o-muted); }
+.omino-fxlegend__x { flex: none; width: 20px; height: 20px; margin: -3px -5px -3px 0; padding: 0; display: grid; place-items: center; font: inherit; font-size: 15px; line-height: 1; color: var(--o-muted); background: transparent; border: 0; border-radius: 50%; cursor: pointer; }
+.omino-fxlegend__x:hover { color: var(--o-ink); background: var(--o-hover); }
+.omino-fxlegend__x:focus-visible { outline: 2px solid var(--o-accent); outline-offset: 1px; }
 .omino-minix-panel { width: 200px; height: 150px; margin: 15px; pointer-events: none; }
 .omino-minix { position: absolute; top: 5px; right: 5px; margin: 0; pointer-events: auto; z-index: 5; }
 .omino-fxlegend div { display: flex; align-items: center; gap: 10px; }
 .omino-fxlegend svg { flex: none; }
 .omino-settings__legend { margin: 10px 0 4px; }
 /* Top bar laid out like OWORLD's: logo | centered search | actions, 14px / 20px padding, 40px round buttons; below 960px the search is an icon that drops a full-width row */
-.omino-top { flex: none; position: relative; z-index: 20; background: #0a0a0a; padding: 14px 20px 12px; }
+.omino-top { flex: none; position: relative; z-index: 20; background: var(--o-bar); padding: 14px 20px 12px; }
 .omino-top .omino-header { position: relative; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 0; background: transparent; border: 0; z-index: auto; }
 .omino-top .omino-header.is-wide { display: grid; grid-template-columns: 1fr auto 1fr; }
 .omino-top .omino-header.is-wide .omino-wordmark { justify-self: start; }
@@ -6693,19 +6837,19 @@ const CSS = `
 .omino-top .omino-round { width: 40px; height: 40px; flex-shrink: 0; }
 .omino-top .omino-settings { top: 48px; width: min(320px, calc(100vw - 40px)); max-height: calc(100dvh - 90px); overflow-y: auto; }
 .omino-searchrow { margin-top: 12px; }
-.omino-top .omino-round--ghost { background: transparent; border-color: #27272A; color: #FFFFFF; }
+.omino-top .omino-round--ghost { background: transparent; border-color: var(--o-border); color: var(--o-ink); }
 .omino-top .omino-round--ghost:hover { background: transparent; }
 @media (max-width: 639px) { .omino-top .omino-hdr-right { gap: 8px; } }
 /* Open OWORLD button: pill with the OWORLD wordmark, same 40px height as the round buttons */
-.omino-owbtn { display: inline-flex; align-items: center; gap: 8px; height: 40px; padding: 0 14px 0 7px; box-sizing: border-box; border: 1px solid #27272A; border-radius: 999px; background: #121212; color: #FFFFFF; text-decoration: none; font-family: 'Inter', Arial, 'Segoe UI', sans-serif; white-space: nowrap; }
+.omino-owbtn { display: inline-flex; align-items: center; gap: 8px; height: 40px; padding: 0 14px 0 7px; box-sizing: border-box; border: 1px solid var(--o-border); border-radius: 999px; background: var(--o-card); color: var(--o-ink); text-decoration: none; font-family: 'Inter', Arial, 'Segoe UI', sans-serif; white-space: nowrap; }
 .omino-owbtn__icon { width: 26px; height: 26px; border-radius: 7px; display: block; }
 .omino-owbtn__logo { font-size: 14px; font-weight: 700; line-height: 1.2; letter-spacing: 0; }
-.omino-owbtn:hover { border-color: #38BDF8; }
+.omino-owbtn:hover { border-color: var(--o-accent); }
 .omino-owbtn.is-off { opacity: .55; cursor: default; }
-.omino-owbtn.is-off:hover { border-color: #27272A; }
+.omino-owbtn.is-off:hover { border-color: var(--o-border); }
 @media (max-width: 639px) { .omino-owbtn { padding: 0 7px; } .omino-owbtn__logo { display: none; } }
 /* OMINO wordmark = OWORLD logo: Inter 800, 22px (20px on phones), line-height 1.2, no tracking, 4px 2px box */
-.omino-header .omino-wordmark { font-family: 'Inter', Arial, 'Segoe UI', sans-serif; font-size: 22px; font-weight: 800; line-height: 1.2; letter-spacing: 0; padding: 4px 2px; color: #FFFFFF; }
+.omino-header .omino-wordmark { font-family: 'Inter', Arial, 'Segoe UI', sans-serif; font-size: 22px; font-weight: 800; line-height: 1.2; letter-spacing: 0; padding: 4px 2px; color: var(--o-ink); }
 @media (max-width: 639px) { .omino-header .omino-wordmark { font-size: 20px; } }
 /* Larger periodic table: bigger cells, type and search */
 .omino-ptable .omino-cell b { font-size: clamp(16px, 2.4vh, 24px); }
@@ -6713,49 +6857,49 @@ const CSS = `
 .omino-ptable .omino-ptable__search input { font-size: 15px; padding-top: 11px; padding-bottom: 11px; }
 .omino-ptable .omino-ptable__legend { font-size: 12px; gap: 8px 18px; margin-top: 14px; }
 /* Footnote (same text and type sizes as OWORLD's), tucked into the bottom of the periodic table panel */
-.omino-foot { margin-top: 14px; padding-top: 12px; border-top: 1px solid #27272A; text-align: center; font-family: 'Inter', Arial, 'Segoe UI', sans-serif; }
-.omino-foot p { margin: 0; font-size: 12px; color: #A1A1AA; line-height: 1.7; }
-.omino-foot__by strong { color: #FFFFFF; font-weight: 700; }
-.omino-foot a { color: #A1A1AA; text-decoration: none; white-space: nowrap; }
-.omino-foot a:hover { color: #FFFFFF; }
+.omino-foot { margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--o-border); text-align: center; font-family: 'Inter', Arial, 'Segoe UI', sans-serif; }
+.omino-foot p { margin: 0; font-size: 12px; color: var(--o-muted); line-height: 1.7; }
+.omino-foot__by strong { color: var(--o-ink); font-weight: 700; }
+.omino-foot a { color: var(--o-muted); text-decoration: none; white-space: nowrap; }
+.omino-foot a:hover { color: var(--o-ink); }
 .omino-foot__support { display: inline-flex; align-items: center; gap: 5px; font-size: 11.5px; }
 .omino-foot__dot { margin: 0 8px; }
 .omino-foot a:focus-visible { outline: 2px solid var(--sky); outline-offset: 2px; border-radius: 3px; }
 .omino-hdr-right { position: relative; display: flex; justify-content: flex-end; gap: 12px; }
 .omino-settings {
   position: absolute; top: 58px; right: 0; z-index: 20; width: 320px; box-sizing: border-box; padding: 20px;
-  background: #121212; border: 1px solid #27272A; border-radius: 20px; box-shadow: 0 24px 64px rgba(0,0,0,.65);
+  background: var(--o-card); border: 1px solid var(--o-border); border-radius: 20px; box-shadow: 0 24px 64px var(--o-shadow2);
 }
-.omino-settings h4 { margin: 0 0 6px; font-size: 12px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: #A1A1AA; }
-.omino-settings__row { display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 14px 0; border-bottom: 1px solid #27272A; }
-.omino-settings__row b { display: block; font-size: 14px; font-weight: 600; letter-spacing: -0.01em; color: #FFFFFF; }
-.omino-settings__row span { display: block; margin-top: 2px; font-family: var(--mono); font-size: 10.5px; line-height: 1.4; color: #A1A1AA; }
-.omino-switch { position: relative; flex: none; width: 42px; height: 24px; padding: 0; cursor: pointer; background: #27272A; border: 0; border-radius: 999px; transition: background .15s; }
+.omino-settings h4 { margin: 0 0 6px; font-size: 12px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--o-muted); }
+.omino-settings__row { display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 14px 0; border-bottom: 1px solid var(--o-border); }
+.omino-settings__row b { display: block; font-size: 14px; font-weight: 600; letter-spacing: -0.01em; color: var(--o-ink); }
+.omino-settings__row span { display: block; margin-top: 2px; font-family: var(--mono); font-size: 10.5px; line-height: 1.4; color: var(--o-muted); }
+.omino-switch { position: relative; flex: none; width: 42px; height: 24px; padding: 0; cursor: pointer; background: var(--o-border); border: 0; border-radius: 999px; transition: background .15s; }
 .omino-switch i { position: absolute; top: 3px; left: 3px; width: 18px; height: 18px; background: #FFFFFF; border-radius: 50%; transition: transform .15s; }
 .omino-switch.is-on { background: var(--sky); }
-.omino-switch.is-on i { transform: translateX(18px); background: #04141c; }
+.omino-switch.is-on i { transform: translateX(18px); background: var(--o-on-accent); }
 .omino-switch:focus-visible, .omino-seg button:focus-visible, .omino-settings__export:focus-visible { outline: 2px solid var(--sky); outline-offset: 2px; }
-.omino-seg { flex: none; display: flex; padding: 3px; background: #0a0a0a; border: 1px solid #27272A; border-radius: 999px; }
-.omino-seg button { padding: 4px 12px; font: inherit; font-size: 12px; font-weight: 600; color: #A1A1AA; cursor: pointer; background: transparent; border: 0; border-radius: 999px; }
-.omino-seg button.is-on { color: #04141c; background: var(--sky); }
+.omino-seg { flex: none; display: flex; padding: 3px; background: var(--o-sunk); border: 1px solid var(--o-border); border-radius: 999px; }
+.omino-seg button { padding: 4px 12px; font: inherit; font-size: 12px; font-weight: 600; color: var(--o-muted); cursor: pointer; background: transparent; border: 0; border-radius: 999px; }
+.omino-seg button.is-on { color: var(--o-on-accent); background: var(--sky); }
 .omino-settings__export {
   display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; height: 44px; margin-top: 16px;
-  font: inherit; font-size: 14px; font-weight: 600; color: #FFFFFF; cursor: pointer; background: transparent; border: 1px solid #27272A; border-radius: 12px;
+  font: inherit; font-size: 14px; font-weight: 600; color: var(--o-ink); cursor: pointer; background: transparent; border: 1px solid var(--o-border); border-radius: 12px;
 }
-.omino-settings__export:hover { background: #1b1b1f; }
+.omino-settings__export:hover { background: var(--o-hover); }
 .omino-round {
   position: relative; width: 46px; height: 46px; display: grid; place-items: center; padding: 0;
-  font: inherit; color: #FFFFFF; cursor: pointer; background: #121212; border: 1px solid #27272A; border-radius: 50%;
+  font: inherit; color: var(--o-ink); cursor: pointer; background: var(--o-card); border: 1px solid var(--o-border); border-radius: 50%;
 }
-.omino-round:hover { background: #1b1b1f; }
+.omino-round:hover { background: var(--o-hover); }
 .omino-round:focus-visible { outline: 2px solid var(--sky); outline-offset: 2px; }
 .omino-round.is-sky { color: var(--sky); }
 .omino-round.is-on { color: var(--sky); border-color: var(--sky); }
-.omino-round i { position: absolute; top: 0; right: 0; width: 10px; height: 10px; background: #f5b14a; border: 2px solid #0a0a0a; border-radius: 50%; }
+.omino-round i { position: absolute; top: 0; right: 0; width: 10px; height: 10px; background: #f5b14a; border: 2px solid var(--o-bar); border-radius: 50%; }
 
 .omino-canvas .react-flow__panel.top { top: 4px; }
-.omino-tool { border-radius: 14px; background: #121212; }
-.omino-tool.is-off { color: var(--sky); border-color: var(--sky); background: rgba(56,189,248,.08); }
+.omino-tool { border-radius: 14px; background: var(--o-card); }
+.omino-tool.is-off { color: var(--sky); border-color: var(--sky); background: var(--o-accent-bg); }
 .omino-tool b { font-family: var(--mono); font-weight: 500; }
 .react-flow__controls, .react-flow__minimap { border-radius: 12px; }
 
@@ -6766,27 +6910,27 @@ const CSS = `
 .omino-edge-label { font-family: var(--mono); font-size: 10.5px; }
 .omino-edge-label.is-main {
   font-family: 'Inter', system-ui, sans-serif; font-size: 12px; font-weight: 600; text-decoration: none;
-  padding: 4px 10px; border-radius: 999px; background: color-mix(in srgb, currentColor 14%, #121212);
+  padding: 4px 10px; border-radius: 999px; background: color-mix(in srgb, currentColor 14%, var(--o-card));
 }
-.omino-edge-label.is-link:hover { background: color-mix(in srgb, currentColor 26%, #121212); }
+.omino-edge-label.is-link:hover { background: color-mix(in srgb, currentColor 26%, var(--o-card)); }
 
-.omino-ptable, .omino-ecard { background: #121212; border: 1px solid #27272A; border-radius: 20px; box-shadow: 0 24px 64px rgba(0,0,0,.65); }
-.omino-ptable { top: 16px; padding: 18px; }
-.omino-ptable__search input { background: #0a0a0a; }
-.omino-cell { background: #0a0a0a; border-color: #27272A; border-radius: 8px; }
+.omino-ptable, .omino-ecard { background: var(--o-card); border: 1px solid var(--o-border); border-radius: 20px; box-shadow: 0 24px 64px var(--o-shadow2); }
+.omino-ptable { top: 16px; bottom: 16px; max-height: none; padding: 18px; } /* fills the canvas down to the bottom edge */
+.omino-ptable__search input { background: var(--o-sunk); }
+.omino-cell { background: var(--o-sunk); border-color: var(--o-border); border-radius: 8px; }
 .omino-cell small { font-family: var(--mono); }
 .omino-cell b { font-weight: 700; letter-spacing: -0.02em; }
 .omino-ptable__legend { font-family: var(--mono); font-size: 10.5px; }
 
 .omino-ecard { top: 16px; right: 16px; width: 348px; padding: 22px; max-height: calc(100% - 32px); }
-.omino-ecard__name { font-family: var(--mono); font-size: 12px; letter-spacing: .02em; color: #A1A1AA; }
-.omino-ecard__title { font-size: 26px; font-weight: 700; letter-spacing: -0.03em; color: #FFFFFF; }
-.omino-ecard__sym { font-weight: 800; letter-spacing: -0.04em; color: #FFFFFF; }
+.omino-ecard__name { font-family: var(--mono); font-size: 12px; letter-spacing: .02em; color: var(--o-muted); }
+.omino-ecard__title { font-size: 26px; font-weight: 700; letter-spacing: -0.03em; color: var(--o-ink); }
+.omino-ecard__sym { font-weight: 800; letter-spacing: -0.04em; color: var(--o-ink); }
 .omino-ecard__mass { font-family: var(--mono); font-size: 12px; }
 .omino-ecard__tags { gap: 8px; margin: 14px 0 6px; }
 .omino-ecard__tags span, .omino-ecard__tags .omino-pill {
   padding: 5px 10px; font-size: 11px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase;
-  color: var(--c); background: color-mix(in srgb, var(--c) 16%, transparent); border: 0; border-radius: 999px;
+  color: color-mix(in srgb, var(--c) var(--o-keep), var(--o-ink)); background: color-mix(in srgb, var(--c) 16%, transparent); border: 0; border-radius: 999px;
 }
 .omino-ecard__tags .omino-pill::before { display: none; }
 .omino-ecard__tags .omino-pill:hover { background: color-mix(in srgb, var(--c) 28%, transparent); border: 0; }
@@ -6796,14 +6940,14 @@ const CSS = `
 .react-flow__edge.is-active, .react-flow__edge.is-picked { opacity: 1 !important; }
 .omino-canvas.has-edge .react-flow__edge:not(.is-active):not(.is-picked) { opacity: .22; }
 .omino-canvas.has-edge .omino-edge-label:not(.is-active) { opacity: .3 !important; }
-.omino-edge-label.is-active { z-index: 5; opacity: 1 !important; box-shadow: 0 0 0 2px var(--c, currentColor); background: #1b1b1f; font-size: 13px; }
-.react-flow__node.is-end > * { filter: drop-shadow(0 0 12px rgba(255,255,255,.65)); }
+.omino-edge-label.is-active { z-index: 5; opacity: 1 !important; box-shadow: 0 0 0 2px var(--c, currentColor); background: var(--o-hover); font-size: 13px; }
+.react-flow__node.is-end > * { filter: drop-shadow(0 0 12px var(--o-glow2)); }
 .omino-follow {
   position: absolute; z-index: 8; width: max-content; max-width: min(420px, calc(100% - 72px)); padding: 10px 14px 12px; text-align: center; pointer-events: auto;
-  transform: translate(-50%, 14px); background: #121212; border: 1px solid var(--c); border-radius: 14px;
-  box-shadow: 0 16px 40px rgba(0,0,0,.65); font-family: 'Inter', system-ui, sans-serif;
+  transform: translate(-50%, 14px); background: var(--o-card); border: 1px solid var(--c); border-radius: 14px;
+  box-shadow: 0 16px 40px var(--o-shadow2); font-family: 'Inter', system-ui, sans-serif;
 }
-.omino-follow::after { content: ""; position: absolute; left: calc(50% + var(--ax, 0px)); top: -6px; width: 10px; height: 10px; background: #121212; border: solid var(--c); border-width: 1px 0 0 1px; transform: translateX(-50%) rotate(45deg); }
+.omino-follow::after { content: ""; position: absolute; left: calc(50% + var(--ax, 0px)); top: -6px; width: 10px; height: 10px; background: var(--o-card); border: solid var(--c); border-width: 1px 0 0 1px; transform: translateX(-50%) rotate(45deg); }
 @media (max-width: 640px) {
   .omino-follow { padding: 8px 10px 10px; }
   .omino-follow__name { font-size: 13px; }
@@ -6814,22 +6958,22 @@ const CSS = `
   .omino-follow__arrow { padding: 6px 4px; font-size: 9.5px; letter-spacing: .03em; }
   .omino-follow__how { font-size: 11.5px; }
 }
-.omino-follow__x { position: absolute; top: 4px; right: 6px; width: 22px; height: 22px; background: none; border: 0; color: #A1A1AA; font-size: 18px; line-height: 1; cursor: pointer; }
-.omino-follow__x:hover { color: #FFFFFF; }
-.omino-follow__name { padding: 0 22px; color: #FFFFFF; font-size: 14px; font-weight: 700; letter-spacing: -0.01em; }
+.omino-follow__x { position: absolute; top: 4px; right: 6px; width: 22px; height: 22px; background: none; border: 0; color: var(--o-muted); font-size: 18px; line-height: 1; cursor: pointer; }
+.omino-follow__x:hover { color: var(--o-ink); }
+.omino-follow__name { padding: 0 22px; color: var(--o-ink); font-size: 14px; font-weight: 700; letter-spacing: -0.01em; }
 .omino-follow__row { display: flex; align-items: flex-start; gap: 10px; margin-top: 8px; }
 .omino-follow__mid { flex: 1; min-width: 120px; align-self: center; }
 .omino-follow__side { display: flex; flex-direction: column; align-items: center; gap: 3px; flex: none; width: 84px; }
-.omino-follow__side small { max-width: 84px; font-size: 10.5px; line-height: 1.25; color: #A1A1AA; }
-.omino-follow__arrow { display: flex; align-items: center; justify-content: center; gap: 2px; width: 100%; padding: 7px 6px; background: color-mix(in srgb, var(--c) 16%, transparent); color: var(--c); border: 0; border-radius: 10px; font: 600 10.5px 'Inter', system-ui, sans-serif; letter-spacing: .06em; text-transform: uppercase; cursor: pointer; }
+.omino-follow__side small { max-width: 84px; font-size: 10.5px; line-height: 1.25; color: var(--o-muted); }
+.omino-follow__arrow { display: flex; align-items: center; justify-content: center; gap: 2px; width: 100%; padding: 7px 6px; background: color-mix(in srgb, var(--c) 16%, transparent); color: color-mix(in srgb, var(--c) var(--o-keep), var(--o-ink)); border: 0; border-radius: 10px; font: 600 10.5px 'Inter', system-ui, sans-serif; letter-spacing: .06em; text-transform: uppercase; cursor: pointer; }
 .omino-follow__arrow:hover:not(:disabled) { background: color-mix(in srgb, var(--c) 34%, transparent); }
 .omino-follow__arrow:disabled { opacity: .35; cursor: default; }
-.omino-follow__cyc { background: none; border: 1px solid #27272A; border-radius: 999px; padding: 1px 8px; color: #A1A1AA; font: 500 10px var(--mono, monospace); cursor: pointer; }
-.omino-follow__cyc:hover { color: #FFFFFF; border-color: var(--c); }
+.omino-follow__cyc { background: none; border: 1px solid var(--o-border); border-radius: 999px; padding: 1px 8px; color: var(--o-muted); font: 500 10px var(--mono, monospace); cursor: pointer; }
+.omino-follow__cyc:hover { color: var(--o-ink); border-color: color-mix(in srgb, var(--c) var(--o-keep), var(--o-ink)); }
 .omino-follow__how { font-size: 12px; font-weight: 600; }
-.omino-follow__detail { margin-top: 4px; font-size: 11.5px; line-height: 1.45; color: #A1A1AA; }
-.omino-edgecard__enz { margin-top: 8px; background: none; border: 1px solid #27272A; border-radius: 999px; padding: 3px 10px; color: #FFFFFF; font: 500 11px 'Inter', system-ui, sans-serif; cursor: pointer; }
-.omino-edgecard__enz:hover { border-color: var(--c); }
+.omino-follow__detail { margin-top: 4px; font-size: 11.5px; line-height: 1.45; color: var(--o-muted); }
+.omino-edgecard__enz { margin-top: 8px; background: none; border: 1px solid var(--o-border); border-radius: 999px; padding: 3px 10px; color: var(--o-ink); font: 500 11px 'Inter', system-ui, sans-serif; cursor: pointer; }
+.omino-edgecard__enz:hover { border-color: color-mix(in srgb, var(--c) var(--o-keep), var(--o-ink)); }
 .omino-ecard header { position: relative; display: block; }
 .omino-ecard__tags { justify-content: center; }
 .omino-ecard__nav { position: absolute; top: 0; left: 0; display: flex; gap: 6px; }
@@ -6842,27 +6986,27 @@ const CSS = `
 .omino-ecard__stats span { font-family: var(--mono); }
 .omino-ecard__stats b { font-weight: 700; letter-spacing: -0.03em; }
 .omino-ecard__facts { font-family: var(--mono); font-size: 12px; }
-.omino-ecard__note { margin: 16px 0 4px; font-size: 14px; line-height: 1.6; color: #A1A1AA; }
+.omino-ecard__note { margin: 16px 0 4px; font-size: 14px; line-height: 1.6; color: var(--o-muted); }
 .omino-ecard__hint { font-family: var(--mono); font-size: 10.5px; }
-.omino-ecard__sec { margin-top: 18px; padding-top: 16px; border-top: 1px solid #27272A; }
-.omino-ecard__sec h4 { margin-bottom: 10px; font-size: 12px; font-weight: 600; letter-spacing: .12em; color: #A1A1AA; }
+.omino-ecard__sec { margin-top: 18px; padding-top: 16px; border-top: 1px solid var(--o-border); }
+.omino-ecard__sec h4 { margin-bottom: 10px; font-size: 12px; font-weight: 600; letter-spacing: .12em; color: var(--o-muted); }
 .omino-ecard__list { font-family: var(--mono); font-size: 12px; line-height: 1.5; }
-.omino-ecard__rx { font-family: var(--mono); font-size: 12px; background: #0a0a0a; border: 1px solid #27272A; border-radius: 12px; padding: 10px 12px; }
+.omino-ecard__rx { font-family: var(--mono); font-size: 12px; background: var(--o-sunk); border: 1px solid var(--o-border); border-radius: 12px; padding: 10px 12px; }
 .omino-ecard__zoom { font-family: var(--mono); font-size: 10.5px; padding: 4px 12px; }
 .omino-ecard__show {
   height: 46px; margin: 20px 0 0; font-size: 15px; font-weight: 600; letter-spacing: -0.01em;
-  color: #04141c; background: var(--sky); border: 0; border-radius: 12px;
+  color: var(--o-on-accent); background: var(--sky); border: 0; border-radius: 12px;
 }
-.omino-ecard__show:hover { background: #63cdfb; }
-.omino-ecard footer { border-top-color: #27272A; }
+.omino-ecard__show:hover { background: var(--o-accent-hover); }
+.omino-ecard footer { border-top-color: var(--o-border); }
 
 .omino-pill {
   display: inline-flex; align-items: center; gap: 8px; padding: 6px 12px; font-size: 13px; font-weight: 500;
-  color: #FFFFFF; background: transparent; border: 1px solid #27272A;
+  color: var(--o-ink); background: transparent; border: 1px solid var(--o-border);
 }
 .omino-pill::before { content: ""; flex: none; width: 8px; height: 8px; border-radius: 50%; background: var(--c); }
-.omino-pill:hover { background: #1b1b1f; border-color: color-mix(in srgb, var(--c) 70%, #27272A); }
-.omino-link { text-decoration-color: #34343a; }
+.omino-pill:hover { background: var(--o-hover); border-color: color-mix(in srgb, var(--c) 70%, var(--o-border)); }
+.omino-link { text-decoration-color: var(--o-line2); }
 
 .omino-chiprows { display: flex; flex-direction: column; align-items: center; gap: 4px; max-width: 100%; }
 .omino-chip--loc i { border-radius: 2px; }
@@ -6870,16 +7014,16 @@ const CSS = `
 .omino-loc { display: flex; flex-wrap: wrap; justify-content: center; gap: 4px; margin-top: 7px; }
 .omino-loc button { padding: 2px 8px; font: inherit; font-family: var(--mono); font-size: 10px; color: var(--l); cursor: pointer; background: color-mix(in srgb, var(--l) 14%, transparent); border: 0; border-radius: 999px; }
 .omino-loc button:hover { background: color-mix(in srgb, var(--l) 28%, transparent); }
-.omino-rx__seg { margin-top: 5px; font-family: var(--mono); font-size: 10px; line-height: 1.3; color: #A1A1AA; }
+.omino-rx__seg { margin-top: 5px; font-family: var(--mono); font-size: 10px; line-height: 1.3; color: var(--o-muted); }
 .omino-orgs { display: flex; justify-content: center; gap: 4px; margin-top: 6px; }
 .omino-orgs span { padding: 1px 7px; font-family: var(--mono); font-size: 10px; font-weight: 600; color: var(--o); border: 1px solid color-mix(in srgb, var(--o) 60%, transparent); border-radius: 6px; }
-.omino-organ { box-sizing: border-box; text-align: center; padding: 16px 18px 18px; cursor: pointer; background: color-mix(in srgb, var(--accent) 10%, #121212); border: 2px solid var(--accent); border-radius: 28px; transition: opacity .2s, filter .2s; }
+.omino-organ { box-sizing: border-box; text-align: center; padding: 16px 18px 18px; cursor: pointer; background: color-mix(in srgb, var(--accent) 10%, var(--o-card)); border: 2px solid var(--accent); border-radius: 28px; transition: opacity .2s, filter .2s; }
 .omino-organ__code { width: 44px; height: 44px; margin: 0 auto 8px; display: grid; place-items: center; font-family: var(--mono); font-size: 15px; font-weight: 700; color: #04141c; background: var(--accent); border-radius: 50%; }
-.omino-organ__name { font-size: 19px; font-weight: 700; letter-spacing: -0.02em; color: #FFFFFF; }
-.omino-organ__sub { margin-top: 2px; font-family: var(--mono); font-size: 11px; color: #A1A1AA; }
+.omino-organ__name { font-size: 19px; font-weight: 700; letter-spacing: -0.02em; color: var(--o-ink); }
+.omino-organ__sub { margin-top: 2px; font-family: var(--mono); font-size: 11px; color: var(--o-muted); }
 .omino-organ.is-dim { opacity: .16; }
 .omino-organ.is-hit { filter: drop-shadow(0 0 14px color-mix(in srgb, var(--accent) 70%, transparent)); }
-.omino-organ.is-selected { filter: drop-shadow(0 0 10px rgba(255,255,255,.35)); }
+.omino-organ.is-selected { filter: drop-shadow(0 0 10px var(--o-glow)); }
 
 /* ---- Bohr diagram: shells orbit continuously ---- */
 .omino-orbit { transform-box: view-box; transform-origin: 50% 50%; animation: omino-orbit var(--dur, 10s) linear infinite; }
@@ -6896,14 +7040,22 @@ const CSS = `
 .omino-ptable__flabel { font-size: 9px; letter-spacing: 0; white-space: nowrap; padding-right: 4px; }
 /* ---- mobile: one shared panel footprint, compact table, pinned footer ---- */
 .omino-ptable { display: flex; flex-direction: column; overflow: hidden; }
-.omino-ptable__body { flex: 1 1 auto; min-height: 0; overflow: auto; overscroll-behavior: contain; }
+.omino-ptable__body { flex: 1 1 auto; min-height: 0; overflow: auto; overscroll-behavior: contain; display: flex; flex-direction: column; }
+.omino-ptable__bar { justify-content: space-between; }
+.omino-ptable__mode { display: inline-flex; border: 1px solid var(--o-border); border-radius: 999px; padding: 2px; background: var(--o-sunk); }
+.omino-ptable__mode button { font: 12px var(--mono); color: var(--o-muted); background: transparent; border: 1px solid transparent; border-radius: 999px; padding: 5px 12px; cursor: pointer; white-space: nowrap; }
+.omino-ptable__mode button:hover { color: var(--o-ink); }
+.omino-ptable__mode button.is-on { color: var(--o-ink); background: var(--o-hover); border-color: var(--o-accent); }
+.omino-ptable__mode button:focus-visible { outline: 2px solid var(--o-accent); outline-offset: 2px; }
+.omino-ptable__legend { flex: none; }
 .omino-ptable .omino-foot { flex: none; }
 @media (max-width: 639px) {
   .omino-ptable, .omino-ecard { top: 12px; left: 76px; right: 12px; bottom: auto; width: auto !important; max-height: calc(100% - 24px); padding: 14px; border-radius: 18px; }
   .omino-ecard { overflow: auto; overscroll-behavior: contain; left: 12px; bottom: 12px; padding-bottom: max(14px, env(safe-area-inset-bottom, 0px)); } /* the description card is a full sheet: it covers the tool column on the left and the chip rows at the bottom */
   .omino-ptable__search { display: none; }
   .omino-ptable__bar { justify-content: flex-end; margin-bottom: 8px; }
-  .omino-ptable__grid { display: flex; flex-wrap: wrap; gap: 4px; min-width: 0; }
+  .omino-ptable__grid { display: flex; flex-wrap: wrap; gap: 4px; min-width: 0; flex: none; align-content: flex-start; }
+  .omino-ptable__mode button { padding: 5px 9px; font-size: 10.5px; }
   .omino-ptable__grid .omino-cell { flex: 0 0 calc((100% - 24px) / 7); height: 44px; }
   .omino-ptable__grid .omino-cell--ph, .omino-ptable__flabel { display: none; }
   .omino-ptable .omino-cell b { font-size: 15px; }
@@ -6914,63 +7066,63 @@ const CSS = `
   .omino-foot__dot { margin: 0 4px; }
 }
 .omino-rdx { position: absolute; z-index: 9; left: 76px; top: 12px; width: min(440px, calc(100% - 96px)); max-height: calc(100% - 24px); display: flex; flex-direction: column; box-sizing: border-box;
-  background: #121212; border: 1px solid #27272A; border-radius: 14px; box-shadow: 0 12px 40px rgba(0,0,0,.5); font-size: 12.5px; color: #E4E4E7; }
+  background: var(--o-card); border: 1px solid var(--o-border); border-radius: 14px; box-shadow: 0 12px 40px var(--o-shadow); font-size: 12.5px; color: var(--o-ink2); }
 .omino-rdx__top { display: flex; align-items: flex-start; justify-content: space-between; padding: 12px 12px 6px 14px; }
-.omino-rdx__top b { display: block; font-size: 15px; letter-spacing: -0.01em; color: #FFFFFF; }
-.omino-rdx__top span { color: #A1A1AA; font-size: 11.5px; }
-.omino-rdx__x { width: 28px; height: 28px; display: grid; place-items: center; background: none; border: 0; border-radius: 50%; color: #A1A1AA; cursor: pointer; }
-.omino-rdx__x:hover { background: #1b1b1f; color: #FFFFFF; }
+.omino-rdx__top b { display: block; font-size: 15px; letter-spacing: -0.01em; color: var(--o-ink); }
+.omino-rdx__top span { color: var(--o-muted); font-size: 11.5px; }
+.omino-rdx__x { width: 28px; height: 28px; display: grid; place-items: center; background: none; border: 0; border-radius: 50%; color: var(--o-muted); cursor: pointer; }
+.omino-rdx__x:hover { background: var(--o-hover); color: var(--o-ink); }
 .omino-rdx__stages { display: flex; gap: 4px; padding: 2px 12px 8px; overflow-x: auto; scrollbar-width: none; }
-.omino-rdx__stages button { flex: none; padding: 4px 10px; font: inherit; font-size: 11.5px; color: #A1A1AA; background: transparent; border: 1px solid #27272A; border-radius: 999px; cursor: pointer; white-space: nowrap; }
-.omino-rdx__stages button:hover { color: #FFFFFF; background: #1b1b1f; }
-.omino-rdx__stages button.is-on { color: #FFFFFF; border-color: var(--sky); }
-.omino-rdx__body { overflow: auto; padding: 4px 14px 10px; border-top: 1px solid #1f1f23; }
-.omino-rdx__step { display: flex; gap: 8px; align-items: baseline; margin-top: 10px; font: 500 10.5px var(--mono); color: #A1A1AA; text-transform: uppercase; letter-spacing: .04em; }
-.omino-rdx__step em { font-style: normal; color: #f2c94c; }
-.omino-rdx h3 { margin: 2px 0 8px; font-size: 16px; font-weight: 700; letter-spacing: -0.01em; color: #FFFFFF; }
-.omino-rdx h4 { margin: 14px 0 6px; font-size: 10.5px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: #A1A1AA; }
-.omino-rdx__eq { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 5px; padding: 8px 10px; background: #0c0c0e; border: 1px solid #1f1f23; border-radius: 10px; }
-.omino-rdx__sp { display: inline-flex; align-items: baseline; gap: 4px; padding: 2px 7px; background: #18181b; border-radius: 7px; white-space: nowrap; }
-.omino-rdx__sp b { font-weight: 600; color: #FFFFFF; }
-.omino-rdx__sp i { font: normal 10px var(--mono); color: #A1A1AA; }
-.omino-rdx__sp.is-red { background: color-mix(in srgb, #ff8a65 18%, #18181b); }
-.omino-rdx__plus, .omino-rdx__arrow { color: #71717A; }
-.omino-rdx__arrow { margin: 0 2px; font-size: 15px; color: #FFFFFF; }
-.omino-rdx__chk { margin-top: 5px; font: 10.5px var(--mono); color: #6fe0b4; }
+.omino-rdx__stages button { flex: none; padding: 4px 10px; font: inherit; font-size: 11.5px; color: var(--o-muted); background: transparent; border: 1px solid var(--o-border); border-radius: 999px; cursor: pointer; white-space: nowrap; }
+.omino-rdx__stages button:hover { color: var(--o-ink); background: var(--o-hover); }
+.omino-rdx__stages button.is-on { color: var(--o-ink); border-color: var(--sky); }
+.omino-rdx__body { overflow: auto; padding: 4px 14px 10px; border-top: 1px solid var(--o-line-soft); }
+.omino-rdx__step { display: flex; gap: 8px; align-items: baseline; margin-top: 10px; font: 500 10.5px var(--mono); color: var(--o-muted); text-transform: uppercase; letter-spacing: .04em; }
+.omino-rdx__step em { font-style: normal; color: var(--o-warn); }
+.omino-rdx h3 { margin: 2px 0 8px; font-size: 16px; font-weight: 700; letter-spacing: -0.01em; color: var(--o-ink); }
+.omino-rdx h4 { margin: 14px 0 6px; font-size: 10.5px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--o-muted); }
+.omino-rdx__eq { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 5px; padding: 8px 10px; background: var(--o-soft2); border: 1px solid var(--o-line-soft); border-radius: 10px; }
+.omino-rdx__sp { display: inline-flex; align-items: baseline; gap: 4px; padding: 2px 7px; background: var(--o-soft); border-radius: 7px; white-space: nowrap; }
+.omino-rdx__sp b { font-weight: 600; color: var(--o-ink); }
+.omino-rdx__sp i { font: normal 10px var(--mono); color: var(--o-muted); }
+.omino-rdx__sp.is-red { background: color-mix(in srgb, #ff8a65 18%, var(--o-soft)); }
+.omino-rdx__plus, .omino-rdx__arrow { color: var(--o-faint); }
+.omino-rdx__arrow { margin: 0 2px; font-size: 15px; color: var(--o-ink); }
+.omino-rdx__chk { margin-top: 5px; font: 10.5px var(--mono); color: var(--o-ok); }
 .omino-rdx__chk::before { content: "✓ "; }
-.omino-rdx__txt { margin: 10px 0 8px; line-height: 1.55; color: #D4D4D8; }
+.omino-rdx__txt { margin: 10px 0 8px; line-height: 1.55; color: var(--o-ink2); }
 .omino-rdx__moves { display: flex; flex-wrap: wrap; gap: 5px; }
-.omino-rdx__moves span { padding: 3px 9px; font-size: 11.5px; color: #D4D4D8; border: 1px solid #27272A; border-radius: 999px; }
+.omino-rdx__moves span { padding: 3px 9px; font-size: 11.5px; color: var(--o-ink2); border: 1px solid var(--o-border); border-radius: 999px; }
 .omino-rdx__moves b { font: 600 11px var(--mono); }
-.omino-rdx__moves .is-e { border-color: #38bdf8; } .omino-rdx__moves .is-e b { color: #38bdf8; }
-.omino-rdx__moves .is-h b { color: #f2c94c; }
-.omino-rdx__moves .is-none { color: #71717A; }
+.omino-rdx__moves .is-e { border-color: var(--o-accent); } .omino-rdx__moves .is-e b { color: var(--o-accent); }
+.omino-rdx__moves .is-h b { color: var(--o-warn); }
+.omino-rdx__moves .is-none { color: var(--o-faint); }
 .omino-rdx__rows { display: grid; gap: 4px; }
 .omino-rdx__row { display: grid; grid-template-columns: 1fr 120px 34px; align-items: center; gap: 8px; }
 .omino-rdx__rows--h .omino-rdx__row { grid-template-columns: 10px 1fr 44px; }
 .omino-rdx__rows--h .omino-rdx__row::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--c); grid-column: 1; grid-row: 1; }
 .omino-rdx__rows--h .omino-rdx__row > span { grid-column: 2; }
 .omino-rdx__rows--h .omino-rdx__row > b { grid-column: 3; }
-.omino-rdx__row > span { color: #A1A1AA; font-size: 12px; }
-.omino-rdx__row > b { text-align: right; font: 600 12px var(--mono); color: #FFFFFF; }
-.omino-rdx__row > b.is-chg { color: #f2c94c; }
-.omino-rdx__bar { height: 7px; background: #1b1b1f; border-radius: 4px; overflow: hidden; }
-.omino-rdx__bar i { display: block; height: 100%; background: #38bdf8; border-radius: 4px; transition: width .35s; }
-.omino-rdx__bar i.is-chg { background: #f2c94c; }
-.omino-rdx__row--sum { margin-top: 2px; padding-top: 5px; border-top: 1px solid #1f1f23; grid-template-columns: 1fr 44px !important; }
+.omino-rdx__row > span { color: var(--o-muted); font-size: 12px; }
+.omino-rdx__row > b { text-align: right; font: 600 12px var(--mono); color: var(--o-ink); }
+.omino-rdx__row > b.is-chg { color: var(--o-warn); }
+.omino-rdx__bar { height: 7px; background: var(--o-hover); border-radius: 4px; overflow: hidden; }
+.omino-rdx__bar i { display: block; height: 100%; background: var(--o-accent); border-radius: 4px; transition: width .35s; }
+.omino-rdx__bar i.is-chg { background: var(--o-warn); }
+.omino-rdx__row--sum { margin-top: 2px; padding-top: 5px; border-top: 1px solid var(--o-line-soft); grid-template-columns: 1fr 44px !important; }
 .omino-rdx__row--sum::before { display: none !important; }
-.omino-rdx__row--sum > span { grid-column: 1 !important; color: #FFFFFF; }
-.omino-rdx__row--sum > b { grid-column: 2 !important; color: #6fe0b4; }
-.omino-rdx__net { margin-top: 12px; padding: 9px 11px; display: grid; gap: 4px; background: #0c0c0e; border: 1px solid #27272A; border-radius: 10px; }
-.omino-rdx__net b { font-size: 10.5px; letter-spacing: .06em; text-transform: uppercase; color: #A1A1AA; }
-.omino-rdx__net span { line-height: 1.5; color: #FFFFFF; }
-.omino-rdx__net small { font-size: 11px; line-height: 1.5; color: #A1A1AA; }
-.omino-rdx__ctl { display: flex; align-items: center; gap: 6px; padding: 8px 12px 12px; border-top: 1px solid #1f1f23; }
-.omino-rdx__ctl button { height: 30px; min-width: 34px; padding: 0 10px; display: grid; place-items: center; font-weight: 600; font-size: 12px; font-family: inherit; color: #FFFFFF; background: #18181b; border: 1px solid #27272A; border-radius: 999px; cursor: pointer; }
-.omino-rdx__ctl button:hover:not(:disabled) { background: #232328; }
+.omino-rdx__row--sum > span { grid-column: 1 !important; color: var(--o-ink); }
+.omino-rdx__row--sum > b { grid-column: 2 !important; color: var(--o-ok); }
+.omino-rdx__net { margin-top: 12px; padding: 9px 11px; display: grid; gap: 4px; background: var(--o-soft2); border: 1px solid var(--o-border); border-radius: 10px; }
+.omino-rdx__net b { font-size: 10.5px; letter-spacing: .06em; text-transform: uppercase; color: var(--o-muted); }
+.omino-rdx__net span { line-height: 1.5; color: var(--o-ink); }
+.omino-rdx__net small { font-size: 11px; line-height: 1.5; color: var(--o-muted); }
+.omino-rdx__ctl { display: flex; align-items: center; gap: 6px; padding: 8px 12px 12px; border-top: 1px solid var(--o-line-soft); }
+.omino-rdx__ctl button { height: 30px; min-width: 34px; padding: 0 10px; display: grid; place-items: center; font-weight: 600; font-size: 12px; font-family: inherit; color: var(--o-ink); background: var(--o-soft); border: 1px solid var(--o-border); border-radius: 999px; cursor: pointer; }
+.omino-rdx__ctl button:hover:not(:disabled) { background: var(--o-hover2); }
 .omino-rdx__ctl button:disabled { opacity: .35; cursor: default; }
 .omino-rdx__ctl button.is-play { min-width: 64px; color: var(--sky); border-color: var(--sky); }
-.omino-rdx__ctl input[type=range] { flex: 1; min-width: 0; accent-color: #38bdf8; }
+.omino-rdx__ctl input[type=range] { flex: 1; min-width: 0; accent-color: var(--o-accent); }
 @media (max-width: 760px) {
   .omino-rdx { left: 8px; right: 8px; top: auto; bottom: 8px; width: auto; max-height: 52%; }
   .omino-rdx__row { grid-template-columns: 1fr 70px 30px; }
