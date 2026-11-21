@@ -1,3 +1,24 @@
+// v7.40: no two cards on the canvas overlap. A second pass (enforceNoOverlap, after resolveOverlaps) moves the less fixed card of any overlapping pair (chip/title, then target/drug/hub, then molecule) to the nearest free spot, with a 28 px gap; checked on all 949 cards. Includes the v7.9 load fix (mitochondrial HMG-CoA now defined after HMG-CoA).
+// v7.39: lines (vectors) highlight only when selected by click; pointer hover no longer lights them or the two things they join.
+// v7.38: "Open OWORLD" pill button in the top bar with the OWORLD app icon (embedded, 96 px) opening https://app.oworld.pro in a new tab; the label hides on phones, leaving the icon.
+// v7.37: Purine catabolism part 8 (finished): NPT1/NPT4 added to the Renal hub (tethered to uric acid, lab link, linked from the gout and renal-urate panels) and a dashed line from the adenylosuccinate-lyase fumarate chip beside AMP to fumarate in the TCA cycle. The purine catabolism block is now complete.
+// v7.36: Purine catabolism part 7: renal urate transport in the Renal hub as target cards (OAT1/OAT3, ABCG2, GLUT9 beside URAT1), each tethered to uric acid and with its lab link; probenecid (uricosurics) now also blocks OAT1/OAT3; the gout, renal-urate and hypouricaemia panels link to them; an adenylate kinase chip (+ ATP ⇌ 2 ADP) beside AMP. Not done: the fumarate dashed line to the TCA cycle, NPT1 and NPT4.
+// v7.35: Purine catabolism part 6: five more panels in the clinical-panel block. ADSL deficiency (and the related ATIC defect), CD73 deficiency (ACDC), NT5C2 mutations (thiopurine-resistant relapsed ALL, spastic paraplegia), renal urate handling (URAT1, OAT4, NPT4, GLUT9, OAT1/3, ABCG2, NPT1; probenecid, benzbromarone, dotinurad, losartan, SGLT2 inhibitors) and the purine nucleotide cycle as a fumarate source for the TCA cycle. Added as panels on the existing cards (no new nodes, edges or layout changes). Still to do on the canvas: ABCG2, GLUT9, OAT1/3 and NPT1 as Renal-hub targets with their own drugs, adenylate kinase (2 ADP → ATP + AMP) as a drawn step, and a fumarate line from the purine pathway to the TCA cycle.
+// v7.34: Purine catabolism part 5: clinical panels. A new collapsible panel block (what goes wrong, presentation, diagnosis, treatment, links) appears on every molecule, enzyme and target card a disorder touches: gout and hyperuricaemia, tumour lysis syndrome, Lesch–Nyhan/Kelley–Seegmiller, PRPS1 superactivity, APRT deficiency, AMPD1 deficiency, ADA-SCID, PNP deficiency, xanthinuria, renal hypouricaemia (URAT1/GLUT9), plus dietary purines and ATP breakdown in exercise (adenylate kinase, AMP deaminase, purine nucleotide cycle). Disorder names and synonyms are searchable and the Purine catabolism pathway card lists them all. Not drawn on the canvas yet: ABCG2, GLUT9, OAT1/3 and NPT1 as renal urate transport targets, adenylate kinase and a fumarate link from the purine nucleotide cycle to the TCA cycle, the 5′-nucleotidase variants.
+// v7.33: Purine catabolism part 1 (open canvas above the AMP and GMP end nodes of purine synthesis). AMP → adenosine (5′-nucleotidase) → inosine (adenosine deaminase); IMP → inosine; GMP → guanosine; inosine → hypoxanthine and guanosine → guanine (purine nucleoside phosphorylase); hypoxanthine → xanthine → uric acid (xanthine oxidase); guanine → xanthine (guanine deaminase); uric acid → allantoin (urate oxidase, absent in humans). New structures (hypoxanthine, xanthine, uric acid, guanine, allantoin, inosine, adenosine, guanosine), chips, enzyme and molecule cards, locations, class, uric-acid lab link, pathway lighting, and tethers from the existing xanthine oxidase and serum-uric-acid targets. Part 2 added: adenine and APRT (adenine → AMP), AMP deaminase (AMP → IMP). Part 4 added: adenosine deaminase and PNP targets in the Oncology hub (pentostatin, forodesine) and pegloticase on the serum uric acid target, each with adverse-effect panels and tethers. Part 3 added: HGPRT salvage edges (hypoxanthine → IMP, guanine → GMP) with a Lesch–Nyhan card. Still to do: the rest of the purine nucleotide cycle, ADA-SCID and PNP-deficiency clinical panels, gout/hyperuricaemia and tumour lysis panel on the uric acid card, renal urate handling (URAT1, ABCG2, GLUT9) as a block, ATP degradation to AMP in exercise, dietary purines.
+// v7.32: Steroidogenesis part 9: the optional inactivation extras. Allo-tetrahydrocortisol (5α route), cortol and cortolone (20-reduced metabolites), 6β-hydroxycortisol (CYP3A4 marker) and estriol 16α-glucuronide (new structure with the glucuronate ring), with enzyme cards, chips, locations, class, cortisol lab link and pathway lighting; they sit in free spots of the inactivation block. Still to do: none planned.
+// v7.31: Steroidogenesis part 8: steroid inactivation. Conjugates: testosterone glucuronide (UGT2B17; new structure with the glucuronate ring) and estrone sulfate (SULT1E1, steroid sulfatase reversal; DHEA-S was added in v7.29); reduced urinary metabolites: androsterone/etiocholanolone (17-ketosteroids), tetrahydrocortisol, tetrahydrocortisone, pregnanediol and pregnanetriol (5β-reductase AKR1D1, 3α-HSD, 20α-HSD), each with enzyme cards, cofactor chips, locations, labs (cortisol, 17-OH-progesterone, testosterone, DHEA-S) and pathway lighting; the block sits below the oestrogen row. Steroidogenesis arc complete; optional extras: allo-THF, cortols/cortolones, 6β-hydroxycortisol (CYP3A4), estriol glucuronide.
+// v7.30: Steroidogenesis part 7: Adrenal cortex and Gonads organ hubs (aldosterone synthase, 21-hydroxylase, LH and FSH receptors, progesterone receptor; hCG, FSH, progestins, antiprogestins with adverse-effect panels; ketoconazole, metyrapone and others listed in the hubs) and lab links (ACTH, 17-OHP, testosterone, DHEA-S, with cortisol) on the steroids, targets, chips and drugs. Still to do: steroid inactivation (glucuronide, sulfate, reduced urinary metabolites).
+// v7.29: Steroidogenesis part 6: ketoconazole and levoketoconazole as one multi-target steroidogenesis inhibitor (CYP11A1, CYP17A1 hydroxylase and lyase, CYP11B1, weak AR and GR antagonism) with its own adverse-effect panel; enzyme cards updated. FIX to v7.27: two "ext" keys in the location table meant the steroid hormones never got their blood location; merged. DHEA-S (SULT2A1 sulfation of DHEA, with a new sulfate-ester structure, PAPS chip and cards). Still to do: steroid inactivation (glucuronide, sulfate), adrenal zones and gonads as organ hubs, lab links (cortisol, ACTH, 17-OHP, testosterone).
+// v7.28: Steroidogenesis part 5: Pharmacology targets and drug classes for CYP17A1 (abiraterone, with prednisone), CYP11B1 (metyrapone, osilodrostat) and CYP11A1 (mitotane), each tethered to the steroid it acts on, with adverse-effect panels. Still to do: ketoconazole/levoketoconazole as a multi-target steroidogenesis inhibitor, spironolactone/eplerenone and finasteride attachment check, adrenal zones and gonads as organ hubs, DHEA-S sulfation structure, steroid inactivation (glucuronide, sulfate), lab links (cortisol, ACTH, 17-OHP, testosterone).
+// v7.27: Steroidogenesis part 4. Cellular locations for the steroid nodes (ER for CYP17A1/CYP21A2/HSD3B2/aromatase products, mitochondria for the 11β-hydroxylase and aldosterone-synthase products, blood for the circulating hormones); CRH → ACTH and GnRH → LH/FSH axis chips with dashed feedback lines and cards. Still to do: new targets and drugs for CYP17A1 (abiraterone), CYP11B1 (metyrapone, osilodrostat), CYP11A1/CYP21A2 inhibitors and ketoconazole, spironolactone and finasteride link check (these need new drug structures); adrenal zones and gonads as organ hubs; DHEA-S sulfation structure; steroid inactivation (glucuronide, sulfate).
+// v7.26: Steroidogenesis part 3. Estriol (pregnancy; 16α-hydroxylation) and the cortisol ⇄ cortisone shuttle (11β-HSD1/2, new 11-keto structure); chips, cards; cortisol regulation chip moved under cortisol. Pharmacology tethers added from the existing targets aromatase (→ estradiol), 5α-reductase type 2 and androgen receptor (→ DHT), mineralocorticoid receptor (→ aldosterone), glucocorticoid receptor (→ cortisol) and AT₁ (→ the angiotensin II chip). CAH enzyme-block patterns added to the pathway card. Still to do: new targets and drugs for CYP17A1 (abiraterone), CYP11B1 (metyrapone, osilodrostat), CYP11A1/CYP21A2 inhibitors, ketoconazole link, spironolactone and finasteride tethers check; adrenal zones and gonads in the location filter; DHEA-S sulfation structure; steroid inactivation (glucuronide); GnRH/CRH axis chips.
+// v7.25: Steroidogenesis part 2 and regulation. 5α-reductase (testosterone → DHT), aromatase (androstenedione → estrone, testosterone → estradiol) and 17β-HSD1 (estrone → estradiol), with new skeletal structures (aromatic ring A, no C19 methyl), chips, cards and route lighting. Regulation drawn as dashed lines from chips: ACTH → cAMP–PKA (cortisol steps), angiotensin II and K⁺ (CYP11B2), LH (Leydig, theca), FSH (aromatase). FIXES to v7.24: the 11 steroid molecules were listed before their structures existed (load crash), and the "Steroidogenesis" pathway entry, title chip, steroid class, molecule and enzyme cards and pathway lighting were missing; all added. Still to do: drugs and Pharmacology tethers (abiraterone, metyrapone, ketoconazole, spironolactone, finasteride, aromatase inhibitors, GnRH), adrenal zones and gonads in the location filter, estriol and placenta, sulfation (DHEA-S) and steroid inactivation, CAH enzyme-block clinical panel, cortisol–cortisone (11β-HSD) shuttle.
+// v7.24: Steroidogenesis part 1 (below pregnenolone): StAR chip, Δ5 and Δ4 routes — pregnenolone → progesterone / 17-OH-pregnenolone (3β-HSD, CYP17A1), → 17-OH-progesterone, 11-deoxycortisol, cortisol (CYP21A2, CYP11B1), → 11-deoxycorticosterone, corticosterone, aldosterone (CYP21A2, CYP11B2) and → DHEA, androstenedione, testosterone (17,20-lyase, 3β-HSD, 17β-HSD). New structures (3-keto-4-ene, 11-, 17-, 21-OH, 18-aldehyde, 17-keto and 17β-OH forms), chips, cards with the congenital adrenal hyperplasias, a "Steroidogenesis" chip and route lighting. Still to do: estrogens and DHT (aromatase, 5α-reductase), regulation (ACTH, angiotensin II, K⁺, LH/FSH), drugs and Pharmacology targets, adrenal zones and gonads.
+// v7.22: One-carbon part 2: transsulfuration (homocysteine → cystathionine by CBS with serine, vitamin B₆; → cysteine by cystathionase, a line to the cysteine node in the amino-acid grid), betaine–homocysteine methyltransferase (BHMT), the glycine cleavage system as a second source of methylene-THF, formate (formyl-THF synthetase, mitochondrial serine route), new cards and chips, and extra links on the folate and B₁₂ vitamin cards. All light with the One-carbon pathway. Not drawn: long dashed lines to the existing purine and dTMP nodes far to the right, and a separate mitochondrial folate cycle.
+// v7.22: One-carbon / folate cycle, part 1 (open canvas below the amino-acid grid). Folate cycle: THF → N⁵,N¹⁰-methylene-THF (SHMT, serine → glycine) → N⁵-methyl-THF (MTHFR) → THF (methionine synthase, B₁₂), plus methenyl and N¹⁰-formyl-THF (MTHFD1, to purine synthesis) and DHF (thymidylate synthase, DHFR). Methionine cycle: methionine → SAM (MAT) → SAH (methyltransferases) → homocysteine (SAHH) → methionine. Structures, chips, cards, a "One-carbon (folate)" pathway chip and route lighting. Still to do: transsulfuration link, MTHFR variants and B-vitamin/drug cross-links (methotrexate, pemetrexed, trimethoprim, nitrous oxide), mitochondrial folate pathway, glycine cleavage.
+// v7.21: Ketolysis, regulation and targets. Peripheral tissues (brain, muscle, heart) use ketones: β-hydroxybutyrate and acetoacetate are carried in blood (MCT1/2), BDH1 oxidises β-hydroxybutyrate, SCOT (OXCT1) moves CoA from succinyl-CoA to acetoacetate, thiolase splits acetoacetyl-CoA into two acetyl-CoA, which feed citrate synthase (a second, peripheral acetyl-CoA node sits beside the TCA ring so no long line crosses it). Liver lacks SCOT. Regulation (insulin, glucagon, PPARα, oxaloacetate), diabetic, alcoholic and SGLT2-inhibitor ketoacidosis added to the cards; Pharmacology targets for HMGCS2 and SCOT; all of it lights with Ketone bodies.
+// v7.20: Ketogenesis part 1 (liver mitochondria): the one summary arrow acetyl-CoA → acetoacetate is replaced by the full route: thiolase (ACAT1) → acetoacetyl-CoA, HMG-CoA synthase 2 → mitochondrial HMG-CoA, HMG-CoA lyase → acetoacetate (+ acetyl-CoA), BDH1 → β-hydroxybutyrate (NADH), and spontaneous decarboxylation → acetone. Structures, chips, enzyme and molecule cards, a new "Ketone bodies" pathway chip and route lighting. Still to do: ketolysis in peripheral tissues (SCOT/OXCT1), regulation and clinical notes.
 // v7.19: β-oxidation part 7: a Peroxisome entry in the location filter (very-long-chain and branched-chain oxidation and the ACOX1 target); carnitine is placed in the cytosol and the CPT2 target in mitochondria; Pharmacology-layer targets for propionyl-CoA carboxylase, methylmalonyl-CoA mutase and ACOX1. Catalase for the peroxisomal H₂O₂ is still only described on the ACOX1 card.
 // v7.18: β-oxidation part 6: carnitine uptake (OCTN2, primary carnitine deficiency) drawn as a new carnitine node feeding CPT1; the mitochondrial trifunctional protein (HADHA/HADHB) shown as a chip beside the long-chain hydratase, hydroxyacyl dehydrogenase and thiolase steps; hypoglycin (Jamaican vomiting sickness) on the acyl-CoA dehydrogenase card; and a dashed line from the FADH₂ chip to coenzyme Q (via ETF and ETF-QO). Catalase for the peroxisomal H₂O₂ is described on the ACOX1 card but not drawn.
 // v7.17: β-oxidation part 5: peroxisomal oxidation. Very-long-chain fatty acids (ABCD1 import, acyl-CoA oxidase ACOX1 making H₂O₂, D-bifunctional protein, peroxisomal thiolase) are shortened and sent on to the mitochondrial pathway; phytanic acid (Refsum disease) goes through α-oxidation to pristanoyl-CoA and joins the same spiral. Structures, chips, cards and route lighting added. Not done: a Peroxisome entry in the location filter.
@@ -590,6 +611,44 @@ Object.assign(MOLS, {
   }) },
 });
 
+/* ---- purine catabolism: nucleosides, free bases, uric acid and allantoin (v7.33) ---- */
+const BASE_IDS = ["C6", "N1", "C2", "N3", "C4", "C5", "N7", "C8", "N9"];
+// free purine base: the ring atoms of a nucleotide drawing (plus the listed substituents) with N9 carrying its own hydrogen instead of the ribose
+const purBase = (from, extra = []) => {
+  const keep = new Set([...BASE_IDS, ...extra]);
+  const atoms = from.atoms.filter((a) => keep.has(a.id)).map((a) => (a.id === "N9" ? A("N9", [a.x, a.y], "NH", "N") : { ...a }));
+  const bonds = from.bonds.filter((b) => keep.has(b[0]) && keep.has(b[1])).map((b) => [...b]);
+  return { atoms, bonds };
+};
+// nucleoside on the adenosine frame: free 5′-OH
+const purNs = (edit) => {
+  const b = nucleoside("A"), atoms = b.atoms.map((a) => ({ ...a })), bonds = b.bonds.map((x) => [...x]);
+  if (edit) edit(atoms, bonds);
+  return { atoms: atoms.map((a) => (a.id === "O5p" ? A("O5p", [a.x, a.y], "OH", "O", { align: "start" }) : a)), bonds };
+};
+const urate = (from) => { // xanthine plus the 8-oxo group: N7–H, C8=O
+  const m = purBase(from, ["O6", "O2x"]);
+  m.atoms = m.atoms.map((a) => (a.id === "N7" ? A("N7", [a.x, a.y], "NH", "N") : a));
+  m.bonds = m.bonds.map((b) => (b[0] === "N7" && b[1] === "C8" ? ["N7", "C8"] : b));
+  m.atoms.push(A("O8", [102, 0], "O", "O")); m.bonds.push(["C8", "O8", 2]);
+  return m;
+};
+Object.assign(MOLS, {
+  adenosine: { name: "Adenosine", scale: 0.8, ...purNs() },
+  inosine: { name: "Inosine", scale: 0.8, ...purNs(hypoxanthine) },
+  guanosine: { name: "Guanosine", scale: 0.8, ...(() => { const b = nucleoside("G"); return { atoms: b.atoms.map((a) => (a.id === "O5p" ? A("O5p", [a.x, a.y], "OH", "O", { align: "start" }) : a)), bonds: b.bonds }; })() },
+  hypox: { name: "Hypoxanthine", scale: 0.8, ...purBase(MOLS.imp, ["O6"]) },
+  xanth: { name: "Xanthine", scale: 0.8, ...purBase(MOLS.xmp, ["O6", "O2x"]) },
+  guanine: { name: "Guanine", scale: 0.8, ...purBase(MOLS.gmp, ["O6", "N2"]) },
+  uricacid: { name: "Uric acid", scale: 0.8, ...urate(MOLS.xmp) },
+  adenine: { name: "Adenine", scale: 0.8, ...purBase(MOLS.amp, ["NH2"]) },
+  allantoin: { name: "Allantoin", scale: 0.8, atoms: [
+    C("C5", [0, -25.5]), C("C4", [24.3, -7.9]), A("N3", [15, 20.6], "NH", "N"), C("C2", [-15, 20.6]), A("N1", [-24.3, -7.9], "NH", "N"),
+    A("O4", [52.8, -17.2], "O", "O"), A("O2", [-32.6, 44.9], "O", "O"),
+    A("Nu", [0, -55.5], "NH", "N"), C("Cu", [26, -70.5]), A("Ou", [26, -100.5], "O", "O"), A("Nn", [52, -55.5], "NH2", "N")],
+    bonds: [["C5", "C4"], ["C4", "N3"], ["N3", "C2"], ["C2", "N1"], ["N1", "C5"], ["C4", "O4", 2], ["C2", "O2", 2], ["C5", "Nu"], ["Nu", "Cu"], ["Cu", "Ou", 2], ["Cu", "Nn"]] },
+});
+
 /* ---- pyrimidine synthesis & salvage: ring and open-chain intermediates, uracil / cytosine / thymine nucleotides, nucleosides and bases ---- */
 // nucleotide or nucleoside on the uridine frame: n phosphates on O5′ (0 = free 5′-OH), uracil, cytosine or thymine, ribose or 2′-deoxyribose
 function pyrNt(name, { base = "U", deoxy = false, n = 1 }) {
@@ -981,6 +1040,9 @@ const PATHWAYS = {
   gluconeogenesis: { label: "Gluconeogenesis", color: "#ff9f1c" },
   glycogenolysis: { label: "Glycogenolysis", color: "#e879f9" },
   box: { label: "β-oxidation", color: "#84cc16" },
+  keto: { label: "Ketone bodies", color: "#38bdf8" },
+  fol: { label: "One-carbon (folate)", color: "#fda4af" },
+  stero: { label: "Steroidogenesis", color: "#f43f5e" },
 };
 const PATH_OF = {};
 Object.entries({
@@ -994,6 +1056,40 @@ Object.entries({
   aa: ["valine", "leucine", "isoleucine", "methionine", "threonine", "lysine", "histidine", "phenylalanine", "tryptophan", "serine", "cysteine", "tyrosine", "proline", "glutamine", "asparagine"],
 }).forEach(([p, ids]) => ids.forEach((i) => (PATH_OF[i] = p)));
 
+MOLS.aacoa = { name: "Acetoacetyl-CoA", ...zig(4, [[1, "=O"], [3, "SCoA"]]) };
+MOLS.bhb = { name: "β-Hydroxybutyrate", ...zig(4, [[1, "OH"], [3, "COO"]]) };
+MOLS.acetone = { name: "Acetone", ...zig(3, [[1, "=O"]]) };
+MOLS.bhbp = { ...MOLS.bhb, name: "β-Hydroxybutyrate (peripheral tissue)" };
+MOLS.acacp = { ...MOLS.acac, name: "Acetoacetate (peripheral tissue)" };
+MOLS.aacoap = { ...MOLS.aacoa, name: "Acetoacetyl-CoA (peripheral tissue)" };
+MOLS.acetylcoap = { ...MOLS.acetylcoa, name: "Acetyl-CoA (peripheral tissue)" };
+const folate = (kind) => {
+  const atoms = [A("pt", [-60, 0], "Pterin", "X", { align: "end" }), A("n5", [0, 0], "N", "N"), C("c6", [28, 26]), C("c9", [66, 26]), A("n10", [94, 0], "N", "N"), A("ab", [154, 0], "p-ABA–Glu", "X", { align: "start" })];
+  const bonds = [["pt", "n5"], ["n5", "c6", kind === "dhf" ? 2 : 1], ["c6", "c9"], ["c9", "n10"], ["n10", "ab"]];
+  const add = (id, pos, text, to, q) => { atoms.push(A(id, pos, text, "X", q ? { q } : {})); to.forEach((t) => bonds.push([t, id])); };
+  if (kind === "mthf2") add("cx", [47, -28], "CH₂", ["n5", "n10"]);
+  if (kind === "mnthf") add("cx", [47, -28], "CH", ["n5", "n10"], "+");
+  if (kind === "mthf") add("me", [0, -32], "CH₃", ["n5"]);
+  if (kind === "fthf") add("fo", [94, -32], "CHO", ["n10"]);
+  return { atoms, bonds };
+};
+const sulfur = (extra) => { const m = zig(4, [[0, "COOL"], [1, "NH3"]]); m.atoms.push(A("s", [104, 15], "S", "S", extra.q ? { q: extra.q } : {})); m.bonds.push(["c3", "s"]); if (extra.me) { m.atoms.push(A("me", [130, 0], "CH₃", "X")); m.bonds.push(["s", "me"]); } if (extra.ad) { m.atoms.push(A("ad", [136, 0], "Adenosine", "X", { align: "start" })); m.bonds.push(["s", "ad"]); } if (extra.h) { m.atoms[m.atoms.length - 1].text = "SH"; } return m; };
+Object.assign(MOLS, {
+  thf: { name: "Tetrahydrofolate (THF)", ...folate("thf") }, dhf: { name: "Dihydrofolate (DHF)", ...folate("dhf") },
+  mthf2: { name: "N⁵,N¹⁰-Methylene-THF", ...folate("mthf2") }, mnthf: { name: "N⁵,N¹⁰-Methenyl-THF", ...folate("mnthf") },
+  mthf: { name: "N⁵-Methyl-THF", ...folate("mthf") }, fthf: { name: "N¹⁰-Formyl-THF", ...folate("fthf") },
+  metc: { name: "Methionine (cycle)", ...sulfur({ me: 1 }) }, sam: { name: "S-Adenosylmethionine (SAM)", ...sulfur({ q: "+", ad: 1 }) },
+  sah: { name: "S-Adenosylhomocysteine (SAH)", ...sulfur({ ad: 1 }) }, hcy: { name: "Homocysteine", ...sulfur({ h: 1 }) },
+});
+(() => {
+  const cy = zig(4, [[0, "COOL"], [1, "NH3"]]);
+  cy.atoms.push(A("s", [104, 15], "S", "S"), C("d1", [130, 0]), C("d2", [156, 15]), C("d3", [182, 0]), A("dn", [156, 45], "NH3", "N", { q: "+", qd: [14, -8] }), A("do1", [182, -30], "O", "O"), A("do2", [208, 15], "O", "O", { q: "−" }));
+  cy.bonds.push(["c3", "s"], ["s", "d1"], ["d1", "d2"], ["d2", "d3"], ["d2", "dn"], ["d3", "do1", 2], ["d3", "do2"]);
+  MOLS.cysta = { name: "Cystathionine", ...cy };
+  MOLS.bet = { name: "Betaine", ...zig(3, [[0, "COOL"]], 26, [], { 2: "Me₃N⁺" }) };
+  MOLS.glyf = { name: "Glycine (cycle)", ...zig(2, [[0, "COOL"]], 26, [], { 1: "NH3⁺" }) };
+  MOLS.formate = { name: "Formate", atoms: [C("c", [0, 0]), A("o1", [0, -30], "O", "O"), A("o2", [26, 15], "O", "O", { q: "−" })], bonds: [["c", "o1", 2], ["c", "o2"]] };
+})();
 MOLS.carn = { name: "Carnitine", ...zig(4, [[0, "COOL"], [2, "OH"]], 26, [], { 3: "Me₃N⁺" }) };
 MOLS.vlcfa = { name: "Very-long-chain acyl-CoA", ...zig(8, [[7, "SCoA"]]) };
 MOLS.pxenoyl = { ...MOLS.enoyl, name: "trans-Δ2-Enoyl-CoA (peroxisome)" };
@@ -1055,6 +1151,27 @@ const NODES = [
   M("facyl", "RCO–SCoA", "Activated fatty acid; β-oxidation substrate"),
   M("acylcarn", "RCO–O–carnitine", "Long-chain acyl group carried across the inner mitochondrial membrane on carnitine"),
   M("facylm", "RCO–SCoA", "Acyl-CoA re-formed in the matrix by CPT2; the substrate of the β-oxidation spiral"),
+  M("aacoa", "C25H40N7O18P3S", "Made by thiolase from two acetyl-CoA in liver mitochondria; also the first product of ketone body use in other tissues"),
+  M("bhb", "C4H8O3", "Ketone body (strictly a hydroxy acid); the main circulating ketone in fasting, about three times acetoacetate"),
+  M("acetone", "C3H6O", "Ketone body made by spontaneous decarboxylation of acetoacetate; breathed out, not used for energy"),
+  M("bhbp", "C4H8O3", "β-Hydroxybutyrate taken up from blood by brain, muscle and heart through monocarboxylate transporters"),
+  M("acacp", "C4H6O3", "Acetoacetate in a tissue that can use it; made from β-hydroxybutyrate by BDH1 or taken up directly"),
+  M("aacoap", "C25H40N7O18P3S", "Made from acetoacetate by SCOT using succinyl-CoA; thiolase then splits it into two acetyl-CoA"),
+  M("acetylcoap", "C23H38N7O17P3S", "Acetyl-CoA from ketone bodies; it enters the TCA cycle through citrate synthase like acetyl-CoA from glucose or fat"),
+  M("thf", "C19H23N7O6", "Carrier of one-carbon units at three oxidation levels; made from dietary folate or from DHF by DHFR"),
+  M("dhf", "C19H21N7O6", "Oxidised folate made when thymidylate synthase transfers its methylene carbon; DHFR must regenerate THF, so DHFR inhibitors starve DNA synthesis"),
+  M("mthf2", "C20H23N7O6", "One-carbon carrier at the formaldehyde level; the hub of the cycle, made from THF by SHMT (from serine) or the glycine cleavage system"),
+  M("mnthf", "C20H22N7O6⁺", "Formate-level carrier between methylene-THF and formyl-THF"),
+  M("mthf", "C20H25N7O6", "The methyl-donor form that is the main folate in blood; its methyl group can only go to homocysteine, and its formation by MTHFR is irreversible"),
+  M("fthf", "C20H23N7O7", "Formate-level carrier that gives C2 and C8 of the purine ring (GART and ATIC)"),
+  M("metc", "C5H11NO2S", "Essential amino acid and the substrate of MAT; the same molecule as methionine in the amino acid grid, drawn here to close the cycle"),
+  M("sam", "C15H23N6O5S⁺", "The universal methyl donor: sulfonium group; allosterically blocks MTHFR and activates cystathionine β-synthase"),
+  M("sah", "C14H20N6O5S", "Product of all SAM methyltransferases, a potent inhibitor of them, so it must be removed by SAHH"),
+  M("hcy", "C4H9NO2S", "Branch point: remethylated to methionine (folate or betaine) or sent down transsulfuration to cysteine (CBS, vitamin B₆); raised in B₁₂, B₆ and folate deficiency"),
+  M("cysta", "C7H14N2O4S", "Thioether made from homocysteine and serine by CBS; cystathionase cleaves it to cysteine, α-ketobutyrate and NH₃"),
+  M("bet", "(CH₃)₃N⁺–CH₂–COO⁻", "From choline (diet, or oxidised in liver and kidney); the methyl donor of BHMT, an alternative to methyl-THF for remethylating homocysteine"),
+  M("glyf", "C2H5NO2", "Glycine broken down by the mitochondrial glycine cleavage system, one of the sources of methylene-THF (and the cause of nonketotic hyperglycinaemia when it fails)"),
+  M("formate", "HCOO⁻", "One-carbon unit made in mitochondria from serine (SHMT2, MTHFD2, MTHFD1L), exported to the cytosol and re-attached to THF"),
   M("carn", "(CH₃)₃N⁺–CH₂–CH(OH)–CH₂–COO⁻", "Made in liver and kidney from lysine and methionine, and taken from meat and dairy; muscle and heart import it through the OCTN2 transporter"),
   M("vlcfa", "C≥22 acyl–SCoA", "Very-long-chain fatty acids (C22 and longer) cannot be oxidised in mitochondria; ABCD1 imports them into peroxisomes"),
   M("pxenoyl", "RCH=CH–CO–SCoA", "Made by acyl-CoA oxidase, which passes the electrons to O₂ and so makes H₂O₂ instead of FADH₂ for the electron transport chain"),
@@ -1111,7 +1228,7 @@ const EDGES = [
     ["succoa", "succinate", "Succinyl-CoA synthetase"], ["succinate", "fumarate", "Succinate dehydrogenase"], ["fumarate", "malate", "Fumarase"],
     ["malate", "oaa", "Malate dehydrogenase"], ["oaa", "citrate", ""]].map(([source, target, label], i) => ({ id: "t" + (i + 1), source, target, label, main: true, auto: true })),
   ...[["glycogen", "g1p", "Glycogen phosphorylase"], ["pyruvate", "alanine", "Alanine transaminase"], ["pyruvate", "lactate", "Lactate dehydrogenase"],
-    ["dhap", "glyc3p", "Glycerol-3-P dehydrogenase"], ["acetylcoa", "acac", "Ketogenesis"],
+    ["dhap", "glyc3p", "Glycerol-3-P dehydrogenase"],
     ["akg", "glutamate", "Transaminase / GDH"], ["oaa", "aspartate", "Aspartate transaminase"],
     ["ornithine", "citrulline", "Ornithine transcarbamylase"], ["cp", "citrulline", ""], ["citrulline", "argsucc", "Argininosuccinate synthetase"],
     ["aspartate", "argsucc", ""], ["argsucc", "arginine", "Argininosuccinate lyase"], ["arginine", "ornithine", "Arginase"],
@@ -1315,7 +1432,8 @@ function steroid({ dbl = [], sub = {}, tail = "chol" }) {
   ring.forEach((k) => atoms.push(C(k, ST[k])));
   [["C1", "C2"], ["C2", "C3"], ["C3", "C4"], ["C4", "C5"], ["C5", "C10"], ["C10", "C1"], ["C5", "C6"], ["C6", "C7"], ["C7", "C8"], ["C8", "C9"], ["C9", "C10"],
     ["C9", "C11"], ["C11", "C12"], ["C12", "C13"], ["C13", "C14"], ["C14", "C8"], ["C14", "C15"], ["C15", "C16"], ["C16", "C17"], ["C17", "C13"], ["C13", "C18"], ["C10", "C19"]]
-    .forEach(([a, b]) => bonds.push(dbl.some(([x, y]) => (x === a && y === b) || (x === b && y === a)) ? [a, b, 2, RB] : [a, b]));
+    .forEach(([a, b]) => { const d = dbl.find(([x, y]) => (x === a && y === b) || (x === b && y === a)); bonds.push(d ? [a, b, 2, d[2] || RB] : [a, b]); });
+  if (sub.arom) { atoms.splice(atoms.findIndex((a) => a.id === "C19"), 1); bonds.splice(bonds.findIndex((b) => b[0] === "C10" && b[1] === "C19"), 1); } // estrogens: aromatic ring A, no C19 methyl
   const hy = (id, k, [x, y], t, align) => { atoms.push(A(id, [x, y], t, "O", align ? { align } : {})); bonds.push([k, id]); };
   if (sub.o3) hy("O3", "C3", [-51.96, 30], "HO", "end");
   if (sub.o7) hy("O7", "C7", [103.92, 30], "OH", "start");
@@ -1333,11 +1451,24 @@ function steroid({ dbl = [], sub = {}, tail = "chol" }) {
     const i = atoms.findIndex((a) => a.id === "C20"); atoms.splice(i, 1);
     const k = atoms.findIndex((a) => a.id === "C21"); atoms.splice(k, 1);
     const j = atoms.findIndex((a) => a.id === "C22"); atoms.splice(j, 1);
-    atoms.push(C("C20", ST.C20), A("O20", ST.C21, "O", "O"), C("C21", ST.C22));
+    atoms.push(C("C20", ST.C20), sub.o20h ? A("O20", ST.C21, "OH", "O") : A("O20", ST.C21, "O", "O"), C("C21", ST.C22));
     bonds.splice(bonds.findIndex((b) => b[0] === "C20" && b[1] === "C21"), 1);
     bonds.splice(bonds.findIndex((b) => b[0] === "C20" && b[1] === "C22"), 1);
-    bonds.push(["C20", "O20", 2], ["C20", "C21"]);
+    bonds.push(sub.o20h ? ["C20", "O20"] : ["C20", "O20", 2], ["C20", "C21"]);
   }
+  if (tail === "k17" || tail === "oh17") { // androgens: no side chain, C17 carries =O or OH
+    ["C20", "C21", "C22"].forEach((k) => atoms.splice(atoms.findIndex((a) => a.id === k), 1));
+    [["C17", "C20"], ["C20", "C21"], ["C20", "C22"]].forEach(([x, y]) => bonds.splice(bonds.findIndex((b) => b[0] === x && b[1] === y), 1));
+    atoms.push(A("O17", [156, -96], tail === "k17" ? "O" : "OH", "O", tail === "k17" ? {} : { align: "start" })); bonds.push(["C17", "O17", tail === "k17" ? 2 : 1]);
+  }
+  if (sub.o3k) { atoms.push(A("O3k", [-51.96, 30], "O", "O")); bonds.push(["C3", "O3k", 2]); }
+  if (sub.o11) hy("O11", "C11", [25.98, -75], "HO", "end");
+  if (sub.o17) hy("O17h", "C17", [170, -70], "OH", "start");
+  if (sub.o21) hy("O21", "C21", [198, -120], "OH", "start");
+  if (sub.o6) hy("O6", "C6", [51.96, 60], "OH");
+  if (sub.o16) hy("O16", "C16", [178, -28], "OH", "start");
+  if (sub.o11k) { atoms.push(A("O11k", [51.96, -90], "O", "O")); bonds.push(["C11", "O11k", 2]); }
+  if (sub.o18) { atoms.push(A("O18", [103.92, -120], "O", "O")); bonds.push(["C18", "O18", 2]); }
   return { atoms, bonds };
 }
 const hmgChain = (end) => { const m = zig(5, [[0, "COOL"], [4, end]]); m.atoms.push(A("o3", [40, 43], "OH", "O"), C("me", [64, 43])); m.bonds.push(["c2", "o3"], ["c2", "me"]); return m; };
@@ -1349,7 +1480,77 @@ Object.assign(MOLS, {
   cholic: { name: "Cholic acid", ...steroid({ sub: { o3: 1, o7: 1, o12: 1 }, tail: "acid" }) },
   preg: { name: "Pregnenolone", ...steroid({ dbl: [["C5", "C6"]], sub: { o3: 1 }, tail: "pregn" }) },
 });
+MOLS.hmgm = { ...MOLS.hmgcoa, name: "HMG-CoA (mitochondrial)" }; // v7.9 fix: must come after hmgcoa is defined
+NODES.push(M("hmgm", "C27H44N7O20P3S", "Mitochondrial pool of HMG-CoA, made by HMGCS2 and cut by HMG-CoA lyase; the cytosolic pool goes to cholesterol instead"));
+{ const D4 = [["C4", "C5"]], D5 = [["C5", "C6"]], ARO = [["C1", "C2", [0, 0]], ["C3", "C4", [0, 0]], ["C5", "C10", [0, 0]]];
+  Object.assign(MOLS, {
+    prog: { name: "Progesterone", ...steroid({ dbl: D4, sub: { o3k: 1 }, tail: "pregn" }) }, ohpreg: { name: "17α-Hydroxypregnenolone", ...steroid({ dbl: D5, sub: { o3: 1, o17: 1 }, tail: "pregn" }) },
+    ohprog: { name: "17α-Hydroxyprogesterone", ...steroid({ dbl: D4, sub: { o3k: 1, o17: 1 }, tail: "pregn" }) }, doc: { name: "11-Deoxycorticosterone", ...steroid({ dbl: D4, sub: { o3k: 1, o21: 1 }, tail: "pregn" }) },
+    cortico: { name: "Corticosterone", ...steroid({ dbl: D4, sub: { o3k: 1, o11: 1, o21: 1 }, tail: "pregn" }) }, aldo: { name: "Aldosterone", ...steroid({ dbl: D4, sub: { o3k: 1, o11: 1, o21: 1, o18: 1 }, tail: "pregn" }) },
+    s11: { name: "11-Deoxycortisol", ...steroid({ dbl: D4, sub: { o3k: 1, o17: 1, o21: 1 }, tail: "pregn" }) }, cortisol: { name: "Cortisol", ...steroid({ dbl: D4, sub: { o3k: 1, o11: 1, o17: 1, o21: 1 }, tail: "pregn" }) },
+    dhea: { name: "DHEA", ...steroid({ dbl: D5, sub: { o3: 1 }, tail: "k17" }) }, andro: { name: "Androstenedione", ...steroid({ dbl: D4, sub: { o3k: 1 }, tail: "k17" }) }, testo: { name: "Testosterone", ...steroid({ dbl: D4, sub: { o3k: 1 }, tail: "oh17" }) },
+    dht: { name: "Dihydrotestosterone (DHT)", ...steroid({ dbl: [], sub: { o3k: 1 }, tail: "oh17" }) },
+    e1: { name: "Estrone (E1)", ...steroid({ dbl: ARO, sub: { o3: 1, arom: 1 }, tail: "k17" }) },
+    e3: { name: "Estriol (E3)", ...steroid({ dbl: ARO, sub: { o3: 1, arom: 1, o16: 1 }, tail: "oh17" }) },
+    dheas: { name: "DHEA sulfate (DHEA-S)", ...(() => { // 3β-sulfate ester: C3–O–S(=O)(=O)–O⁻
+      const m = steroid({ dbl: D5, sub: {}, tail: "k17" });
+      m.atoms.push(A("O3", [-51.96, 30], "O", "O"), A("S3", [-77.94, 45], "S", "S"), A("O3a", [-62.94, 70.98], "O", "O"), A("O3b", [-103.92, 60], "O", "O"), A("O3c", [-92.94, 19.02], "O", "O", { q: "−" }));
+      m.bonds.push(["C3", "O3"], ["O3", "S3"], ["S3", "O3a", 2], ["S3", "O3b", 2], ["S3", "O3c"]);
+      return m; })() },
+    cortisone: { name: "Cortisone", ...steroid({ dbl: D4, sub: { o3k: 1, o11k: 1, o17: 1, o21: 1 }, tail: "pregn" }) },
+    e2: { name: "Estradiol (E2)", ...steroid({ dbl: ARO, sub: { o3: 1, arom: 1 }, tail: "oh17" }) },
+    // v7.31: steroid inactivation. Reduced urinary metabolites (ring A saturated; the 5α/5β and 3α/3β differences are stereochemistry and are not drawn)
+    andros: { name: "Androsterone / etiocholanolone", ...steroid({ dbl: [], sub: { o3: 1 }, tail: "k17" }) },
+    thcort: { name: "Tetrahydrocortisol (THF)", ...steroid({ dbl: [], sub: { o3: 1, o11: 1, o17: 1, o21: 1 }, tail: "pregn" }) },
+    thcone: { name: "Tetrahydrocortisone (THE)", ...steroid({ dbl: [], sub: { o3: 1, o11k: 1, o17: 1, o21: 1 }, tail: "pregn" }) },
+    pdiol: { name: "Pregnanediol", ...steroid({ dbl: [], sub: { o3: 1, o20h: 1 }, tail: "pregn" }) },
+    ptriol: { name: "Pregnanetriol", ...steroid({ dbl: [], sub: { o3: 1, o17: 1, o20h: 1 }, tail: "pregn" }) },
+    testog: { name: "Testosterone glucuronide", ...(() => { // 17β-O-glucuronide: the sugar ring (C1'–C5', ring O) and its C6' carboxylate sit right of O17
+      const m = steroid({ dbl: D4, sub: { o3k: 1 }, tail: "oh17" });
+      const o = m.atoms.find((a) => a.id === "O17"); o.text = "O"; delete o.align;
+      m.atoms.push(C("g1", [182, -111]), C("g2", [182, -141]), C("g3", [208, -156]), C("g4", [234, -141]), C("g5", [234, -111]), A("Og5", [208, -96], "O", "O"), C("g6", [260, -96]),
+        A("Og2", [156, -156], "HO", "O", { align: "end" }), A("Og3", [208, -186], "OH", "O"), A("Og4", [260, -156], "OH", "O", { align: "start" }),
+        A("Og6a", [260, -66], "O", "O"), A("Og6b", [286, -111], "O", "O", { q: "−" }));
+      m.bonds.push(["O17", "g1"], ["g1", "g2"], ["g2", "g3"], ["g3", "g4"], ["g4", "g5"], ["g5", "Og5"], ["Og5", "g1"], ["g5", "g6"],
+        ["g2", "Og2"], ["g3", "Og3"], ["g4", "Og4"], ["g6", "Og6a", 2], ["g6", "Og6b"]);
+      return m; })() },
+    // v7.32: further inactivation products
+    allothf: { name: "Allo-tetrahydrocortisol (allo-THF)", ...steroid({ dbl: [], sub: { o3: 1, o11: 1, o17: 1, o21: 1 }, tail: "pregn" }) },
+    cortol: { name: "Cortol", ...steroid({ dbl: [], sub: { o3: 1, o11: 1, o17: 1, o21: 1, o20h: 1 }, tail: "pregn" }) },
+    cortolone: { name: "Cortolone", ...steroid({ dbl: [], sub: { o3: 1, o11k: 1, o17: 1, o21: 1, o20h: 1 }, tail: "pregn" }) },
+    ohf6: { name: "6β-Hydroxycortisol", ...steroid({ dbl: D4, sub: { o3k: 1, o6: 1, o11: 1, o17: 1, o21: 1 }, tail: "pregn" }) },
+    e3g: { name: "Estriol 16α-glucuronide", ...(() => { // glucuronate on the 16α-oxygen, ring down-right of ring D
+      const m = steroid({ dbl: ARO, sub: { o3: 1, arom: 1, o16: 1 }, tail: "oh17" });
+      const o = m.atoms.find((a) => a.id === "O16"); o.text = "O"; delete o.align;
+      m.atoms.push(C("g1", [204, -13]), C("g2", [230, -28]), C("g3", [256, -13]), C("g4", [256, 17]), C("g5", [230, 32]), A("Og5", [204, 17], "O", "O"), C("g6", [230, 62]),
+        A("Og2", [230, -58], "OH", "O"), A("Og3", [282, -28], "OH", "O", { align: "start" }), A("Og4", [282, 32], "OH", "O", { align: "start" }),
+        A("Og6a", [204, 77], "O", "O"), A("Og6b", [256, 77], "O", "O", { q: "−" }));
+      m.bonds.push(["O16", "g1"], ["g1", "g2"], ["g2", "g3"], ["g3", "g4"], ["g4", "g5"], ["g5", "Og5"], ["Og5", "g1"], ["g5", "g6"],
+        ["g2", "Og2"], ["g3", "Og3"], ["g4", "Og4"], ["g6", "Og6a", 2], ["g6", "Og6b"]);
+      return m; })() },
+    e1s: { name: "Estrone sulfate", ...(() => { // 3-sulfate ester on the aromatic ring A: C3–O–S(=O)(=O)–O⁻
+      const m = steroid({ dbl: ARO, sub: { arom: 1 }, tail: "k17" });
+      m.atoms.push(A("O3", [-51.96, 30], "O", "O"), A("S3", [-77.94, 45], "S", "S"), A("O3a", [-62.94, 70.98], "O", "O"), A("O3b", [-103.92, 60], "O", "O"), A("O3c", [-92.94, 19.02], "O", "O", { q: "−" }));
+      m.bonds.push(["C3", "O3"], ["O3", "S3"], ["S3", "O3a", 2], ["S3", "O3b", 2], ["S3", "O3c"]);
+      return m; })() },
+  }); }
 NODES.push(
+  M("prog", "C21H30O2", "Progestogen and obligatory intermediate of the Δ4 route to cortisol and aldosterone; also the luteal-phase hormone"),
+  M("ohpreg", "C21H32O3", "Made by the 17α-hydroxylase activity of CYP17A1; the branch point to cortisol (via 3β-HSD) or DHEA (via the lyase)"),
+  M("ohprog", "C21H30O3", "Substrate of CYP21A2 on the way to cortisol; accumulates in classic 21-hydroxylase deficiency (raised in newborn screening)"),
+  M("doc", "C21H30O3", "Weak mineralocorticoid made by CYP21A2 from progesterone in zona glomerulosa; raised in 11β-hydroxylase deficiency (hypertension)"),
+  M("cortico", "C21H30O4", "Glucocorticoid and mineralocorticoid precursor of aldosterone; the main glucocorticoid of rodents"),
+  M("aldo", "C21H28O5", "Main mineralocorticoid: raises Na⁺ reabsorption and K⁺ and H⁺ loss in the distal nephron; stimulated by angiotensin II and K⁺"),
+  M("s11", "C21H30O4", "Substrate of CYP11B1, also called compound S; raised by metyrapone, which blocks that enzyme"),
+  M("cortisol", "C21H30O5", "Main human glucocorticoid: gluconeogenesis, anti-inflammatory and permissive actions; made in the zona fasciculata under ACTH"),
+  M("dhea", "C19H28O2", "Weak adrenal androgen and precursor of testosterone and oestrogens; sulfated (DHEA-S) in blood"),
+  M("andro", "C19H26O2", "Androgen precursor made from DHEA (3β-HSD) or 17-OH-progesterone; converted to testosterone or, by aromatase, estrone"),
+  M("testo", "C19H28O2", "Main androgen: made in Leydig cells (LH) and in the adrenal in small amounts; 5α-reduced to DHT or aromatised to oestradiol"),
+  M("dht", "C19H30O2", "Most potent androgen: 5α-reduced testosterone, made in prostate, skin and hair follicles; binds the androgen receptor about 3 times tighter than testosterone"),
+  M("e1", "C18H22O2", "Weak estrogen made by aromatase from androstenedione (adipose, postmenopausal women); converted to estradiol by 17β-HSD"),
+  M("e3", "C18H24O3", "Estrogen of pregnancy: made from fetal DHEA-S (fetal liver 16α-hydroxylation, placental sulfatase and aromatase); weak, but a marker of fetoplacental function"),
+  M("cortisone", "C21H28O5", "Inactive 11-keto form of cortisol made by 11β-HSD2 (kidney, colon, placenta); 11β-HSD1 turns it back into cortisol in liver, fat and brain"),
+  M("e2", "C18H24O2", "Main estrogen: made by aromatase from testosterone in ovarian granulosa cells (and in fat, bone, brain, testis); aromatic ring A with no C19 methyl"),
   M("hmgcoa", "C27H44N7O20P3S", "Made from acetyl-CoA and acetoacetyl-CoA in the cytosol (the mitochondrial pool makes ketone bodies instead)"),
   M("mevalonate", "C6H12O4", "Committed product of cholesterol synthesis; the HMG-CoA reductase step is rate-limiting and is blocked by statins"),
   M("dhc7", "C27H44O", "Last precursor of cholesterol in the Kandutsch–Russell route; UVB in skin turns it into vitamin D₃"),
@@ -1430,6 +1631,70 @@ EDGES.push(
     ["aicar", "faicar", "AICAR transformylase (ATIC)"], ["faicar", "imp", "IMP cyclohydrolase (ATIC)"], ["imp", "xmp", "IMP dehydrogenase (IMPDH)"], ["xmp", "gmp_n", "GMP synthetase (GMPS)"],
     ["imp", "sucamp", "Adenylosuccinate synthetase (ADSS)"], ["sucamp", "amp_n", "Adenylosuccinate lyase (ADSL)"]]
     .map(([source, target, label], i) => ({ id: "pu" + (i + 1), source, target, label, main: true, sh: "t", th: "b" })), // every step runs upward
+);
+
+/* ---- purine catabolism (v7.33), above the AMP and GMP end nodes: IMP → inosine → hypoxanthine → xanthine → uric acid → allantoin, with the AMP and GMP side routes ---- */
+PATHWAYS.pcat = { label: "Purine catabolism", color: "#c4b5fd" };
+NODES.push(
+  M("inosine", "C10H12N4O5", "Hypoxanthine on ribose. Made from IMP by 5′-nucleotidase or from adenosine by adenosine deaminase; purine nucleoside phosphorylase then splits off the base."),
+  M("adenosine", "C10H13N5O4", "Adenine on ribose, released from AMP by 5′-nucleotidase (or from SAH). It is a signalling molecule (adenosine receptors, sleep, coronary vasodilation) and is deaminated to inosine, which lowers its level quickly."),
+  M("guanosine", "C10H13N5O5", "Guanine on ribose, released from GMP by 5′-nucleotidase; purine nucleoside phosphorylase converts it to guanine."),
+  M("hypox", "C5H4N4O", "Free hypoxanthine: the first base on the way to uric acid. It can also be salvaged back to IMP by HGPRT, which spares de novo synthesis."),
+  M("guanine", "C5H5N5O", "Free guanine from guanosine; guanine deaminase removes its amino group to give xanthine (HGPRT can salvage it back to GMP)."),
+  M("xanth", "C5H4N4O2", "Meeting point of the hypoxanthine and guanine routes. Xanthine oxidase oxidises it to uric acid; xanthine is much less soluble than hypoxanthine, so xanthine stones form when the enzyme is blocked."),
+  M("uricacid", "C5H4N4O3", "End product of purine breakdown in humans (drawn as the neutral acid; at blood pH it is urate). It is poorly soluble: excess gives gout and uric acid stones. Most mammals go on to allantoin; humans lost urate oxidase."),
+  M("adenine", "C5H5N5", "Free adenine from polyamine synthesis (methylthioadenosine) and nucleic-acid turnover. APRT returns it to AMP with PRPP; humans have no deaminase for the free base, so adenine is not broken down to uric acid but salvaged or excreted (2,8-dihydroxyadenine stones in APRT deficiency)."),
+  M("allantoin", "C4H6N4O3", "Soluble end product of purine breakdown in most mammals, made by urate oxidase. Humans do not make it from urate (rasburicase and pegloticase supply the enzyme); the small amount found in human urine comes from non-enzymatic oxidation."),
+);
+const PC_X = PU_X, PC_Y = layout.amp_n[1] - STEP;
+layout.inosine = [PC_X, PC_Y]; layout.adenosine = [PC_X - 650, PC_Y]; layout.guanosine = [PC_X + 650, PC_Y];
+layout.hypox = [PC_X, PC_Y - STEP]; layout.xanth = [PC_X, PC_Y - 2 * STEP]; layout.guanine = [PC_X + 650, PC_Y - 2 * STEP];
+layout.adenine = [layout.amp_n[0] - 650, layout.amp_n[1]];
+layout.uricacid = [PC_X, PC_Y - 3 * STEP]; layout.allantoin = [PC_X, PC_Y - 4 * STEP];
+// [id, label, anchor, dx, dy]: anchors are the upper node of a step
+const PCCOS = [
+  ["c_pc1", "+ H₂O → Pᵢ", "inosine", 330, 1.5 * STEP], ["c_pc2", "+ H₂O → Pᵢ", "adenosine", -330, STEP / 2], ["c_pc3", "+ H₂O → NH₃", "adenosine", 325, STEP / 2],
+  ["c_pc4", "+ H₂O → Pᵢ", "guanosine", 330, STEP / 2],
+  ["c_pc5", "+ Pᵢ", "hypox", -330, STEP / 2], ["c_pc6", "→ ribose 1-phosphate", "hypox", 330, STEP / 2],
+  ["c_pc7", "+ Pᵢ → ribose 1-phosphate", "guanine", 330, STEP],
+  ["c_pc8", "+ O₂ + H₂O", "xanth", -330, STEP / 2], ["c_pc9", "→ H₂O₂", "xanth", 330, STEP / 2],
+  ["c_pc10", "+ H₂O → NH₃", "guanine", 330, 0],
+  ["c_pc11", "+ O₂ + H₂O", "uricacid", -330, STEP / 2], ["c_pc12", "→ H₂O₂", "uricacid", 330, STEP / 2],
+  ["c_pc15", "+ PRPP → PPᵢ", "adenine", 325, -STEP / 2],
+  ["c_pc13", "+ O₂ + H₂O", "allantoin", -330, STEP / 2], ["c_pc14", "→ H₂O₂ + CO₂", "allantoin", 330, STEP / 2],
+];
+PCCOS.forEach(([id, label, at, dx, dy]) => {
+  NODES.push({ id, kind: "cofactor", label, formula: "", note: "Co-substrate / co-product" });
+  place.branch(at, [id], dx, dy);
+});
+NODES.push({ id: "c_ak1", kind: "cofactor", label: "⇌ 2 ADP (adenylate kinase) + ATP", formula: "", note: "Co-substrate / co-product" }); // v7.36: in working muscle AMP is also made from ADP
+place.branch("amp_n", ["c_ak1"], 330, 0); PATH_OF.c_ak1 = "pcat";
+NODES.push({ id: "t_pcat", kind: "pathway", title: true, label: PATHWAYS.pcat.label, formula: "", note: "", path: "pcat" });
+layout.t_pcat = [PC_X, layout.allantoin[1] - 235];
+NODES.push({ id: "c_pc16", kind: "cofactor", label: "+ H₂O → NH₃", formula: "", note: "Co-substrate / co-product" });
+layout.c_pc16 = [2180, layout.amp_n[1] + 125];
+// HGPRT salvage: both edges leave and enter on the right-hand handles, so they run as loops just outside the main column and the GMP branch
+[["c_pc17", "+ PRPP → PPᵢ", 2750, -2250], ["c_pc18", "+ PRPP → PPᵢ", 3400, -2640]].forEach(([id, label, x, y]) => { NODES.push({ id, kind: "cofactor", label, formula: "", note: "Co-substrate / co-product" }); layout[id] = [x, y]; });
+const PCNODES = ["adenine", "c_pc16", "c_pc17", "c_pc18", "inosine", "adenosine", "guanosine", "hypox", "guanine", "xanth", "uricacid", "allantoin"];
+[...PCNODES, ...PCCOS.map((c) => c[0])].forEach((i) => (PATH_OF[i] = "pcat"));
+const HGP = "Hypoxanthine-guanine phosphoribosyltransferase (HGPRT)";
+const NT5 = "5′-Nucleotidase (NT5C2, NT5E)", PNP = "Purine nucleoside phosphorylase (PNP)", XOX = "Xanthine oxidase (XDH)";
+EDGES.push(
+  { id: "pc1", source: "imp", target: "inosine", label: NT5, main: true, sh: "t", th: "b" },
+  { id: "pc2", source: "amp_n", target: "adenosine", label: NT5, main: true, sh: "t", th: "b" },
+  { id: "pc3", source: "adenosine", target: "inosine", label: "Adenosine deaminase (ADA)", main: true, sh: "r", th: "l" },
+  { id: "pc4", source: "gmp_n", target: "guanosine", label: NT5, main: true, sh: "t", th: "b" },
+  { id: "pc5", source: "inosine", target: "hypox", label: PNP, main: true, sh: "t", th: "b" },
+  { id: "pc6", source: "guanosine", target: "guanine", label: PNP, main: true, sh: "t", th: "b" },
+  { id: "pc7", source: "hypox", target: "xanth", label: XOX, main: true, sh: "t", th: "b" },
+  { id: "pc8", source: "guanine", target: "xanth", label: "Guanine deaminase (GDA)", main: true, sh: "l", th: "r" },
+  { id: "pc9", source: "xanth", target: "uricacid", label: XOX, main: true, sh: "t", th: "b" },
+  { id: "pc11", source: "adenine", target: "amp_n", label: "Adenine phosphoribosyltransferase (APRT)", main: true, sh: "r", th: "l" },
+  { id: "pc12", source: "amp_n", target: "imp", label: "AMP deaminase (AMPD1)", main: true, sh: "r", th: "l" },
+  { id: "pc13", source: "hypox", target: "imp", label: HGP, main: true, sh: "r", th: "r" },
+  { id: "pc14", source: "guanine", target: "gmp_n", label: HGP, main: true, sh: "r", th: "r" },
+  { id: "pc10", source: "uricacid", target: "allantoin", label: "Urate oxidase (absent in humans)", main: true, sh: "t", th: "b" },
+  { id: "pc15", source: "c_pu21", target: "fumarate", label: "Fumarate from adenylosuccinate lyase joins the TCA cycle (purine nucleotide cycle)", main: true, auto: true, dash: true, path: "pcat" }, // v7.37
 );
 
 /* ---- pyrimidine synthesis & salvage (above the organ hubs, right of the purine column): carbamoyl aspartate → … → UTP, CTP and dTMP, with salvage and breakdown ---- */
@@ -1544,8 +1809,128 @@ place.branch("facyl", ["acylcarn"], 850, -STEP);
 place.branch("kacyl", ["vlcfa", "pxenoyl", "pxkacyl"], 1800, -2 * STEP);  // peroxisome column, right of the odd-chain route
 place.branch("vlcfa", ["phyt", "prist"], 900, 0);
 place.branch("acylcarn", ["carn"], 0, -STEP);
+{ const ox = -7000, oy = 7600;  // one-carbon block: open canvas below the amino-acid grid, folate cycle left, methionine cycle right
+  Object.entries({ fthf: [0, 0], thf: [800, 0], dhf: [1600, 0], mnthf: [0, 660], mthf2: [800, 660], mthf: [1600, 1320], hcy: [2400, 660], sah: [3200, 660], metc: [2400, 1320], sam: [3200, 1320] }).forEach(([id, [dx, dy]]) => { layout[id] = [ox + dx, oy + dy]; }); }
+place.branch("facyl", ["aacoa", "hmgm"], 0, STEP);  // ketogenesis column, ending at acetoacetate (which already sits 3 steps below fatty acyl-CoA)
+place.branch("acac", ["bhb"], 0, STEP);
+place.branch("acac", ["acetone"], 500, 0);
+place.branch("bhb", ["bhbp", "acacp", "aacoap", "acetylcoap"], 700, STEP);  // ketolysis in peripheral tissues, one column to the right, ending beside the TCA ring
 place.branch("enoyl", ["cis3", "dienoyl", "trans3"], -500, 0);  // unsaturated fatty acids: isomerase and reductase side route back to trans-Δ2-enoyl-CoA
 place.branch("kacyl", ["propcoa", "mmd", "mml"], 900, 0);  // odd-chain route: propionyl-CoA down to L-methylmalonyl-CoA, then back to succinyl-CoA on the TCA ring
+[["c_k1", "+ acetyl-CoA → CoA", "aacoa", -330, -165], ["c_k2", "+ acetyl-CoA + H₂O → CoA", "hmgm", -330, -165], ["c_k3", "→ acetyl-CoA", "acac", -330, -165], ["c_k4", "+ NADH → NAD⁺", "bhb", -330, -165], ["c_k5", "→ CO₂", "acetone", 260, 165]]
+  .forEach(([id, label, at, dx, dy]) => { NODES.push({ id, kind: "cofactor", label, formula: "", note: "Co-substrate / co-product" }); place.branch(at, [id], dx, dy); PATH_OF[id] = "keto"; });
+["aacoa", "hmgm", "bhb", "acetone", "acac"].forEach((i) => (PATH_OF[i] = "keto"));
+EDGES.push(
+  { id: "k1", source: "acetylcoa", target: "aacoa", label: "Acetyl-CoA acetyltransferase (thiolase, ACAT1)", main: true, auto: true, path: "keto" },
+  { id: "k2", source: "aacoa", target: "hmgm", label: "HMG-CoA synthase 2 (HMGCS2)", main: true, auto: true, path: "keto" },
+  { id: "k3", source: "hmgm", target: "acac", label: "HMG-CoA lyase (HMGCL)", main: true, auto: true, path: "keto" },
+  { id: "k4", source: "acac", target: "bhb", label: "β-Hydroxybutyrate dehydrogenase (BDH1)", main: true, auto: true, path: "keto" },
+  { id: "k5", source: "acac", target: "acetone", label: "Spontaneous decarboxylation", main: true, auto: true, dash: true, path: "keto" },
+);
+const KT_NODES = new Set(["acetylcoa", "aacoa", "hmgm", "acac", "bhb", "acetone", "c_k1", "c_k2", "c_k3", "c_k4", "c_k5", "c_k6", "c_k7", "c_k8", "bhbp", "acacp", "aacoap", "acetylcoap", "citrate"]);
+const KT_EDGES = new Set(["k1", "k2", "k3", "k4", "k5", "kt1", "kt2", "kt3", "kt4", "kt5", "kt6"]);
+[["c_k6", "+ NAD⁺ → NADH", "bhbp", -330, -165], ["c_k7", "+ succinyl-CoA → succinate", "acacp", -330, -165], ["c_k8", "+ CoA → 2 acetyl-CoA", "aacoap", -330, -165]]
+  .forEach(([id, label, at, dx, dy]) => { NODES.push({ id, kind: "cofactor", label, formula: "", note: "Co-substrate / co-product" }); place.branch(at, [id], dx, dy); PATH_OF[id] = "keto"; });
+["bhbp", "acacp", "aacoap", "acetylcoap"].forEach((i) => (PATH_OF[i] = "keto"));
+EDGES.push(
+  { id: "kt1", source: "bhb", target: "bhbp", label: "Transport in blood (MCT1/2)", main: true, auto: true, dash: true, path: "keto" },
+  { id: "kt2", source: "acac", target: "acacp", label: "", main: true, auto: true, dash: true, path: "keto" },
+  { id: "kt3", source: "bhbp", target: "acacp", label: "β-Hydroxybutyrate dehydrogenase (BDH1), peripheral", main: true, auto: true, path: "keto" },
+  { id: "kt4", source: "acacp", target: "aacoap", label: "Succinyl-CoA:3-ketoacid CoA transferase (SCOT, OXCT1)", main: true, auto: true, path: "keto" },
+  { id: "kt5", source: "aacoap", target: "acetylcoap", label: "Thiolase (ACAT1), thiolysis", main: true, auto: true, path: "keto" },
+  { id: "kt6", source: "acetylcoap", target: "citrate", label: "Citrate synthase", main: true, auto: true, path: "keto" },
+);
+[["c_f1", "+ serine → glycine", "thf", -300, 330], ["c_f2", "+ NADPH → NADP⁺", "mthf", -330, -165], ["c_f3", "+ dUMP → dTMP", "dhf", 0, 330], ["c_f4", "+ NADPH → NADP⁺", "thf", 400, -200], ["c_f5", "+ NADP⁺ → NADPH", "mthf2", -400, 200], ["c_f6", "→ purine C2 and C8", "thf", -400, -200], ["c_f7", "+ ATP → PPᵢ + Pᵢ", "metc", 400, 200], ["c_f8", "+ acceptor → methylated acceptor", "sam", 400, -330], ["c_f9", "→ adenosine", "hcy", 400, -200], ["c_f10", "needs vitamin B₁₂", "hcy", -330, 330]]
+  .forEach(([id, label, at, dx, dy]) => { NODES.push({ id, kind: "cofactor", label, formula: "", note: "Co-substrate / co-product" }); layout[id] = [layout[at][0] + dx, layout[at][1] + dy]; PATH_OF[id] = "fol"; });
+["thf", "dhf", "mthf2", "mnthf", "mthf", "fthf", "hcy", "sam", "sah", "metc", "cysta", "bet", "glyf", "formate"].forEach((i) => (PATH_OF[i] = "fol"));
+// Steroidogenesis: columns below pregnenolone (A = Δ5 / androgens, B = progesterone to cortisol, C = mineralocorticoids)
+{ const A = 2100, B = 3300, Cc = 4500, r = [6700, 7360, 8020, 8680];
+  Object.entries({ ohpreg: [A, r[0]], dhea: [A, r[1]], andro: [A, r[2]], testo: [A, r[3]], prog: [B, r[0]], ohprog: [B, r[1]], s11: [B, r[2]], cortisol: [B, r[3]], doc: [Cc, r[0]], cortico: [Cc, r[1]], aldo: [Cc, r[2]] }).forEach(([id, p]) => { layout[id] = p; }); }
+["prog", "ohpreg", "ohprog", "doc", "cortico", "aldo", "s11", "cortisol", "dhea", "andro", "testo"].forEach((i) => (PATH_OF[i] = "stero"));
+[["c_s1", "StAR: cholesterol into mitochondria", "preg", 0, -330], ["c_s2", "+ NAD⁺ → NADH", "prog", -430, -300], ["c_s3", "+ NADPH + O₂ → NADP⁺ + H₂O", "cortisol", 450, 0], ["c_s4", "+ NADPH + O₂ → acetate", "dhea", 450, -330]]
+  .forEach(([id, label, at, dx, dy]) => { NODES.push({ id, kind: "cofactor", label, formula: "", note: "Co-substrate / co-product" }); layout[id] = [layout[at][0] + dx, layout[at][1] + dy]; PATH_OF[id] = "stero"; });
+EDGES.push(...[["preg", "prog", "3β-Hydroxysteroid dehydrogenase (HSD3B2)"], ["preg", "ohpreg", "17α-Hydroxylase (CYP17A1)"], ["ohpreg", "ohprog", "3β-Hydroxysteroid dehydrogenase (HSD3B2)"], ["prog", "ohprog", "17α-Hydroxylase (CYP17A1)"], ["ohprog", "s11", "21-Hydroxylase (CYP21A2)"], ["s11", "cortisol", "11β-Hydroxylase (CYP11B1)"], ["prog", "doc", "21-Hydroxylase (CYP21A2)"], ["doc", "cortico", "11β-Hydroxylase (CYP11B1)"], ["cortico", "aldo", "Aldosterone synthase (CYP11B2)"], ["ohpreg", "dhea", "17,20-Lyase (CYP17A1)"], ["dhea", "andro", "3β-Hydroxysteroid dehydrogenase (HSD3B2)"], ["andro", "testo", "17β-Hydroxysteroid dehydrogenase (HSD17B3)"]]
+  .map(([source, target, label], i) => ({ id: "s" + (i + 1), source, target, label, main: true, auto: true, path: "stero" })));
+// Steroidogenesis part 2: DHT and oestrogens (row below testosterone) and regulation chips (dashed lines)
+layout.dht = [2100, 9340]; layout.e1 = [3300, 9340]; layout.e2 = [3300, 10000]; layout.e3 = [4500, 10000]; layout.cortisone = [4500, 9340];
+["dht", "e1", "e2", "e3", "cortisone"].forEach((i) => (PATH_OF[i] = "stero"));
+[["c_s5", "+ NADPH → NADP⁺", "dht", 0, -330], ["c_s6", "+ NADPH + O₂ → NADP⁺ + H₂O", "e1", -600, -660], ["c_s7", "+ NADPH → NADP⁺", "e2", 0, -330], ["c_s8", "+ NADPH + O₂ → NADP⁺ + H₂O", "e2", -600, -660],
+  ["c_s9", "+ NAD⁺ → NADH", "cortisone", -600, -330], ["c_s10", "+ NADPH + O₂ → NADP⁺ + H₂O", "e3", -600, 0],
+  ["c_r1", "ACTH → cAMP–PKA", "cortisol", 0, 330], ["c_r5", "CRH → ACTH", "cortisol", 1200, 0], ["c_r6", "GnRH → LH, FSH", "dht", -450, 0], ["c_r2", "Angiotensin II, K⁺ → Ca²⁺", "aldo", 520, 0], ["c_r3", "LH → cAMP–PKA", "testo", -450, 0], ["c_r4", "FSH → cAMP–PKA", "e2", 450, 330]]
+  .forEach(([id, label, at, dx, dy]) => { NODES.push({ id, kind: "cofactor", label, formula: "", note: "Co-substrate / co-product" }); layout[id] = [layout[at][0] + dx, layout[at][1] + dy]; PATH_OF[id] = "stero"; });
+EDGES.push(...[["testo", "dht", "5α-Reductase (SRD5A2)"], ["andro", "e1", "Aromatase (CYP19A1)"], ["testo", "e2", "Aromatase (CYP19A1)"], ["e1", "e2", "17β-Hydroxysteroid dehydrogenase (HSD17B1)"]]
+  .map(([source, target, label], i) => ({ id: "s" + (i + 13), source, target, label, main: true, auto: true, path: "stero" })));
+EDGES.push(...[["c_r1", "cortisol", "ACTH raises StAR and the cortisol steps"], ["c_r2", "aldo", "Angiotensin II and K⁺ raise CYP11B2"], ["c_r3", "testo", "LH raises StAR and CYP17A1 (Leydig, theca)"], ["c_r4", "e2", "FSH induces aromatase (granulosa, Sertoli)"]]
+  .map(([source, target, label], i) => ({ id: "sr" + (i + 1), source, target, label, main: true, auto: true, dash: true, path: "stero" })));
+EDGES.push({ id: "s17", source: "cortisol", target: "cortisone", label: "11β-Hydroxysteroid dehydrogenase (HSD11B1/2)", main: true, auto: true, path: "stero" }, { id: "s18", source: "e2", target: "e3", label: "16α-Hydroxylation (liver; fetal liver in pregnancy)", main: true, auto: true, path: "stero" });
+EDGES.push({ id: "sr5", source: "c_r5", target: "c_r1", label: "CRH drives ACTH; cortisol feeds back", main: true, auto: true, dash: true, path: "stero" }, { id: "sr6", source: "c_r6", target: "c_r3", label: "GnRH drives LH and FSH; sex steroids feed back", main: true, auto: true, dash: true, path: "stero" });
+// Steroidogenesis part 6: DHEA sulfate (left of DHEA) and its PAPS chip
+NODES.push(M("dheas", "C19H28O5S", "Most abundant circulating steroid: DHEA sulfated by SULT2A1 (adrenal zona reticularis, liver); long half-life and no daily swing, so a stable marker of adrenal androgen output; a reservoir that tissues with steroid sulfatase turn back into DHEA"));
+layout.dheas = [1660, 7360]; PATH_OF.dheas = "stero";
+NODES.push({ id: "c_s11", kind: "cofactor", label: "+ PAPS → PAP", formula: "", note: "Co-substrate / co-product" }); layout.c_s11 = [layout.dheas[0], layout.dheas[1] - 330]; PATH_OF.c_s11 = "stero";
+EDGES.push({ id: "s19", source: "dhea", target: "dheas", label: "Sulfotransferase (SULT2A1)", main: true, auto: true, path: "stero" });
+// Steroidogenesis part 8: inactivation (glucuronide, sulfate and reduced urinary metabolites), a block below the oestrogen row
+NODES.push(
+  M("andros", "C19H30O2", "The two main urinary 17-ketosteroids: androstenedione and testosterone ring-reduced in liver (5α gives androsterone, 5β etiocholanolone; same skeleton here) and conjugated for urine"),
+  M("testog", "C25H36O8", "Testosterone made water-soluble by UGT2B17 (UGT2B15) and cleared in urine and bile; cannot bind the androgen receptor"),
+  M("e1s", "C18H22O5S", "Estrone sulfated by SULT1E1: the most abundant circulating estrogen and an inactive reservoir that tissues with steroid sulfatase turn back into estrone"),
+  M("thcort", "C21H34O5", "Main urinary metabolite of cortisol: liver 5β-reduction and 3α-reduction, then glucuronidation; the cortisol–cortisone metabolite ratio reports 11β-HSD activity"),
+  M("thcone", "C21H32O5", "Main urinary metabolite of cortisone, made the same way; compared with tetrahydrocortisol to read 11β-HSD activity"),
+  M("pdiol", "C21H36O2", "Main urinary metabolite of progesterone; rises after ovulation and through pregnancy"),
+  M("ptriol", "C21H36O3", "Main urinary metabolite of 17-OH-progesterone; the urine marker of 21-hydroxylase deficiency"));
+{ const X = [1500, 2400, 3300], Y = [10950, 11610, 12270];
+  Object.entries({ andros: [X[0], Y[0]], testog: [X[1], Y[0]], e1s: [X[2], Y[0]], thcort: [X[0], Y[1]], thcone: [X[1], Y[1]], pdiol: [X[0], Y[2]], ptriol: [X[1], Y[2]] }).forEach(([id, p]) => { layout[id] = p; PATH_OF[id] = "stero"; });
+  [["c_s12", "+ 2 NADPH → 2 NADP⁺", "andros"], ["c_s13", "+ UDP-glucuronate → UDP", "testog"], ["c_s14", "+ PAPS → PAP", "e1s"], ["c_s15", "+ 2 NADPH → 2 NADP⁺", "thcort"], ["c_s16", "+ 2 NADPH → 2 NADP⁺", "thcone"], ["c_s17", "+ 3 NADPH → 3 NADP⁺", "pdiol"], ["c_s18", "+ 3 NADPH → 3 NADP⁺", "ptriol"]]
+    .forEach(([id, label, at]) => { NODES.push({ id, kind: "cofactor", label, formula: "", note: "Co-substrate / co-product" }); layout[id] = [layout[at][0], layout[at][1] - 330]; PATH_OF[id] = "stero"; }); }
+EDGES.push(...[["andro", "andros", "5α/5β-Reductase and 3α-HSD (SRD5A, AKR1D1, AKR1C)"], ["testo", "testog", "UDP-glucuronosyltransferase (UGT2B17, UGT2B15)"], ["e1", "e1s", "Estrogen sulfotransferase (SULT1E1)"],
+  ["cortisol", "thcort", "5β-Reductase and 3α-HSD (AKR1D1, AKR1C)"], ["cortisone", "thcone", "5β-Reductase and 3α-HSD (AKR1D1, AKR1C)"],
+  ["prog", "pdiol", "5β-Reductase, 3α-HSD and 20α-HSD (AKR1D1, AKR1C)"], ["ohprog", "ptriol", "5β-Reductase, 3α-HSD and 20α-HSD (AKR1D1, AKR1C)"]]
+  .map(([source, target, label], i) => ({ id: "s" + (i + 20), source, target, label, main: true, auto: true, path: "stero" })));
+// v7.32: allo-THF, cortol, cortolone, 6β-hydroxycortisol, estriol glucuronide
+NODES.push(
+  M("allothf", "C21H34O5", "The 5α twin of tetrahydrocortisol (SRD5A instead of AKR1D1); the sum of THF and allo-THF is compared with THE to read 11β-HSD activity"),
+  M("cortol", "C21H36O5", "Tetrahydrocortisol with the 20-keto group reduced; a minor urinary cortisol metabolite, excreted as a glucuronide"),
+  M("cortolone", "C21H34O5", "Tetrahydrocortisone with the 20-keto group reduced; a minor urinary cortisol metabolite, excreted as a glucuronide"),
+  M("ohf6", "C21H30O6", "Cortisol hydroxylated at C6 by CYP3A4; its urinary ratio to cortisol rises with CYP3A4 inducers (rifampin, carbamazepine) and is a marker of enzyme activity"),
+  M("e3g", "C24H32O9", "Main conjugate of estriol (UGT2B7 on the 16α-hydroxyl), water-soluble and cleared in urine and bile"));
+{ Object.entries({ allothf: [3300, 11610], cortolone: [3300, 12270], ohf6: [2400, 12930], e3g: [3300, 12930], cortol: [600, 11610] }).forEach(([id, p]) => { layout[id] = p; PATH_OF[id] = "stero"; });
+  [["c_s19", "+ 2 NADPH → 2 NADP⁺", "allothf"], ["c_s20", "+ NADPH → NADP⁺", "cortol"], ["c_s21", "+ NADPH → NADP⁺", "cortolone"], ["c_s22", "+ NADPH + O₂ → NADP⁺ + H₂O", "ohf6"], ["c_s23", "+ UDP-glucuronate → UDP", "e3g"]]
+    .forEach(([id, label, at]) => { NODES.push({ id, kind: "cofactor", label, formula: "", note: "Co-substrate / co-product" }); layout[id] = [layout[at][0], layout[at][1] - 330]; PATH_OF[id] = "stero"; }); }
+EDGES.push(...[["cortisol", "allothf", "5α-Reductase and 3α-HSD (SRD5A, AKR1C)"], ["thcort", "cortol", "20-Hydroxysteroid dehydrogenase (AKR1C1, CBR1)"], ["thcone", "cortolone", "20-Hydroxysteroid dehydrogenase (AKR1C1, CBR1)"],
+  ["cortisol", "ohf6", "6β-Hydroxylase (CYP3A4)"], ["e3", "e3g", "UDP-glucuronosyltransferase (UGT2B7, UGT1A1)"]]
+  .map(([source, target, label], i) => ({ id: "s" + (i + 27), source, target, label, main: true, auto: true, path: "stero" })));
+const ST_NODES = new Set(["dheas", "c_s11", "chol", "preg", "prog", "ohpreg", "ohprog", "doc", "cortico", "aldo", "s11", "cortisol", "dhea", "andro", "testo", "c_s1", "c_s2", "c_s3", "c_s4", "dht", "e1", "e2", "c_s5", "c_s6", "c_s7", "c_s8", "c_r1", "c_r2", "c_r3", "c_r4", "e3", "cortisone", "c_s9", "c_s10", "c_r5", "c_r6"]);
+const ST_EDGES = new Set(["s19", "ch5", "s1", "s2", "s3", "s4", "s5", "s6", "s7", "s8", "s9", "s10", "s11", "s12", "s13", "s14", "s15", "s16", "sr1", "sr2", "sr3", "sr4", "s17", "s18", "sr5", "sr6"]);
+["andros", "testog", "e1s", "thcort", "thcone", "pdiol", "ptriol", "c_s12", "c_s13", "c_s14", "c_s15", "c_s16", "c_s17", "c_s18"].forEach((i) => ST_NODES.add(i));
+["s20", "s21", "s22", "s23", "s24", "s25", "s26"].forEach((i) => ST_EDGES.add(i));
+["allothf", "cortol", "cortolone", "ohf6", "e3g", "c_s19", "c_s20", "c_s21", "c_s22", "c_s23"].forEach((i) => ST_NODES.add(i));
+["s27", "s28", "s29", "s30", "s31"].forEach((i) => ST_EDGES.add(i));
+layout.cysta = [-4600, 7600]; layout.bet = [-4600, 9580]; layout.glyf = [-6200, 8920]; layout.formate = [-7000, 6940];
+[["c_f11", "+ serine → H₂O", "cysta", -330, 330], ["c_f12", "→ α-ketobutyrate + NH₃", "cysta", 0, -330], ["c_f13", "+ homocysteine → dimethylglycine", "bet", 420, 0], ["c_f14", "+ THF + NAD⁺ → CO₂ + NH₃ + NADH", "glyf", -480, 200], ["c_f15", "+ ATP → ADP + Pᵢ", "formate", 400, 330]]
+  .forEach(([id, label, at, dx, dy]) => { NODES.push({ id, kind: "cofactor", label, formula: "", note: "Co-substrate / co-product" }); layout[id] = [layout[at][0] + dx, layout[at][1] + dy]; PATH_OF[id] = "fol"; });
+EDGES.push(
+  { id: "f9", source: "hcy", target: "cysta", label: "Cystathionine β-synthase (CBS)", main: true, auto: true, path: "fol" },
+  { id: "f10", source: "cysta", target: "cysteine", label: "Cystathionase (CTH)", main: true, auto: true, path: "fol" },
+  { id: "f11", source: "bet", target: "metc", label: "Betaine–homocysteine methyltransferase (BHMT)", main: true, auto: true, path: "fol" },
+  { id: "f12", source: "glyf", target: "mthf2", label: "Glycine cleavage system (GLDC, AMT, GCSH, DLD)", main: true, auto: true, path: "fol" },
+  { id: "f13", source: "formate", target: "fthf", label: "Formyl-THF synthetase (MTHFD1)", main: true, auto: true, path: "fol" },
+);
+EDGES.push(
+  { id: "f1", source: "thf", target: "mthf2", label: "Serine hydroxymethyltransferase (SHMT)", main: true, auto: true, path: "fol" },
+  { id: "f2", source: "mthf2", target: "mthf", label: "Methylenetetrahydrofolate reductase (MTHFR)", main: true, auto: true, path: "fol" },
+  { id: "f3", source: "mthf", target: "thf", label: "Methionine synthase (MTR)", main: true, auto: true, path: "fol" },
+  { id: "f4", source: "mthf2", target: "mnthf", label: "Methylene-THF dehydrogenase (MTHFD1)", main: true, auto: true, path: "fol" },
+  { id: "f5", source: "mnthf", target: "fthf", label: "Methenyl-THF cyclohydrolase (MTHFD1)", main: true, auto: true, path: "fol" },
+  { id: "f6", source: "fthf", target: "thf", label: "Purine synthesis (GART, ATIC)", main: true, auto: true, path: "fol" },
+  { id: "f7", source: "mthf2", target: "dhf", label: "Thymidylate synthase (TYMS)", main: true, auto: true, path: "fol" },
+  { id: "f8", source: "dhf", target: "thf", label: "Dihydrofolate reductase (DHFR)", main: true, auto: true, path: "fol" },
+  { id: "m1", source: "metc", target: "sam", label: "Methionine adenosyltransferase (MAT)", main: true, auto: true, path: "fol" },
+  { id: "m2", source: "sam", target: "sah", label: "Methyltransferases (COMT, DNMT, PNMT)", main: true, auto: true, path: "fol" },
+  { id: "m3", source: "sah", target: "hcy", label: "Adenosylhomocysteinase (SAHH)", main: true, auto: true, path: "fol" },
+  { id: "m4", source: "hcy", target: "metc", label: "Methionine synthase (MTR)", main: true, auto: true, path: "fol" },
+);
+const FL_NODES = new Set(["thf", "dhf", "mthf2", "mnthf", "mthf", "fthf", "hcy", "sam", "sah", "metc", "c_f1", "c_f2", "c_f3", "c_f4", "c_f5", "c_f6", "c_f7", "c_f8", "c_f9", "c_f10", "c_f11", "c_f12", "c_f13", "c_f14", "c_f15", "cysta", "bet", "glyf", "formate", "cysteine"]);
+const FL_EDGES = new Set(["f1", "f2", "f3", "f4", "f5", "f6", "f7", "f8", "m1", "m2", "m3", "m4", "f9", "f10", "f11", "f12", "f13"]);
 [["c_bx13", "Long chains: trifunctional protein (HADHA / HADHB)", "hacyl", -700, 165], ["c_bx10", "+ O₂ → H₂O₂", "pxenoyl", 300, -165], ["c_bx11", "+ H₂O → NADH", "pxkacyl", 300, -165], ["c_bx12", "+ CoA → acetyl-CoA", "pxkacyl", 300, 165], ["c_bx9", "+ NADPH", "dienoyl", -260, 165], ["c_bx7", "+ HCO₃⁻ + ATP → ADP + Pᵢ", "propcoa", 340, 165], ["c_bx8", "needs vitamin B₁₂", "mml", 300, 165], ["c_bx5", "+ carnitine → CoA", "facyl", 420, 40], ["c_bx6", "+ CoA → carnitine", "facylm", -425, 150], ["c_bx1", "+ FADH₂", "enoyl", -260, -165], ["c_bx2", "+ H₂O", "enoyl", 260, 165], ["c_bx3", "+ NADH", "hacyl", 260, 165], ["c_bx4", "+ CoA → acetyl-CoA", "kacyl", 300, -165]]
   .forEach(([id, label, at, dx, dy]) => { NODES.push({ id, kind: "cofactor", label, formula: "", note: "Co-substrate / co-product" }); place.branch(at, [id], dx, dy); PATH_OF[id] = "box"; });
 ["facylm", "acylcarn", "enoyl", "hacyl", "kacyl", "propcoa", "mmd", "mml", "cis3", "trans3", "dienoyl", "vlcfa", "pxenoyl", "pxkacyl", "phyt", "prist", "carn"].forEach((i) => (PATH_OF[i] = "box"));
@@ -1587,7 +1972,7 @@ const BX_EDGES = new Set(["bx1", "bx2", "bx3", "bx4", "bx5", "bx6", "bx7", "bxm"
   layout["t_" + p] = [x, y];
 });
 // ...and the titles of chains placed by `place` hang off a node of the chain: [pathway, anchor, dx, dy]
-[["lipid", "tag", 250, STEP], ["ala", "ala", 300, -STEP], ["heme", "uro3", 800, STEP / 2], ["bili", "biliverdin", -800, STEP / 2], ["chol", "hmgcoa", 0, -STEP], ["box", "facylm", 0, -STEP]].forEach(([p, at, dx, dy]) => {
+[["lipid", "tag", 250, STEP], ["ala", "ala", 300, -STEP], ["heme", "uro3", 800, STEP / 2], ["bili", "biliverdin", -800, STEP / 2], ["chol", "hmgcoa", 0, -STEP], ["box", "facylm", 0, -STEP], ["keto", "aacoa", 500, -100]].concat([["fol", "thf", 0, -600], ["stero", "ohpreg", 350, -300]]).forEach(([p, at, dx, dy]) => {
   NODES.push({ id: "t_" + p, kind: "pathway", title: true, label: PATHWAYS[p].label, formula: "", note: "", path: p });
   place.branch(at, ["t_" + p], dx, dy);
 });
@@ -2091,6 +2476,8 @@ const TARGETS = [
   ["t_pcc", "Propionyl-CoA carboxylase", "enzyme", "PCCA, PCCB", "Biotin-dependent mitochondrial enzyme that carboxylates propionyl-CoA to D-methylmalonyl-CoA. Deficiency is propionic acidaemia: neonatal vomiting, acidosis, hyperammonaemia and raised propionylcarnitine; treatment is protein restriction, carnitine and, in some, biotin trial.", ["propcoa", "mmd"], "Propionyl-CoA carboxylase", "r"],
   ["t_mcm", "Methylmalonyl-CoA mutase", "enzyme", "MMUT (MUT)", "Mitochondrial enzyme that needs adenosylcobalamin (vitamin B₁₂) to turn L-methylmalonyl-CoA into succinyl-CoA. Deficiency or B₁₂ defects cause methylmalonic acidaemia; B₁₂ deficiency raises methylmalonic acid, a useful test.", ["mml", "succoa"], "Methylmalonyl-CoA mutase", "r"],
   ["t_acox1", "Acyl-CoA oxidase 1", "enzyme", "ACOX1", "First step of peroxisomal β-oxidation of very-long-chain fatty acids; its FADH₂ is re-oxidised by O₂, making H₂O₂. Deficiency causes a neonatal disorder with seizures, hypotonia and very-long-chain fatty acid accumulation. PPARα agonists (fibrates) raise its expression.", ["vlcfa", "pxenoyl"], "Acyl-CoA oxidase (ACOX1)", "r"],
+  ["t_hmgcs2", "HMG-CoA synthase 2", "enzyme", "HMGCS2", "Mitochondrial rate-limiting enzyme of ketogenesis, induced by PPARα and glucagon and suppressed by insulin. Deficiency causes fasting hypoketotic hypoglycaemia.", ["aacoa", "hmgm"], "HMG-CoA synthase 2 (HMGCS2)", "r"],
+  ["t_scot", "SCOT (succinyl-CoA:3-ketoacid CoA transferase)", "enzyme", "OXCT1", "Rate-limiting enzyme of ketone body use; absent from liver. Deficiency causes severe recurrent ketoacidosis in childhood.", ["acacp", "aacoap"], "Succinyl-CoA:3-ketoacid CoA transferase (SCOT, OXCT1)", "r"],
   ["t_cpt2", "Carnitine palmitoyltransferase II", "enzyme", "CPT2", "Inner mitochondrial membrane (matrix side): turns acylcarnitine back into acyl-CoA, freeing carnitine for the translocase. Deficiency causes exercise-induced rhabdomyolysis and myoglobinuria (adult form) or a severe infant form with hypoketotic hypoglycaemia and cardiomyopathy.", ["acylcarn", "facylm"], "CACT, then CPT2", "r"],
 ];
 // id, name, class, examples, note, effects [target, kind, detail], structure shown (key of DRUG_MOLS)
@@ -2179,7 +2566,7 @@ DRUGS.forEach(([id, label, cls, examples, note, fx, molKey]) => {
   PATH_OF[id] = "pharm";
 });
 RX_EFFECTS.forEach((e) => EDGES.push({ id: `rx_${e.drug}_${e.target}`, source: e.drug, target: e.target, label: e.fx === "activate" && e.detail.startsWith("Indirect") ? "activates (via PDK)" : FX[e.fx].verb, fx: e.fx, auto: true, path: "pharm" }));
-RX_ACTS.push({ target: "t_npc1l1", met: "chol" }, { target: "t_pcsk9", met: "chol" }, { target: "t_fxr", met: "cholic" }, { target: "t_idh", met: "akg" }, { target: "t_hemoz", met: "heme" }, { target: "t_ppat", met: "pra" }); // hub targets defined later
+RX_ACTS.push({ target: "t_npc1l1", met: "chol" }, { target: "t_pcsk9", met: "chol" }, { target: "t_fxr", met: "cholic" }, { target: "t_idh", met: "akg" }, { target: "t_hemoz", met: "heme" }, { target: "t_ppat", met: "pra" }, { target: "t_cyp19", met: "e2" }, { target: "t_srd5a2", met: "dht" }, { target: "t_ar", met: "dht" }, { target: "t_mr", met: "aldo" }, { target: "t_gr", met: "cortisol" }, { target: "t_at1", met: "c_r2" }, { target: "t_cyp17", met: "ohpreg" }, { target: "t_cyp11b1", met: "s11" }, { target: "t_cyp11a1", met: "preg" }, { target: "t_xo", met: "hypox" }, { target: "t_xo", met: "xanth" }, { target: "t_xo", met: "uricacid" }, { target: "t_uric", met: "uricacid" }, { target: "t_ada", met: "adenosine" }, { target: "t_pnp", met: "inosine" }, { target: "t_pnp", met: "guanosine" }, { target: "t_urat1", met: "uricacid" }, { target: "t_abcg2", met: "uricacid" }, { target: "t_glut9", met: "uricacid" }, { target: "t_oat13", met: "uricacid" }, { target: "t_npt14", met: "uricacid" }); // hub targets defined later
 RX_ACTS.forEach((a) => EDGES.push({ id: `rx_${a.target}_${a.met}`, source: a.target, target: a.met, label: "", fx: "tether", auto: true, path: "pharm" }));
 const RX_ANCHORS = new Set(RX_ACTS.map((a) => a.met));
 
@@ -2372,14 +2759,16 @@ const LOCS = {
 };
 const LOC_OF = {};
 Object.entries({
-  cyt: "carn hmgcoa mevalonate glucose g6p f6p fbp gap dhap bpg13 pg3 pg2 pep pyruvate lactate g1p glycogen udpglc p6gl p6g ru5p r5p xu5p s7p e4p alanine aspartate glutamate ornithine citrulline argsucc arginine urea glyc3p glycerol fa facyl malonyl acetylcoa glycine ala pbg hmb uro3 copro3 bilirubin biliverdin mg k p atp fe t_gk c_mev prpp pra gar fgar fgam air cair saicar aicar faicar imp sucamp xmp amp_n gmp_n",
-  mit: "coq t_c1 t_c2 t_c3 t_cytc t_c4 t_c5 hgrad preg pyruvate acetylcoa citrate isocitrate akg succoa succinate fumarate malate oaa cp ornithine citrulline aspartate glutamate facyl facylm acylcarn cis3 trans3 dienoyl propcoa mmd mml enoyl hacyl kacyl acac glycine ala copro3 protogen protoporph heme fe atp t_pdc t_cps1 t_cpt1 t_cpt2 t_pcc t_mcm",
-  er: "tag glyc3p biliverdin bilglu t_hmgcr t_ugt t_cox c_pg dhc7 chol cholic",
+  cyt: "cysta bet glyf formate thf dhf mthf2 mnthf mthf fthf hcy sam sah metc carn hmgcoa mevalonate glucose g6p f6p fbp gap dhap bpg13 pg3 pg2 pep pyruvate lactate g1p glycogen udpglc p6gl p6g ru5p r5p xu5p s7p e4p alanine aspartate glutamate ornithine citrulline argsucc arginine urea glyc3p glycerol fa facyl malonyl acetylcoa glycine ala pbg hmb uro3 copro3 bilirubin biliverdin mg k p atp fe t_gk c_mev prpp pra gar fgar fgam air cair saicar aicar faicar imp sucamp xmp amp_n gmp_n",
+  mit: "cortico aldo cortisol coq t_c1 t_c2 t_c3 t_cytc t_c4 t_c5 hgrad preg pyruvate acetylcoa citrate isocitrate akg succoa succinate fumarate malate oaa cp ornithine citrulline aspartate glutamate facyl facylm aacoa hmgm bhb acetone bhbp acacp aacoap acetylcoap acylcarn cis3 trans3 dienoyl propcoa mmd mml enoyl hacyl kacyl acac glycine ala copro3 protogen protoporph heme fe atp t_pdc t_cps1 t_cpt1 t_cpt2 t_pcc t_mcm t_hmgcs2 t_scot",
+  er: "tag glyc3p biliverdin bilglu t_hmgcr t_ugt t_cox c_pg dhc7 chol cholic prog ohpreg ohprog doc s11 dhea andro testo dht e1 e2 e3",
   nuc: "t_ppara t_pparg",
   per: "vlcfa pxenoyl pxkacyl phyt prist t_acox1",
   ap: "t_sglt2",
-  ext: "glucose lactate alanine acac fa glycerol urea bilirubin bilglu t_lipase",
+  ext: "glucose lactate alanine acac fa glycerol urea bilirubin bilglu t_lipase cortisol cortisone aldo testo dht e1 e2 e3 prog dhea dheas",
 }).forEach(([l, ids]) => ids.split(" ").forEach((id) => (LOC_OF[id] = [...(LOC_OF[id] || []), l])));
+Object.entries({ cyt: "andros e1s thcort thcone pdiol ptriol allothf cortol cortolone", er: "testog ohf6 e3g", ext: "andros testog e1s thcort thcone pdiol ptriol allothf cortol cortolone ohf6 e3g" }).forEach(([l, ids]) => ids.split(" ").forEach((id) => (LOC_OF[id] = [...(LOC_OF[id] || []), l]))); // v7.31
+Object.entries({ cyt: "adenine inosine adenosine guanosine hypox guanine xanth uricacid allantoin", ext: "adenine adenosine hypox xanth uricacid allantoin" }).forEach(([l, ids]) => ids.split(" ").forEach((id) => (LOC_OF[id] = [...(LOC_OF[id] || []), l]))); // v7.33
 const hasLoc = (id, l) => (LOC_OF[id] || []).includes(l);
 
 /* ------------------------------ organ hubs ------------------------------ */
@@ -2576,7 +2965,7 @@ const VIT = {
     ex: ["Folic acid alone corrects the anaemia of B₁₂ deficiency but not the neuropathy, which can progress: check B₁₂ first", "No other toxicity; may blunt the effect of phenytoin"],
     more: ["Purine transformylases, serine hydroxymethyltransferase and methionine synthase are not drawn as steps in the atlas."],
     cof2: { mol: [], enz: [], el: [] },
-    links: [["t_ts", "methylene-THF donor"], ["t_dhfr", "reduced by"], ["t_bdhfr", "microbes make their own (trimethoprim, pyrimethamine)"], ["methionine", "methyl-THF (methionine synthase)"], ["serine", "carbon donor (SHMT)"], ["glycine", "made by SHMT"]],
+    links: [["thf", "active carrier"], ["mthf2", "methylene-THF"], ["mthf", "methyl-folate"], ["dhf", "DHFR substrate"], ["hcy", "remethylated with methyl-THF"], ["t_ts", "methylene-THF donor"], ["t_dhfr", "reduced by"], ["t_bdhfr", "microbes make their own (trimethoprim, pyrimethamine)"], ["methionine", "methyl-THF (methionine synthase)"], ["serine", "carbon donor (SHMT)"], ["glycine", "made by SHMT"]],
     relDrugs: ["d_mtx", "d_peme", "d_leuco"],
     drug: ["d_folic", "Folic acid", "Folate replacement", "folic acid",
       "Treats megaloblastic anaemia, prevents neural-tube defects (400 µg preconception; 4 mg after a previous affected pregnancy) and lessens methotrexate mucositis. Check B₁₂ first, because folic acid can mask pernicious anaemia while neuropathy advances. Leucovorin (folinic acid) bypasses DHFR and sits on the oncology hub.",
@@ -2594,7 +2983,7 @@ const VIT = {
     ex: ["No known toxicity; excess is excreted"],
     more: ["Methylmalonyl-CoA is drawn in β-oxidation (odd-chain route); homocysteine is not, and the other links go to methionine and succinyl-CoA."],
     cof2: { mol: [], enz: [], el: ["Co"] },
-    links: [["methionine", "methylcobalamin: methionine synthase"], ["mml", "adenosylcobalamin: mutase"], ["succoa", "adenosylcobalamin: mutase"]], relDrugs: [],
+    links: [["hcy", "methionine synthase substrate"], ["mthf", "methyl donor (methyl-folate trap)"], ["methionine", "methylcobalamin: methionine synthase"], ["mml", "adenosylcobalamin: mutase"], ["succoa", "adenosylcobalamin: mutase"]], relDrugs: [],
     drug: ["d_b12", "Cobalamin", "Vitamin B₁₂ replacement", "cyanocobalamin, hydroxocobalamin",
       "IM or high-dose oral replacement in pernicious anaemia, ileal disease and after gastric bypass; lifelong in pernicious anaemia. Hydroxocobalamin is also the antidote for cyanide poisoning, because it binds cyanide. Potassium can fall in the first days as the marrow recovers.",
       "activate", "Restores methionine synthase and methylmalonyl-CoA mutase activity."],
@@ -2610,6 +2999,8 @@ const VIT_ROWS = VIT_ORDER.map((id) => { const v = VIT[id]; return ["vt", id, v.
 // urine pH, causes, stone data and treatment. `drug` adds one drug node to the hub: [id, name, class, examples, note, effect, detail].
 KIND.crystal = { label: "Urinary crystal", color: "#d4b483" };
 ORGANS.uc = { label: "Urinary crystals", code: "UC", color: "#d4b483", desc: "Crystals form in urine when a salt is supersaturated, and which one appears depends on urine pH. Acidic urine (below 5.5) gives uric acid, amorphous urates and, with high oxalate, calcium oxalate; neutral to alkaline urine gives calcium phosphate, struvite (with urease-producing bacteria) and ammonium biurate; cystine needs the inherited transport defect. Rare crystals (cholesterol, bilirubin, leucine, tyrosine) point to nephrotic syndrome, liver disease or an inherited metabolic disease, and drug crystals (sulfadiazine, acyclovir) to dehydration or rapid infusion. Each card shows the compound's structure and its habit under the microscope. Drugs that change the urine's chemistry (thiazides, xanthine oxidase inhibitors, citrate) are linked from other hubs." };
+ORGANS.ad = { label: "Adrenal cortex", code: "AD", color: "#fb7185", desc: "Three zones make three product families from the same enzymes, used differently. Glomerulosa has no CYP17A1 but has aldosterone synthase (CYP11B2) and answers to angiotensin II and K⁺. Fasciculata makes cortisol (CYP17A1 hydroxylase, CYP21A2, CYP11B1) under ACTH. Reticularis has the lyase (with cytochrome b5) and SULT2A1, and makes DHEA and DHEA-S. The drugs here block single steps (metyrapone, osilodrostat, ketoconazole, abiraterone, mitotane) or replace what is missing; an enzyme defect such as 21-hydroxylase deficiency raises ACTH and pushes precursors into androgens." };
+ORGANS.go = { label: "Gonads", code: "GO", color: "#c084fc", desc: "Two cells, two gonadotropins. Leydig cells (LH: StAR, CYP17A1, 17β-HSD3) make testosterone; Sertoli cells (FSH) support sperm. In the ovary, theca cells (LH) make androstenedione, and granulosa cells (FSH: aromatase) turn it into estradiol; after ovulation the corpus luteum (LH) makes progesterone. GnRH from the hypothalamus drives both gonadotropins, and sex steroids and inhibin feed back. Drugs here switch the axis on (gonadotropins, progestins) or off (GnRH analogues, aromatase inhibitors, anti-androgens, antiprogestins)." };
 const UC_ORDER = ["t_u_ox", "t_u_ua", "t_u_urate", "t_u_biu", "t_u_str", "t_u_cap", "t_u_cys", "t_u_chol", "t_u_bil", "t_u_leu", "t_u_tyr", "t_u_sulfa", "t_u_acv"];
 const UC = {
   t_u_ox: { name: "Calcium oxalate", formula: "CaC₂O₄ · H₂O or 2H₂O", note: "The commonest crystal and the commonest kidney stone. Calcium binds the oxalate dianion (drawn) in urine of any pH, and the more concentrated the urine the more it precipitates.",
@@ -2861,6 +3252,10 @@ const ORGAN_RX = [
   ["en", "t_srd5a2", "5α-reductase type 2", "enzyme", "SRD5A2", "Converts testosterone to dihydrotestosterone in prostate and hair follicles.", "d_5ari", "5α-reductase inhibitors", "BPH and alopecia drugs", "finasteride, dutasteride", "Shrink the prostate and slow male-pattern hair loss. Adverse effects: low libido, erectile dysfunction; they halve PSA.", "inhibit", "Less DHT is made.", ["er"]],
   ["en", "t_ar", "Androgen receptor", "receptor", "AR", "Nuclear receptor for testosterone and DHT; drives prostate growth.", "d_antiand", "Antiandrogens", "AR antagonists", "bicalutamide, flutamide, enzalutamide", "Prostate cancer. Adverse effects: gynecomastia, hot flushes; flutamide can injure the liver.", "inhibit", "Block androgen binding.", ["nuc"]],
   ["en", "t_gnrhr", "GnRH receptor", "receptor", "GNRHR", "Gq-coupled receptor on pituitary gonadotrophs; pulsatile GnRH releases LH and FSH.", "d_gnrh", "GnRH analogues", "Agonists and antagonists", "leuprolide, goserelin, degarelix", "Prostate cancer, endometriosis, fibroids, precocious puberty. Agonists cause an initial testosterone flare.", "activate", "Continuous exposure desensitises the receptor, so LH and FSH fall (antagonists such as degarelix block it directly).", ["pm"]],
+  ["en", "t_cyp17", "17α-Hydroxylase / 17,20-lyase", "enzyme", "CYP17A1", "ER cytochrome P450 with two activities: 17α-hydroxylase (the gate to cortisol) and 17,20-lyase (the gate to DHEA, androgens and estrogens). Absent from zona glomerulosa.", "d_abi", "CYP17A1 inhibitors", "Androgen-synthesis inhibitors", "abiraterone", "Metastatic castration-resistant and high-risk hormone-sensitive prostate cancer, together with androgen-deprivation therapy. Always given with prednisone: lower cortisol raises ACTH, which pushes 11-deoxycorticosterone and corticosterone up (hypertension, hypokalemia, edema).", "inhibit", "Less DHEA, androstenedione and testosterone, from the adrenal and from the tumour itself.", ["er"]],
+  ["en", "t_cyp11b1", "11β-Hydroxylase", "enzyme", "CYP11B1", "Mitochondrial P450 of zona fasciculata that adds the 11β-hydroxyl to 11-deoxycortisol, making cortisol (and 11-deoxycorticosterone to corticosterone). Driven by ACTH.", "d_cyp11i", "11β-Hydroxylase inhibitors", "Cortisol-synthesis inhibitors", "metyrapone, osilodrostat", "Cushing syndrome (before surgery, after failed surgery, or while radiotherapy takes effect). Metyrapone is also a test of ACTH reserve: 11-deoxycortisol should rise. Adverse effects: adrenal insufficiency, nausea, hypertension and hypokalemia from 11-deoxycorticosterone, acne and hirsutism from androgens; osilodrostat prolongs the QT interval.", "inhibit", "Less cortisol; ACTH rises and 11-deoxycortisol and 11-deoxycorticosterone build up.", ["mit"]],
+  ["en", "t_cyp11a1", "Cholesterol side-chain cleavage (P450scc)", "enzyme", "CYP11A1", "Inner-mitochondrial-membrane P450 that cuts the cholesterol side chain to pregnenolone, the first and rate-limiting step of all steroid hormone synthesis (fed by StAR).", "d_mitotane", "Mitotane", "Adrenolytic", "mitotane", "Adrenocortical carcinoma, adjuvant and advanced. It destroys adrenal cortex cells and blocks CYP11A1 and CYP11B1, so lifelong glucocorticoid replacement (often with mineralocorticoid) is needed. It induces CYP3A4 and raises binding globulins, so doses and interactions need close watching.", "inhibit", "Less pregnenolone and every steroid downstream; the cells are also killed.", ["mit"]],
+  ["en", "t_cyp17", null, null, null, null, "d_keto", "Ketoconazole", "Steroidogenesis inhibitors (imidazole)", "ketoconazole, levoketoconazole", "Imidazole that binds the heme iron of several cytochrome P450s, so it blocks steroid synthesis at more than one step: side-chain cleavage (CYP11A1), 17α-hydroxylase and especially 17,20-lyase (CYP17A1), and 11β-hydroxylase (CYP11B1). Levoketoconazole (the 2S,4R enantiomer) is approved for endogenous hypercortisolemia in Cushing syndrome; ketoconazole is used off label for it (and was used for rapid androgen blockade in prostate cancer). It needs gastric acid to be absorbed, strongly inhibits CYP3A4 and is a weak androgen and glucocorticoid receptor antagonist. Boxed warnings: hepatotoxicity and QT prolongation; oral use for fungal infection is now restricted.", "inhibit", "Blocks the 17,20-lyase more than the 17α-hydroxylase, so DHEA, androstenedione and testosterone fall within hours.", null],
   ["en", "t_sstr2", "Somatostatin receptor 2", "receptor", "SSTR2", "Gi-coupled receptor on pituitary somatotrophs and neuroendocrine tumour cells.", "d_octr", "Somatostatin analogues", "Octreotide-type drugs", "octreotide, lanreotide", "Acromegaly, carcinoid and VIPoma symptoms, variceal bleeding. Adverse effects: gallstones, steatorrhea, bradycardia, dysglycemia.", "activate", "Suppress GH, insulin, glucagon and gut hormone release.", ["pm"]],
   ["en", "t_er", null, null, null, null, "d_tamox", "Tamoxifen", "SERM, breast antagonist", "tamoxifen", "Adjuvant therapy of ER-positive breast cancer. Adverse effects: endometrial cancer, venous thromboembolism, hot flushes.", "inhibit", "Blocks estrogen in the breast; acts as an agonist in endometrium and bone.", null],
   ["en", "t_d2", null, null, null, null, "d_dagon", "Dopamine agonists", "Prolactinoma drugs", "cabergoline, bromocriptine", "First-line for prolactinoma: shrink the tumour and restore gonadal function. Adverse effects: nausea, orthostatic hypotension, impulse-control problems.", "activate", "Stimulate D₂ receptors on lactotrophs, which suppresses prolactin.", null],
@@ -3059,12 +3454,46 @@ const AIN = {
   t_trpm: [43, "Flatworms · tegument and muscle"], t_nnachr: [44, "Nematodes · body-wall muscle"],
 };
 const ORG_OF = {}, ORGAN_SET = {}, ORG_RX_IDS = new Set();
+// v7.30: Adrenal cortex and Gonads list targets that already sit on other hubs
+{ const addOrg = (id, os) => (EXIST_ORG[id] = [...new Set([...(EXIST_ORG[id] || []), ...os])]);
+  ["t_cyp11a1", "t_cyp17", "t_cyp11b1", "t_at1"].forEach((id) => addOrg(id, ["ad"]));
+  ["t_cyp11a1", "t_cyp17", "t_cyp19", "t_ar", "t_er", "t_gnrhr"].forEach((id) => addOrg(id, ["go"]));
+}
+Object.assign(REN, { t_ada: [4.2, "S phase · purine breakdown in lymphocytes"], t_pnp: [4.4, "S phase · purine breakdown in T cells"] });
+ORGAN_RX.push(
+  ["on", "t_ada", "Adenosine deaminase", "enzyme", "ADA", "Deaminates adenosine and deoxyadenosine to inosine and deoxyinosine. Lymphocytes depend on it: when it is blocked, deoxyadenosine is phosphorylated to dATP, which inhibits ribonucleotide reductase and triggers apoptosis, so the same biochemistry as ADA-SCID is used to kill leukemic cells.", "d_pento", "Pentostatin", "Adenosine deaminase inhibitor", "pentostatin (deoxycoformycin)", "Hairy cell leukemia (first-line or after relapse; complete responses are common) and some T-cell lymphomas. Adverse effects: myelosuppression, infection, neurotoxicity and nephrotoxicity; fatal lung toxicity with fludarabine. It also raises the levels of adenosine-based drugs (vidarabine, cladribine).", "inhibit", "Deoxyadenosine and dATP build up, so lymphocytes die.", ["cyt"]],
+  ["on", "t_pnp", "Purine nucleoside phosphorylase", "enzyme", "PNP", "Splits inosine, guanosine and their deoxy forms. T cells are especially sensitive because they accumulate deoxyguanosine, which is turned into dGTP when the enzyme is blocked; inherited deficiency causes selective T-cell immunodeficiency.", "d_foro", "Forodesine", "PNP inhibitor", "forodesine (approved in Japan for relapsed peripheral T-cell lymphoma)", "Raises deoxyguanosine, so dGTP builds up in T cells and kills them. Adverse effects: lymphopenia, infection (including cytomegalovirus), nausea, rash. Not available for general use outside Japan.", "inhibit", "Deoxyguanosine is turned into dGTP, so malignant T cells die.", ["cyt"]],
+  ["on", "t_uric", null, null, null, null, "d_pegl", "Pegloticase", "Pegylated recombinant urate oxidase", "pegloticase", "Refractory chronic gout that fails oral urate-lowering drugs: it can melt tophi. Given by infusion every two weeks. Adverse effects: infusion reactions and anaphylaxis (antibodies against the drug), hemolysis in G6PD deficiency, gout flares early in treatment; co-treatment with methotrexate lengthens the response.", "alter", "Converts uric acid to allantoin, so serum urate falls within hours.", null],
+);
+Object.assign(REN, { t_oat13: [2.8, "Proximal tubule · basolateral membrane"], t_abcg2: [3.1, "Proximal tubule · apical membrane"], t_glut9: [3.2, "Proximal tubule · basolateral membrane"], t_npt14: [3.3, "Proximal tubule · apical membrane"] });
+ORGAN_RX.push( // v7.36: renal urate transport (target-only rows; the uricosuric class already sits on URAT1)
+  ["rn", "t_oat13", "OAT1 / OAT3 (organic anion transporters)", "transporter", "SLC22A6, SLC22A8", "Take urate and many drugs (penicillins, methotrexate, NSAIDs, diuretics) from the blood into proximal tubule cells, the first step of secretion into urine. Loop and thiazide diuretics compete with urate here, which is one reason they raise serum urate.", null, null, null, null, null, null, null, ["bl"]],
+  ["rn", "t_abcg2", "ABCG2 (urate efflux pump)", "transporter", "ABCG2", "ATP-driven pump on the apical side of proximal tubule cells and of the gut, which puts urate out into urine and gut lumen: about 30% of daily urate leaves through the gut. The common Q141K variant halves its activity and is a leading genetic cause of gout. It also pumps many drugs and some chemotherapy.", null, null, null, null, null, null, null, ["ap"]],
+  ["rn", "t_glut9", "GLUT9 (urate exit to blood)", "transporter", "SLC2A9", "Basolateral uniporter that lets urate reabsorbed by URAT1 leave the cell into the blood. Common variants change serum urate more than any other gene, and loss of function gives renal hypouricaemia. Glucose in the tubule (SGLT2 inhibitors, diabetes) exchanges with urate at this transporter, so glucosuria lowers serum urate.", null, null, null, null, null, null, null, ["bl"]],
+  ["rn", "t_npt14", "NPT1 / NPT4 (phosphate-linked urate transporters)", "transporter", "SLC17A1, SLC17A3", "Voltage-driven anion channels on the apical side of proximal tubule cells that let urate out into the urine (and, in the case of NPT1, take up phosphate). Variants change urate excretion and gout risk modestly; the transporters also carry some drugs.", null, null, null, null, null, null, null, ["ap"]],
+);
+ORGAN_RX.push(
+  ["ad", "t_cyp11b2", "Aldosterone synthase", "enzyme", "CYP11B2", "Mitochondrial P450 of zona glomerulosa that makes aldosterone from 11-deoxycorticosterone in three steps (11β-hydroxylation, 18-hydroxylation, 18-oxidation). Driven by angiotensin II and K⁺, not ACTH. Osilodrostat blocks it as well as CYP11B1; no drug is used mainly for it yet.", null, null, null, null, null, null, ["mit"]],
+  ["ad", "t_cyp21a2", "21-Hydroxylase", "enzyme", "CYP21A2", "Microsomal P450 that adds the 21-hydroxyl to progesterone and 17-OH-progesterone. Its loss is the commonest cause of congenital adrenal hyperplasia: low cortisol, high ACTH, and precursors pushed into androgens. Treatment replaces the missing hormones instead of acting on the enzyme.", null, null, null, null, null, null, ["er"]],
+  ["go", "t_lhr", "LH / hCG receptor", "receptor", "LHCGR", "Gs-coupled receptor on Leydig and theca cells and the corpus luteum: cAMP–PKA raises StAR and CYP17A1, so androgens rise. hCG binds it too, which sustains the corpus luteum and fetal testis in early pregnancy.", "d_hcg", "Gonadotropins (LH-like)", "LH-receptor agonists", "choriogonadotropin alfa, hCG, lutropin alfa", "Trigger ovulation after follicle growth, raise testosterone and sperm production in hypogonadotropic hypogonadism (with FSH), and treat cryptorchidism. Adverse effects: ovarian hyperstimulation syndrome, multiple pregnancy, gynecomastia and acne in men.", "activate", "More cAMP, so more StAR and androgen synthesis, and ovulation and luteinisation in the ovary.", ["pm"]],
+  ["go", "t_fshr", "FSH receptor", "receptor", "FSHR", "Gs-coupled receptor on granulosa and Sertoli cells: cAMP–PKA induces aromatase in granulosa cells, drives follicle growth and supports spermatogenesis.", "d_fsh", "Gonadotropins (FSH)", "FSH-receptor agonists", "follitropin alfa and beta, urofollitropin, menotropins", "Ovulation induction and IVF stimulation; sperm production in hypogonadotropic hypogonadism. Adverse effects: ovarian hyperstimulation syndrome, multiple pregnancy, ovarian torsion.", "activate", "Follicle growth, aromatase induction and estradiol output.", ["pm"]],
+  ["go", "t_pr", "Progesterone receptor", "receptor", "PGR", "Nuclear receptor in uterus, breast, ovary and brain. Progesterone from the corpus luteum and placenta prepares the endometrium, quietens the uterus and, by feedback, lowers GnRH and LH.", "d_prog", "Progestins", "Progesterone-receptor agonists", "progesterone, medroxyprogesterone, norethindrone, levonorgestrel, etonogestrel", "Contraception, endometrial protection with estrogen, abnormal uterine bleeding, endometriosis. Adverse effects: irregular bleeding, weight gain, mood change, bone loss with depot medroxyprogesterone, clots with combined estrogen.", "activate", "Thins the endometrium and the feedback lowers GnRH and LH, so ovulation is blocked.", ["cyt", "nuc"]],
+  ["go", "t_pr", null, null, null, null, "d_prm", "Antiprogestins", "Progesterone-receptor antagonists and modulators", "mifepristone, ulipristal", "Mifepristone with misoprostol ends early pregnancy; ulipristal is emergency contraception; at high doses mifepristone also blocks the glucocorticoid receptor and is used for hyperglycemia in Cushing syndrome (cortisol and ACTH then rise, so they cannot guide the dose).", "inhibit", "Blocks progesterone, so the decidua breaks down and the cervix softens.", null],
+);
+{ const tethers = [["t_cyp11b2", "aldo"], ["t_cyp21a2", "ohprog"], ["t_lhr", "c_r3"], ["t_fshr", "c_r4"], ["t_pr", "prog"]];
+  tethers.forEach(([target, met]) => { RX_ACTS.push({ target, met }); RX_ANCHORS.add(met); EDGES.push({ id: `rx_${target}_${met}`, source: target, target: met, label: "", fx: "tether", auto: true, path: "pharm" }); });
+}
 Object.entries(EXIST_ORG).forEach(([t, os]) => (ORG_OF[t] = os));
 DRUGS.forEach((d) => (ORG_OF[d[0]] = [...new Set(d[5].flatMap((f) => EXIST_ORG[f[0]] || []))]));
 // Vitamins hub also lists targets that sit elsewhere: the vitamin K cycle, vitamin D receptor, thiamine (PDH) and folate (DHFR, thymidylate synthase)
 ["t_vkor", "t_pdc", "t_dhfr"].forEach((t) => { ORG_OF[t] = [...ORG_OF[t], "vt"]; });
 Object.assign(EXIST_ORG, { t_vkor: [...EXIST_ORG.t_vkor, "vt"], t_pdc: [...EXIST_ORG.t_pdc, "vt"], t_dhfr: [...EXIST_ORG.t_dhfr, "vt"], t_vdr: ["vt"], t_ts: ["vt"] });
 ORGAN_RX.forEach((r) => { const m = [...new Set([r[0], ...(EXIST_ORG[r[1]] || [])])]; if (r[2]) { ORG_OF[r[1]] = m; LOC_OF[r[1]] = r[13]; } if (r[6]) ORG_OF[r[6]] = r[2] ? m : [r[0]]; });
+ORG_OF.d_keto = ["en", "ad", "go"]; ORG_OF.d_prm = ["go", "en"];
+["t_cyp17", "t_cyp11a1", "t_cyp11b1", "t_ar"].forEach((tg) => ["ad", "go"].filter((o) => (ORG_OF[tg] || []).includes(o)).forEach((o) => { // ketoconazole edges for the new hubs (the originals belong to the Endocrine hub)
+  const e = RX_EFFECTS.find((x) => x.drug === "d_keto" && x.target === tg) || { fx: "inhibit" };
+  EDGES.push({ id: `rx_d_keto_${tg}_${o}`, source: "d_keto", target: tg, label: FX[e.fx].verb, fx: e.fx, auto: true, path: "pharm", org: o, cross: true });
+}));
 // Oncology: tamoxifen's row sits on the endocrine hub, so list it here too; colchicine shares β-tubulin but is not chemotherapy
 ORG_OF.d_tamox = [...ORG_OF.d_tamox, "on"]; ORG_OF.d_colch = ORG_OF.d_colch.filter((o) => o !== "on"); ORG_OF.d_jaki = ORG_OF.d_jaki.filter((o) => o !== "on"); // rheumatology JAK inhibitors are not chemotherapy
 (() => { // placement: hubs in two columns to the right of the atlas; targets on a ring, their drugs just outside it
@@ -3075,7 +3504,7 @@ ORG_OF.d_tamox = [...ORG_OF.d_tamox, "on"]; ORG_OF.d_colch = ORG_OF.d_colch.filt
   // Cardiovascular and Respiratory beside Renal and Immune / Oncology / Anti-infective grouped at the end. `uc` is added to ORGANS after
   // the main table, so it is listed here explicitly. A hub missing from the table falls back to the old alternating rule (by its index in
   // ORGANS) and goes below the listed hubs of that column.
-  const HUB_COLS = [["hp", "rn", "uc", "en", "vt"], ["cv", "rs", "sk", "cn", "gi", "im", "on", "ai"]];
+  const HUB_COLS = [["hp", "rn", "uc", "en", "ad", "go", "vt"], ["cv", "rs", "sk", "cn", "gi", "im", "on", "ai"]];
   const slot = {}; // code -> [column, order within the column]
   HUB_COLS.forEach((col, c) => col.filter((o) => codes.includes(o)).forEach((o, k) => { slot[o] = [c, k]; }));
   codes.forEach((o, i) => { if (!slot[o]) slot[o] = [i % 2, HUB_COLS[i % 2].length + i]; });
@@ -3131,6 +3560,38 @@ ORG_OF.d_tamox = [...ORG_OF.d_tamox, "on"]; ORG_OF.d_colch = ORG_OF.d_colch.filt
     if (near) LOC_OF[n.id] = [LOC_OF[near.id][0]];
   } });
 })();
+// v7.36: probenecid (the uricosurics card) also blocks OAT1/OAT3
+[["d_uricos", "t_oat13", "inhibit", "Probenecid blocks OAT1 and OAT3, so less urate is secreted, but the block of URAT1 outweighs it and urate excretion rises; the same block slows penicillin and methotrexate excretion."]].forEach(([d, tg, fx, detail]) => {
+  RX_EFFECTS.push({ drug: d, target: tg, fx, detail });
+  DRUGS.find((x) => x[0] === d)[5].push([tg, fx, detail]);
+  EDGES.push({ id: `rx_${d}_${tg}`, source: d, target: tg, label: FX[fx].verb, fx, auto: true, path: "pharm", org: "rn", cross: true });
+});
+// v7.29: ketoconazole acts on several steroidogenic P450s; its hub row names CYP17A1 and these effects are added to the same drug node
+[["t_cyp11a1", "inhibit", "At higher doses it blocks side-chain cleavage, so pregnenolone and every steroid downstream of it fall."],
+  ["t_cyp11b1", "inhibit", "Blocks 11β-hydroxylation, so cortisol falls and 11-deoxycortisol and 11-deoxycorticosterone build up; this is the main reason it works in Cushing syndrome."],
+  ["t_ar", "inhibit", "Weak antagonism at high concentration, in addition to the fall in androgen synthesis."],
+  ["t_gr", "inhibit", "Weak antagonism at high concentration; one more reason adrenal insufficiency can appear at modest cortisol levels."]].forEach(([t, fx, detail]) => {
+  RX_EFFECTS.push({ drug: "d_keto", target: t, fx, detail });
+  DRUGS.find((d) => d[0] === "d_keto")[5].push([t, fx, detail]);
+  EDGES.push({ id: `rx_d_keto_${t}`, source: "d_keto", target: t, label: FX[fx].verb, fx, auto: true, path: "pharm", org: "en", cross: true });
+});
+// v7.30: second targets of two hub drugs
+[["d_prm", "t_gr", "inhibit", "At high doses it also blocks the glucocorticoid receptor (hyperglycemia in Cushing syndrome); cortisol and ACTH rise, so they cannot guide the dose.", "en"],
+  ["d_cyp11i", "t_cyp11b2", "inhibit", "Osilodrostat also blocks aldosterone synthase, so aldosterone can fall and 11-deoxycorticosterone rise.", "ad"]].forEach(([d, tg, fx, detail, org]) => {
+  RX_EFFECTS.push({ drug: d, target: tg, fx, detail });
+  DRUGS.find((x) => x[0] === d)[5].push([tg, fx, detail]);
+  EDGES.push({ id: `rx_${d}_${tg}`, source: d, target: tg, label: FX[fx].verb, fx, auto: true, path: "pharm", org, cross: true });
+});
+// v7.29: the hub-ring slot of ketoconazole falls on the steroid map; move it to the nearest free spot
+{
+  const W = 250, H = 150, [x0, y0] = layout.d_keto;
+  const others = NODES.filter((n) => n.id !== "d_keto" && layout[n.id]).map((n) => boxAt(layout[n.id][0], layout[n.id][1], sizeOf(n).w, hOfNode(n), 40));
+  const offs = [];
+  for (let dx = -1600; dx <= 1600; dx += 40) for (let dy = -1600; dy <= 1600; dy += 40) offs.push([dx, dy]);
+  offs.sort((a, b) => Math.hypot(a[0], a[1]) - Math.hypot(b[0], b[1]));
+  const free = offs.find(([dx, dy]) => { const b = boxAt(x0 + dx, y0 + dy, W, H, 0); return !others.some((o) => boxHit(o, b)); });
+  if (free) layout.d_keto = [x0 + free[0], y0 + free[1]];
+}
 // vitamin nodes carry their structure, drawn on the canvas like the drug structures
 VIT_ORDER.forEach((id) => { MOLS[id] = VIT_MOLS[id]; const vn = NODES.find((n) => n.id === id); vn.dm = id; vn.w = Math.max(vn.w || 0, art(VIT_MOLS[id]).w + 28); }); // box widens to the true-scale structure
 UC_ORDER.forEach((id) => { if (!UC_MOLS[id]) return; MOLS[id] = UC_MOLS[id]; const un = NODES.find((n) => n.id === id); un.dm = id; un.w = Math.max(un.w || 0, art(UC_MOLS[id]).w + 28); }); // urinary crystals carry their structure too
@@ -3145,6 +3606,14 @@ const DRUG_TOX = Object.fromEntries(Object.entries({
   // hormonal therapy and antiemetics (rows on other hubs)
   d_serm: ["Venous thromboembolism", "vessel: deep vein thrombosis, pulmonary embolism, stroke; endo: hot flushes; muscle: leg cramps", "Stop before prolonged immobilisation or surgery", "Symptoms of thrombosis", "Past venous thromboembolism; pregnancy"],
   d_tamox: ["Endometrial cancer and thromboembolism", "cancer: endometrial hyperplasia and carcinoma (agonist in the uterus); vessel: deep vein thrombosis, pulmonary embolism, stroke; endo: hot flushes, vaginal discharge; eye: cataract", "Investigate any postmenopausal bleeding", "Gynaecological symptoms", "Strong CYP2D6 inhibitors (paroxetine, fluoxetine) lower endoxifen; pregnancy"],
+  d_abi: ["Mineralocorticoid excess and liver injury", "endo: hypertension, hypokalemia and fluid retention (ACTH-driven, from 11-deoxycorticosterone and corticosterone); heart: heart failure and arrhythmia; liver: raised transaminases, rarely hepatitis; endo: adrenal insufficiency if prednisone is missed during illness", "Prednisone with it, eplerenone if needed; correct potassium and blood pressure", "Blood pressure, potassium and liver tests every 2 weeks for 3 months, then monthly", "Severe liver impairment (Child-Pugh C); women who are or may be pregnant"],
+  d_cyp11i: ["Adrenal insufficiency and mineralocorticoid excess", "endo: adrenal insufficiency (tiredness, nausea, low blood pressure), hypertension, hypokalemia and edema (11-deoxycorticosterone), acne and hirsutism in women; gi: nausea; heart: QT prolongation (osilodrostat)", "Dose titration to urinary free cortisol; hydrocortisone replacement if cortisol is too low (block-and-replace)", "Cortisol, potassium, blood pressure, ECG (osilodrostat)", "Congenital long QT (osilodrostat); pregnancy"],
+  d_mitotane: ["Neurotoxicity, gut upset and liver injury", "gi: nausea, vomiting, diarrhea; nerve: ataxia, confusion, dizziness; liver: raised transaminases; metab: high cholesterol; endo: adrenal insufficiency, low thyroid hormone binding; other: gynecomastia; interactions: induces CYP3A4", "Lifelong hydrocortisone (higher dose) and fludrocortisone; antiemetics; dose by blood level", "Mitotane level (14–20 mg/L target), cortisol replacement adequacy, liver tests, lipids", "Pregnancy; do not conceive for 2 years after stopping"],
+  d_keto: ["Hepatotoxicity, adrenal insufficiency and QT prolongation", "liver: hepatocellular injury, rarely fulminant hepatitis and liver failure; endo: adrenal insufficiency (cortisol falls), low testosterone with gynecomastia, low libido and impotence in men, menstrual irregularity; heart: QT prolongation and torsades de pointes (worse with other QT drugs, since it inhibits CYP3A4); gi: nausea, vomiting; skin: rash, pruritus; repro: teratogenic", "Take with food and an acidic drink (it needs gastric acid); stop at once if liver enzymes rise sharply or hepatitis symptoms appear; hydrocortisone replacement if cortisol falls too far (block-and-replace)", "ALT, AST and bilirubin before starting and weekly at first, then monthly; ECG for QT; urinary free cortisol (Cushing syndrome) or testosterone (prostate cancer); potassium and magnesium", "Acute or chronic liver disease; congenital or acquired long QT; QT-prolonging co-medications and CYP3A4 substrates (dofetilide, quinidine, pimozide, cisapride, methadone, ergot alkaloids, simvastatin, lovastatin, triazolam, oral midazolam); antacids, H₂ blockers and proton-pump inhibitors lower absorption; rifampin and other inducers lower levels"],
+  d_hcg: ["Ovarian hyperstimulation syndrome", "repro: ovarian hyperstimulation (ascites, pleural effusion, hemoconcentration), multiple pregnancy, ovarian torsion; vessel: thromboembolism; endo: gynecomastia and acne in men; other: injection-site pain", "Lowest effective dose; a GnRH-agonist trigger instead of hCG in women at risk; cabergoline", "Ultrasound follicle count, estradiol, hematocrit; testosterone in men", "Active ovarian hyperstimulation, undiagnosed vaginal bleeding, androgen-dependent tumour, pregnancy (outside fertility use)"],
+  d_fsh: ["Ovarian hyperstimulation syndrome and multiple pregnancy", "repro: ovarian hyperstimulation, multiple pregnancy, ovarian torsion, ectopic pregnancy; vessel: thromboembolism; other: headache, injection-site reactions", "Titrate to follicle count and estradiol; withhold the trigger if too many follicles develop", "Transvaginal ultrasound, estradiol", "Primary ovarian failure (FSH already high), pituitary or hypothalamic tumour, uncontrolled thyroid or adrenal disease"],
+  d_prog: ["Irregular bleeding, and clots when combined with estrogen", "repro: irregular bleeding, amenorrhea, bone loss with depot medroxyprogesterone; vessel: venous thromboembolism with combined estrogen; metab: weight gain, fluid retention, glucose intolerance; other: mood change, breast tenderness", "A levonorgestrel IUD or implant if bleeding is the problem; calcium and vitamin D with depot use", "Blood pressure; bone density with long-term depot use", "Undiagnosed vaginal bleeding, current breast cancer, active liver disease, pregnancy when used for contraception"],
+  d_prm: ["Heavy bleeding and, in Cushing use, adrenal insufficiency", "repro: heavy bleeding, cramps, incomplete abortion, endometrial thickening; endo: adrenal insufficiency from glucocorticoid-receptor blockade (cortisol cannot be used to monitor); metab: hypokalemia; gi: nausea", "Misoprostol follows for abortion; check potassium and treat low potassium with spironolactone in Cushing use", "Bleeding and hCG follow-up; potassium and blood pressure in Cushing use", "Ectopic pregnancy, chronic adrenal failure, long-term glucocorticoid use, pregnancy in Cushing use, strong CYP3A4 inducers"],
   d_ai: ["Bone loss and arthralgia", "muscle: osteoporosis and fractures, arthralgia, myalgia; endo: hot flushes, vaginal dryness; metab: raised cholesterol", "Calcium, vitamin D, and a bisphosphonate or denosumab when bone density is low", "Bone density (DXA) at baseline and every 1–2 years, lipids", "Premenopausal women without ovarian suppression (ineffective)"],
   d_antiand: ["Hepatotoxicity and gynecomastia", "liver: hepatitis (flutamide most); endo: gynecomastia, breast pain, hot flushes; nerve: seizures and fatigue (enzalutamide)", "Breast-bud irradiation or tamoxifen can prevent gynecomastia", "Liver tests (flutamide, bicalutamide)", "Enzalutamide with seizure history; CYP interactions with enzalutamide (strong inducer)"],
   d_gnrh: ["Tumour flare and androgen-deprivation effects", "endo: hot flushes, loss of libido, erectile dysfunction, metabolic syndrome and diabetes; muscle: osteoporosis, loss of muscle mass; heart: QT prolongation, cardiovascular events; other: tumour flare in the first weeks with agonists (bone pain, cord compression)", "An antiandrogen for 2–4 weeks when starting an agonist; antagonists (degarelix) cause no flare", "Testosterone, glucose and lipids, bone density", "Agonists alone in impending cord compression"],
@@ -3175,6 +3644,9 @@ const DRUG_TOX = Object.fromEntries(Object.entries({
   d_taxane: ["Neutropenia and neuropathy", "marrow: neutropenia; nerve: peripheral sensory neuropathy; allergy: infusion hypersensitivity from the solvent (Cremophor for paclitaxel, polysorbate 80 for docetaxel); skin: alopecia, nail loss; vessel: fluid retention and oedema (docetaxel); muscle: arthralgia, myalgia", "Premedicate with dexamethasone, an H₁ and an H₂ blocker; dexamethasone around docetaxel for fluid retention; nab-paclitaxel avoids the solvent", "CBC, neurological examination", "Strong CYP3A4 or CYP2C8 inhibitors; severe liver dysfunction (docetaxel)"],
   d_aspase: ["Hypersensitivity and pancreatitis", "allergy: anaphylaxis and silent inactivation by antibodies; gi: pancreatitis; vessel: thrombosis, including cerebral venous sinus thrombosis, and bleeding from low fibrinogen and antithrombin; liver: hepatotoxicity, steatosis; endo: hyperglycemia; metab: hypertriglyceridemia", "Switch to Erwinia asparaginase after allergy; replace fibrinogen or antithrombin when low", "Asparaginase activity, lipase, glucose, fibrinogen, liver tests, triglycerides", "Past pancreatitis or serious thrombosis with asparaginase"],
   // supportive care
+  d_pento: ["Myelosuppression, neurotoxicity and infection", "marrow: lymphopenia (CD4 falls for months), neutropenia, anemia; brain: severe neurotoxicity at high doses or with fludarabine (fatal pulmonary toxicity in the combination); kidney: raised creatinine; immune: opportunistic infections (herpes zoster, Pneumocystis)", "Hydrate; never combine with fludarabine; consider antiviral and Pneumocystis prophylaxis", "Blood count, creatinine, CD4 count", "Combination with fludarabine; severe kidney impairment"],
+  d_foro: ["Lymphopenia and infection", "marrow: lymphopenia, neutropenia, thrombocytopenia; immune: infections including cytomegalovirus and Epstein–Barr virus reactivation; gi: nausea; skin: rash", "Watch for opportunistic infection; check viral load if febrile", "Blood count, lymphocyte subsets", "Active serious infection"],
+  d_pegl: ["Infusion reactions, anaphylaxis and hemolysis in G6PD deficiency", "allergy: anaphylaxis and infusion reactions (most with high anti-drug antibodies, which also stop the uric acid lowering); blood: hemolysis and methemoglobinemia in G6PD deficiency; msk: gout flares in the first months; heart: heart failure may worsen", "Test G6PD first; give antihistamine and glucocorticoid beforehand; add methotrexate to blunt antibodies; stop if serum urate rises above 6 mg/dL before the next dose", "Serum urate before each infusion", "G6PD deficiency; should not be used with oral urate-lowering drugs"],
   d_rasbu: ["Hemolysis in G6PD deficiency", "blood: hemolysis and methemoglobinemia in G6PD deficiency; allergy: anaphylaxis; other: falsely low uric acid if blood is not kept on ice", "Test G6PD before use in those at risk", "Uric acid (sample on ice), hemoglobin", "G6PD deficiency"],
   d_gcsf: ["Bone pain", "muscle: bone pain (relieved by loratadine or NSAIDs); immune: leukocytosis; other: rare splenic rupture, capillary leak syndrome, sickle cell crisis", "Antihistamine or NSAID for bone pain", "CBC, left upper quadrant pain", "Sickle cell disease; giving it within 24 hours before chemotherapy"],
   // more cytotoxics and protective drugs
@@ -3315,6 +3787,9 @@ const LABS = {
   pt: ["Prothrombin time", "11–15 s", ""], ptt: ["aPTT", "25–40 s", ""], esr: ["ESR (Westergren)", "M 0–15, F 0–20 mm/h", ""],
   uosm: ["Osmolality, urine", "50–1200 mOsmol/kg H₂O", ""], uca: ["Calcium, urine", "100–300 mg/24 h", "2.5–7.5 mmol/24 h"], uprot: ["Protein, urine total", "<150 mg/24 h", "<0.15 g/24 h"], uox: ["Oxalate, urine", "8–40 µg/mL", "90–445 µmol/L"],
   igg: ["Immunoglobulin G, serum", "650–1500 mg/dL", "6.5–15.0 g/L"], iga: ["Immunoglobulin A, serum", "76–390 mg/dL", "0.76–3.90 g/L"], igm: ["Immunoglobulin M, serum", "40–345 mg/dL", "0.4–3.45 g/L"], ige: ["Immunoglobulin E, serum", "0–380 IU/mL", "0–380 kIU/L"],
+  // steroid axis labs added in v7.30: approximate adult values, assay- and age-dependent (not from the NBME table)
+  acth: ["ACTH, 0800 h", "about 10–60 pg/mL (assay-dependent)", "about 2–13 pmol/L"], ohp17: ["17-Hydroxyprogesterone", "Adult <200 ng/dL (women, follicular <80); newborn cut-off depends on weight and age", "Adult <6.1 nmol/L"],
+  testo: ["Testosterone, total, serum", "M about 270–1070, F about 15–70 ng/dL", "M about 9.4–37, F about 0.5–2.4 nmol/L"], dheas: ["DHEA sulfate, serum", "Age-dependent; adults M about 80–560, F about 35–430 µg/dL", "M about 2.2–15, F about 0.9–12 µmol/L"],
 };
 const LAB_ORDER = Object.keys(LABS), LAB_OF = {};
 Object.entries({
@@ -3344,8 +3819,17 @@ Object.entries({
   t_hsvpol: "cr bun wbc plt ca mg k phos", t_rdrp: "alt ast cr", t_ns5a: "alt ast bilt", t_ns3: "alt ast bilt", t_hemoz: "glu hb retic bilt", t_cytbc1: "alt ast", t_htub: "alt ast wbc",
 }).forEach(([id, ks]) => (LAB_OF[id] = ks.split(" ")));
 Object.entries({ chol: "tc ldl hdl tg", cholic: "alp bilt alt ast", t_va: "alt ast", t_vd: "ca phos alp pth uca", t_vk: "pt ptt", t_ve: "hb retic", t_b3: "tc ldl hdl tg glu ua alt ast", t_b6: "hb mcv alt ast", t_b9: "hb mcv retic", t_b12: "hb mcv retic k" }).forEach(([id, ks]) => (LAB_OF[id] = ks.split(" ")));
+const addLab = (id, ks) => (LAB_OF[id] = [...new Set([...(LAB_OF[id] || []), ...ks.split(" ")])]);
+Object.entries({ cortisol: "cort acth", cortisone: "cort", ohprog: "ohp17", s11: "cort acth", testo: "testo lh", andro: "testo", dht: "testo", dhea: "dheas", dheas: "dheas", aldo: "k na",
+  c_r1: "acth cort", c_r5: "acth cort", c_r3: "lh testo", c_r4: "fsh", c_r6: "lh fsh", t_cyp17: "ohp17 testo dheas cort acth", t_cyp11b1: "cort acth k", t_cyp11a1: "cort acth", t_cyp11b2: "k na", t_cyp21a2: "ohp17 cort acth",
+  t_ar: "testo", t_srd5a2: "testo", t_lhr: "lh testo", t_fshr: "fsh", t_cyp19: "testo" }).forEach(([id, ks]) => addLab(id, ks));
+Object.entries({ thcort: "cort", thcone: "cort", ptriol: "ohp17", andros: "testo dheas", testog: "testo" }).forEach(([id, ks]) => addLab(id, ks)); // v7.31
+Object.entries({ allothf: "cort", cortol: "cort", cortolone: "cort", ohf6: "cort" }).forEach(([id, ks]) => addLab(id, ks)); // v7.32
+Object.entries({ uricacid: "ua cr uca", xanth: "ua", hypox: "ua", t_xo: "ua cr", t_ada: "wbc hb plt cr alt ast", t_pnp: "wbc hb plt cr alt ast", t_uric: "ua k phos ca cr ldh" }).forEach(([id, ks]) => addLab(id, ks)); // v7.33
+["t_oat13", "t_abcg2", "t_glut9", "t_npt14"].forEach((id) => addLab(id, "ua cr")); // v7.36
 const ORG_LAB = { cv: "tni ck ldh tc ldl hdl tg k", rn: "bun cr crcl na k cl hco3 osm uosm uprot ua", rs: "po2 pco2 ph", sk: "ca phos alp pth ck uca ua esr", gi: "amy lip", cn: "na", hp: "alt ast alp bilt bild prot alb", en: "glu glur a1c cort", on: "wbc hb plt mcv ua ldh cr alt ast bilt", im: "igg iga igm ige wbc esr prot alb", vt: "hb mcv retic ca phos alp pth uca pt ptt", ai: "wbc cr bun alt ast bilt k mg" };
 ORG_LAB.uc = "uca uox ua ph uosm";
+ORG_LAB.ad = "cort acth ohp17 dheas k na glu"; ORG_LAB.go = "testo lh fsh prl ohp17 dheas";
 Object.entries(UC_LAB).forEach(([id, ks]) => (LAB_OF[id] = ks.split(" ")));
 DRUGS.forEach((d) => { const u = new Set(d[5].flatMap((f) => LAB_OF[f[0]] || [])); if (u.size) LAB_OF[d[0]] = [...u]; }); // a drug inherits its targets' monitoring labs
 Object.entries(ORGAN_SET).forEach(([o, set]) => { const u = new Set(ORG_LAB[o].split(" ")); set.forEach((id) => (LAB_OF[id] || []).forEach((k) => u.add(k))); LAB_OF["o_" + o] = [...u]; });
@@ -3410,14 +3894,14 @@ Object.entries({
   fatty:   ["fa"],
   acyl:    ["facyl", "malonyl"],
   coa:     ["acetylcoa", "succoa", "hmgcoa"],
-  ketone:  ["acac"],
+  ketone:  ["acac", "bhb", "acetone", "bhbp", "acacp"],
   organic: ["pyruvate", "lactate", "bpg13", "pg3", "pg2", "pep", "citrate", "isocitrate", "akg", "succinate", "fumarate", "malate", "oaa", "mevalonate"],
-  nuc:     ["atp", "prpp", "pra", "gar", "fgar", "fgam", "air", "cair", "saicar", "aicar", "faicar", "imp", "sucamp", "xmp", "amp_n", "gmp_n"],
+  nuc:     ["atp", "prpp", "pra", "gar", "fgar", "fgam", "air", "cair", "saicar", "aicar", "faicar", "imp", "sucamp", "xmp", "amp_n", "gmp_n", "inosine", "adenosine", "guanosine", "hypox", "guanine", "xanth", "uricacid", "allantoin", "adenine"],
   nitro:   ["cp", "urea"],
   porph:   ["pbg", "hmb", "uro3", "copro3", "protogen", "protoporph", "heme"],
   pigment: ["biliverdin", "bilirubin", "bilglu"],
   sterol:  ["dhc7", "chol"],
-  steroid: ["preg"],
+  steroid: ["preg", "prog", "ohpreg", "ohprog", "doc", "cortico", "aldo", "s11", "cortisol", "dhea", "andro", "testo", "dht", "e1", "e2", "e3", "cortisone", "dheas", "andros", "testog", "e1s", "thcort", "thcone", "pdiol", "ptriol", "allothf", "cortol", "cortolone", "ohf6", "e3g"],
   bile:    ["cholic"],
 }).forEach(([c, ids]) => ids.forEach((i) => (CLS_OF[i] = c)));
 Object.keys(AA_CLASS).forEach((i) => (CLS_OF[i] = "amino"));
@@ -3425,7 +3909,113 @@ NODES.forEach((n) => { if (n.kind === "molecule") n.cls = CLS_OF[n.id] || "other
 const clsOf = (id) => CLS[CLS_OF[id] || "other"];
 // what to print where the generic kind name used to go: a molecule shows its class, everything else keeps its kind
 const kindLabel = (d) => (d.kind === "molecule" && d.cls ? CLS[d.cls].label : KIND[d.kind].label);
-const tagText = (d) => [...(d.locs || []).map((l) => LOCS[l].label), ...(d.orgs || []).map((o) => ORGANS[o].label), ...(d.cls ? [CLS[d.cls].label] : []), ...(d.aa ? [`${AA_LABEL[d.aa]} amino acid`] : []), toxText(d.tox)].join(" ");
+/* ---- purine disorders and physiology panels (v7.34): shown on the molecule, enzyme and target cards that each one touches (at[0] is the card search opens) ---- */
+const PUD = {
+  gout: { name: "Gout and hyperuricaemia", inh: "Multifactorial (ABCG2, SLC2A9 variants)", also: ["gout", "hyperuricemia", "podagra", "tophi", "tophaceous gout", "monosodium urate", "urate crystals", "pseudogout"],
+    at: ["uricacid", "t_uric", "t_xo", "t_urat1", "t_abcg2", "Xanthine oxidase (XDH)"],
+    mech: "Serum urate above about 6.8 mg/dL (400 µmol/L) exceeds its solubility at body temperature, so monosodium urate crystals form in cool, poorly perfused sites such as the big toe. Phagocytes engulf them and the NLRP3 inflammasome releases IL-1β, which causes the flare. About 90% of patients underexcrete urate (CKD, thiazide and loop diuretics, low-dose aspirin, ciclosporin, lactate and ketones competing for secretion, ABCG2 Q141K); about 10% overproduce it (high cell turnover, fructose and alcohol, PRPS1 overactivity, HGPRT deficiency, glucose 6-phosphatase deficiency).",
+    feat: ["Acute monoarthritis, often the first metatarsophalangeal joint (podagra), peaking within hours and often at night: hot, red, exquisitely tender", "Chronic tophaceous gout after years of untreated hyperuricaemia: tophi on ears, elbows and Achilles tendon; X-ray erosions with overhanging edges", "Uric acid stones and chronic urate nephropathy; associated with metabolic syndrome, hypertension and CKD"],
+    dx: ["Joint aspirate: needle-shaped crystals, negatively birefringent (yellow when parallel to the compensator axis); pseudogout (calcium pyrophosphate) gives rhomboid, weakly positive crystals", "Serum urate can be normal during a flare, so recheck 2 or more weeks later (normal range on the lab link)", "24-hour urinary urate separates overproducers from underexcretors when onset is young or stones are present", "Dual-energy CT or ultrasound (double-contour sign) when aspiration is not possible"],
+    tx: ["Flare: NSAID, low-dose colchicine (diarrhoea; interacts with strong CYP3A4 and P-gp inhibitors) or glucocorticoid; IL-1 blocker if these fail", "Keep urate-lowering therapy going through a flare if already on it; otherwise start 2 to 4 weeks after the flare settles, with colchicine or NSAID cover for the first months", "Long term: allopurinol (start low, titrate to urate below 6 mg/dL; HLA-B*58:01 hypersensitivity) or febuxostat (boxed warning for cardiovascular death); probenecid when xanthine oxidase inhibitors fail; pegloticase for refractory tophaceous gout", "Weight loss, less alcohol (especially beer and spirits), fructose-sweetened drinks and purine-rich meat and seafood; switch thiazides where possible"] },
+  tls: { name: "Tumour lysis syndrome", inh: "Acquired (chemotherapy or spontaneous)", also: ["tumor lysis syndrome", "TLS", "Cairo–Bishop", "rasburicase", "hyperkalemia hyperphosphatemia"],
+    at: ["t_uric", "uricacid", "t_xo"],
+    mech: "Rapid death of many tumour cells releases potassium, phosphate and nucleic acids at once. The purines are broken down to uric acid faster than the kidney can clear them, so urate crystals block the tubules (calcium phosphate does the same, since phosphate binds calcium) and cause acute kidney injury; the potassium and calcium changes cause arrhythmias and seizures.",
+    feat: ["High risk: Burkitt lymphoma, acute lymphoblastic leukaemia, leukaemias with a very high white count, bulky chemosensitive tumours; also after venetoclax, rituximab or steroids, and sometimes before any treatment", "Hyperkalaemia (arrhythmia), hyperphosphataemia, hypocalcaemia (cramps, tetany, seizures), hyperuricaemia, rising creatinine and LDH, usually 12 to 72 hours after treatment starts (Cairo–Bishop criteria: two or more laboratory changes)"],
+    dx: ["Potassium, phosphate, calcium, urate, creatinine and LDH every 4 to 6 hours in high-risk patients", "Send urate on ice after rasburicase, because the enzyme keeps destroying urate in the tube"],
+    tx: ["Prevention: vigorous IV fluids; allopurinol for low or intermediate risk (it only stops new urate)", "Rasburicase (urate oxidase) for high risk or established hyperuricaemia: clears urate within hours; check G6PD first (haemolysis, methaemoglobinaemia)", "Treat hyperkalaemia; avoid calcium unless symptomatic (calcium phosphate precipitates); dialysis for refractory potassium or phosphate, or oliguria"] },
+  lns: { name: "Lesch–Nyhan syndrome and HGPRT deficiency", inh: "X-linked recessive · HPRT1", also: ["Lesch-Nyhan", "Lesch–Nyhan syndrome", "Kelley–Seegmiller", "HGPRT deficiency", "HPRT deficiency", "self-mutilation", "self-biting"],
+    at: ["Hypoxanthine-guanine phosphoribosyltransferase (HGPRT)", "hypox", "guanine", "imp", "prpp", "uricacid"],
+    mech: "Without HGPRT, hypoxanthine and guanine cannot be salvaged: they go to uric acid, and the PRPP that salvage would have used builds up and drives de novo synthesis (PPAT). Purine production and urate both rise. The neurological signs come from loss of dopamine in the basal ganglia.",
+    feat: ["Complete deficiency (boys): orange urate ‘sand’ in the nappy in the first months, hypotonia then dystonia and choreoathetosis, spasticity, intellectual disability and compulsive self-biting of lips and fingers", "Gout, tophi and kidney stones; megaloblastic anaemia in some", "Partial deficiency (Kelley–Seegmiller): hyperuricaemia, gout and stones with little or no neurological disease"],
+    dx: ["Very high serum and urinary urate; high urinary urate-to-creatinine ratio", "HGPRT activity in red cells or fibroblasts; HPRT1 sequencing, with carrier testing for the mother"],
+    tx: ["Allopurinol or febuxostat with fluids lowers urate (go carefully: when salvage is absent, over-blocking xanthine oxidase makes xanthine stones)", "The neurological signs do not respond to urate lowering; baclofen or benzodiazepines, protective devices, sometimes dental extraction for self-injury"] },
+  prps1: { name: "PRPS1 superactivity", inh: "X-linked · PRPS1", also: ["PRPP synthetase superactivity", "PRPS1 overactivity", "PRPP overproduction"],
+    at: ["Ribose-phosphate pyrophosphokinase (PRPS1)", "prpp", "uricacid"],
+    mech: "Gain-of-function mutations make PRPP synthetase insensitive to feedback by ADP and GDP, so PRPP and de novo purine synthesis are excessive and urate rises by overproduction. HGPRT activity is normal, which separates it from Lesch–Nyhan.",
+    feat: ["Gout and uric acid stones, often in the teens or twenties", "Sensorineural deafness, hypotonia and ataxia in the severe forms"],
+    dx: ["High serum and urinary urate with normal HGPRT activity; PRPS1 sequencing"],
+    tx: ["Allopurinol or febuxostat, fluids and urine alkalinisation for stones"] },
+  aprt: { name: "APRT deficiency (2,8-dihydroxyadenine stones)", inh: "Autosomal recessive · APRT", also: ["APRT deficiency", "2,8-dihydroxyadenine", "2,8-DHA", "dihydroxyadenine stones"],
+    at: ["Adenine phosphoribosyltransferase (APRT)", "adenine"],
+    mech: "Adenine cannot be salvaged to AMP, so xanthine oxidase oxidises it to 2,8-dihydroxyadenine (2,8-DHA), which is insoluble at every urine pH and crystallises in the kidney.",
+    feat: ["Recurrent radiolucent kidney stones from childhood or later, crystalluria and, in some, crystal nephropathy with progressive CKD", "Easily mistaken for uric acid stones, because both are radiolucent on plain film"],
+    dx: ["Urine microscopy: round reddish-brown crystals with a central spicule (Maltese-cross pattern under polarised light)", "Stone analysis by infrared spectroscopy; the routine chemical test for uric acid can read falsely positive", "Low or absent APRT activity in red cells; APRT sequencing"],
+    tx: ["Allopurinol or febuxostat to block xanthine oxidase, with high fluid intake and a low-purine diet; early treatment protects the kidney", "Alkalinising the urine does not help"] },
+  ampd1: { name: "AMPD1 deficiency (myoadenylate deaminase deficiency)", inh: "Autosomal recessive · AMPD1", also: ["AMPD1 deficiency", "myoadenylate deaminase deficiency", "AMP deaminase deficiency", "MAD deficiency", "exercise intolerance myopathy"],
+    at: ["AMP deaminase (AMPD1)", "amp_n", "imp"],
+    mech: "Muscle AMP deaminase drives the purine nucleotide cycle (AMP → IMP + NH₃, then IMP → adenylosuccinate → AMP + fumarate). Without it AMP builds up in working muscle, and the exercise rise of ammonia and the extra fumarate for the TCA cycle are lost.",
+    feat: ["About 1 to 2% of people of European ancestry are homozygous for the common nonsense variant and most have no symptoms", "Some have exercise-induced fatigue, myalgia and cramps; rarely rhabdomyolysis"],
+    dx: ["Forearm ischaemic exercise test: lactate rises but ammonia does not (in McArdle disease it is the reverse: ammonia rises, lactate does not)", "CK normal or mildly raised; AMPD1 genotype or muscle biopsy histochemistry"],
+    tx: ["Reassurance and graded exercise; there is no proven specific therapy"] },
+  adascid: { name: "ADA deficiency (ADA-SCID)", inh: "Autosomal recessive · ADA", also: ["ADA-SCID", "ADA deficiency", "adenosine deaminase deficiency", "SCID", "severe combined immunodeficiency", "bubble boy", "elapegademase", "PEG-ADA"],
+    at: ["Adenosine deaminase (ADA)", "t_ada", "adenosine", "inosine"],
+    mech: "Adenosine and deoxyadenosine build up. Deoxyadenosine is phosphorylated to dATP, which inhibits ribonucleotide reductase and starves DNA synthesis, and adenosine inhibits S-adenosylhomocysteine hydrolase (methylation). Developing T, B and NK cells die (T−B−NK−).",
+    feat: ["Severe, recurrent and opportunistic infections in the first months (Pneumocystis, candida, viruses), chronic diarrhoea and failure to thrive", "Absent thymic shadow on chest X-ray; costochondral flaring and other skeletal changes; neurological and hearing problems in some"],
+    dx: ["Profound lymphopenia, low T, B and NK counts and poor antibody responses; picked up by newborn TREC screening", "Absent ADA activity in red cells or leucocytes, high dATP in red cells; ADA sequencing"],
+    tx: ["Haematopoietic stem-cell transplant (a matched sibling donor gives the best results), or autologous gene therapy", "Enzyme replacement with pegylated ADA (elapegademase) as a bridge; no live vaccines, Pneumocystis prophylaxis, irradiated blood products"] },
+  pnpd: { name: "PNP deficiency", inh: "Autosomal recessive · PNP", also: ["PNP deficiency", "purine nucleoside phosphorylase deficiency", "T-cell immunodeficiency", "hypouricemia"],
+    at: ["Purine nucleoside phosphorylase (PNP)", "t_pnp", "inosine", "guanosine", "uricacid"],
+    mech: "Inosine, guanosine and their deoxy forms cannot be cleaved. T cells phosphorylate the deoxyguanosine to dGTP, which blocks ribonucleotide reductase and kills them. Little hypoxanthine or guanine is made, so uric acid is very low.",
+    feat: ["Recurrent infections from infancy as T cells fall progressively; B cells are usually present but antibody responses are poor", "Neurological disease (spasticity, developmental delay, ataxia) in about two thirds", "Autoimmune haemolytic anaemia, thrombocytopenia and neutropenia; lymphoma risk"],
+    dx: ["Very low serum uric acid (under about 1 mg/dL) with lymphopenia, especially low CD3 cells", "Low PNP activity in red cells; high urinary inosine, guanosine and deoxy nucleosides; PNP sequencing"],
+    tx: ["Haematopoietic stem-cell transplant is the only cure; irradiated blood products, no live vaccines, Pneumocystis prophylaxis"] },
+  xan: { name: "Xanthinuria (xanthine oxidase deficiency)", inh: "Autosomal recessive · XDH (type I) or MOCOS (type II)", also: ["xanthinuria", "xanthine oxidase deficiency", "xanthine stones", "molybdenum cofactor deficiency", "hypouricaemia"],
+    at: ["Xanthine oxidase (XDH)", "xanth", "hypox", "t_xo", "uricacid"],
+    mech: "No uric acid is made, so hypoxanthine and xanthine are excreted instead. Type I lacks xanthine oxidase alone; type II also lacks aldehyde oxidase because the molybdenum cofactor sulfurase (MOCOS) is defective. Loss of the molybdenum cofactor itself also removes sulfite oxidase and causes severe neonatal encephalopathy. Allopurinol and febuxostat give a milder drug-induced version of the same pattern.",
+    feat: ["Often silent and found by chance as a very low serum urate", "Some form radiolucent xanthine stones, with crystalluria, or xanthine deposits in muscle"],
+    dx: ["Serum urate below about 1 mg/dL with low urinary urate and high urinary xanthine and hypoxanthine", "Confirmed by XDH or MOCOS sequencing or enzyme activity"],
+    tx: ["High fluid intake and a low-purine diet; urate-lowering drugs are not used"] },
+  rhu: { name: "Renal hypouricaemia", inh: "Autosomal recessive · SLC22A12 (URAT1) or SLC2A9 (GLUT9)", also: ["renal hypouricemia", "URAT1 deficiency", "GLUT9 deficiency", "exercise-induced acute kidney injury", "hypouricaemia"],
+    at: ["t_urat1", "t_glut9", "uricacid"],
+    mech: "Loss of the transporters that reclaim filtered urate (URAT1 on the apical side, GLUT9 on the basolateral side of the proximal tubule) means urate is lost in the urine. URAT1 inhibitors such as probenecid reproduce part of this on purpose.",
+    feat: ["Often silent; serum urate below about 2 mg/dL with high fractional excretion", "Exercise-induced acute kidney injury and urate stones in some; most often reported in Japan and Korea"],
+    dx: ["Low serum urate with high urinary urate excretion; first exclude other causes (Fanconi syndrome, SIADH, xanthine oxidase deficiency, drugs); genotype to confirm"],
+    tx: ["Usually none; keep well hydrated and avoid strenuous exercise in patients who have had kidney injury"] },
+  diet: { name: "Dietary purines", inh: "Diet", also: ["dietary purines", "purine-rich foods", "low-purine diet", "fructose and urate", "alcohol and urate"],
+    at: ["uricacid", "hypox", "xanth"], lb: ["Sources", "", "In practice"],
+    mech: "About two thirds of daily urate comes from the body's own turnover and about one third from food. Purines in food are mostly broken down in the gut and liver to uric acid rather than reused. Fructose raises urate because fructokinase uses ATP quickly and the AMP left behind is deaminated and broken down; alcohol adds lactate, which competes for urate secretion.",
+    feat: ["High: organ meats, anchovies, sardines, mussels, game, yeast extract, beer", "Moderate: beef, pork, poultry, most fish and shellfish", "Low: milk, yoghurt, eggs, cheese, most vegetables, fruit and grains; legumes and spinach contain purines but barely raise gout risk"],
+    tx: ["Sugary drinks and alcohol (especially beer and spirits) raise urate more than vegetable purines do; low-fat dairy, coffee and vitamin C lower it a little", "Diet alone lowers serum urate by only about 1 mg/dL, so established gout still needs a urate-lowering drug"] },
+  ex: { name: "ATP breakdown in exercise", inh: "Physiology", also: ["adenylate kinase", "myokinase", "purine nucleotide cycle", "exercise hyperammonaemia", "post-exercise urate"],
+    at: ["amp_n", "imp", "hypox", "AMP deaminase (AMPD1)"], lb: ["Sequence", "", "Recovery"],
+    mech: "In hard exercise ATP is used faster than it is made. Adenylate kinase turns 2 ADP into ATP + AMP, which keeps the ATP/ADP ratio up, and AMP deaminase then converts the AMP to IMP and ammonia so the AMP level (and the AMPK signal) does not run away.",
+    feat: ["ATP → ADP; 2 ADP → ATP + AMP (adenylate kinase); AMP → IMP + NH₃ (AMP deaminase)", "IMP can leave the muscle as inosine → hypoxanthine → xanthine → urate, so plasma ammonia, hypoxanthine and urate rise after sprints and prolonged hard exercise", "Part of the AMP is dephosphorylated to adenosine, a vasodilator that raises muscle blood flow"],
+    tx: ["At rest, IMP is re-aminated through adenylosuccinate to AMP (the purine nucleotide cycle), restoring the adenine pool within minutes to hours", "Hypoxanthine can be salvaged by HGPRT instead of lost"] },
+  adsl: { name: "ADSL deficiency (adenylosuccinate lyase)", inh: "Autosomal recessive · ADSL", also: ["ADSL deficiency", "adenylosuccinase deficiency", "adenylosuccinate lyase deficiency", "succinylpurinemic autism", "SAICAr", "succinyladenosine", "AICA-ribosiduria", "ATIC deficiency"],
+    at: ["Adenylosuccinate lyase (ADSL)", "sucamp", "saicar", "aicar"],
+    mech: "One enzyme removes fumarate in two places: from SAICAR on the way to IMP and from adenylosuccinate on the way to AMP. When it is missing, their dephosphorylated forms (SAICA riboside and succinyladenosine) pile up in body fluids and AMP and downstream nucleotides are short. The brain is most affected.",
+    feat: ["Severe form: neonatal seizures, marked developmental delay, microcephaly, hypotonia", "Milder forms: psychomotor delay, autistic features, epilepsy; growth failure and muscle wasting in some", "The related ATIC defect (AICA-ribosiduria) is a separate, rarer disorder with severe neurological disease"],
+    dx: ["Succinyladenosine and SAICA riboside in urine, CSF and plasma; the Bratton–Marshall urine screen is positive", "ADSL sequencing; the ratio of the two metabolites tracks severity"],
+    tx: ["No proven disease-modifying treatment; antiseizure drugs and supportive care (uridine and S-adenosylmethionine have been tried without clear benefit)"] },
+  nt5e: { name: "CD73 deficiency (ACDC)", inh: "Autosomal recessive · NT5E", also: ["ACDC", "CD73 deficiency", "NT5E deficiency", "arterial calcification due to deficiency of CD73", "ecto-5′-nucleotidase"],
+    at: ["5′-Nucleotidase (NT5C2, NT5E)", "adenosine", "amp_n"],
+    mech: "Ecto-5′-nucleotidase (CD73) turns extracellular AMP into adenosine and, with it, extracellular pyrophosphate falls out of balance: adenosine signalling is lost and tissue-nonspecific alkaline phosphatase is unrestrained, so calcium phosphate deposits in artery walls and joint capsules.",
+    feat: ["Adult-onset calcification of the leg arteries and the joint capsules of hands and feet, with claudication and joint pain", "Normal calcium, phosphate and vitamin D; the coronary arteries are usually spared"],
+    dx: ["Imaging shows medial arterial and periarticular calcification; NT5E sequencing; low CD73 activity in fibroblasts"],
+    tx: ["No established treatment; bisphosphonates and other anti-calcification drugs are being studied"] },
+  nt5c2: { name: "NT5C2 mutations (relapsed ALL, spastic paraplegia)", inh: "Acquired (leukaemia) or autosomal recessive (HSP)", also: ["NT5C2", "cytosolic 5′-nucleotidase II", "thiopurine resistance", "mercaptopurine resistance", "relapsed acute lymphoblastic leukemia", "hereditary spastic paraplegia SPG45"],
+    at: ["5′-Nucleotidase (NT5C2, NT5E)", "inosine", "guanosine", "t_ppat"],
+    mech: "Gain-of-function NT5C2 mutations arise in leukaemia cells under treatment: the enzyme dephosphorylates the thiopurine nucleotides (6-thio-IMP and 6-thio-GMP) before they can act, so cells resist mercaptopurine and thioguanine. Loss of function in the germline is one cause of complicated hereditary spastic paraplegia.",
+    feat: ["Relapsed B- and T-cell acute lymphoblastic leukaemia that no longer responds to thiopurine maintenance", "Germline loss of function: slowly progressive leg spasticity, sometimes with intellectual disability"],
+    dx: ["NT5C2 mutation testing on relapse samples; metabolite levels of thioguanine nucleotides stay low despite adherence"],
+    tx: ["Change the backbone of treatment (the relapsed leukaemia is treated with non-thiopurine regimens, transplant, immunotherapy); no specific inhibitor is approved"] },
+  rut: { name: "Renal urate handling", inh: "Physiology", also: ["urate transporters", "ABCG2", "GLUT9", "SLC2A9", "OAT1", "OAT3", "OAT4", "NPT1", "SLC17A1", "URAT1", "uricosuric", "fractional excretion of urate", "benzbromarone", "dotinurad"],
+    at: ["t_urat1", "uricacid", "t_abcg2", "t_glut9", "t_oat13", "t_npt14", "t_sglt2"], lb: ["Transporters", "", "What changes it"],
+    mech: "Urate is freely filtered and about 90% is reclaimed in the proximal tubule, so net excretion is only about 10% of the filtered load. The gut disposes of roughly a third of the daily urate, again through ABCG2.",
+    feat: ["Reabsorption: URAT1 (SLC22A12, apical, swaps urate for lactate and other anions), OAT4 and NPT4 (apical), GLUT9 (SLC2A9, basolateral exit to blood)", "Secretion: OAT1 and OAT3 (basolateral entry from blood), ABCG2 and NPT1 (SLC17A1) at the apical side into urine", "Variants: ABCG2 Q141K and loss-of-function SLC2A9 or SLC22A12 variants shift serum urate (gout versus renal hypouricaemia)"],
+    tx: ["Raise serum urate: thiazide and loop diuretics (compete at OATs and cause volume contraction), low-dose aspirin, ciclosporin, lactate, ketones and dehydration (more reabsorption through URAT1)", "Lower it: URAT1 inhibitors (probenecid, benzbromarone, lesinurad, dotinurad), losartan (a weak URAT1 blocker), fenofibrate, and SGLT2 inhibitors (glucosuria drives urate out through GLUT9)", "Probenecid also blocks OAT1 and OAT3, which is why it raises penicillin levels"] },
+  pnc: { name: "Purine nucleotide cycle and the TCA cycle", inh: "Physiology", also: ["purine nucleotide cycle", "adenylosuccinate cycle", "fumarate anaplerosis", "muscle ammonia"],
+    at: ["sucamp", "amp_n", "imp", "AMP deaminase (AMPD1)", "Adenylosuccinate lyase (ADSL)"], lb: ["Cycle steps", "", "Why it matters"],
+    mech: "Three enzymes make a loop that runs in working muscle, brain and heart: AMP is deaminated to IMP, IMP and aspartate give adenylosuccinate (GTP is used), and adenylosuccinate lyase splits it into AMP and fumarate.",
+    feat: ["AMP → IMP + NH₃ (AMP deaminase)", "IMP + aspartate + GTP → adenylosuccinate (adenylosuccinate synthetase)", "Adenylosuccinate → AMP + fumarate (ADSL)"],
+    tx: ["The net result is aspartate → fumarate + NH₃: fumarate refills the TCA cycle (anaplerosis) and the ammonia leaves with glutamine and, in liver, urea", "Keeps AMP low and the energy-charge high during exercise (see ATP breakdown in exercise)", "The same lyase acts in de novo purine synthesis, so one gene defect (ADSL) shows up in both places"] },
+};
+const PUD_BY = {};
+Object.entries(PUD).forEach(([k, z]) => z.at.forEach((h) => (PUD_BY[h] = [...(PUD_BY[h] || []), k])));
+const pudText = (id) => (PUD_BY[id] || []).map((k) => [PUD[k].name, ...PUD[k].also].join(" ")).join(" ");
+const pudGo = (open, h) => (NODE_BY[h]?.rx === "target" ? open("target", h) : NODE_BY[h]?.mol ? open("mol", h) : open("enz", h));
+
+const tagText = (d) => [...(d.locs || []).map((l) => LOCS[l].label), ...(d.orgs || []).map((o) => ORGANS[o].label), ...(d.cls ? [CLS[d.cls].label] : []), ...(d.aa ? [`${AA_LABEL[d.aa]} amino acid`] : []), toxText(d.tox), pudText(d.id)].join(" ");
 
 /* ------------------------------ overlap pass ------------------------------ */
 // Runs once, after every placement above, so no pathway needs hand-typed nudges to stay clear of its neighbours.
@@ -3473,6 +4063,70 @@ const OVERLAP_MOVES = [];
   for (let i = 0; i < all.length; i++) for (let j = i + 1; j < all.length; j++) {
     if (boxHit(all[i][1], all[j][1])) console.warn(`overlap pass: "${all[i][0]}" and "${all[j][0]}" still overlap`);
   }
+})();
+
+/* ------------------------- no-overlap guarantee (v7.40) ------------------------- */
+// resolveOverlaps above only moves chips and titles, and gives up when it finds no free spot. This pass runs after it and
+// does not give up: while any two boxes overlap, the less fixed of the pair (chip/title, then target/drug/hub card, then
+// molecule) moves to the nearest free spot, searched outward in a widening spiral. A move only ever lands on a free spot,
+// so the number of overlaps can only go down and the loop always ends. Chips prefer a spot clear of their molecule's arrows.
+const GAP_NODE = 28;  // px kept between any two cards
+const rankOf = (n) => (isSatellite(n) ? 0 : n.rx ? 1 : 2);
+const NO_OVERLAP_MOVES = [];
+(function enforceNoOverlap() {
+  const byId = new Map(NODES.map((n) => [n.id, n]));
+  const sz = new Map(NODES.map((n) => [n.id, boxSize(n)]));
+  const mk = (id, x, y) => boxAt(x, y, sz.get(id)[0], sz.get(id)[1], GAP_NODE / 2);
+  const boxes = new Map(NODES.map((n) => [n.id, mk(n.id, layout[n.id][0], layout[n.id][1])]));
+  const anchors = NODES.filter((n) => !isSatellite(n) && n.mol);
+  const arrows = EDGES.filter((e) => !e.fx && !e.org && !e.cross && layout[e.source] && layout[e.target]);
+  const clashes = (id) => { const b = boxes.get(id); return [...boxes].some(([o, ob]) => o !== id && boxHit(ob, b)); };
+  const pairs = () => {
+    const out = [], all = [...boxes];
+    all.sort((a, b) => a[1].x0 - b[1].x0);
+    for (let i = 0; i < all.length; i++) for (let j = i + 1; j < all.length && all[j][1].x0 < all[i][1].x1; j++) {
+      if (boxHit(all[i][1], all[j][1])) out.push([all[i][0], all[j][0]]);
+    }
+    return out;
+  };
+  const move = (id) => {
+    const n = byId.get(id), [x0, y0] = layout[id], [w, h] = sz.get(id);
+    let segs = [];
+    if (isSatellite(n) && anchors.length) {
+      const home = anchors.reduce((a, b) => (Math.hypot(layout[b.id][0] - x0, layout[b.id][1] - y0) < Math.hypot(layout[a.id][0] - x0, layout[a.id][1] - y0) ? b : a));
+      segs = arrows.filter((e) => (e.source === home.id || e.target === home.id) && e.source !== id && e.target !== id).map((e) => [layout[e.source], layout[e.target]]);
+    }
+    const free = (x, y, keepEdges) => {
+      const b = mk(id, x, y);
+      return ![...boxes].some(([o, ob]) => o !== id && boxHit(ob, b)) && !(keepEdges && segs.some(([p, q]) => segHitsBox(p, q, boxAt(x, y, w, h, SEP_EDGE))));
+    };
+    for (const keepEdges of segs.length ? [true, false] : [false]) {
+      for (let r = 10; r <= 8000; r += 10) {
+        const steps = Math.max(16, Math.ceil(r / 12));
+        for (let k = 0; k < steps; k++) {
+          const a = (k / steps) * 2 * Math.PI + Math.PI / 2;
+          const x = Math.round(x0 + r * Math.cos(a)), y = Math.round(y0 + r * Math.sin(a));
+          if (!free(x, y, keepEdges)) continue;
+          layout[id] = [x, y]; boxes.set(id, mk(id, x, y)); NO_OVERLAP_MOVES.push([id, x - x0, y - y0]);
+          return true;
+        }
+      }
+    }
+    return false;
+  };
+  for (let pass = 0; pass < 60; pass++) {
+    const ps = pairs();
+    if (!ps.length) break;
+    const done = new Set();
+    ps.forEach(([a, b]) => {
+      if (done.has(a) || done.has(b) || !clashes(a)) return;
+      const na = byId.get(a), nb = byId.get(b), ra = rankOf(na), rb = rankOf(nb);
+      const mover = ra < rb ? a : rb < ra ? b : NODES.indexOf(na) > NODES.indexOf(nb) ? a : b;
+      if (move(mover)) done.add(mover); else console.warn(`overlap pass: could not move "${mover}"`);
+    });
+  }
+  const left = pairs();
+  if (left.length) console.warn("overlap pass: still overlapping", left);
 })();
 
 const initialNodes = NODES.map((n) => ({
@@ -3932,6 +4586,9 @@ function Bohr({ el, size = 210 }) {
   );
 }
 
+// v7.38: "Open OWORLD" button
+const OWORLD_URL = "https://app.oworld.pro";
+const OWORLD_ICON = "data:image/png;base64,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"; // OWORLD app icon, 96 px
 function Footnote() {
   return (
     <footer className="omino-foot">
@@ -4159,6 +4816,29 @@ const EXPLAIN = {
   oaa: "Regenerated at the end of each TCA turn; it is also the precursor of aspartate and, in gluconeogenesis, of glucose.",
   urea: "The main nitrogen waste in mammals. It is small, neutral and very soluble, so the kidney clears it easily.",
   glycogen: "Branched storage polymer of glucose, mostly in liver (about 10 % of its weight) and muscle (1–2 %). The ring drawn is one α-glucose unit, with the chain running on at C1 and C4; α-1,6 branches every 8–12 units give many free ends, so phosphorylase can release glucose from many ends at once. Glycogenolysis releases it as G1P (about 90 %) and free glucose at the branches (about 10 %).",
+  acac: "Ketone body made in liver mitochondria from acetyl-CoA when oxaloacetate is scarce and fatty acid oxidation is high (fasting, prolonged exercise, uncontrolled type 1 diabetes). It is a strong acid, so excess lowers blood pH. It leaves the liver in blood, is reduced to β-hydroxybutyrate or decarboxylated to acetone, and is the form detected by urine nitroprusside strips.",
+  thf: "Active folate. Dietary folate (and folic acid) is reduced to DHF and THF by DHFR; THF carries one-carbon units on N⁵ and/or N¹⁰ at three oxidation levels (methyl, methylene/methenyl, formyl) for purine, thymidylate and methionine synthesis.",
+  dhf: "Made when thymidylate synthase turns dUMP into dTMP (the methylene group is oxidised to a methyl and THF to DHF). Methotrexate, trimethoprim (bacterial DHFR) and pyrimethamine block DHFR; folinic acid (5-formyl-THF) bypasses the block to rescue normal cells.",
+  mthf2: "Hub of the cycle: made by SHMT from serine, by the glycine cleavage system, or from formate; used by thymidylate synthase (dTMP), reduced by MTHFR, or oxidised to formyl-THF.",
+  mnthf: "Intermediate between methylene-THF and formyl-THF in the trifunctional MTHFD1 protein (dehydrogenase, cyclohydrolase, synthetase).",
+  mthf: "Main circulating folate. Its methyl group can only be used by methionine synthase, so when B₁₂ is lacking it accumulates and other folates fall (\"methyl-folate trap\"), giving megaloblastic anaemia that folate can mask while neurological damage progresses.",
+  fthf: "Formate-level carrier: gives C8 (GART) and C2 (ATIC) of the purine ring and the formyl of N-formylmethionine tRNA in mitochondria.",
+  metc: "Methionine in the cycle: MAT adds adenosine (from ATP) to make SAM. It is also made again by methionine synthase from homocysteine and N⁵-methyl-THF (or by BHMT from betaine in liver and kidney).",
+  sam: "S-Adenosylmethionine: donor for methylation of DNA (DNMT), histones, RNA, phospholipids (PEMT, phosphatidylcholine), catecholamines (COMT, PNMT), creatine synthesis and many drugs. Allosteric inhibitor of MTHFR and activator of cystathionine β-synthase, so it steers homocysteine to cysteine when methionine is plentiful.",
+  sah: "Made whenever SAM donates a methyl group; inhibits methyltransferases, so the SAM/SAH ratio sets the cell's methylation capacity. SAHH cleaves it reversibly into homocysteine and adenosine, but the equilibrium favours SAH, so homocysteine removal is needed.",
+  hcy: "Branch point. Remethylation: methionine synthase (N⁵-methyl-THF, B₁₂) or BHMT (betaine). Transsulfuration: CBS (B₆) then cystathionase to cysteine. Raised in homocystinuria (CBS deficiency: lens dislocation, thrombosis, marfanoid habitus, learning difficulty), B₁₂, B₆ or folate deficiency and MTHFR deficiency; a vascular risk marker.",
+  cysta: "Intermediate of transsulfuration, the only route to cysteine from methionine. Raised in cystathioninuria (cystathionase deficiency, usually benign). CBS needs pyridoxal phosphate (vitamin B₆) and is activated by SAM.",
+  bet: "Trimethylglycine, from choline. BHMT in liver and kidney uses it to remethylate homocysteine with no folate or B₁₂ needed, so betaine lowers homocysteine in homocystinuria. Made also in the kidney as an osmolyte.",
+  glyf: "Broken down in mitochondria by the glycine cleavage system (needs PLP, lipoate, NAD⁺ and THF) to CO₂, NH₄⁺ and methylene-THF. Deficiency causes nonketotic hyperglycinaemia: neonatal seizures, hypotonia and hiccups, with raised CSF glycine.",
+  formate: "One-carbon unit at the formate level, made in mitochondria from serine and exported; MTHFD1 (formyl-THF synthetase) joins it to THF with ATP. Also made by oxidation of methanol and, in excess, a toxic metabolite of methanol poisoning (blocking cytochrome oxidase and causing blindness; fomepizole is the antidote).",
+  bhbp: "Brain, skeletal muscle and heart take up β-hydroxybutyrate on MCT1/2; red cells have no mitochondria and the liver lacks SCOT, so neither can use it. In prolonged fasting the brain gets up to about two thirds of its energy from ketones, which spares muscle protein by cutting the need for gluconeogenesis.",
+  acacp: "Acetoacetate in the peripheral cell is activated by SCOT, not by an ATP-using synthetase, so the step costs no ATP directly: the CoA comes from succinyl-CoA, bypassing succinyl-CoA synthetase (and its GTP).",
+  aacoap: "Product of SCOT. Because SCOT works in the direction of acetoacetyl-CoA only when ketone levels are high, ketone use rises with blood concentration.",
+  acetylcoap: "Two acetyl-CoA from each acetoacetate; they join oxaloacetate in citrate synthase. Drawn as a second node beside the TCA ring so no line has to cross the cycle.",
+  aacoa: "Two acetyl-CoA joined by thiolase (the same reaction run backwards in β-oxidation). In ketogenesis it takes a third acetyl-CoA to give HMG-CoA.",
+  hmgm: "Made by HMGCS2 in liver mitochondria. HMG-CoA lyase cleaves it to acetoacetate and acetyl-CoA, so net three acetyl-CoA become one acetoacetate. The cytosolic pool, made by HMGCS1, is used for cholesterol instead.",
+  bhb: "Made by BDH1 reducing acetoacetate with NADH, so a high NADH/NAD⁺ ratio (fasting, alcohol) shifts ketones towards β-hydroxybutyrate. It has no keto group, so nitroprusside urine tests miss it and underestimate ketosis in diabetic ketoacidosis; blood β-hydroxybutyrate is the better test.",
+  acetone: "Made by slow, spontaneous decarboxylation of acetoacetate (not enzyme-catalysed). Volatile, so it gives the fruity smell on the breath in ketoacidosis; it is not metabolised for energy.",
   carn: "Carries long-chain acyl groups across the mitochondrial membrane. Primary carnitine deficiency (OCTN2, SLC22A5 defect): carnitine is lost in urine, so cardiomyopathy, muscle weakness and fasting hypoketotic hypoglycaemia develop; oral carnitine treats it.",
   vlcfa: "Very-long-chain fatty acids accumulate in X-linked adrenoleukodystrophy (ABCD1 transporter defect): cerebral demyelination in boys, adrenal insufficiency, raised C26:0. They are shortened in peroxisomes to medium-chain acyl-CoAs and then finished in mitochondria.",
   cis3: "Natural unsaturated fatty acids (oleate, linoleate) have cis double bonds at odd positions. After enough turns the bond sits at C3–C4, where the hydratase cannot act; enoyl-CoA isomerase moves it to trans-C2–C3, skipping the dehydrogenase step, so one FADH₂ is lost for each odd-numbered double bond.",
@@ -4203,6 +4883,29 @@ const ENZN = {
   "ABCD1 import, then very-long-chain acyl-CoA synthetase": "ABCD1 imports very-long-chain fatty acids into peroxisomes, where they are activated to CoA esters. ABCD1 mutations cause X-linked adrenoleukodystrophy.",
   "Phytanoyl-CoA hydroxylase (α-oxidation)": "PHYH (Fe²⁺, α-ketoglutarate, ascorbate) hydroxylates C2 of phytanoyl-CoA; further steps remove one carbon as formyl-CoA and give pristanoyl-CoA. Deficiency is Refsum disease: retinitis pigmentosa, anosmia, ataxia, neuropathy, ichthyosis; phytanic acid builds up, so dairy and ruminant fat are restricted.",
   "Branched-chain acyl-CoA oxidase (ACOX2)": "Acts on pristanoyl-CoA (and bile-acid precursors) and joins the peroxisomal spiral at the D-bifunctional protein.",
+  "Acetyl-CoA acetyltransferase (thiolase, ACAT1)": "Mitochondrial thiolase that joins two acetyl-CoA into acetoacetyl-CoA, the reverse of the thiolase step of β-oxidation; a near-equilibrium step, pulled forward by the next reaction. ACAT1 deficiency (beta-ketothiolase deficiency) blocks ketone body use and isoleucine breakdown: episodic ketoacidosis in children.",
+  "HMG-CoA synthase 2 (HMGCS2)": "Rate-limiting enzyme of ketogenesis, in liver mitochondria (regulation: insulin lowers it and glucagon raises it; low insulin also frees fatty acids from adipose and removes malonyl-CoA, so CPT1 is open; a low oxaloacetate pool, drained by gluconeogenesis, sends acetyl-CoA to ketones): acetoacetyl-CoA + acetyl-CoA + H₂O → HMG-CoA + CoA. Switched on by glucagon, PPARα and fasting (low insulin); the cytosolic HMGCS1 feeds cholesterol synthesis instead. Deficiency causes fasting hypoketotic hypoglycaemia.",
+  "HMG-CoA lyase (HMGCL)": "Cleaves HMG-CoA to acetoacetate and acetyl-CoA; also the last step of leucine breakdown. Deficiency causes hypoketotic hypoglycaemia, vomiting and metabolic acidosis with raised 3-hydroxy-3-methylglutarate in urine.",
+  "β-Hydroxybutyrate dehydrogenase (BDH1)": "Mitochondrial NAD⁺-linked enzyme that interconverts acetoacetate and β-hydroxybutyrate; the equilibrium follows the NADH/NAD⁺ ratio. In liver it makes β-hydroxybutyrate (NADH → NAD⁺); in peripheral tissues it runs the other way.",
+  "Methylenetetrahydrofolate reductase (MTHFR)": "Irreversible NADPH-linked step (with FAD) making N⁵-methyl-THF; inhibited by SAM, so excess methionine stops methyl-folate being made. Common C677T variant (thermolabile enzyme) raises homocysteine with low folate; severe deficiency causes homocystinuria with low methionine and neurological disease.",
+  "Methionine synthase (MTR)": "Needs methylcobalamin (vitamin B₁₂): transfers the methyl of N⁵-methyl-THF to homocysteine, giving methionine and regenerating THF; the only reaction in humans that needs both folate and B₁₂. Inactivated by nitrous oxide (which oxidises cobalamin). Deficiency causes megaloblastic anaemia, raised homocysteine and (with B₁₂) raised methylmalonic acid.",
+  "Methylene-THF dehydrogenase (MTHFD1)": "Cytosolic trifunctional MTHFD1 oxidises methylene-THF to methenyl-THF with NADP⁺; the same protein also has the cyclohydrolase and the formyl-THF synthetase activities.",
+  "Methenyl-THF cyclohydrolase (MTHFD1)": "Hydrolyses N⁵,N¹⁰-methenyl-THF to N¹⁰-formyl-THF; formyl-THF can also be made from formate and ATP by the synthetase activity of MTHFD1.",
+  "Purine synthesis (GART, ATIC)": "N¹⁰-formyl-THF gives two carbons of the purine ring: GART (glycinamide ribonucleotide transformylase) at C8 and ATIC (AICAR transformylase) at C2. Methotrexate and pemetrexed starve purine and thymidylate synthesis by depleting these folates.",
+  "Dihydrofolate reductase (DHFR)": "NADPH-dependent; reduces folate to DHF and DHF to THF. Methotrexate and pemetrexed (human, in cancer and rheumatoid arthritis), trimethoprim (bacterial) and pyrimethamine (Plasmodium, Toxoplasma) inhibit it.",
+  "Methionine adenosyltransferase (MAT)": "Joins methionine with the adenosyl group of ATP to make SAM; uses all three phosphates (releases PPᵢ and Pᵢ). MAT1A is the liver form; deficiency gives isolated hypermethioninaemia.",
+  "Methyltransferases (COMT, DNMT, PNMT)": "Large family that moves the methyl group of SAM to DNA, RNA, proteins, lipids or small molecules, giving SAH; includes COMT (catecholamines), DNMT (DNA), PNMT (adrenaline), GNMT (glycine → sarcosine, a methyl sink) and PEMT.",
+  "Adenosylhomocysteinase (SAHH)": "Hydrolyses SAH to homocysteine and adenosine; reversible, so it relies on removal of both products (homocysteine by remethylation or CBS, adenosine by adenosine deaminase and kinase).",
+  "Cystathionine β-synthase (CBS)": "First step of transsulfuration: homocysteine + serine → cystathionine. PLP (vitamin B₆)-dependent, haem-containing and activated by SAM, so excess methionine sends homocysteine to cysteine. Deficiency is classical homocystinuria: ectopia lentis, marfanoid habitus, thromboembolism, intellectual disability, raised methionine; some patients respond to B₆, and betaine and methionine restriction help.",
+  "Cystathionase (CTH)": "Cystathionine γ-lyase (PLP): cleaves cystathionine into cysteine, α-ketobutyrate (which becomes propionyl-CoA) and NH₃. Deficiency gives cystathioninuria, usually without disease. Cysteine is essential in neonates and in liver failure because this step is slow.",
+  "Betaine–homocysteine methyltransferase (BHMT)": "Zinc enzyme of liver and kidney: transfers a methyl group from betaine to homocysteine, giving methionine and dimethylglycine. Does not need folate or B₁₂, so it is a back-up when the methionine synthase route fails; betaine therapy exploits it.",
+  "Glycine cleavage system (GLDC, AMT, GCSH, DLD)": "Mitochondrial four-protein complex: glycine + THF + NAD⁺ → CO₂ + NH₄⁺ + methylene-THF + NADH. Needs PLP and lipoate. Deficiency (GLDC or AMT) causes nonketotic hyperglycinaemia.",
+  "Formyl-THF synthetase (MTHFD1)": "The third activity of cytosolic MTHFD1: formate + THF + ATP → N¹⁰-formyl-THF. Formate comes mainly from mitochondrial serine catabolism, which supplies most one-carbon units in proliferating cells.",
+  "Transport in blood (MCT1/2)": "Ketone bodies are water-soluble, so they travel free in blood, unlike fatty acids, and cross the blood-brain barrier on monocarboxylate transporters; their uptake rises with blood concentration.",
+  "β-Hydroxybutyrate dehydrogenase (BDH1), peripheral": "The same BDH1 as in the liver, now running in the direction β-hydroxybutyrate + NAD⁺ → acetoacetate + NADH, driven by the low NADH/NAD⁺ ratio in oxidising tissues.",
+  "Succinyl-CoA:3-ketoacid CoA transferase (SCOT, OXCT1)": "Key enzyme of ketolysis, absent from liver: it moves CoA from succinyl-CoA to acetoacetate, giving acetoacetyl-CoA and succinate. Because it bypasses succinyl-CoA synthetase it also skips that step's GTP. Deficiency causes severe, recurrent ketoacidosis in childhood, often with fasting or illness.",
+  "Thiolase (ACAT1), thiolysis": "Splits acetoacetyl-CoA with CoA into two acetyl-CoA (the forward direction here, the opposite of the liver reaction).",
+  "Spontaneous decarboxylation": "Acetoacetate, a β-keto acid, loses CO₂ without an enzyme to give acetone. Faster at low pH and high acetoacetate levels.",
   "Enoyl-CoA isomerase": "Moves a cis- or trans-Δ3 double bond to trans-Δ2, so the hydratase can act. Acts on odd-numbered double bonds directly and on the product of the dienoyl reductase for even-numbered ones.",
   "2,4-Dienoyl-CoA reductase": "NADPH-dependent (DECR1, mitochondrial). Reduces the 2,4-dienoyl-CoA from even-numbered double bonds to trans-Δ3-enoyl-CoA. A rare deficiency causes hypolipidaemia-like acylcarnitine changes and encephalopathy.",
   "Thiolase (last turn of an odd-chain fatty acid)": "With a 5-carbon acyl-CoA the final thiolase cleavage gives acetyl-CoA plus propionyl-CoA instead of two acetyl-CoA, so odd-chain fatty acids make one propionyl-CoA each.",
@@ -4228,6 +4931,8 @@ const ENZN = {
 const PDESC = {
   gluconeogenesis: "Net: 2 pyruvate + 4 ATP + 2 GTP + 2 NADH + 2 H⁺ + 6 H₂O → glucose + 4 ADP + 2 GDP + 6 Pᵢ + 2 NAD⁺. Glucagon and cortisol switch it on (lower fructose 2,6-bisphosphate, induce PEPCK and glucose 6-phosphatase); insulin switches it off. Two cycles supply it: the Cori cycle (muscle lactate to liver glucose) and the glucose–alanine cycle (muscle alanine to liver glucose, urea cycle takes the nitrogen). Makes glucose from lactate, glycerol, alanine and other amino acids, mainly in the liver (and kidney in fasting). Seven glycolytic steps run backwards; four bypass enzymes get round the irreversible ones. Costs 4 ATP + 2 GTP per glucose. Alcohol (excess NADH diverts pyruvate and oxaloacetate) and metformin suppress it, so fasting hypoglycaemia can follow.",
   glycolysis: "Splits glucose into two pyruvate in the cytosol, netting 2 ATP and 2 NADH. Phosphofructokinase-1 is the committed, most regulated step.",
+  fol: "One-carbon metabolism (also fed by the glycine cleavage system and mitochondrial formate; homocysteine is remethylated by methionine synthase or by BHMT with betaine, or removed by transsulfuration to cysteine through CBS and vitamin B₆): tetrahydrofolate carries one-carbon units at three oxidation levels from serine (SHMT) to purines (formyl-THF), thymidylate (methylene-THF, giving DHF that DHFR must recycle) and methionine (methyl-THF via methionine synthase and B₁₂). The linked methionine cycle makes SAM (MAT), the methyl donor, which becomes SAH, then homocysteine (SAHH), then methionine again. Clinical: folate deficiency and B₁₂ deficiency give megaloblastic anaemia; folate before conception prevents neural tube defects; methotrexate and pemetrexed block DHFR and thymidylate synthase; 5-FU blocks thymidylate synthase; trimethoprim blocks bacterial DHFR.",
+  keto: "Ketogenesis, in liver mitochondria when acetyl-CoA from β-oxidation exceeds what oxaloacetate can take into the TCA cycle: two acetyl-CoA → acetoacetyl-CoA (thiolase), + acetyl-CoA → HMG-CoA (HMGCS2, rate-limiting), → acetoacetate + acetyl-CoA (HMG-CoA lyase), then acetoacetate → β-hydroxybutyrate (BDH1, NADH) or → acetone (spontaneous, CO₂). Net: 3 acetyl-CoA → 1 acetoacetate + 2 CoA. Ketolysis, in brain, muscle and heart (not liver or red cells): β-hydroxybutyrate → acetoacetate (BDH1, NADH), → acetoacetyl-CoA (SCOT, from succinyl-CoA), → 2 acetyl-CoA (thiolase) → citrate. Clinical: starvation and low-carbohydrate ketosis is mild and compensated; diabetic ketoacidosis (insulin lack, glucagon excess) and alcoholic ketoacidosis (high NADH, so mostly β-hydroxybutyrate) cause an anion-gap metabolic acidosis; SGLT2 inhibitors can cause ketoacidosis with near-normal glucose (euglycaemic DKA); nitroprusside tests detect acetoacetate (and acetone), not β-hydroxybutyrate.",
   box: "Very-long-chain and branched fatty acids are first shortened in peroxisomes (acyl-CoA oxidase makes H₂O₂ instead of FADH₂), then sent to mitochondria. Unsaturated fatty acids use two extra enzymes: enoyl-CoA isomerase (odd-numbered double bonds) and 2,4-dienoyl-CoA reductase with NADPH (even-numbered ones), drawn as the dashed side route. Long-chain fatty acids enter mitochondria on carnitine (CPT1, translocase, CPT2). Then a repeating four-step spiral in the mitochondrial matrix: dehydrogenase (FADH₂), hydratase, hydroxyacyl dehydrogenase (NADH), thiolase (acetyl-CoA); the shortened acyl-CoA goes round again. Palmitoyl-CoA (C16) takes 7 turns: 8 acetyl-CoA + 7 FADH₂ + 7 NADH, about 106 ATP net of the 2 used to activate it. The acetyl-CoA feeds the TCA cycle or, in liver, ketogenesis.",
   glycogenolysis: "Net: glycogen(n) + Pᵢ → glycogen(n−1) + glucose 1-phosphate, then G1P → G6P. Phosphorylase works from the free ends and stops four units from a branch; debranching enzyme moves three units and releases the last as free glucose. In liver, glucose 6-phosphatase (endoplasmic reticulum) makes free glucose for the blood; muscle lacks it, so G6P stays for glycolysis. Glucagon (liver) and adrenaline (liver and muscle) switch it on through cAMP, PKA and phosphorylase kinase, Ca²⁺ does so in contracting muscle, and insulin switches it off. Glycogen storage diseases: von Gierke I (glucose 6-phosphatase), Pompe II (lysosomal acid α-glucosidase, the separate lysosomal route drawn to the left), Cori III (debranching), McArdle V (muscle phosphorylase), Hers VI (liver phosphorylase).",
   glycogen: "Stores glucose as a branched polymer. Glycogen synthase uses UDP-glucose; phosphorylase releases glucose 1-phosphate.",
@@ -4271,6 +4976,29 @@ Object.assign(EXPLAIN, {
   gmp_n: "Guanosine monophosphate: the end of the guanine branch. GMP synthetase adds an amino group from glutamine to XMP (ATP is used and AMP + PPᵢ are released). GMP inhibits PPAT and IMP dehydrogenase, and it is phosphorylated to GDP and GTP.",
   coq: "Ubiquinone (coenzyme Q10) is a benzoquinone head on a long isoprenoid tail, so it dissolves in the lipid bilayer and diffuses between complexes. It takes two electrons and two protons to become ubiquinol (QH₂), and can also sit halfway as a semiquinone radical. It is made by the same mevalonate route as cholesterol, so statins lower it a little; primary CoQ10 deficiency causes encephalomyopathy and nephrotic syndrome, and CoQ10 is also an antioxidant in membranes.",
 });
+Object.assign(EXPLAIN, {
+  adenine: "The free adenine base. Adenine phosphoribosyltransferase (APRT) joins it to PRPP to give AMP. APRT deficiency lets adenine go to 2,8-dihydroxyadenine, which forms radiolucent kidney stones that are easily mistaken for uric acid stones; allopurinol or febuxostat (xanthine oxidase inhibition) prevents them.",
+  pcat: "Purine nucleotides are dephosphorylated to nucleosides (5′-nucleotidase), the base is cut off by purine nucleoside phosphorylase, and the bases are oxidised by xanthine oxidase to uric acid, the human end product (most mammals continue to allantoin). Adenosine is first deaminated to inosine by adenosine deaminase; guanine is deaminated to xanthine, so both routes meet at xanthine. Hypoxanthine and guanine can instead be salvaged by HGPRT. Excess uric acid causes gout and uric acid stones; tumour lysis releases a large purine load.",
+  inosine: "Hypoxanthine riboside. IMP loses its phosphate (5′-nucleotidase), or adenosine loses its amino group (adenosine deaminase), and purine nucleoside phosphorylase then releases free hypoxanthine and ribose 1-phosphate. Inosine is also used as a drug and is the base of the tRNA wobble nucleoside.",
+  adenosine: "Adenine riboside. Besides coming from AMP it arises from SAH hydrolysis and from extracellular ATP. It acts on A₁, A₂A, A₂B and A₃ receptors (slows the AV node, dilates coronary arteries, promotes sleep; caffeine blocks the receptors) and is cleared in seconds by adenosine deaminase. Deficiency of ADA is a cause of severe combined immunodeficiency (ADA-SCID): adenosine and deoxyadenosine, then dATP, build up and poison developing lymphocytes.",
+  guanosine: "Guanine riboside from GMP. Purine nucleoside phosphorylase splits it to guanine; there is no guanosine deaminase in humans, so the guanine route needs the deamination to happen on the free base.",
+  hypox: "The first free base of the catabolic route. Xanthine oxidase turns it into xanthine and then uric acid. Muscle and the heart release it (and xanthine) after ATP is consumed, and HGPRT salvages it back to IMP; HGPRT deficiency (Lesch–Nyhan syndrome) sends it to uric acid instead and leaves PRPP free to drive synthesis, giving gout, self-injury and intellectual disability.",
+  guanine: "Free guanine is deaminated by guanine deaminase (guanase) to xanthine, or salvaged to GMP by HGPRT. Unlike adenine, which has no deaminase for the free base in humans, guanine therefore always enters the uric acid route when not salvaged.",
+  xanth: "Converges from hypoxanthine (xanthine oxidase) and guanine (guanine deaminase) and is oxidised by xanthine oxidase to uric acid. It dissolves poorly in urine. Xanthine oxidase deficiency (xanthinuria) gives very low serum urate, high xanthine and sometimes xanthine stones; allopurinol and febuxostat give a milder version of the same pattern.",
+  uricacid: "The end product of purine breakdown in humans because urate oxidase (uricase) is a pseudogene: urate is excreted as a poorly soluble acid (pK about 5.6; mostly urate in blood). Roughly two thirds is excreted by the kidney (filtered, reabsorbed by URAT1 and GLUT9, secreted by ABCG2) and one third by the gut. Hyperuricaemia from overproduction (tumour lysis, high cell turnover, HGPRT deficiency, fructose and alcohol) or from underexcretion (CKD, thiazide and loop diuretics, low-dose aspirin, ciclosporin) causes gout and uric acid stones. Normal serum values are on the lab link.",
+  allantoin: "Ring-opened and decarboxylated product of urate oxidase, about ten times more soluble than urate, which is why the enzyme drugs (rasburicase, pegloticase) are effective. Humans do not have the enzyme; in urine allantoin is a marker of oxidative stress (reactive oxygen species oxidise urate non-enzymatically).",
+});
+Object.assign(ENZN, {
+  "Hypoxanthine-guanine phosphoribosyltransferase (HGPRT)": "X-linked salvage enzyme: hypoxanthine + PRPP → IMP and guanine + PRPP → GMP, each releasing PPᵢ. It saves the energy of de novo synthesis and uses up PRPP. Complete deficiency is Lesch–Nyhan syndrome: PRPP accumulates and drives de novo synthesis while the bases go to uric acid, giving hyperuricaemia with orange urate crystals ('sand') in the nappy, gout and kidney stones, dystonia, intellectual disability and compulsive self-biting in boys; allopurinol lowers urate but does not help the neurological signs. Partial deficiency (Kelley–Seegmiller) gives gout and stones only. PRPP synthetase overactivity (PRPS1) gives a similar gout picture. Mercaptopurine and thioguanine are activated by this enzyme.",
+  "Adenine phosphoribosyltransferase (APRT)": "Salvage enzyme: adenine + PRPP → AMP + PPᵢ. Deficiency (autosomal recessive) causes 2,8-dihydroxyadenine nephrolithiasis and crystalluria, treated with allopurinol or febuxostat and fluids. It is the adenine counterpart of HGPRT.",
+  "AMP deaminase (AMPD1)": "Removes the 6-amino group of AMP to give IMP and ammonia; with adenylosuccinate synthetase and lyase it forms the purine nucleotide cycle, which regenerates fumarate and ammonia in working muscle. AMPD1 deficiency is a common cause of exercise-related myalgia and cramps.",
+  "5′-Nucleotidase (NT5C2, NT5E)": "Hydrolyses the 5′-phosphate of AMP, IMP and GMP to give the nucleosides adenosine, inosine and guanosine. The cytosolic enzyme (NT5C2) prefers IMP and GMP; the ecto-enzyme CD73 (NT5E) makes extracellular adenosine from AMP, which is immunosuppressive in tumours. Gain-of-function NT5C2 mutations cause relapse with resistance to thiopurines in acute lymphoblastic leukaemia.",
+  "Adenosine deaminase (ADA)": "Removes the 6-amino group of adenosine (and deoxyadenosine) to give inosine and ammonia. Deficiency causes ADA-SCID (autosomal recessive; lymphopenia, recurrent infections, failure to thrive), treated with enzyme replacement, stem-cell transplant or gene therapy. Pentostatin inhibits it and is used in hairy cell leukaemia.",
+  "Purine nucleoside phosphorylase (PNP)": "Splits inosine and guanosine (and their deoxy forms) with phosphate into hypoxanthine or guanine and ribose 1-phosphate; it is reversible. Deficiency is a rarer cause of immunodeficiency than ADA deficiency (T-cell loss, with low serum uric acid and neurological signs) because deoxyguanosine builds up and kills T cells. Forodesine inhibits it.",
+  "Xanthine oxidase (XDH)": "Molybdenum-iron-sulfur flavoprotein (XDH is the usual form, converted to the oxidase form in ischaemia) that oxidises hypoxanthine to xanthine and xanthine to uric acid, making H₂O₂ or superoxide as a by-product. Allopurinol (through oxypurinol) and febuxostat inhibit it and lower serum urate; allopurinol can cause a severe hypersensitivity in HLA-B*58:01 carriers and raises azathioprine and mercaptopurine levels, so their doses must be reduced. Deficiency is xanthinuria.",
+  "Guanine deaminase (GDA)": "Hydrolytically removes the 2-amino group of guanine to give xanthine and ammonia. It is abundant in brain and liver and is the only way free guanine reaches uric acid.",
+  "Urate oxidase (absent in humans)": "Converts urate to 5-hydroxyisourate and then, with further enzymes, to allantoin. Hominoid primates (including humans) lost the gene through mutations during the Miocene, so urate stays high. Rasburicase and pegloticase are recombinant forms; both can cause haemolysis and methaemoglobinaemia in G6PD deficiency and must be avoided there. Samples taken for urate after rasburicase must be kept on ice.",
+});
 Object.assign(ENZN, {
   "Ribose-phosphate pyrophosphokinase (PRPS1)": "PRPP synthetase transfers the pyrophosphate group of ATP to C1 of ribose 5-phosphate, giving PRPP and AMP. It is inhibited by ADP and GDP and activated by phosphate. PRPS1 gain-of-function causes PRPP and uric acid overproduction (gout, sometimes with deafness).",
   "Amidophosphoribosyltransferase (PPAT)": "Replaces the pyrophosphate of PRPP with the amide nitrogen of glutamine, making 5-phosphoribosylamine, glutamate and PPᵢ. It is the committed step, activated by PRPP and inhibited by AMP, GMP and IMP; thiopurine nucleotides (from azathioprine and mercaptopurine) also switch it off. Hyperuricemia can follow when it is overactive.",
@@ -4307,6 +5035,78 @@ Object.assign(ENZN, {
   "Cholesterol 7α-hydroxylase (CYP7A1)": "ER cytochrome P450 of hepatocytes and the rate-limiting step of bile-acid synthesis. Bile acids return through FXR and FGF19 to repress it; bile-acid sequestrants and statins raise it.",
   "Desmolase (P450scc)": "CYP11A1, an inner-mitochondrial-membrane P450 that hydroxylates and cleaves the cholesterol side chain to pregnenolone and isocaproaldehyde. It is the rate-limiting step of steroidogenesis; ACTH and LH raise StAR and CYP11A1.",
 });
+Object.assign(EXPLAIN, {
+  prog: "C21 steroid with a 3-keto-Δ4 A ring, made from pregnenolone by 3β-HSD (HSD3B2). In the corpus luteum and placenta it is the hormone itself: it prepares the endometrium for implantation and maintains pregnancy, and falls before menstruation. In the adrenal it is an obligatory intermediate: CYP21A2 turns it into 11-deoxycorticosterone (aldosterone route) and CYP17A1 into 17-OH-progesterone (cortisol route). Blocked in 3β-HSD deficiency, a rare form of congenital adrenal hyperplasia.",
+  ohpreg: "Pregnenolone with a 17α-hydroxyl, made by the hydroxylase activity of CYP17A1 in zona fasciculata, zona reticularis and the gonads. It is the branch point of the Δ5 route: 3β-HSD sends it to 17-OH-progesterone and on to cortisol, while the 17,20-lyase activity of the same enzyme cuts off C20–C21 to give DHEA. Zona glomerulosa has no CYP17A1, so it makes neither cortisol nor androgens.",
+  ohprog: "Substrate of 21-hydroxylase on the way to 11-deoxycortisol and cortisol. In classic 21-hydroxylase deficiency it piles up (the newborn-screening marker; preterm and sick infants give false positives) and is pushed toward androstenedione, which virilises a 46,XX infant. Also made by the corpus luteum.",
+  doc: "Made by CYP21A2 from progesterone in zona glomerulosa, then 11β-hydroxylated to corticosterone. It is a weak mineralocorticoid. It rises, with hypertension and low K⁺, in 11β-hydroxylase deficiency and in 17α-hydroxylase deficiency (where sex steroids are also low, so 46,XY patients are undervirilised and 46,XX patients do not enter puberty).",
+  cortico: "11-Deoxycorticosterone with an 11β-hydroxyl (CYP11B1 in zona fasciculata, CYP11B2 in zona glomerulosa). In humans it is mainly the immediate precursor of aldosterone; in rodents, which lack CYP17A1 in the adrenal, it is the main glucocorticoid.",
+  aldo: "The main mineralocorticoid. Aldosterone synthase (CYP11B2), found only in zona glomerulosa, carries corticosterone through 18-hydroxylation and 18-oxidation to the 18-aldehyde that gives aldosterone its name. It binds the mineralocorticoid receptor in the collecting duct: more ENaC and Na⁺/K⁺-ATPase, so Na⁺ and water are kept and K⁺ and H⁺ are lost. Primary aldosteronism (adenoma or bilateral hyperplasia) causes hypertension, low K⁺ and a high aldosterone:renin ratio; glucocorticoid-remediable aldosteronism comes from a CYP11B1/CYP11B2 hybrid gene that puts aldosterone under ACTH; hypoaldosteronism causes salt loss, low blood pressure and high K⁺.",
+  s11: "Also called compound S. CYP11B1 adds the 11β-hydroxyl to make cortisol. It accumulates in 11β-hydroxylase deficiency (with 11-deoxycorticosterone, so hypertension and virilisation) and after metyrapone, which blocks the enzyme; the rise in 11-deoxycortisol after metyrapone tests the pituitary's ACTH reserve.",
+  cortisol: "The main human glucocorticoid, made in zona fasciculata (about 10–20 mg a day) with a peak around waking. About 90% is bound to corticosteroid-binding globulin; free cortisol is what 24-hour urine and salivary tests measure. It raises glucose (gluconeogenesis, insulin resistance), breaks down protein and mobilises fat, damps inflammation, supports blood pressure and sensitises vessels to catecholamines. 11β-HSD2 turns it into inactive cortisone in the kidney so it does not occupy the mineralocorticoid receptor; 11β-HSD1 regenerates it in liver and fat. Excess: Cushing syndrome; lack: Addison disease and adrenal crisis; enzyme blocks: congenital adrenal hyperplasia.",
+  dheas: "DHEA with a sulfate ester on the 3β-hydroxyl, made by SULT2A1 (adrenal zona reticularis and liver) from PAPS. It is the most abundant circulating steroid, its half-life is hours (DHEA: minutes) and it has no daily swing, so one blood level is a stable marker of adrenal androgen output. It rises at adrenarche, peaks in the twenties and falls with age; high in adrenal tumours, CAH and PCOS, low in adrenal insufficiency and during glucocorticoid treatment. It is also a reservoir: tissues with steroid sulfatase (STS) remove the sulfate and make androgens or estrogens from the DHEA, and the placenta makes estrogens from fetal DHEA-S.",
+  dhea: "Weak androgen made in zona reticularis (and gonads) by the 17,20-lyase of CYP17A1. SULT2A1 sulfates it to DHEA-S, which circulates at high levels with a long half-life and is a marker of adrenal androgen output. It rises at adrenarche, peaks in the twenties and falls with age. High in congenital adrenal hyperplasia, adrenal tumours and PCOS; low in adrenal insufficiency.",
+  andro: "Androgen precursor made in adrenal, Leydig and theca cells, from DHEA (3β-HSD) or from 17-OH-progesterone (17,20-lyase). 17β-HSD3 turns it into testosterone; aromatase turns it into estrone. Fat tissue converts it to estrone, the main estrogen after menopause. Raised in 21-hydroxylase deficiency and PCOS.",
+  testo: "The main androgen. Leydig cells make about 5–7 mg a day under LH; in women the ovary and adrenal make small amounts. About 98% is bound (SHBG, albumin). Tissues use it directly (muscle, bone, libido, spermatogenesis) or after conversion to DHT (5α-reductase) or estradiol (aromatase). 17β-HSD3 deficiency causes 46,XY disorder of sex development with virilisation at puberty; hypogonadism and PCOS are the common clinical problems.",
+  dht: "Testosterone reduced at C4=C5 by 5α-reductase (SRD5A2 in prostate, skin and genital tissue); it binds the androgen receptor about three times more tightly than testosterone and dissociates more slowly. It forms the male external genitalia and prostate in the fetus and drives beard, body hair, acne and prostate growth, and male-pattern baldness. SRD5A2 deficiency gives 46,XY infants with undervirilised genitalia who virilise at puberty. Finasteride and dutasteride block the enzyme (BPH, hair loss).",
+  e1: "Estrone (E1): a weak estrogen with an aromatic A ring and a 17-keto group. Aromatase makes it from androstenedione; 17β-HSD interconverts it with estradiol (HSD17B1 reduces to E2, HSD17B2 oxidises back), and sulfation stores it. After menopause fat tissue aromatises adrenal androstenedione, so estrone becomes the main circulating estrogen; obesity raises it.",
+  e3: "Estriol (E3): a weak estrogen with an extra 16α-hydroxyl. Little is made outside pregnancy. In pregnancy the fetal adrenal makes DHEA-S, the fetal liver 16α-hydroxylates it, and the placenta (steroid sulfatase, 3β-HSD, aromatase) completes estriol, so the fetus and placenta must both work; the maternal level was used as a fetoplacental marker (low in placental sulfatase deficiency, anencephaly, fetal death). The drawn arrow from estradiol is a simplification of this route.",
+  cortisone: "Cortisol with an 11-keto group instead of the 11β-hydroxyl; it has to be reduced back to cortisol to activate the glucocorticoid receptor. 11β-HSD2 (NAD⁺; kidney, colon, salivary gland, placenta) makes it and so keeps cortisol off the mineralocorticoid receptor; 11β-HSD1 (NADPH; liver, fat, brain, lung) regenerates cortisol. Licorice (glycyrrhetinic acid) and HSD11B2 variants (apparent mineralocorticoid excess) block 11β-HSD2, letting cortisol act like aldosterone: hypertension, low K⁺, low renin. Prednisone is itself a prodrug that 11β-HSD1 reduces to prednisolone.",
+  e2: "Estradiol (E2): the most potent estrogen. In the ovary, theca cells make androgens under LH and granulosa cells aromatise them under FSH (the two-cell, two-gonadotropin model). The placenta, fat, bone, brain and testis also make it. It drives breast and uterine growth, bone maintenance, favourable lipids and, at mid-cycle, the LH surge. Aromatase deficiency virilises 46,XX infants and leaves 46,XY men tall with open growth plates; aromatase inhibitors (anastrozole, letrozole, exemestane) treat hormone-receptor-positive breast cancer, with bone loss as the main cost.",
+});
+Object.assign(ENZN, {
+  "Sulfotransferase (SULT2A1)": "Cytosolic enzyme of the adrenal zona reticularis and liver that moves sulfate from PAPS (made by PAPS synthase, PAPSS2) onto the 3β-hydroxyl of DHEA, giving DHEA-S. PAPSS2 deficiency lowers DHEA-S and leaves more DHEA for androgen synthesis (androgen excess with short stature and bone dysplasia). Target tissues reverse the reaction with steroid sulfatase (STS): placental STS deficiency gives low maternal estriol, and X-linked ichthyosis is the skin disease of STS loss. Sulfation also inactivates and clears other steroids and drugs.",
+  "3β-Hydroxysteroid dehydrogenase (HSD3B2)": "Turns the Δ5-3β-hydroxy steroids into Δ4-3-keto steroids: NAD⁺ takes the hydride, then an isomerase activity of the same protein shifts the double bond from C5=C6 to C4=C5. Pregnenolone → progesterone, 17-OH-pregnenolone → 17-OH-progesterone, DHEA → androstenedione. HSD3B2 works in adrenal and gonads; HSD3B1 in placenta, skin and liver. Deficiency: rare CAH with salt loss, high DHEA, ambiguous genitalia in 46,XY.",
+  "17α-Hydroxylase (CYP17A1)": "One microsomal P450 with two activities: 17α-hydroxylase, here, and 17,20-lyase (which needs cytochrome b5 and a high P450 oxidoreductase supply, so it is strongest in zona reticularis and the gonads). Absent from zona glomerulosa. Deficiency: hypertension, low K⁺, high 11-deoxycorticosterone and corticosterone, and low sex steroids. Abiraterone blocks it in prostate cancer and is given with prednisone to prevent mineralocorticoid excess. Ketoconazole blocks it too, less selectively.",
+  "21-Hydroxylase (CYP21A2)": "Microsomal P450 that adds the 21-hydroxyl to progesterone (aldosterone route) and 17-OH-progesterone (cortisol route). Deficiency causes 90–95% of congenital adrenal hyperplasia: low cortisol, so high ACTH and adrenal growth, and a surge of androgens. Classic salt-wasting form: hyponatremia, high K⁺, shock in the newborn, virilised 46,XX genitalia. Simple virilising and non-classic (late-onset) forms follow. Treated with hydrocortisone, plus fludrocortisone when salt is lost.",
+  "11β-Hydroxylase (CYP11B1)": "Mitochondrial P450 that adds the 11β-hydroxyl to 11-deoxycortisol (making cortisol) and 11-deoxycorticosterone; ACTH-driven, in zona fasciculata. Deficiency (about 5% of CAH): androgen excess, plus hypertension and low K⁺ from the build-up of 11-deoxycorticosterone. Metyrapone and osilodrostat inhibit it (Cushing syndrome, diagnostic tests). Ketoconazole and levoketoconazole also inhibit it.",
+  "Aldosterone synthase (CYP11B2)": "Mitochondrial P450 of zona glomerulosa that performs three successive steps: 11β-hydroxylation, 18-hydroxylation and 18-oxidation, ending in aldosterone. Switched on by angiotensin II and K⁺. Deficiency: salt loss with high K⁺ and low blood pressure. The CYP11B1/CYP11B2 hybrid gene of glucocorticoid-remediable aldosteronism makes it ACTH-dependent.",
+  "17,20-Lyase (CYP17A1)": "Second activity of CYP17A1: cuts the C17–C20 bond of 17-hydroxypregnenolone (efficient) to give DHEA and acetate. The human enzyme uses the Δ5 route far more than the Δ4 route, so most androgens come through DHEA. Needs cytochrome b5; raised by insulin and PCOS physiology. Ketoconazole inhibits the lyase more than the hydroxylase, so androgens fall within hours.",
+  "17β-Hydroxysteroid dehydrogenase (HSD17B3)": "Testis enzyme that reduces the 17-keto group of androstenedione with NADPH, giving testosterone. Deficiency is a cause of 46,XY disorder of sex development: undervirilised genitalia at birth and virilisation at puberty as other 17β-HSD enzymes compensate.",
+  "5α-Reductase (SRD5A2)": "NADPH-dependent enzyme that reduces the C4=C5 double bond of testosterone, giving dihydrotestosterone (DHT), a more potent androgen. SRD5A2 acts in prostate, genital skin and hair follicles; SRD5A1 in skin and liver. Deficiency: 46,XY disorder of sex development with undervirilised external genitalia. Finasteride (type 2) and dutasteride (types 1 and 2) block it and lower PSA by about half.",
+  "Aromatase (CYP19A1)": "Microsomal P450 that removes the C19 methyl as formate and aromatises ring A in three oxidation steps (3 NADPH, 3 O₂), turning androstenedione into estrone and testosterone into estradiol. Sites: ovarian granulosa cells (FSH), placenta, fat, bone, brain, breast and testis. Deficiency: virilised 46,XX infants and tall 46,XY men with open growth plates; excess: gynecomastia. Aromatase inhibitors lower estrogen in breast cancer.",
+  "17β-Hydroxysteroid dehydrogenase (HSD17B1)": "Reduces the 17-keto group of estrone with NADPH, making the more potent estradiol (granulosa cells, placenta, breast). HSD17B2 runs the reverse reaction with NAD⁺, inactivating estradiol in endometrium and placenta; the pair sets how much active estrogen a tissue sees.",
+  "11β-Hydroxysteroid dehydrogenase (HSD11B1/2)": "A reversible control point on cortisol. HSD11B2 (NAD⁺) oxidises the 11β-hydroxyl of cortisol to cortisone in mineralocorticoid target tissues and placenta; HSD11B1 (NADPH, from hexose-6-phosphate dehydrogenase in the ER) does the reverse in liver, fat and brain, raising local cortisol. Loss of HSD11B2 (or licorice) causes apparent mineralocorticoid excess; excess HSD11B1 in fat is linked to central obesity.",
+  "16α-Hydroxylation (liver; fetal liver in pregnancy)": "Cytochrome P450 hydroxylation at C16 (CYP3A family in the liver; CYP3A7 in the fetal liver, acting on DHEA-S) leading to estriol. Estriol is a weak estrogen and the main end product of estrogen metabolism in pregnancy; the arrow here condenses the real route (fetal DHEA-S → 16-OH-DHEA-S → placental aromatisation).",
+  "CRH drives ACTH; cortisol feeds back": "The hypothalamic–pituitary–adrenal axis. Hypothalamic CRH (with vasopressin) acts on pituitary corticotrophs, which cut ACTH out of pro-opiomelanocortin. CRH and ACTH are released in pulses with a peak around waking and surges in stress, fever, hypoglycemia and surgery. Cortisol closes the loop by acting on glucocorticoid receptors in the hypothalamus and pituitary (fast and slow negative feedback). Adrenal failure removes the feedback and ACTH rises (hyperpigmentation in Addison disease, because ACTH and POMC fragments act on melanocortin-1 receptors); long glucocorticoid treatment suppresses CRH and ACTH. Dexamethasone suppression and CRH tests probe the loop.",
+  "GnRH drives LH and FSH; sex steroids feed back": "Hypothalamic GnRH neurons release the peptide in pulses (about hourly in men and in the follicular phase). Pulses give LH and FSH; continuous exposure desensitises the GnRH receptor, which is how GnRH agonists lower testosterone and estradiol. Testosterone, and estradiol in the follicular phase, feed back negatively on GnRH and LH (kisspeptin neurons mediate it); inhibin B from Sertoli and granulosa cells lowers FSH. A high estradiol level at mid-cycle switches to positive feedback and causes the LH surge. Kallmann syndrome (GnRH neurons fail to migrate) and hypothalamic amenorrhea lower the axis; primary gonadal failure raises LH and FSH.",
+  "ACTH raises StAR and the cortisol steps": "Pituitary ACTH binds the melanocortin-2 receptor (with MRAP) on zona fasciculata and reticularis cells: Gs, adenylyl cyclase, cAMP, PKA. Within minutes StAR is made and phosphorylated, so cholesterol reaches the inner mitochondrial membrane (the rate-limiting step). Over hours and days PKA raises transcription of CYP11A1, CYP17A1, CYP21A2 and CYP11B1 and of the LDL and SR-B1 cholesterol uptake, and the gland grows. CRH from the hypothalamus drives ACTH in pulses with a morning peak and stress surges; cortisol shuts CRH and ACTH off (negative feedback). Long glucocorticoid treatment suppresses the axis and atrophies the adrenal.",
+  "Angiotensin II and K⁺ raise CYP11B2": "In zona glomerulosa, angiotensin II (AT₁, Gq) and a rise in blood K⁺ depolarise the cell, open voltage-gated Ca²⁺ channels and raise Ca²⁺, which switches on CYP11B2 and StAR through calcium–calmodulin kinases. Renin (low volume or pressure) raises angiotensin II; ACE inhibitors and ARBs lower aldosterone; ANP and dopamine inhibit it. ACTH adds only a short-lived push. Variants in KCNJ5, CACNA1D, ATP1A1 and ATP2B3 cause aldosterone-producing adenomas.",
+  "LH raises StAR and CYP17A1 (Leydig, theca)": "LH (and hCG in early pregnancy) binds LHCGR on Leydig cells of the testis and theca cells of the ovary, giving Gs, cAMP, PKA and more StAR, CYP11A1, CYP17A1 and 3β-HSD, so more androgen. Testosterone and estradiol feed back on hypothalamic GnRH pulses and on the pituitary to lower LH; inhibin B (Sertoli cells) lowers FSH. Continuous GnRH analogues and gonadotropin deficiency (Kallmann syndrome) both lower sex steroids.",
+  "FSH induces aromatase (granulosa, Sertoli)": "FSH acts on FSHR of ovarian granulosa cells and testicular Sertoli cells (Gs, cAMP) and induces aromatase. Granulosa cells have no CYP17A1, so they depend on androgens from theca cells: LH drives the androgen, FSH drives its conversion to estradiol. Rising estradiol at mid-cycle switches to positive feedback and triggers the LH surge; clomiphene and letrozole are used to induce ovulation.",
+});
+// v7.31: steroid inactivation cards
+Object.assign(EXPLAIN, {
+  andros: "Androsterone (5α) and etiocholanolone (5β) are the two main urinary 17-ketosteroids. The liver reduces the Δ4-3-keto ring of androstenedione and testosterone (5α- or 5β-reductase, then 3α-HSD) and removes the 17β-hydroxyl by oxidation; the 2D skeleton is identical, only the A/B ring fusion (not drawn) differs. They leave as glucuronides and sulfates. The urinary 17-ketosteroid total was the older measure of androgen output (about a third testicular in men, the rest adrenal): high in adrenal tumours, CAH and PCOS, low in adrenal insufficiency and hypopituitarism. A high etiocholanolone-to-androsterone ratio (5β over 5α) points to 5α-reductase deficiency.",
+  testog: "Testosterone with glucuronate attached to the 17β-hydroxyl, made mainly by UGT2B17 (UGT2B15 also acts) in liver, prostate and skin. The charged sugar makes it water-soluble, so it leaves in urine and bile, and it no longer binds the androgen receptor. Urinary testosterone glucuronide is what the doping test measures against epitestosterone glucuronide. A common UGT2B17 gene deletion (frequent in East Asian populations) lowers its output, so the same testosterone dose gives a lower urinary ratio. Tissue β-glucuronidase can release free testosterone again.",
+  e1s: "Estrone with a sulfate ester on the 3-hydroxyl of the aromatic ring, made from PAPS by estrogen sulfotransferase (SULT1E1). It is the most abundant circulating estrogen, carried on albumin with a half-life of hours (estradiol: minutes), and it cannot bind the estrogen receptor. It is a reservoir: tissues with steroid sulfatase (breast, endometrium, placenta) strip the sulfate to give estrone, which 17β-HSD1 turns into estradiol, the 'sulfatase pathway' that feeds hormone-dependent breast cancer. Conjugated equine estrogens are mostly estrone sulfate and equilin sulfate.",
+  thcort: "Tetrahydrocortisol (THF): cortisol with the C4=C5 bond saturated (5β-reductase, AKR1D1) and the 3-keto group reduced to a hydroxyl (3α-HSD, AKR1C). Its 5α twin is allo-THF. It leaves as the glucuronide; with tetrahydrocortisone and the cortols and cortolones it accounts for most cortisol cleared each day, while free cortisol is only a small fraction of the urine total. The ratio (THF + allo-THF) to THE tracks 11β-HSD: high when HSD11B2 is lost or blocked (licorice, apparent mineralocorticoid excess), low in cortisone reductase deficiency (HSD11B1 or H6PD) where ACTH-driven adrenal androgen excess follows.",
+  thcone: "Tetrahydrocortisone (THE): cortisone ring-reduced like cortisol (5β-reductase, 3α-HSD) and kept in the 11-keto form. It is the largest single urinary metabolite of the cortisol pool because cortisol is oxidised to cortisone in the kidney. Compared with tetrahydrocortisol (THF and allo-THF) it reads whole-body 11β-HSD activity: high THE:THF in HSD11B1 deficiency, low in apparent mineralocorticoid excess.",
+  pdiol: "5β-Pregnane-3α,20α-diol: the main urinary metabolite of progesterone (5β-reduction, 3α-reduction and 20α-reduction, then glucuronidation). Urinary pregnanediol glucuronide rises after ovulation and through pregnancy, so a luteal-phase value confirms ovulation and a low value suggests an anovulatory or short luteal cycle.",
+  ptriol: "5β-Pregnane-3α,17α,20α-triol: the main urinary metabolite of 17-OH-progesterone. Raised pregnanetriol (with 17-OH-progesterone in blood) marks 21-hydroxylase deficiency and is used to monitor treatment in urinary steroid profiles; it also rises in 11β-hydroxylase deficiency.",
+});
+Object.assign(ENZN, {
+  "5α/5β-Reductase and 3α-HSD (SRD5A, AKR1D1, AKR1C)": "Ring-A reduction of androgens. 5α-Reductase (SRD5A1 in liver and skin; SRD5A2 in prostate and genital skin) or 5β-reductase (AKR1D1, liver) saturates the C4=C5 bond with NADPH, then an aldo-keto reductase 3α-HSD (AKR1C2, AKR1C4) reduces the 3-keto group. Products (androsterone, etiocholanolone) are conjugated and excreted. SRD5A2 deficiency: undervirilised 46,XY genitalia at birth, high testosterone-to-DHT ratio and high etiocholanolone-to-androsterone ratio in urine.",
+  "UDP-glucuronosyltransferase (UGT2B17, UGT2B15)": "ER membrane enzymes that move glucuronate from UDP-glucuronate onto the 17β-hydroxyl of testosterone and DHT (UGT2B17 is the main one; UGT2B15 also acts, and UGT2B7 handles other steroids). Active in liver, prostate and skin; they inactivate androgens inside the target cell and prepare them for bile and urine. A common UGT2B17 gene deletion lowers urinary testosterone glucuronide.",
+  "Estrogen sulfotransferase (SULT1E1)": "Cytosolic enzyme that moves sulfate from PAPS onto the 3-hydroxyl of estrone and estradiol (endometrium, breast, liver, placenta). Sulfation inactivates the hormone at very low concentrations and builds the large estrone sulfate pool; steroid sulfatase (STS) reverses it. Sulfation of estrogens rises in the luteal phase under progesterone.",
+  "5β-Reductase and 3α-HSD (AKR1D1, AKR1C)": "Hepatic cytosolic aldo-keto reductases that finish glucocorticoids: AKR1D1 (Δ4-3-ketosteroid 5β-reductase) saturates the C4=C5 bond with NADPH, then AKR1C enzymes (3α-HSD) reduce the 3-keto group; 5α-reductase (SRD5A) makes the 5α forms (allo-THF). The 5β-tetrahydro products are glucuronidated and excreted. AKR1D1 also makes bile acids, and its loss causes neonatal cholestasis.",
+  "5β-Reductase, 3α-HSD and 20α-HSD (AKR1D1, AKR1C)": "The same ring-A reduction (AKR1D1, then AKR1C 3α-HSD), plus AKR1C1 (20α-HSD), which reduces the 20-keto group of the pregnanes. Progesterone and 17-OH-progesterone end as pregnanediol and pregnanetriol, which are glucuronidated for urine.",
+});
+// v7.32 cards
+Object.assign(EXPLAIN, {
+  allothf: "Allo-tetrahydrocortisol: cortisol reduced by 5α-reductase (SRD5A) instead of 5β-reductase, then by 3α-HSD; the 2D drawing matches tetrahydrocortisol because the A/B ring fusion is not drawn. Excreted as a glucuronide. (THF + allo-THF) over THE is the usual urinary index of 11β-HSD activity; allo-THF is relatively higher when 5α-reductase is induced, as in obesity and PCOS.",
+  cortol: "Tetrahydrocortisol with the 20-keto group also reduced (20-HSD: AKR1C1, CBR1), so it carries five hydroxyls. A minor urinary cortisol metabolite, excreted as a glucuronide; together with cortolone it is part of the cortisol-metabolite sum in urinary steroid profiles.",
+  cortolone: "Tetrahydrocortisone with the 20-keto group also reduced (20-HSD: AKR1C1, CBR1). Minor urinary metabolite of the cortisol pool, excreted as a glucuronide and measured in urinary steroid profiles with the cortols.",
+  ohf6: "Cortisol with an extra 6β-hydroxyl added by CYP3A4 (liver and gut, ER membrane). It is more polar, so it is cleared in urine; the urinary 6β-hydroxycortisol to cortisol ratio rises with CYP3A4 inducers (rifampin, carbamazepine, phenytoin, St John's wort) and falls with inhibitors (ketoconazole, clarithromycin), and is used as a non-invasive marker of enzyme activity. A route that keeps free cortisol from building up when it is made in excess.",
+  e3g: "Estriol with glucuronate on the 16α-hydroxyl (UGT2B7; the 3-glucuronide is made by UGT1A1). The main urinary form of estriol: water-soluble, no estrogen receptor binding, and cleared in urine and bile. In pregnancy the fetal and placental estriol is conjugated by the maternal liver, so serum and urine estriol conjugates tracked fetoplacental function; gut bacteria can free the estriol again (enterohepatic cycling).",
+});
+Object.assign(ENZN, {
+  "5α-Reductase and 3α-HSD (SRD5A, AKR1C)": "The 5α branch of cortisol ring-A reduction: 5α-reductase (SRD5A1 in liver) saturates the C4=C5 bond with NADPH, then AKR1C 3α-HSD reduces the 3-keto group, giving allo-tetrahydrocortisol. Finasteride and dutasteride block SRD5A and shift cortisol clearance toward the 5β route.",
+  "20-Hydroxysteroid dehydrogenase (AKR1C1, CBR1)": "Reduces the 20-keto group of the tetrahydro metabolites with NADPH, giving the cortols and cortolones (AKR1C1 makes the 20α-alcohol; carbonyl reductase CBR1 the 20β-alcohol). These are slow, minor routes compared with the ring-A reductions.",
+  "6β-Hydroxylase (CYP3A4)": "CYP3A4 (ER membrane of hepatocytes and enterocytes) adds a 6β-hydroxyl to cortisol, using NADPH and O₂. It is a minor route in health but grows with enzyme induction, so urinary 6β-hydroxycortisol to cortisol is a CYP3A4 activity marker. Free cortisol is also lowered in this way by inducers, which can unmask adrenal insufficiency in patients on replacement.",
+  "UDP-glucuronosyltransferase (UGT2B7, UGT1A1)": "ER enzymes that move glucuronate from UDP-glucuronate onto estriol: UGT2B7 to the 16α-hydroxyl and UGT1A1 to the 3-hydroxyl. UGT1A1 is the bilirubin enzyme, so it is lowered in Gilbert syndrome and absent in Crigler–Najjar.",
+});
+PDESC.stero = "Steroid hormones all start from cholesterol: StAR carries it into mitochondria and CYP11A1 makes pregnenolone. Zona glomerulosa (aldosterone), zona fasciculata (cortisol) and zona reticularis (DHEA) split the Δ5 and Δ4 routes by which enzymes they express; Leydig and theca cells make androgens, and granulosa cells turn them into estrogens with aromatase. Controls: ACTH (cortisol and adrenal androgens), angiotensin II and K⁺ (aldosterone), LH and FSH (gonads); each acts through cAMP or Ca²⁺ on StAR and the CYP enzymes, with negative feedback from cortisol and from sex steroids. Congenital adrenal hyperplasia patterns: 21-hydroxylase (17-OH-progesterone high, salt loss, virilisation), 11β-hydroxylase (11-deoxycortisol high, hypertension, virilisation), 17α-hydroxylase (11-deoxycorticosterone high, hypertension, low sex steroids), 3β-HSD (DHEA high, mild or ambiguous virilisation), StAR/lipoid (all steroids low, large lipid-laden adrenals). Cortisol is low in all of them, so ACTH rises and the glands enlarge. Inactivation is conjugation and ring reduction in liver: sulfation (SULT2A1 for DHEA, SULT1E1 for estrone) and glucuronidation (UGT2B17 for testosterone) make steroids water-soluble, and 5β- or 5α-reductase with 3α-HSD turns cortisol, cortisone, progesterone, 17-OH-progesterone and androgens into tetrahydro metabolites, pregnanediol, pregnanetriol and the 17-ketosteroids that appear in urine; steroid sulfatase turns sulfates back into active hormone in some tissues.";
 const ETCI = {
   t_c1: { facts: [["Reaction", "NADH + Q + 5 H⁺(matrix) → NAD⁺ + QH₂ + 4 H⁺(space)"], ["Prosthetic groups", "FMN and 8–9 Fe–S clusters"], ["H⁺ pumped", "4 per electron pair"], ["Genes", "7 mitochondrial (MT-ND) + about 38 nuclear"]],
     clin: ["Leigh syndrome and MELAS: complex I deficiency is the commonest cause of mitochondrial disease", "Leber hereditary optic neuropathy: MT-ND1, ND4 or ND6 variants, sudden painless central vision loss in young men", "Rotenone and MPP⁺ (the toxic metabolite of MPTP) block it and cause parkinsonism", "Metformin inhibits it weakly; lactic acidosis if the drug accumulates"] },
@@ -4383,6 +5183,7 @@ function MolCard({ id, open, fit, shell }) {
       {used.length > 0 && <Sec t="Used by"><ul className="omino-ecard__list">{used.map((e) => step(e, e.target))}</ul></Sec>}
       {RX_ACTS.some((a) => a.met === id) && <Sec t="Drug targets"><div className="omino-chiprow">{RX_ACTS.filter((a) => a.met === id).map((a) => <Pill key={a.target} c={KIND[NODE_BY[a.target].kind].color} onClick={() => open("target", a.target)}>{nm(a.target)}</Pill>)}</div></Sec>}
       {where.length > 0 && <Sec t="Where it appears in the atlas"><div className="omino-chiprow">{where.slice(0, 14).map((w) => <Pill key={w.id} onClick={() => fit([w.id])}>{w.text}</Pill>)}</div></Sec>}
+      {PUD_BY[id] && <PudBlock hostId={id} open={open} />}
       <Tags id={id} open={open} />
       {showIds.length > 0 && <button className="omino-ecard__show" onClick={() => fit(showIds)}>Show in atlas</button>}
     </CardShell>
@@ -4416,6 +5217,7 @@ function EnzCard({ label, open, fit, shell }) {
           <div className="omino-chiprow">{RX_EFFECTS.filter((x) => NODE_BY[x.target].enz === label).map((x) => <Pill key={x.drug} c={FX[x.fx].color} onClick={() => open("drug", x.drug)}>{nm(x.drug)} · {FX[x.fx].verb === "substrate of" ? "substrate" : FX[x.fx].verb}</Pill>)}</div>
         </Sec>
       )}
+      {PUD_BY[label] && <PudBlock hostId={label} open={open} />}
       <button className="omino-ecard__show" onClick={() => fit(es.flatMap((e) => [e.source, e.target]))}>Show in atlas</button>
     </CardShell>
   );
@@ -4432,7 +5234,7 @@ function PathCard({ p, open, shell }) {
       </CardShell>
     );
   }
-  const pc = PATHWAYS[p], mols = NODES.filter((n) => n.mol && (PATH_OF[n.id] === p || (p === "gluconeogenesis" && GN_NODES.has(n.id)) || (p === "glycogenolysis" && GL_NODES.has(n.id)) || (p === "box" && BX_NODES.has(n.id))));
+  const pc = PATHWAYS[p], mols = NODES.filter((n) => n.mol && (PATH_OF[n.id] === p || (p === "gluconeogenesis" && GN_NODES.has(n.id)) || (p === "glycogenolysis" && GL_NODES.has(n.id)) || (p === "box" && BX_NODES.has(n.id)) || (p === "keto" && KT_NODES.has(n.id)) || (p === "fol" && FL_NODES.has(n.id)) || (p === "stero" && ST_NODES.has(n.id))));
   const enz = [...new Set(EDGES.filter((e) => e.main && e.label && pathOfEdge(e) === p).map((e) => e.label))];
   return (
     <CardShell {...shell} c={pc.color} sub="Pathway" title={pc.label} label={`${pc.label} pathway card`}>
@@ -4440,6 +5242,7 @@ function PathCard({ p, open, shell }) {
       <dl className="omino-ecard__facts"><dt>Molecules</dt><dd>{mols.length}</dd><dt>Enzymes</dt><dd>{enz.length}</dd></dl>
       <Sec t="Molecules"><div className="omino-chiprow">{mols.map((n) => <Pill key={n.id} c={pc.color} onClick={() => open("mol", n.id)}>{n.label}</Pill>)}</div></Sec>
       {enz.length > 0 && <Sec t="Enzymes"><div className="omino-chiprow">{enz.map((l) => <Pill key={l} onClick={() => open("enz", l)}>{l}</Pill>)}</div></Sec>}
+      {p === "pcat" && <Sec t="Disorders and clinical panels"><div className="omino-chiprow">{Object.entries(PUD).map(([k, z]) => <Pill key={k} c={pc.color} onClick={() => pudGo(open, z.at[0])}>{z.name}</Pill>)}</div></Sec>}
     </CardShell>
   );
 }
@@ -4583,6 +5386,30 @@ function UcBlock({ id, open }) {
     </>
   );
 }
+/* Purine disorder panels (v7.34): one collapsible panel per disorder on every card it touches */
+function PudBlock({ hostId, open }) {
+  const ids = PUD_BY[hostId] || [];
+  const List = ({ t, a }) => a?.length > 0 && <><h5>{t}</h5><ul className="omino-ecard__list">{a.map((x) => <li key={x}>{x}</li>)}</ul></>;
+  return (
+    <Sec t={ids.length > 1 ? "Disorders and clinical panels" : "Clinical panel"}>
+      {ids.map((k) => {
+        const z = PUD[k], lb = z.lb || [], here = z.at.filter((h) => h !== hostId);
+        return (
+          <details key={k} className="omino-dz" open={ids.length === 1}>
+            <summary><span>{z.name}</span><small>{z.inh}</small></summary>
+            <div className="omino-dz__body">
+              <h5>{z.inh === "Diet" || z.inh === "Physiology" ? "Background" : "What goes wrong"}</h5><p>{z.mech}</p>
+              <List t={lb[0] || "Presentation"} a={z.feat} />
+              <List t={lb[1] || "Diagnosis"} a={z.dx} />
+              <List t={lb[2] || "Treatment"} a={z.tx} />
+              {here.length > 0 && <><h5>Where in the atlas</h5><div className="omino-chiprow">{here.map((h) => <Pill key={h} c={PATHWAYS.pcat.color} onClick={() => pudGo(open, h)}>{NODE_BY[h]?.label || h}</Pill>)}</div></>}
+            </div>
+          </details>
+        );
+      })}
+    </Sec>
+  );
+}
 /* Vitamin cards: facts, cofactor role (with links), deficiency and excess */
 function VitBlock({ id, open, fit }) {
   const v = VIT[id], k = KIND[v.kind], vs = VIT_VV.filter(([a, b]) => a === id || b === id);
@@ -4633,6 +5460,7 @@ function TargetCard({ id, open, fit, shell }) {
       </>}
       {VIT[id] && <VitBlock id={id} open={open} fit={fit} />}
       {UC[id] && <UcBlock id={id} open={open} />}
+      {PUD_BY[id] && <PudBlock hostId={id} open={open} />}
       {rx.length > 0 && <Sec t={rx.length > 1 ? "Drugs" : "Drug"}>
         <ul className="omino-ecard__list">{rx.map((e) => (
           <li key={e.drug}>
@@ -5065,6 +5893,11 @@ function Atlas() {
     });
     Object.values(SPECIES).forEach((x) => add(x.label, "Cofactor", { kind: "sp", r: { id: x.id, title: x.label } }));
     edges.forEach((e) => add(e.data.label, "Enzyme", { kind: "enz", r: { id: e.id, title: e.data.label, edge: e } }));
+    Object.values(PUD).forEach((z) => { // v7.34: disorder names lead to the card that carries their panel
+      const h = z.at[0], n = compounds.find((c) => c.id === h), e = edges.find((x) => x.data.label === h);
+      const go = n ? { kind: n.data.rx || "cmp", r: { id: n.id, title: n.data.label, node: n } } : e ? { kind: "enz", r: { id: e.id, title: e.data.label, edge: e } } : null;
+      if (go) [z.name, ...z.also].forEach((x) => add(x, "Purine disorder", go));
+    });
     Object.entries(PATHWAYS).forEach(([id, x]) => add(x.label, "Pathway", { kind: "pth", r: { id, title: x.label } }));
     ELEMENTS.forEach((e) => add(e.name, "Element", { kind: "el", r: { id: e.sym, title: e.name } }));
     Object.entries(BONDS).forEach(([id, b]) => add(b.name, "Bond type", { kind: "bond", r: { id, title: b.name } }));
@@ -5096,7 +5929,7 @@ function Atlas() {
         data: {
           ...n.data,
           showLoc, showOrg: showOrgans,
-          dim: (matchIds ? !matchIds.has(n.id) && !n.data.title : false) || (focus ? !(n.data.path === focus || (focus === "gluconeogenesis" && GN_NODES.has(n.id)) || (focus === "glycogenolysis" && GL_NODES.has(n.id)) || (focus === "box" && BX_NODES.has(n.id))) && !(focus === "pharm" && RX_ANCHORS.has(n.id)) : false)
+          dim: (matchIds ? !matchIds.has(n.id) && !n.data.title : false) || (focus ? !(n.data.path === focus || (focus === "gluconeogenesis" && GN_NODES.has(n.id)) || (focus === "glycogenolysis" && GL_NODES.has(n.id)) || (focus === "box" && BX_NODES.has(n.id)) || (focus === "keto" && KT_NODES.has(n.id)) || (focus === "fol" && FL_NODES.has(n.id)) || (focus === "stero" && ST_NODES.has(n.id))) && !(focus === "pharm" && RX_ANCHORS.has(n.id)) : false)
             || (locFocus ? !n.data.title && !hasLoc(n.id, locFocus) : false) || (organFocus ? !n.data.title && !ORGAN_SET[organFocus].has(n.id) : false)
             || (rdxLit ? !n.data.title && !rdxLit.nodes.has(n.id) : false),
           hit: (matchIds ? matchIds.has(n.id) : false) || flash.includes(n.id),
@@ -5107,12 +5940,12 @@ function Atlas() {
 
   const shownEdges = useMemo(
     () => {
-      // Every line and arrowhead rests dimmed; hovering or picking a line lifts it to full strength, and while a search, pathway, location or organ
+      // Every line and arrowhead rests dimmed; picking a line (click) lifts it to full strength; pointer hover no longer highlights (v7.39), and while a search, pathway, location or organ
       // filter (or Follow e⁻ and H) is on, the lines that match stay at full strength against the faded rest.
       const REST = 0.4, filtering = !!(matchIds || focus || locFocus || organFocus || rdxLit);
       return edges.map((e) => {
         const faded =
-          (matchIds && !edgeHits.has(e.id) && !(matchIds.has(e.source) && matchIds.has(e.target))) || (focus && !(e.data.path === focus || (focus === "gluconeogenesis" && GN_EDGES.has(e.id)) || (focus === "glycogenolysis" && GL_EDGES.has(e.id)) || (focus === "box" && BX_EDGES.has(e.id)))) || (locFocus && !(hasLoc(e.source, locFocus) && hasLoc(e.target, locFocus))) || (organFocus && !(ORGAN_SET[organFocus].has(e.source) && ORGAN_SET[organFocus].has(e.target))) || (rdxLit && !rdxLit.edges.has(e.id));
+          (matchIds && !edgeHits.has(e.id) && !(matchIds.has(e.source) && matchIds.has(e.target))) || (focus && !(e.data.path === focus || (focus === "gluconeogenesis" && GN_EDGES.has(e.id)) || (focus === "glycogenolysis" && GL_EDGES.has(e.id)) || (focus === "box" && BX_EDGES.has(e.id)) || (focus === "keto" && KT_EDGES.has(e.id)) || (focus === "fol" && FL_EDGES.has(e.id)) || (focus === "stero" && ST_EDGES.has(e.id)))) || (locFocus && !(hasLoc(e.source, locFocus) && hasLoc(e.target, locFocus))) || (organFocus && !(ORGAN_SET[organFocus].has(e.source) && ORGAN_SET[organFocus].has(e.target))) || (rdxLit && !rdxLit.edges.has(e.id));
         const main = e.data.main;
         const color = PATHWAYS[e.data.path]?.color || "#FFFFFF";
         const stroke = main ? color : "#7b8594";
@@ -5343,7 +6176,7 @@ function Atlas() {
     else if (kind === "sp") cardT = "mol";
     else if (kind === "bond") cardT = "bond";
     else if (kind === "loc") { ids = nodes.filter((n) => hasLoc(n.id, r.id) && !n.data.title).map((n) => n.id); cardT = "loc"; }
-    else if (kind === "pth") { ids = nodes.filter((n) => n.data.path === r.id || (r.id === "gluconeogenesis" && GN_NODES.has(n.id)) || (r.id === "glycogenolysis" && GL_NODES.has(n.id)) || (r.id === "box" && BX_NODES.has(n.id))).map((n) => n.id); cardT = "path"; }
+    else if (kind === "pth") { ids = nodes.filter((n) => n.data.path === r.id || (r.id === "gluconeogenesis" && GN_NODES.has(n.id)) || (r.id === "glycogenolysis" && GL_NODES.has(n.id)) || (r.id === "box" && BX_NODES.has(n.id)) || (r.id === "keto" && KT_NODES.has(n.id)) || (r.id === "fol" && FL_NODES.has(n.id)) || (r.id === "stero" && ST_NODES.has(n.id))).map((n) => n.id); cardT = "path"; }
     const hasMap = ids.length > 0, hasCard = !!cardT;
     const doMap = hasMap && (wantMap || !hasCard), doCard = hasCard && (wantCard || !hasMap);
     if (kind === "pth" && doMap) { // a pathway is shown by isolating it
@@ -5410,6 +6243,9 @@ function Atlas() {
           {!wide && (
             <button className="omino-round omino-round--ghost" onClick={() => setSearchOpen((o) => !o)} aria-expanded={searchOpen} aria-label="Search" title="Search"><SearchGlyph size={15} /></button>
           )}
+          <a className={`omino-owbtn ${OWORLD_URL ? "" : "is-off"}`} href={OWORLD_URL || undefined} target="_blank" rel="noopener noreferrer" aria-disabled={!OWORLD_URL} aria-label="Open OWORLD" title={OWORLD_URL ? "Open OWORLD in a new tab" : "Set OWORLD_URL at the top of the file to turn this on"} onClick={(e) => { if (!OWORLD_URL) e.preventDefault(); }}>
+            <img className="omino-owbtn__icon" src={OWORLD_ICON} alt="" width="26" height="26" /><span className="omino-owbtn__logo">Open OWORLD</span>
+          </a>
           <button className={`omino-round ${navOn ? "is-on" : ""}`} onClick={() => setNavOn((v) => !v)} aria-pressed={navOn} aria-label="Navigation tools" title={navOn ? "Clear the canvas (hide navigation tools)" : "Show navigation tools"}>
             <Icon d={ICON.nav} />{navOn && <i />}
           </button>
@@ -5465,8 +6301,6 @@ function Atlas() {
         <ReactFlow
           nodes={nodesOut}
           edges={edgesOut}
-          onEdgeMouseEnter={(_, e) => { if (e.data?.fx !== "organ") setHoverEdge(e.id); }}
-          onEdgeMouseLeave={() => setHoverEdge(null)}
           onEdgeClick={pickEdge}
           onPaneClick={() => setTrack(null)}
           onNodesChange={onNodesChange}
@@ -5790,6 +6624,13 @@ const CSS = `
 .omino-pill { padding: 3px 10px; font: inherit; font-size: 12px; color: #FFFFFF; cursor: pointer; background: transparent; border: 1px solid var(--c); border-radius: 999px; }
 .omino-pill:hover { background: #1b1b1f; }
 .omino-ecard__list { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; font-size: 12px; color: #A1A1AA; }
+.omino-dz { margin-top: 8px; border: 1px solid #27272A; border-left: 3px solid #c4b5fd; border-radius: 10px; background: #18181B; }
+.omino-dz > summary { cursor: pointer; padding: 9px 12px; font-size: 13px; font-weight: 600; list-style: none; display: flex; justify-content: space-between; align-items: baseline; gap: 10px; }
+.omino-dz > summary::-webkit-details-marker { display: none; }
+.omino-dz > summary small { font-weight: 400; color: #A1A1AA; font-size: 11px; text-align: right; }
+.omino-dz__body { padding: 0 12px 12px; }
+.omino-dz__body h5 { margin: 12px 0 4px; font-size: 11px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: #A1A1AA; }
+.omino-dz__body p { margin: 0; font-size: 12px; line-height: 1.5; color: #D4D4D8; }
 .omino-link { padding: 0; font: inherit; color: #FFFFFF; cursor: pointer; background: none; border: 0; text-decoration: underline; text-underline-offset: 3px; text-decoration-color: #34343a; }
 .omino-link:hover { text-decoration-color: var(--c); }
 
@@ -5855,6 +6696,14 @@ const CSS = `
 .omino-top .omino-round--ghost { background: transparent; border-color: #27272A; color: #FFFFFF; }
 .omino-top .omino-round--ghost:hover { background: transparent; }
 @media (max-width: 639px) { .omino-top .omino-hdr-right { gap: 8px; } }
+/* Open OWORLD button: pill with the OWORLD wordmark, same 40px height as the round buttons */
+.omino-owbtn { display: inline-flex; align-items: center; gap: 8px; height: 40px; padding: 0 14px 0 7px; box-sizing: border-box; border: 1px solid #27272A; border-radius: 999px; background: #121212; color: #FFFFFF; text-decoration: none; font-family: 'Inter', Arial, 'Segoe UI', sans-serif; white-space: nowrap; }
+.omino-owbtn__icon { width: 26px; height: 26px; border-radius: 7px; display: block; }
+.omino-owbtn__logo { font-size: 14px; font-weight: 700; line-height: 1.2; letter-spacing: 0; }
+.omino-owbtn:hover { border-color: #38BDF8; }
+.omino-owbtn.is-off { opacity: .55; cursor: default; }
+.omino-owbtn.is-off:hover { border-color: #27272A; }
+@media (max-width: 639px) { .omino-owbtn { padding: 0 7px; } .omino-owbtn__logo { display: none; } }
 /* OMINO wordmark = OWORLD logo: Inter 800, 22px (20px on phones), line-height 1.2, no tracking, 4px 2px box */
 .omino-header .omino-wordmark { font-family: 'Inter', Arial, 'Segoe UI', sans-serif; font-size: 22px; font-weight: 800; line-height: 1.2; letter-spacing: 0; padding: 4px 2px; color: #FFFFFF; }
 @media (max-width: 639px) { .omino-header .omino-wordmark { font-size: 20px; } }
