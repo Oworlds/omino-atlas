@@ -1,3 +1,10 @@
+// v8.9 (cont.): while editing, Undo and Redo arrows appear on the canvas, top right, just under the Settings and Edit buttons (also Ctrl/Cmd+Z and Ctrl/Cmd+Shift+Z or Ctrl+Y). Every drag (a card or a whole group) and Reset all is one step; the steps are forgotten when you Save or Cancel.
+// v8.9: Edit mode moves whole groups. A drag on any card now carries its group with it: each pathway (with its title, enzymes' co-substrates and side cards), each organ hub (the hub with its ring of targets and drugs), and each pharmacology cluster (a target with the drugs placed beside it). The lines in the Edit bar switch between Groups and Cards; hold Alt while dragging to move one card. The group under the pointer is outlined; Save, Cancel (Esc) and Reset all work on groups exactly as on single cards, and the saved layout is still only the cards that moved (localStorage "omino.layout.v1").
+// v8.8: Edit button, right of Settings. Edit mode makes every card (and pathway title) draggable, with Save, Cancel (Esc) and Reset all in a bar at the top; Save keeps the arrangement on this device (localStorage "omino.layout.v1", only the cards that moved) and re-aims the lines at the sides that now face each other. Outside Edit mode cards are fixed, and P puts everything back and clears the saved layout. While editing, clicks do not open cards.
+// v8.7 part 4: the hypothalamic–pituitary axes block moved from 5800 px left of the atlas to open canvas below and beside heme breakdown & bilirubin, mirrored left to right so HPA and HPG (the axes that feed back on cortisol, testosterone and estradiol) are nearest the steroid block. Cross-axis line length falls from about 170,000 px to 45,000 px, no card overlaps, and no atlas card moves. HX_FLIP and HX_ORIGIN in the v8.7 block set the orientation and position.
+// v8.7 part 3: circulating hormones carry the Blood · lumen location tag; the Endocrine, Adrenal cortex and Gonads hubs now light up the hormone, tissue and cell nodes; every new axis has a pathway-card summary and lists its hormones, tissues and cells (no longer counted as enzymes). Remaining: visual tuning after a look at the layout.
+// v8.7 part 2: feedback loops (cortisol, T₃/T₄, sex steroids, GH, prolactin), parathyroid (chief and oxyphil cells, PTH), adrenal medulla (chromaffin cells, epinephrine, norepinephrine), PVN, arcuate and supraoptic nuclei; hormone arrows no longer appear as enzymes in search, and search picks open the hormone card. Still to do: location tags, organ-hub membership, pathway-card summaries.
+// v8.7: Hypothalamic–pituitary axes and endocrine histology, part 1. New block left of the atlas: HPA, HPG, HPGH, HPT, HPP and the posterior pituitary as chains of hormone, tissue and cell nodes (CRH → ACTH → adrenal → cortisol; GnRH → LH/FSH → ovary/testis → estradiol/testosterone; GHRH/ghrelin/somatostatin → GH; TRH → TSH → thyroid → T₃/T₄ and calcitonin; dopamine and TRH → prolactin; oxytocin and ADH), with inhibitory arrows dashed. Endocrine pancreas → islet → α, β, δ, ε and PP cells → their hormones. The adrenal, ovary and testis arrows join the existing cortisol, estradiol and testosterone structures. Each node opens a hormone / tissue / cell card (source, action, histology, clinical, links). Still to do: location tags, organ-hub membership, search terms, feedback loops (negative feedback arrows), and the remaining cell types (parathyroid, adrenal medulla, hypothalamic nuclei).
 // v8.6: Follow is one panel. The round Follow button in the top bar opens it with two tabs: Pathways (Back / Follow walks the canvas object by object, with the connection, its enzyme card and the 1/2 cycler; clicking a line, or the card arrows, opens it here instead of a floating card) and e⁻ and H (the glucose tour, unchanged). Closing it dismisses the standing point; the camera keeps the object clear of the panel.
 // v8.5: substrates (the co-substrate chips beside each molecule) are hidden on the canvas by default. The S button, the Substrates setting or the S key shows them; Default Settings hides them again. Opening a card or search result for a co-substrate still reveals them.
 // v8.4: periodic table panel runs down to the bottom of the canvas (rows stretch to fill it), and a Medically relevant / All elements toggle sits in its top bar. Medically relevant (default) shows the 71 elements with a body, drug, imaging or toxic role; All elements shows all 118. The legend lists only the categories on show.
@@ -1337,6 +1344,10 @@ const RING = { cx: 0, cy: 11 * STEP + 2100 };
 const VIEW_KEY = "omino.viewport.v1";
 const saveView = (v) => { try { if (v && [v.x, v.y, v.zoom].every(Number.isFinite)) localStorage.setItem(VIEW_KEY, JSON.stringify({ x: v.x, y: v.y, zoom: v.zoom })); } catch (e) { /* storage unavailable: nothing to remember */ } };
 const savedView = () => { try { const v = JSON.parse(localStorage.getItem(VIEW_KEY)); return v && [v.x, v.y, v.zoom].every(Number.isFinite) && v.zoom >= 0.05 && v.zoom <= 4 ? v : null; } catch (e) { return null; } };
+// v8.8: Edit mode. The positions the user moved and saved are kept on this device (like the viewport and the theme); only cards that differ from the built-in layout are stored.
+const LAYOUT_KEY = "omino.layout.v1";
+const loadLayout = () => { try { const o = JSON.parse(localStorage.getItem(LAYOUT_KEY)); return o && typeof o === "object" && !Array.isArray(o) ? o : {}; } catch (e) { return {}; } };
+const storeLayout = (map) => { try { if (Object.keys(map).length) localStorage.setItem(LAYOUT_KEY, JSON.stringify(map)); else localStorage.removeItem(LAYOUT_KEY); return true; } catch (e) { return false; } };
 // the opening view: centred on the TCA ring at a readable zoom; OMINO (home) returns here
 const homeViewport = () => {
   const el = document.querySelector(".omino-canvas"), cw = el ? el.clientWidth : window.innerWidth, ch = el ? el.clientHeight : window.innerHeight;
@@ -2511,6 +2522,117 @@ PATH_OF.c_pg = "pharm";
 
 // Auto-placement: each target sits on its preferred side of its metabolite, its drug just beyond it, and nothing overlaps
 // an existing node or crosses an existing arrow.
+/* ---- v8.7: hypothalamic–pituitary axes (HPA, HPG, HPGH, HPT, HPP, posterior pituitary) and endocrine histology (islet, thyroid, pituitary, adrenal, gonads) ---- */
+const HOR = {}, HX_EDGES = [];
+const HX_LEGACY = {};  // where the axes block used to sit; the placement passes below still measure its lines from there, so no atlas card moves
+const segPos = (id) => HX_LEGACY[id] || layout[id];
+{
+  // v8.7 part 4: the axes block used to float 5800 px left of the atlas, so the cortisol, testosterone and estradiol lines ran across the whole canvas.
+  // It now sits below and beside heme breakdown & bilirubin, in open canvas that nothing else uses. HX_FLIP mirrors it left to right so HPA and HPG,
+  // the two axes that feed back on those steroids, are the columns nearest the steroid block (cross-axis line length 170,000 px -> 45,000 px).
+  // HX_FLIP = false keeps the old left-to-right order, at another origin that is also free.
+  const HX_FLIP = true, SX = 480, SY = 420;
+  const HX_ORIGIN = HX_FLIP ? [100, 11900] : [-4660, 11340];  // canvas x of slot 0 and y of row 0
+  const hxPos = (sx, ry) => [HX_ORIGIN[0] + (HX_FLIP ? -sx : sx) * SX, HX_ORIGIN[1] + ry * SY];
+  const HX_OLD0 = Math.min(...Object.values(layout).map((p) => p[0])) - 5800;
+  const hxPlace = (id, sx, ry) => { layout[id] = hxPos(sx, ry); HX_LEGACY[id] = [HX_OLD0 + sx * SX, ry * SY]; };
+  Object.assign(PATHWAYS, {
+    hpa: { label: "HPA axis (stress)", color: "#f43f5e" }, hpg: { label: "HPG axis (gonads)", color: "#c084fc" }, hpgh: { label: "HPGH axis (growth)", color: "#4ade80" },
+    hpt: { label: "HPT axis (thyroid)", color: "#38bdf8" }, hpp: { label: "HPP axis (prolactin)", color: "#fb923c" }, post: { label: "Posterior pituitary", color: "#facc15" }, isl: { label: "Islets of Langerhans", color: "#2dd4bf" }, calc: { label: "Parathyroid and calcium", color: "#a3e635" }, med: { label: "Adrenal medulla", color: "#e879f9" },
+  });
+  Object.assign(KIND, { hormone: { label: "Hormone", color: "#f9a8d4" }, gland: { label: "Gland / tissue", color: "#fcd34d" }, cell: { label: "Endocrine cell", color: "#5eead4" } });
+  const HX_MORE = [
+    ["pth_g", "Para", "Parathyroid glands", "gland", "calc", -1.5, 5, "Posterior thyroid (usually four glands)", "Sense serum Ca²⁺ through the calcium-sensing receptor and release PTH when it falls.", "Primary hyperparathyroidism (adenoma): stones, bones, groans. After thyroidectomy, hypoparathyroidism causes tetany.", "Mostly chief cells in cords, with clusters of oxyphil cells and fat that increases with age."],
+    ["chief", "Chief", "Chief cells", "cell", "calc", -2.5, 6, "Parathyroid", "Make PTH; the calcium-sensing receptor (Gq) suppresses release when calcium is high.", "Adenoma or hyperplasia: hypercalcaemia with raised PTH.", "Small polygonal cells with pale to clear cytoplasm and round central nuclei; PTH-positive."],
+    ["oxy", "Oxy", "Oxyphil cells", "cell", "calc", -0.5, 6, "Parathyroid", "Appear at puberty; function unclear and they probably make little PTH.", "Oncocytic parathyroid adenomas.", "Larger cells with abundant pink granular cytoplasm (packed mitochondria) and small dark nuclei."],
+    ["pth", "PTH", "Parathyroid hormone", "hormone", "calc", -2.5, 7, "Parathyroid chief cells", "Raises serum calcium: bone resorption (RANKL), renal Ca²⁺ reabsorption, phosphate loss and 1α-hydroxylase for calcitriol.", "High: primary hyperparathyroidism, secondary (CKD). Low: hypocalcaemia and tetany."],
+    ["adm", "Med", "Adrenal medulla", "gland", "med", -1.5, 10, "Centre of the adrenal gland", "A modified sympathetic ganglion driven by cholinergic preganglionic fibres; releases catecholamines in fight or flight.", "Pheochromocytoma: episodic hypertension, sweating, palpitations.", "Ovoid groups of chromaffin cells around sinusoids, with a central vein; brown with chromium salts."],
+    ["chrom", "Chrom", "Chromaffin cells", "cell", "med", -1.5, 11, "Adrenal medulla", "Make epinephrine (about 80%; PNMT is induced by cortisol) and norepinephrine from tyrosine.", "Pheochromocytoma; neuroblastoma arises from related neural crest.", "Large pale polygonal cells with fine dense-core granules; chromogranin- and synaptophysin-positive."],
+    ["epi", "Epi", "Epinephrine", "hormone", "med", -2.5, 12, "Adrenal medulla", "α and β agonist: raises heart rate, dilates bronchi, drives glycogenolysis and lipolysis.", "Anaphylaxis, cardiac arrest, additive in local anaesthetics."],
+    ["ne", "NE", "Norepinephrine", "hormone", "med", -0.5, 12, "Adrenal medulla and sympathetic nerves", "Mostly α₁ and β₁: vasoconstriction and stronger contraction.", "Septic-shock vasopressor; high in pheochromocytoma."],
+    ["pvn", "PVN", "Paraventricular nucleus", "gland", "", 0, -1, "Hypothalamus", "Parvocellular neurons release CRH and TRH into the portal vessels; magnocellular neurons make oxytocin and ADH for the posterior pituitary.", "Damage: diabetes insipidus, central hypothyroidism.", "Dense clusters of neurosecretory neurons beside the third ventricle; magnocellular cells are large with prominent Nissl substance."],
+    ["arc", "ARC", "Arcuate nucleus", "gland", "", 4.5, -1, "Hypothalamus", "Releases GHRH and dopamine into the portal vessels; also holds appetite neurons (NPY/AgRP, POMC) and kisspeptin neurons that drive GnRH.", "Damage: obesity.", "Neurons at the base of the third ventricle near the median eminence, where terminals meet the portal capillaries."],
+    ["son", "SON", "Supraoptic nucleus", "gland", "post", 9, -1, "Hypothalamus", "Large magnocellular neurons make mainly ADH, plus oxytocin; axons run to the posterior pituitary.", "Head injury or lesions: central diabetes insipidus.", "Large neurons with prominent Nissl substance above the optic chiasm; their axons form the hypothalamo-hypophyseal tract."],
+  ];
+  const HX_MORE_E = [
+    ["pth_g", "chief", "Chief cells", "calc"], ["pth_g", "oxy", "Oxyphil cells", "calc"], ["chief", "pth", "PTH", "calc"], ["adr", "adm", "Cortisol drains to the medulla (induces PNMT)", "med"],
+    ["adm", "chrom", "Chromaffin cells", "med"], ["chrom", "epi", "Epinephrine (~80%)", "med"], ["chrom", "ne", "Norepinephrine", "med"],
+    ["pvn", "crh", "CRH neurons", "hpa"], ["pvn", "trh", "TRH neurons", "hpt"], ["pvn", "oxt", "Magnocellular neurons", "post"], ["son", "adh", "Magnocellular neurons", "post"], ["son", "oxt", "Magnocellular neurons", "post"], ["arc", "ghrh", "GHRH neurons", "hpgh"], ["arc", "da", "TIDA neurons", "hpp"],
+    ["cortisol", "crh", "Negative feedback", "hpa", 1], ["cortisol", "acth", "Negative feedback", "hpa", 1], ["t34", "trh", "Negative feedback", "hpt", 1], ["t34", "tsh", "Negative feedback", "hpt", 1],
+    ["testo", "gnrh", "Negative feedback", "hpg", 1], ["e2", "gnrh", "Feedback (negative; positive at the mid-cycle surge)", "hpg", 1], ["gh", "ghrh", "Negative feedback (via IGF-1)", "hpgh", 1], ["prl", "da", "Short loop: stimulates DA neurons", "hpp"],
+  ];
+  // [id, tile symbol, label, kind, pathway, slot, row, where made, what it does, clinical, histology]
+  [
+    ["crh", "CRH", "Corticotropin-releasing hormone", "hormone", "hpa", 0, 0, "Hypothalamus (paraventricular nucleus)", "41-aa peptide sent down the portal vessels under stress; drives POMC transcription in pituitary corticotrophs. Cortisol feeds back to switch it off.", "Chronic drive: Cushing disease, melancholic depression. The CRH test separates pituitary from ectopic ACTH."],
+    ["acth", "ACTH", "Adrenocorticotropic hormone", "hormone", "hpa", 0, 1, "Anterior pituitary (corticotrophs)", "39-aa POMC fragment; binds MC2R in the adrenal cortex to drive cortisol and adrenal androgens. Aldosterone depends mostly on angiotensin II and K⁺.", "High: Cushing disease, Addison disease, CAH. Low: secondary adrenal insufficiency."],
+    ["msh", "MSH", "Melanocyte-stimulating hormone (α-MSH)", "hormone", "hpa", -1, 1, "POMC cleavage in corticotrophs", "Acts on MC1R in melanocytes (pigment) and MC4R in the hypothalamus (satiety).", "High POMC and ACTH darken skin (Addison disease); MC4R defects cause obesity."],
+    ["bend", "β-End", "β-Endorphin", "hormone", "hpa", -2, 1, "POMC cleavage in corticotrophs", "Opioid-receptor agonist released with ACTH in stress; blunts pain.", "Shares its precursor with ACTH, so ACTH-secreting tumours raise it too."],
+    ["gnrh", "GnRH", "Gonadotropin-releasing hormone", "hormone", "hpg", 1.5, 0, "Hypothalamus (arcuate and preoptic neurons)", "Decapeptide released in pulses; pulses make LH and FSH, continuous exposure shuts them down.", "GnRH agonists (leuprolide) lower sex steroids: prostate cancer, endometriosis, precocious puberty. Kallmann syndrome: no GnRH neurons."],
+    ["lh", "LH", "Luteinizing hormone", "hormone", "hpg", 1, 1, "Anterior pituitary (gonadotrophs)", "Leydig cells make testosterone; theca cells make androgens, and the mid-cycle LH surge triggers ovulation.", "PCOS: raised LH:FSH ratio. Low in hypogonadotropic hypogonadism."],
+    ["fsh", "FSH", "Follicle-stimulating hormone", "hormone", "hpg", 2, 1, "Anterior pituitary (gonadotrophs)", "Sertoli cells (spermatogenesis, inhibin B); granulosa cells (follicle growth, aromatase → estradiol).", "High FSH: primary ovarian insufficiency, menopause, testicular failure."],
+    ["ghrh", "GHRH", "Growth hormone-releasing hormone", "hormone", "hpgh", 3, 0, "Hypothalamus (arcuate nucleus)", "Stimulates GH release and somatotroph growth; ghrelin and sleep raise it, somatostatin and IGF-1 lower it.", "GHRH-secreting tumours are a rare cause of acromegaly."],
+    ["gh", "GH", "Growth hormone", "hormone", "hpgh", 3, 1, "Anterior pituitary (somatotrophs)", "Drives IGF-1 in the liver (growth); also lipolytic and anti-insulin.", "Excess: gigantism (children), acromegaly (adults). Deficiency: short stature."],
+    ["ghrelin", "Ghr", "Ghrelin", "hormone", "hpgh", 3, -1, "Stomach; also ε cells of the islet", "Hunger hormone: rises before meals; acts on GHS-R to stimulate appetite and GH release.", "High in Prader–Willi syndrome."],
+    ["sst", "SST", "Somatostatin", "hormone", "hpgh", 4, 0, "Hypothalamus (periventricular nucleus); also δ cells and gut", "Inhibits GH and TSH; paracrine brake on glucagon, insulin and gut hormones.", "Octreotide: acromegaly, carcinoid, VIPoma, variceal bleeding."],
+    ["trh", "TRH", "Thyrotropin-releasing hormone", "hormone", "hpt", 5, 0, "Hypothalamus (paraventricular nucleus)", "Tripeptide that stimulates TSH and also prolactin.", "Primary hypothyroidism raises TRH and TSH, which can lift prolactin."],
+    ["tsh", "TSH", "Thyroid-stimulating hormone", "hormone", "hpt", 5, 1, "Anterior pituitary (thyrotrophs)", "Glycoprotein (α + β subunit) acting on the thyroid TSH receptor; T₃ and T₄ feed back negatively.", "High: primary hypothyroidism. Low: hyperthyroidism or central hypothyroidism. Graves antibodies mimic TSH."],
+    ["t34", "T₃/T₄", "Triiodothyronine + tetraiodothyronine", "hormone", "hpt", 5, 3, "Thyroid follicular cells", "Set metabolic rate, heat, heart rate and development. T₄ is the main output; T₃ is the active form made by deiodinases.", "Hyper- and hypothyroidism; congenital hypothyroidism harms brain development."],
+    ["da", "DA", "Dopamine (tuberoinfundibular)", "hormone", "hpp", 6, 0, "Hypothalamus (arcuate nucleus)", "Tonic brake on lactotrophs through D₂ receptors (the prolactin-inhibiting factor); it also restrains TSH.", "D₂ blockers and stalk compression raise prolactin; cabergoline lowers it."],
+    ["prl", "PRL", "Prolactin", "hormone", "hpp", 6, 1, "Anterior pituitary (lactotrophs)", "Drives milk synthesis in mammary alveoli and suppresses GnRH. Raised by TRH, oestrogen and suckling.", "Prolactinoma: galactorrhoea, amenorrhoea, low libido; treat with dopamine agonists."],
+    ["oxt", "OXT", "Oxytocin", "hormone", "post", 7.5, 0, "Hypothalamus (paraventricular and supraoptic nuclei), released from the posterior pituitary", "Contracts myoepithelial cells (milk let-down) and uterine smooth muscle in labour.", "Synthetic oxytocin induces labour and controls postpartum haemorrhage."],
+    ["adh", "ADH", "Antidiuretic hormone (vasopressin)", "hormone", "post", 8.5, 0, "Hypothalamus (supraoptic and paraventricular nuclei), released from the posterior pituitary", "V2 receptors insert aquaporin-2 in collecting-duct principal cells; V1 constricts vessels.", "Deficiency: central diabetes insipidus. Excess: SIADH (hyponatraemia)."],
+    ["cal", "CT", "Calcitonin", "hormone", "hpt", 4, 4, "Thyroid parafollicular (C) cells", "Lowers serum calcium by inhibiting osteoclasts; a minor role in adults.", "Tumour marker of medullary thyroid carcinoma."],
+    ["glucagon", "Gcg", "Glucagon", "hormone", "isl", 1, 8, "Pancreatic α cells", "Raises blood glucose: glycogenolysis, gluconeogenesis and ketogenesis in the liver (cAMP–PKA).", "Glucagon injection treats severe hypoglycaemia; glucagonoma: necrolytic migratory erythema."],
+    ["insulin", "Ins", "Insulin", "hormone", "isl", 2, 8, "Pancreatic β cells", "Lowers glucose: GLUT4 uptake, glycogen, fat and protein synthesis. Made as proinsulin; C-peptide is released with it.", "Diabetes; insulinoma gives hypoglycaemia with high C-peptide."],
+    ["pp", "PP", "Pancreatic polypeptide", "hormone", "isl", 5, 8, "Pancreatic PP cells", "Inhibits pancreatic exocrine secretion and gallbladder contraction; a satiety signal.", "Raised in some pancreatic neuroendocrine tumours."],
+    ["pit_a", "Ant", "Anterior pituitary (adenohypophysis)", "gland", "", 2.5, -2, "Base of the brain (sella turcica)", "Glandular epithelium fed by the hypophyseal portal system; makes ACTH, TSH, FSH, LH, GH and prolactin.", "Adenomas (prolactinoma most common), hypopituitarism, Sheehan syndrome.", "Cords of cells around sinusoids. Acidophils (GH, prolactin) stain pink; basophils (ACTH, TSH, FSH, LH) blue-purple and PAS-positive; chromophobes are pale."],
+    ["pit_p", "Post", "Posterior pituitary (neurohypophysis)", "gland", "post", 8, -2, "Base of the brain, continuous with the hypothalamus", "Stores and releases oxytocin and ADH made in hypothalamic neurons; it makes no hormones of its own.", "Stalk damage: central diabetes insipidus.", "Pale and fibrous: unmyelinated axons, pituicytes (glia) and Herring bodies (swollen terminals holding hormone with neurophysin). No secretory epithelium."],
+    ["adr", "Adr", "Adrenal gland", "gland", "hpa", 0, 2, "Above the kidney", "Cortex: cortisol (fasciculata), aldosterone (glomerulosa), androgens (reticularis); medulla: catecholamines. ACTH drives mainly fasciculata and reticularis.", "Cushing, Addison, CAH, Conn syndrome, pheochromocytoma.", "Capsule, then glomerulosa (arcs), fasciculata (straight cords of lipid-rich, pale foamy cells), reticularis (anastomosing cords), then medulla of chromaffin cells. GFR: salt, sugar, sex."],
+    ["ovary", "Ov", "Ovary", "gland", "hpg", 1, 2, "Pelvis", "Theca cells make androgens (LH); granulosa cells aromatise them to estradiol (FSH). The corpus luteum makes progesterone.", "PCOS, premature ovarian insufficiency.", "Cortex of follicles from primordial to Graafian, with granulosa and theca layers; corpus luteum of large pale granulosa-lutein cells."],
+    ["testis", "Tes", "Testis", "gland", "hpg", 2, 2, "Scrotum", "Leydig cells (LH) make testosterone; Sertoli cells (FSH) support spermatogenesis and make inhibin B and ABP.", "Hypogonadism, Klinefelter syndrome, testicular tumours.", "Seminiferous tubules lined by germ cells and tall Sertoli cells; Leydig cells (eosinophilic, Reinke crystals) lie in the interstitium."],
+    ["thy", "Thy", "Thyroid gland", "gland", "hpt", 5, 2, "Anterior neck", "Follicular cells take up iodide, make thyroglobulin and release T₃ and T₄; parafollicular cells make calcitonin.", "Graves disease, Hashimoto thyroiditis, goitre, thyroid cancers.", "Follicles of simple cuboidal epithelium around pink colloid (thyroglobulin). Active follicles: columnar cells, scalloped colloid; resting follicles: flat cells, abundant colloid."],
+    ["ccell", "C", "Parafollicular (C) cells", "cell", "hpt", 4, 3, "Thyroid, beside and between follicles", "Neuroendocrine cells that make calcitonin; they do not touch the colloid.", "C-cell hyperplasia and medullary thyroid carcinoma (RET, MEN2).", "Larger, pale-staining cells, single or in small clusters in the follicle wall or between follicles; calcitonin-positive; amyloid stroma in medullary carcinoma."],
+    ["mam_p", "Mam", "Mammary gland (milk production)", "gland", "hpp", 6, 2, "Breast", "Prolactin with oestrogen and progesterone builds lobules; prolactin drives milk synthesis in alveolar cells.", "Galactorrhoea in hyperprolactinaemia.", "Lobules of secretory alveoli (cuboidal cells with lipid droplets) in loose stroma; lactating alveoli are distended with milk."],
+    ["mam_e", "Mam", "Mammary gland (milk ejection)", "gland", "post", 7.5, 2, "Breast", "Suckling releases oxytocin; myoepithelial cells contract around alveoli and ducts and eject milk (let-down reflex).", "Stress can inhibit oxytocin release and let-down.", "Myoepithelial cells with basket-like processes sit between the epithelium and the basement membrane of alveoli and ducts; smooth-muscle actin-positive."],
+    ["kid", "Kid", "Kidney (collecting duct)", "gland", "post", 8.5, 2, "Retroperitoneum", "ADH acts on principal cells to insert aquaporin-2 and concentrate urine.", "Nephrogenic diabetes insipidus: lithium, hypercalcaemia.", "Simple cuboidal epithelium with pale principal cells (AQP2, ADH-responsive) and darker intercalated cells (acid–base)."],
+    ["pan", "Panc", "Endocrine pancreas", "gland", "isl", 3, 5, "Retroperitoneum behind the stomach", "Only 1–2% of the pancreas is endocrine; the rest is exocrine acini. Islets are scattered, most numerous in the tail.", "Diabetes, pancreatitis, pancreatic neuroendocrine tumours.", "Pale islets among darker, basophilic acini; dense fenestrated capillary network."],
+    ["islet", "Islet", "Islets of Langerhans", "gland", "isl", 3, 6, "Pancreas", "Clusters of five cell types with paracrine cross-talk: δ cells inhibit α and β cells; insulin inhibits glucagon.", "Type 1 diabetes: autoimmune β-cell loss (insulitis). Type 2: β-cell exhaustion with islet amyloid (IAPP).", "Round pale clusters of polygonal cells in cords on capillaries. H&E cannot tell the cell types apart, so immunostains (insulin, glucagon, somatostatin) are used."],
+    ["alpha", "α", "α (alpha) cell", "cell", "isl", 1, 7, "Islet periphery (rodents), scattered in humans", "About 20% of islet cells; secrete glucagon when glucose is low.", "Glucagonoma; excess α-cell glucagon in type 2 diabetes.", "Dense, eccentric granule core with a narrow halo on EM; red with Gomori or Mallory stains; glucagon-positive."],
+    ["beta", "β", "β (beta) cell", "cell", "isl", 2, 7, "Islet core", "About 60–70% of islet cells; secrete insulin and C-peptide as glucose rises (GCK, K-ATP, Ca²⁺).", "Destroyed in type 1 diabetes; insulinoma.", "Crystalline dense core (zinc–insulin) with a wide clear halo on EM; blue with aldehyde fuchsin or Gomori chrome-alum haematoxylin."],
+    ["delta", "δ", "δ (delta) cell", "cell", "isl", 3, 7, "Islet periphery", "About 5–10%; make somatostatin, a paracrine brake on α and β cells.", "Somatostatinoma: diabetes, gallstones, steatorrhoea.", "Large, pale, homogeneous granules filling the cell; somatostatin-positive."],
+    ["eps", "ε", "ε (epsilon) cell", "cell", "isl", 4, 7, "Scattered in islets", "Under 1% of islet cells; make ghrelin.", "Role in disease unclear.", "Rare; only reliably found by ghrelin immunostaining."],
+    ["ppc", "PP", "PP (F) cell", "cell", "isl", 5, 7, "Mostly the head and uncinate process", "About 1–5% of islet cells; make pancreatic polypeptide.", "PPoma (rare).", "Small cells at the islet edge, also scattered in acini and ducts; PP-positive."],
+  ].concat(HX_MORE).forEach(([id, sym, label, kind, path, sx, ry, where, does, clin, hist]) => {
+    HOR[id] = { id, label, kind, path, where, does, clin, hist };
+    ATOM_R[sym] = 1.75;
+    NODES.push({ id, kind, hor: true, glyph: { symbol: sym }, label, formula: where.split(/[,(]/)[0].trim(), note: does });
+    hxPlace(id, sx, ry);
+    if (path) PATH_OF[id] = path;
+  });
+  [["sst_p", "sst", "SST", "Somatostatin (δ cell)", 3], ["ghr_p", "ghrelin", "Ghr", "Ghrelin (ε cell)", 4]].forEach(([id, from, sym, label, sx]) => {
+    HOR[id] = { ...HOR[from], id, label, path: "isl" };
+    NODES.push({ id, kind: "hormone", hor: true, glyph: { symbol: sym }, label, formula: "Islet", note: HOR[from].does });
+    hxPlace(id, sx, 8); PATH_OF[id] = "isl";
+  });
+  // [source, target, label, pathway, dashed = inhibits]
+  [
+    ["crh", "acth", "Corticotrophs (CRHR1)", "hpa"], ["crh", "msh", "POMC cleavage", "hpa"], ["crh", "bend", "POMC cleavage", "hpa"], ["acth", "adr", "MC2R, adrenal cortex", "hpa"], ["adr", "cortisol", "Cortisol synthesis (zona fasciculata)", "hpa"],
+    ["gnrh", "lh", "Gonadotrophs (GnRHR)", "hpg"], ["gnrh", "fsh", "Gonadotrophs (GnRHR)", "hpg"], ["lh", "testis", "Leydig cells (LHR)", "hpg"], ["fsh", "testis", "Sertoli cells (FSHR)", "hpg"], ["lh", "ovary", "Theca cells (LHR)", "hpg"], ["fsh", "ovary", "Granulosa cells (FSHR)", "hpg"], ["ovary", "e2", "Estradiol", "hpg"], ["testis", "testo", "Testosterone", "hpg"],
+    ["ghrelin", "ghrh", "Stimulates (GHS-R)", "hpgh"], ["ghrh", "gh", "Somatotrophs (GHRHR)", "hpgh"], ["sst", "gh", "Inhibits", "hpgh", 1],
+    ["trh", "tsh", "Thyrotrophs (TRHR)", "hpt"], ["sst", "tsh", "Inhibits", "hpt", 1], ["da", "tsh", "Inhibits", "hpt", 1], ["tsh", "thy", "TSH receptor", "hpt"], ["thy", "t34", "Follicular cells", "hpt"], ["thy", "ccell", "Parafollicular cells", "hpt"], ["ccell", "cal", "Calcitonin", "hpt"],
+    ["trh", "prl", "Stimulates (+)", "hpp"], ["da", "prl", "Inhibits (D₂)", "hpp", 1], ["prl", "mam_p", "Lactation (PRLR)", "hpp"],
+    ["oxt", "mam_e", "Myoepithelial contraction (OXTR)", "post"], ["adh", "kid", "V2 receptor, principal cells", "post"],
+    ["pan", "islet", "", "isl"], ["islet", "alpha", "~20%", "isl"], ["islet", "beta", "~60–70%", "isl"], ["islet", "delta", "~5–10%", "isl"], ["islet", "eps", "<1%", "isl"], ["islet", "ppc", "~1–5%", "isl"],
+    ["alpha", "glucagon", "Glucagon", "isl"], ["beta", "insulin", "Insulin", "isl"], ["delta", "sst_p", "Somatostatin", "isl"], ["eps", "ghr_p", "Ghrelin", "isl"], ["ppc", "pp", "Pancreatic polypeptide", "isl"],
+  ].concat(HX_MORE_E).forEach(([source, target, label, path, dash], i) => {
+    const e = { id: "hx" + i, source, target, label, main: true, auto: true, hx: true, path, ...(dash ? { dash: true } : {}) };
+    EDGES.push(e); HX_EDGES.push(e);
+  });
+  [["calc", -1.5, 8.2], ["med", -1.5, 13], ["hpa", 0, 4.3], ["hpg", 1.5, 4.3], ["hpgh", 3, 4.3], ["hpt", 5.4, 4.3], ["hpp", 6.6, 4.3], ["post", 8, 4.3], ["isl", 3, 9.5]].forEach(([p, sx, ry]) => {
+    NODES.push({ id: "t_" + p, kind: "pathway", title: true, label: PATHWAYS[p].label, formula: "", note: "", path: p });
+    hxPlace("t_" + p, sx, ry);
+  });
+}
 const RX_ALL = [...NODES];
 const hOfNode = (n) => (n.title ? 60 : n.kind === "cofactor" ? chipDims(n)[1] : n.mol ? art(MOLS[n.mol]).h + 64 : n.glyph ? 100 : 130);
 const boxAt = (x, y, w, h, m = 0) => ({ x0: x - w / 2 - m, x1: x + w / 2 + m, y0: y - h / 2 - m, y1: y + h / 2 + m });
@@ -2524,7 +2646,7 @@ const segHitsBox = ([ax, ay], [bx, by], b) => {
   return true;
 };
 const placedBoxes = RX_ALL.filter((n) => layout[n.id]).map((n) => ({ id: n.id, box: boxAt(layout[n.id][0], layout[n.id][1], sizeOf(n).w, hOfNode(n), 22) }));
-const placedSegs = EDGES.filter((e) => layout[e.source] && layout[e.target]).map((e) => [layout[e.source], layout[e.target]]);
+const placedSegs = EDGES.filter((e) => layout[e.source] && layout[e.target]).map((e) => [segPos(e.source), segPos(e.target)]);
 const SIDE_ANG = { l: [180, 168, 192, 156, 204, 144, 216, 132, 228, 120, 240], r: [0, 12, -12, 24, -24, 36, -36, 48, -48, 60, -60] };
 function placeBeside(anchorId, w, h, side, d0) {
   const [ax, ay] = layout[anchorId];
@@ -2776,6 +2898,7 @@ Object.entries({
 }).forEach(([l, ids]) => ids.split(" ").forEach((id) => (LOC_OF[id] = [...(LOC_OF[id] || []), l])));
 Object.entries({ cyt: "andros e1s thcort thcone pdiol ptriol allothf cortol cortolone", er: "testog ohf6 e3g", ext: "andros testog e1s thcort thcone pdiol ptriol allothf cortol cortolone ohf6 e3g" }).forEach(([l, ids]) => ids.split(" ").forEach((id) => (LOC_OF[id] = [...(LOC_OF[id] || []), l]))); // v7.31
 Object.entries({ cyt: "adenine inosine adenosine guanosine hypox guanine xanth uricacid allantoin", ext: "adenine adenosine hypox xanth uricacid allantoin" }).forEach(([l, ids]) => ids.split(" ").forEach((id) => (LOC_OF[id] = [...(LOC_OF[id] || []), l]))); // v7.33
+Object.values(HOR).forEach((h) => { if (h.kind === "hormone") LOC_OF[h.id] = ["ext"]; }); // v8.7: circulating hormones sit in blood
 const hasLoc = (id, l) => (LOC_OF[id] || []).includes(l);
 
 /* ------------------------------ organ hubs ------------------------------ */
@@ -3556,6 +3679,11 @@ ORG_OF.d_tamox = [...ORG_OF.d_tamox, "on"]; ORG_OF.d_colch = ORG_OF.d_colch.filt
     RX_ACTS.forEach((a) => { if (set.has(a.target)) set.add(a.met); });
     ORGAN_SET[o] = set;
   });
+  { // v8.7: endocrine hormones, tissues and cells join the Endocrine, Adrenal cortex and Gonads hubs
+    const HUB = { en: Object.keys(HOR), ad: ["adr", "adm", "chrom", "epi", "ne", "acth", "crh", "msh", "bend", "pvn"], go: ["gnrh", "lh", "fsh", "ovary", "testis", "arc"] };
+    Object.entries(HUB).forEach(([o, ids]) => { if (ORGAN_SET[o]) ids.forEach((id) => { ORGAN_SET[o].add(id); ORG_OF[id] = [...new Set([...(ORG_OF[id] || []), o])]; }); });
+    ["cortisol", "testo", "e2"].forEach((id) => { ORGAN_SET.en?.add(id); });
+  }
   // vitamins: cofactor links to the metabolites and targets they work with (shown while the hub is selected), and vitamin-to-vitamin links
   VIT_ORDER.forEach((v) => VIT[v].links.forEach(([n, label]) => {
     ORGAN_SET.vt.add(n);
@@ -4047,7 +4175,7 @@ const OVERLAP_MOVES = [];
       const [x0, y0] = layout[s.id], [w, h] = boxSize(s);
       // arrows to keep clear of: those of the molecule this satellite sits next to (the nearest one)
       const home = anchors.reduce((a, b) => (Math.hypot(layout[b.id][0] - x0, layout[b.id][1] - y0) < Math.hypot(layout[a.id][0] - x0, layout[a.id][1] - y0) ? b : a));
-      const segs = arrows.filter((e) => (e.source === home.id || e.target === home.id) && e.source !== s.id && e.target !== s.id).map((e) => [layout[e.source], layout[e.target]]);
+      const segs = arrows.filter((e) => (e.source === home.id || e.target === home.id) && e.source !== s.id && e.target !== s.id).map((e) => [segPos(e.source), segPos(e.target)]);
       const free = (x, y) => {
         const b = boxAt(x, y, w, h, SEP_NODE / 2);
         return ![...boxes].some(([id, o]) => id !== s.id && boxHit(o, b)) && !segs.some(([p, q]) => segHitsBox(p, q, boxAt(x, y, w, h, SEP_EDGE)));
@@ -4101,7 +4229,7 @@ const NO_OVERLAP_MOVES = [];
     let segs = [];
     if (isSatellite(n) && anchors.length) {
       const home = anchors.reduce((a, b) => (Math.hypot(layout[b.id][0] - x0, layout[b.id][1] - y0) < Math.hypot(layout[a.id][0] - x0, layout[a.id][1] - y0) ? b : a));
-      segs = arrows.filter((e) => (e.source === home.id || e.target === home.id) && e.source !== id && e.target !== id).map((e) => [layout[e.source], layout[e.target]]);
+      segs = arrows.filter((e) => (e.source === home.id || e.target === home.id) && e.source !== id && e.target !== id).map((e) => [segPos(e.source), segPos(e.target)]);
     }
     const free = (x, y, keepEdges) => {
       const b = mk(id, x, y);
@@ -4146,10 +4274,14 @@ const initialNodes = NODES.map((n) => ({
 }));
 
 const HOME_POS = new Map(initialNodes.map((n) => [n.id, n.position])); // where every element starts, for the P (reset positions) button
+const SAVED_LAYOUT = loadLayout();
+const validPos = (p) => Array.isArray(p) && p.length === 2 && p.every((v) => Number.isFinite(v) && Math.abs(v) < 1e6);
+const startNodes = initialNodes.map((n) => (validPos(SAVED_LAYOUT[n.id]) ? { ...n, position: { x: SAVED_LAYOUT[n.id][0], y: SAVED_LAYOUT[n.id][1] } } : n)); // the layout the user saved in Edit mode, else the built-in one
+const autoHandles = (sx, sy, tx, ty) => { const dx = tx - sx, dy = ty - sy; return Math.abs(dx) > Math.abs(dy) ? (dx > 0 ? ["r", "l"] : ["l", "r"]) : dy > 0 ? ["b", "t"] : ["t", "b"]; };
 const handles = (e) => {
   if (!e.auto) return [e.sh || "b", e.th || "t"];
-  const [sx, sy] = layout[e.source], [tx, ty] = layout[e.target], dx = tx - sx, dy = ty - sy;
-  return Math.abs(dx) > Math.abs(dy) ? (dx > 0 ? ["r", "l"] : ["l", "r"]) : dy > 0 ? ["b", "t"] : ["t", "b"];
+  const [sx, sy] = validPos(SAVED_LAYOUT[e.source]) ? SAVED_LAYOUT[e.source] : layout[e.source], [tx, ty] = validPos(SAVED_LAYOUT[e.target]) ? SAVED_LAYOUT[e.target] : layout[e.target];
+  return autoHandles(sx, sy, tx, ty);
 };
 const initialEdges = EDGES.map((e) => ({
   id: e.id,
@@ -4158,8 +4290,52 @@ const initialEdges = EDGES.map((e) => ({
   target: e.target,
   sourceHandle: handles(e)[0],
   targetHandle: handles(e)[1],
-  data: { main: !!e.main, how: e.how, label: e.label, path: e.path || PATH_OF[e.target] || PATH_OF[e.source], fx: e.fx, pharm: !!e.fx, org: e.org, cross: !!e.cross, lshift: !!e.lshift },
+  data: { auto: !!e.auto, main: !!e.main, hx: !!e.hx, how: e.how, label: e.label, path: e.path || PATH_OF[e.target] || PATH_OF[e.source], fx: e.fx, pharm: !!e.fx, org: e.org, cross: !!e.cross, lshift: !!e.lshift },
 }));
+
+// v8.9: Edit groups. Every card belongs to one group, and in Edit mode a drag moves the whole group.
+//   path:<id>   a pathway: its cards, its title and the co-substrate cards that hang on it
+//   organ:<id>  an organ hub with the ring of targets and drugs around it
+//   rx:<id>     pharmacology: one target with the drugs that were placed beside it (a drug follows its first target)
+// Cards that belong to none of these join the group most of their neighbours are in, and a card with no such neighbours moves alone.
+const EDIT_GROUPS = (() => {
+  const of = new Map(), names = new Map(), members = new Map();
+  const put = (id, key, name) => { of.set(id, key); if (!names.has(key)) names.set(key, name); };
+  const byId = new Map(initialNodes.map((n) => [n.id, n]));
+  const primary = new Map();
+  RX_EFFECTS.forEach((e) => { if (!primary.has(e.drug)) primary.set(e.drug, e.target); });
+  initialNodes.forEach((n) => {
+    const d = n.data;
+    if (d.organ && ORGANS[d.organ]) put(n.id, "organ:" + d.organ, `${ORGANS[d.organ].label} hub`);
+    else if (d.rx === "target") put(n.id, "rx:" + n.id, `Pharmacology · ${d.label}`);
+    else if (d.path && d.path !== "pharm" && PATHWAYS[d.path]) put(n.id, "path:" + d.path, PATHWAYS[d.path].label);
+  });
+  initialNodes.forEach((n) => {
+    if (of.has(n.id) || n.data.rx !== "drug") return;
+    const t = primary.get(n.id), k = t && byId.has(t) ? of.get(t) : null;
+    if (k) put(n.id, k, names.get(k)); else put(n.id, "rx:" + n.id, `Pharmacology · ${n.data.label}`);
+  });
+  const nb = new Map(initialNodes.map((n) => [n.id, []]));
+  initialEdges.forEach((e) => { nb.get(e.source)?.push(e.target); nb.get(e.target)?.push(e.source); });
+  for (let pass = 0; pass < 4; pass++) initialNodes.forEach((n) => {
+    if (of.has(n.id)) return;
+    const tally = new Map();
+    nb.get(n.id).forEach((m) => { const k = of.get(m); if (k) tally.set(k, (tally.get(k) || 0) + 1); });
+    if (!tally.size) return;
+    const k = [...tally].sort((a, b) => b[1] - a[1])[0][0];
+    put(n.id, k, names.get(k));
+  });
+  const homed = initialNodes.filter((n) => of.has(n.id)); // loose co-substrate cards (ATP, NADH...) sit beside the step they serve: join the nearest card's group
+  initialNodes.forEach((n) => {
+    if (of.has(n.id)) return;
+    let best = null, bd = 1400 * 1400;
+    homed.forEach((m) => { const d = (m.position.x - n.position.x) ** 2 + (m.position.y - n.position.y) ** 2; if (d < bd) { bd = d; best = m; } });
+    if (best) put(n.id, of.get(best.id), names.get(of.get(best.id)));
+  });
+  initialNodes.forEach((n) => { if (!of.has(n.id)) put(n.id, "solo:" + n.id, n.data.label || n.id); });
+  of.forEach((k, id) => { if (!members.has(k)) members.set(k, []); members.get(k).push(id); });
+  return { of, names, members };
+})();
 
 /* ================================================================== */
 /* 3. Custom node + edge                                               */
@@ -4334,11 +4510,15 @@ const ICON = {
   lock: "M5 11h14v10H5zM8 11V7a4 4 0 0 1 8 0v4",
   download: "M12 3v12m0 0l-4-4m4 4l4-4M4 19h16",
   reset: "M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8M3 3v5h5",
+  edit: "M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z",
+  check: "M20 6 9 17l-5-5",
   table: "M3 5h18v14H3zM3 10h18M3 14.5h18M9 5v14M15 5v14",
   close: "M6 6l12 12M18 6L6 18",
   settings: "M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33h0a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51h0a1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82v0a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z",
   grid: "M4 4h6.5v6.5H4zM13.5 4H20v6.5h-6.5zM4 13.5h6.5V20H4zM13.5 13.5H20V20h-6.5z",
   chevL: "M15 5l-7 7 7 7",
+  undo: "M9 14L4 9l5-5M4 9h10.5a5.5 5.5 0 0 1 0 11H11",
+  redo: "M15 14l5-5-5-5M20 9H9.5a5.5 5.5 0 0 0 0 11H13",
   chevR: "M9 5l7 7-7 7",
   search: "M11 4a7 7 0 1 0 0 14 7 7 0 0 0 0-14zM21 21l-4.5-4.5",
   redox: "M4 8h14l-3.5-3.5M20 16H6l3.5 3.5",
@@ -5248,9 +5428,9 @@ function EnzCard({ label, open, fit, shell }) {
   const es = EDGES.filter((e) => e.main && e.label === label), ps = [...new Set(es.map(pathOfEdge))].filter(Boolean);
   const c = PATHWAYS[ps[0]]?.color || "#38bdf8";
   return (
-    <CardShell {...shell} c={c} sub="Enzyme" title={label} label={`${label} enzyme card`}
+    <CardShell {...shell} c={c} sub={es[0]?.hx ? "Hormonal signal" : "Enzyme"} title={label} label={`${label} enzyme card`}
       tags={ps.map((p) => <Pill key={p} c={PATHWAYS[p].color} onClick={() => open("path", p)}>{PATHWAYS[p].label}</Pill>)}>
-      <p className="omino-ecard__note">{ENZN[label] || `Catalyses the conversion of ${nm(es[0].source)} to ${nm(es[0].target)}${es.length > 1 ? `, and ${es.length - 1} similar step${es.length > 2 ? "s" : ""}` : ""}.`}</p>
+      <p className="omino-ecard__note">{es[0]?.hx ? `${nm(es[0].source)} → ${nm(es[0].target)}: ${label}.` : ENZN[label] || `Catalyses the conversion of ${nm(es[0].source)} to ${nm(es[0].target)}${es.length > 1 ? `, and ${es.length - 1} similar step${es.length > 2 ? "s" : ""}` : ""}.`}</p>
       <Sec t={es.length > 1 ? "Reactions" : "Reaction"}>
         <ul className="omino-ecard__list">{es.map((e) => <li key={e.id}><button className="omino-link" onClick={() => goNode(open, fit, e.source)}>{nm(e.source)}</button> → <button className="omino-link" onClick={() => goNode(open, fit, e.target)}>{nm(e.target)}</button></li>)}</ul>
       </Sec>
@@ -5264,6 +5444,17 @@ function EnzCard({ label, open, fit, shell }) {
     </CardShell>
   );
 }
+Object.assign(PDESC, {
+  hpa: "Stress axis. CRH from the paraventricular nucleus drives pituitary corticotrophs to cut POMC into ACTH, MSH and β-endorphin; ACTH makes the adrenal cortex release cortisol, which feeds back on both the hypothalamus and the pituitary.",
+  hpg: "Reproductive axis. Pulsatile GnRH drives gonadotrophs to release LH and FSH; in the testis LH acts on Leydig cells (testosterone) and FSH on Sertoli cells, in the ovary LH acts on theca cells and FSH on granulosa cells (estradiol). Sex steroids and inhibin feed back.",
+  hpgh: "Growth axis. GHRH raises and somatostatin lowers GH from somatotrophs; ghrelin stimulates release; GH acts through IGF-1 from the liver, which feeds back on the hypothalamus and pituitary.",
+  hpt: "Thyroid axis. TRH drives thyrotrophs to release TSH, which makes thyroid follicular cells release T₃ and T₄; T₃ and T₄ feed back on TRH and TSH. Somatostatin and dopamine restrain TSH. Parafollicular cells of the same gland make calcitonin.",
+  hpp: "Prolactin axis, the only anterior pituitary axis controlled mainly by inhibition: dopamine from tuberoinfundibular neurons restrains lactotrophs, while TRH and suckling raise prolactin, which drives milk production and suppresses GnRH.",
+  post: "Posterior pituitary (neurohypophysis). Oxytocin and ADH are made in the paraventricular and supraoptic nuclei and travel down axons to be released from the posterior pituitary: oxytocin for milk ejection and labour, ADH for water reabsorption in the collecting duct.",
+  isl: "Endocrine pancreas. Islets of Langerhans hold α cells (glucagon), β cells (insulin), δ cells (somatostatin), ε cells (ghrelin) and PP cells (pancreatic polypeptide), which regulate each other by paracrine signalling.",
+  calc: "Calcium control. Chief cells of the parathyroid glands release PTH when serum calcium falls (calcium-sensing receptor); PTH acts on bone and kidney. Calcitonin from thyroid C cells opposes it weakly.",
+  med: "Adrenal medulla. Chromaffin cells, a modified sympathetic ganglion, release epinephrine and norepinephrine on cholinergic stimulation; cortisol from the surrounding cortex induces PNMT, which makes epinephrine.",
+});
 function PathCard({ p, open, shell }) {
   if (p === "pharm") {
     return (
@@ -5277,12 +5468,13 @@ function PathCard({ p, open, shell }) {
     );
   }
   const pc = PATHWAYS[p], mols = NODES.filter((n) => n.mol && (PATH_OF[n.id] === p || (p === "gluconeogenesis" && GN_NODES.has(n.id)) || (p === "glycogenolysis" && GL_NODES.has(n.id)) || (p === "box" && BX_NODES.has(n.id)) || (p === "keto" && KT_NODES.has(n.id)) || (p === "fol" && FL_NODES.has(n.id)) || (p === "stero" && ST_NODES.has(n.id))));
-  const enz = [...new Set(EDGES.filter((e) => e.main && e.label && pathOfEdge(e) === p).map((e) => e.label))];
+  const hx = Object.values(HOR).filter((h) => h.path === p), enz = [...new Set(EDGES.filter((e) => e.main && !e.hx && e.label && pathOfEdge(e) === p).map((e) => e.label))];
   return (
     <CardShell {...shell} c={pc.color} sub="Pathway" title={pc.label} label={`${pc.label} pathway card`}>
       <p className="omino-ecard__note">{PDESC[p]}</p>
       <dl className="omino-ecard__facts"><dt>Molecules</dt><dd>{mols.length}</dd><dt>Enzymes</dt><dd>{enz.length}</dd></dl>
       <Sec t="Molecules"><div className="omino-chiprow">{mols.map((n) => <Pill key={n.id} c={pc.color} onClick={() => open("mol", n.id)}>{n.label}</Pill>)}</div></Sec>
+      {hx.length > 0 && <Sec t="Hormones, tissues and cells"><div className="omino-chiprow">{hx.map((h) => <Pill key={h.id} c={pc.color} onClick={() => open("hor", h.id)}>{h.label}</Pill>)}</div></Sec>}
       {enz.length > 0 && <Sec t="Enzymes"><div className="omino-chiprow">{enz.map((l) => <Pill key={l} onClick={() => open("enz", l)}>{l}</Pill>)}</div></Sec>}
       {p === "pcat" && <Sec t="Disorders and clinical panels"><div className="omino-chiprow">{Object.entries(PUD).map(([k, z]) => <Pill key={k} c={pc.color} onClick={() => pudGo(open, z.at[0])}>{z.name}</Pill>)}</div></Sec>}
     </CardShell>
@@ -5569,10 +5761,29 @@ function OrganCard({ id, open, fit, shell }) {
     </CardShell>
   );
 }
+function HorCard({ id, open, fit, shell }) {
+  const h = HOR[id], k = KIND[h.kind], pc = PATHWAYS[h.path], accent = pc?.color || k.color;
+  const lab = (x) => HOR[x]?.label || NODE_BY[x]?.label || x;
+  const go = (x) => (HOR[x] ? open("hor", x) : goNode(open, fit, x));
+  const ins = HX_EDGES.filter((e) => e.target === id), outs = HX_EDGES.filter((e) => e.source === id);
+  const row = (e, other) => <li key={e.id}><span>{e.label || "contains"}{e.dash ? " (inhibits)" : ""}</span>{" · "}<button className="omino-link" onClick={() => go(other)}>{lab(other)}</button></li>;
+  return (
+    <CardShell {...shell} c={accent} sub={h.where} title={h.label} label={`${h.label} card`}
+      tags={<><span style={{ "--c": k.color }}>{k.label}</span>{pc && <Pill c={pc.color} onClick={() => open("path", h.path)}>{pc.label}</Pill>}</>}>
+      <p className="omino-ecard__note">{h.does}</p>
+      {h.hist && <Sec t="Histology"><p className="omino-ecard__note">{h.hist}</p></Sec>}
+      <Sec t="Clinical"><p className="omino-ecard__note">{h.clin}</p></Sec>
+      {ins.length > 0 && <Sec t="Comes from"><ul className="omino-ecard__list">{ins.map((e) => row(e, e.source))}</ul></Sec>}
+      {outs.length > 0 && <Sec t="Acts on"><ul className="omino-ecard__list">{outs.map((e) => row(e, e.target))}</ul></Sec>}
+      <Sec t="Canvas"><div className="omino-chiprow"><Pill onClick={() => fit([id])}>Centre on the canvas</Pill></div></Sec>
+    </CardShell>
+  );
+}
 function InfoCard({ cur, open, swap, fit, onBack, onClose, nav }) {
   const shell = { onBack, onClose, nav };
   if (cur.t === "drug") return <DrugCard key={cur.id} id={cur.id} open={open} fit={fit} shell={shell} />;
   if (cur.t === "target") return <TargetCard key={cur.id} id={cur.id} open={open} fit={fit} shell={shell} />;
+  if (cur.t === "hor") return <HorCard key={cur.id} id={cur.id} open={open} fit={fit} shell={shell} />;
   if (cur.t === "mol") return <MolCard key={cur.id} id={cur.id} open={open} fit={fit} shell={shell} />;
   if (cur.t === "loc") return <LocCard key={cur.id} id={cur.id} open={open} fit={fit} shell={shell} />;
   if (cur.t === "organ") return <OrganCard key={cur.id} id={cur.id} open={open} fit={fit} shell={shell} />;
@@ -5851,9 +6062,95 @@ function RedoxPanel({ i, setI, playing, setPlaying, onClose, onMode }) {
 }
 
 function Atlas() {
-  const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
-  const resetPositions = () => setNodes((ns) => ns.map((n) => { const o = HOME_POS.get(n.id); return o && (n.position.x !== o.x || n.position.y !== o.y) ? { ...n, position: { x: o.x, y: o.y } } : n; })); // P: moved elements go back to where the layout put them
+  const [nodes, setNodes, onNodesChange] = useNodesState(startNodes);
+  const [editing, setEditing] = useState(false); // Edit mode: cards can be dragged; Save keeps the arrangement on this device
+  const editStart = useRef(null);
+  const [layoutNote, setLayoutNote] = useState("");
+  const resetPositionsRaw = () => setNodes((ns) => ns.map((n) => { const o = HOME_POS.get(n.id); return o && (n.position.x !== o.x || n.position.y !== o.y) ? { ...n, position: { x: o.x, y: o.y } } : n; })); // P: moved elements go back to where the layout put them
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
+  const resetPositions = () => { resetPositionsRaw(); if (!editing) { storeLayout({}); rewire([...HOME_POS].map(([id, position]) => ({ id, position }))); } }; // outside Edit mode the reset is kept too
+  const movedFrom = (ns) => { const m = {}; ns.forEach((n) => { const o = HOME_POS.get(n.id); if (o && (Math.round(n.position.x) !== Math.round(o.x) || Math.round(n.position.y) !== Math.round(o.y))) m[n.id] = [Math.round(n.position.x), Math.round(n.position.y)]; }); return m; };
+  const movedCount = useMemo(() => (editing ? Object.keys(movedFrom(nodes)).length : 0), [nodes, editing]); // eslint-disable-line react-hooks/exhaustive-deps
+  const rewire = (ns) => { // after a save or reset, lines leave and enter each card on the sides that now face each other
+    const pos = new Map(ns.map((n) => [n.id, n.position]));
+    setEdges((es) => es.map((e) => {
+      if (!e.data?.auto) return e;
+      const a = pos.get(e.source), b = pos.get(e.target);
+      if (!a || !b) return e;
+      const [sh, th] = autoHandles(a.x, a.y, b.x, b.y);
+      return sh === e.sourceHandle && th === e.targetHandle ? e : { ...e, sourceHandle: sh, targetHandle: th };
+    }));
+  };
+  const flashNote = (t) => { setLayoutNote(t); setTimeout(() => setLayoutNote(""), 2600); };
+  const startEdit = () => { editStart.current = new Map(nodes.map((n) => [n.id, { x: n.position.x, y: n.position.y }])); setGHot(null); setHist({ undo: [], redo: [] }); setEditing(true); };
+  const saveEdit = () => {
+    const ok = storeLayout(movedFrom(nodes));
+    rewire(nodes);
+    setHist({ undo: [], redo: [] });
+    setEditing(false);
+    flashNote(ok ? "Layout saved on this device" : "Could not save here, so the layout lasts until you close the page");
+  };
+  const cancelEdit = () => {
+    const o = editStart.current;
+    if (o) setNodes((ns) => ns.map((n) => { const p = o.get(n.id); return p && (p.x !== n.position.x || p.y !== n.position.y) ? { ...n, position: { ...p } } : n; }));
+    setHist({ undo: [], redo: [] });
+    setEditing(false);
+  };
+  useEffect(() => {
+    if (!editing) return;
+    const k = (ev) => { if (ev.key === "Escape" && !(ev.target.closest && ev.target.closest("input, textarea"))) cancelEdit(); };
+    window.addEventListener("keydown", k);
+    return () => window.removeEventListener("keydown", k);
+  }, [editing]); // eslint-disable-line react-hooks/exhaustive-deps
+  const nodesRef = useRef(nodes); nodesRef.current = nodes;
+  const [hist, setHist] = useState({ undo: [], redo: [] }); // v8.9: Edit-mode history: whole-layout snapshots, one per drag or Reset all
+  const dragPre = useRef(null);
+  const snap = () => new Map(nodesRef.current.map((n) => [n.id, { x: n.position.x, y: n.position.y }]));
+  const sameSnap = (a, b) => { for (const [id, p] of a) { const q = b.get(id); if (q && (Math.abs(q.x - p.x) >= 0.5 || Math.abs(q.y - p.y) >= 0.5)) return false; } return true; };
+  const applySnap = (m) => setNodes((ns) => ns.map((n) => { const p = m.get(n.id); return p && (p.x !== n.position.x || p.y !== n.position.y) ? { ...n, position: { x: p.x, y: p.y } } : n; }));
+  const pushHist = (pre) => setHist((h) => ({ undo: [...h.undo.slice(-99), pre], redo: [] }));
+  const undoEdit = () => { const pre = hist.undo[hist.undo.length - 1]; if (!editing || !pre) return; const cur = snap(); applySnap(pre); setHist({ undo: hist.undo.slice(0, -1), redo: [...hist.redo, cur] }); };
+  const redoEdit = () => { const nxt = hist.redo[hist.redo.length - 1]; if (!editing || !nxt) return; const cur = snap(); applySnap(nxt); setHist({ undo: [...hist.undo, cur], redo: hist.redo.slice(0, -1) }); };
+  const resetAllEdit = () => { const pre = snap(); if (sameSnap(pre, new Map([...HOME_POS].map(([id, q]) => [id, { x: q.x, y: q.y }])))) return; pushHist(pre); resetPositionsRaw(); };
+  const editAct = useRef({}); editAct.current = { undoEdit, redoEdit };
+  useEffect(() => {
+    if (!editing) return;
+    const k = (ev) => {
+      if (!(ev.ctrlKey || ev.metaKey) || ev.altKey || (ev.target.closest && ev.target.closest("input, textarea"))) return;
+      const z = ev.key.toLowerCase();
+      if (z === "z" && !ev.shiftKey) { ev.preventDefault(); editAct.current.undoEdit(); }
+      else if ((z === "z" && ev.shiftKey) || z === "y") { ev.preventDefault(); editAct.current.redoEdit(); }
+    };
+    window.addEventListener("keydown", k);
+    return () => window.removeEventListener("keydown", k);
+  }, [editing]);
+  const [groupMove, setGroupMove] = useState(true); // v8.9: in Edit mode a drag moves the card's whole group (Alt: one card); off = single cards
+  const [gHot, setGHot] = useState(null); // the group under the pointer (or being dragged), outlined while editing
+  const gDrag = useRef(null);
+  const onGroupDragStart = (ev, node) => {
+    dragPre.current = editing ? snap() : null;
+    gDrag.current = null;
+    if (!editing || !groupMove || ev.altKey) { setGHot(null); return; }
+    const k = EDIT_GROUPS.of.get(node.id), ids = k ? EDIT_GROUPS.members.get(k) : null;
+    if (!ids || ids.length < 2) return;
+    const at = new Map(nodes.map((n) => [n.id, n.position]));
+    gDrag.current = { ox: node.position.x, oy: node.position.y, from: new Map(ids.filter((id) => at.has(id)).map((id) => [id, { x: at.get(id).x, y: at.get(id).y }])) };
+    setGHot(k);
+  };
+  const onGroupDrag = (_, node) => {
+    const g = gDrag.current;
+    if (!g) return;
+    const dx = node.position.x - g.ox, dy = node.position.y - g.oy;
+    setNodes((ns) => ns.map((n) => { const f = n.id !== node.id && g.from.get(n.id); return f ? { ...n, position: { x: f.x + dx, y: f.y + dy } } : n; }));
+  };
+  const onGroupDragStop = () => {
+    gDrag.current = null;
+    const pre = dragPre.current; dragPre.current = null;
+    if (pre) setTimeout(() => { if (!sameSnap(pre, snap())) pushHist(pre); }, 0); // after the last move has landed
+  };
+  const hoverGroup = (id) => { if (editing && groupMove && !gDrag.current) setGHot(EDIT_GROUPS.of.get(id) || null); };
+  const gIds = editing && groupMove && gHot ? EDIT_GROUPS.members.get(gHot) : null;
+  const gOutline = gIds && gIds.length > 1 ? `${gIds.map((id) => `.omino-canvas .react-flow__node[data-id="${String(id).replace(/["\\]/g, "\\$&")}"]`).join(",")}{outline:2px dashed var(--sky);outline-offset:6px;border-radius:14px}` : "";
   const [hoverEdge, setHoverEdge] = useState(null); // line under the pointer
   const hopped = useRef(false); // set when Back / Follow swaps the card, so the card-open recentring does not fire twice
   const [track, setTrack] = useState(null); // follower: { at: object id, inn: incoming line id, out: outgoing line id }
@@ -5960,7 +6257,7 @@ function Atlas() {
     const cmp = mo ? compounds.filter((n) => !n.data.rx && has(nodeText(n.data))).slice(0, 10).map((n) => ({ id: n.id, title: n.data.label, sub: sub(n), node: n })) : [];
     const spc = mo ? Object.values(SPECIES).filter((x) => has([x.label, x.formula, x.note, CARD_EXTRA[x.id]?.role])).slice(0, 6).map((x) => ({ id: x.id, title: x.label, sub: [x.formula, CARD_EXTRA[x.id]?.role].filter(Boolean).join(" · ") })) : [];
     const bnd = mo ? Object.entries(BONDS).filter(([, b]) => has([b.name, b.text])).slice(0, 5).map(([id, b]) => ({ id, title: b.name, sub: "Bond type" })) : [];
-    const enz = mo ? edges.filter((e) => (e.data.label || "").toLowerCase().includes(sq)).slice(0, 8)
+    const enz = mo ? edges.filter((e) => !e.data.hx && (e.data.label || "").toLowerCase().includes(sq)).slice(0, 8)
       .map((e) => ({ id: e.id, title: e.data.label, sub: `${label(e.source)} → ${label(e.target)}`, edge: e })) : [];
     const loc = all ? Object.entries(LOCS).filter(([, l]) => has([l.label, l.desc])).slice(0, 5).map(([id, l]) => ({ id, title: l.label, sub: "Cellular location" })) : [];
     const pth = (all || scope === "pathways") ? Object.entries(PATHWAYS).filter(([, p]) => p.label.toLowerCase().includes(sq)).slice(0, 6).map(([id, p]) => ({ id, title: p.label })) : [];
@@ -5986,7 +6283,7 @@ function Atlas() {
       if (UC[n.id]) UC[n.id].also.forEach((x) => add(x, `Crystal · ${n.data.label}`, go));
     });
     Object.values(SPECIES).forEach((x) => add(x.label, "Cofactor", { kind: "sp", r: { id: x.id, title: x.label } }));
-    edges.forEach((e) => add(e.data.label, "Enzyme", { kind: "enz", r: { id: e.id, title: e.data.label, edge: e } }));
+    edges.forEach((e) => !e.data.hx && add(e.data.label, "Enzyme", { kind: "enz", r: { id: e.id, title: e.data.label, edge: e } }));
     Object.values(PUD).forEach((z) => { // v7.34: disorder names lead to the card that carries their panel
       const h = z.at[0], n = compounds.find((c) => c.id === h), e = edges.find((x) => x.data.label === h);
       const go = n ? { kind: n.data.rx || "cmp", r: { id: n.id, title: n.data.label, node: n } } : e ? { kind: "enz", r: { id: e.id, title: e.data.label, edge: e } } : null;
@@ -6019,6 +6316,7 @@ function Atlas() {
     () =>
       nodes.map((n) => ({
         ...n,
+        draggable: editing,
         hidden: (hideS && n.data.kind === "cofactor") || (!showRx && !!n.data.pharm) || (!showOrgans && !!n.data.organ),
         data: {
           ...n.data,
@@ -6029,7 +6327,7 @@ function Atlas() {
           hit: (matchIds ? matchIds.has(n.id) : false) || flash.includes(n.id),
         },
       })),
-    [nodes, matchIds, focus, hideS, showRx, showOrgans, showLoc, locFocus, organFocus, flash, rdxLit]
+    [nodes, matchIds, focus, hideS, showRx, showOrgans, showLoc, locFocus, organFocus, flash, rdxLit, editing]
   );
 
   const shownEdges = useMemo(
@@ -6279,7 +6577,7 @@ function Atlas() {
   const onSearchPick = (kind, r) => {
     const wantMap = pickMode !== "card", wantCard = pickMode !== "canvas";
     let ids = [], cardT = null, cardId = r.id;
-    if (kind === "cmp") { ids = [r.id]; cardT = r.node.data.mol ? "mol" : r.node.data.rx || null; }
+    if (kind === "cmp") { ids = [r.id]; cardT = r.node.data.mol ? "mol" : r.node.data.hor ? "hor" : r.node.data.rx || null; }
     else if (kind === "drug" || kind === "target" || kind === "organ") { ids = [r.id]; cardT = kind; }
     else if (kind === "enz") { ids = [r.edge.source, r.edge.target]; cardT = EDGES.some((e) => e.main && e.label === r.title) ? "enz" : null; cardId = r.title; }
     else if (kind === "el") { ids = EL_NODE[r.id] ? [EL_NODE[r.id]] : []; cardT = "el"; }
@@ -6366,6 +6664,7 @@ function Atlas() {
             <Icon d={ICON.redox} />{fpOpen && <i />}
           </button>
           <button data-settings className={`omino-round ${stOpen ? "is-on" : "is-sky"}`} onClick={() => setStOpen((v) => !v)} aria-pressed={stOpen} aria-expanded={stOpen} aria-label="Settings" title="Settings"><Icon d={ICON.settings} /></button>
+          <button className={`omino-round ${editing ? "is-on" : "is-sky"}`} onClick={() => { setStOpen(false); if (editing) saveEdit(); else startEdit(); }} aria-pressed={editing} aria-label={editing ? "Save layout" : "Edit layout"} title={editing ? "Save this arrangement" : "Edit: drag cards, or whole pathways, organ hubs and pharmacology groups, then save"}><Icon d={editing ? ICON.check : ICON.edit} /></button>
           {stOpen && (
             <div className="omino-settings" role="dialog" aria-label="Settings">
               <h4>Settings</h4>
@@ -6415,16 +6714,23 @@ function Atlas() {
       <svg width="0" height="0" style={{ position: "absolute" }} aria-hidden="true"><defs>
         <marker id="omino-bar" viewBox="0 0 12 24" refX="9" refY="12" markerWidth="12" markerHeight="24" markerUnits="userSpaceOnUse" orient="auto"><path d="M6 2V22" stroke="#ff5d5d" strokeWidth="3" strokeLinecap="round" /></marker>
       </defs></svg>
-      <div className={`omino-canvas ${hoverEdge || track ? "has-edge" : ""}`} onMouseDownCapture={startZoomDrag} onContextMenu={(e) => e.preventDefault()}>
+      <div className={`omino-canvas ${hoverEdge || track ? "has-edge" : ""} ${editing ? "is-editing" : ""}`} onMouseDownCapture={startZoomDrag} onContextMenu={(e) => e.preventDefault()}>
         <ReactFlow
           nodes={nodesOut}
           edges={edgesOut}
-          onEdgeClick={pickEdge}
+          onEdgeClick={editing ? undefined : pickEdge}
           onPaneClick={() => setTrack(null)}
           onNodesChange={onNodesChange}
           onEdgesChange={onEdgesChange}
+          onNodeDragStart={onGroupDragStart}
+          onNodeDrag={onGroupDrag}
+          onNodeDragStop={onGroupDragStop}
+          onNodeMouseEnter={(_, n) => hoverGroup(n.id)}
+          onNodeMouseLeave={() => { if (!gDrag.current) setGHot(null); }}
           onNodeClick={(_, n) => {
+            if (editing) return;
             if (n.data.title) selectPathway(n.data.path);
+            else if (n.data.hor) open("hor", n.id);
             else if (n.data.mol) open("mol", n.id);
             else if (n.data.rx) open(n.data.rx, n.id);
             else if (n.data.kind === "cofactor") { const t = cofTokens(n.data.label).find((x) => x.to); if (t) open(t.to[0], t.to[1]); }
@@ -6447,6 +6753,24 @@ function Atlas() {
           proOptions={{ hideAttribution: true }}
         >
           <Background variant={BackgroundVariant.Dots} gap={28} size={1.4} color="var(--o-border)" />
+          {gOutline && <style>{gOutline}</style>}
+          {editing && <Panel position="top-right"><div className="omino-undo" role="group" aria-label="Undo and redo">
+            <button className="omino-round" onClick={undoEdit} disabled={!hist.undo.length} aria-label="Undo" title="Undo (Ctrl/Cmd+Z)"><Icon d={ICON.undo} /></button>
+            <button className="omino-round" onClick={redoEdit} disabled={!hist.redo.length} aria-label="Redo" title="Redo (Ctrl/Cmd+Shift+Z)"><Icon d={ICON.redo} /></button>
+          </div></Panel>}
+          {editing && <Panel position="top-center">
+            <div className="omino-editbar" role="region" aria-label="Edit layout">
+              <span className="omino-editbar__txt"><b>Editing layout</b><i>{gIds && gIds.length > 1 ? `${EDIT_GROUPS.names.get(gHot)} · ${gIds.length} cards` : movedCount ? `${movedCount} moved` : groupMove ? "drag a card to move its group" : "drag any card"}</i></span>
+              <span className="omino-editbar__seg" role="group" aria-label="What a drag moves">
+                <button className={groupMove ? "is-on" : ""} aria-pressed={groupMove} onClick={() => setGroupMove(true)} title="A drag moves the whole pathway, organ hub or pharmacology cluster (hold Alt to move one card)">Groups</button>
+                <button className={!groupMove ? "is-on" : ""} aria-pressed={!groupMove} onClick={() => { setGroupMove(false); setGHot(null); }} title="A drag moves one card">Cards</button>
+              </span>
+              <button onClick={resetAllEdit} title="Put every card back where the built-in layout has it (Save to keep)">Reset all</button>
+              <button onClick={cancelEdit} title="Discard these changes (Esc)">Cancel</button>
+              <button className="is-primary" onClick={saveEdit}>Save</button>
+            </div>
+          </Panel>}
+          {!editing && layoutNote && <Panel position="top-center"><div className="omino-editbar is-note" role="status">{layoutNote}</div></Panel>}
           {navOn && showKey && wide && <Panel position="bottom-left"><FxLegend onHide={() => setShowKey(false)} /></Panel>}
           {navOn && showMini && <MiniMap pannable zoomable maskColor="var(--o-mask)" nodeColor={(n) => toneHex(PATHWAYS[n.data.path]?.color || KIND[n.data.kind].color, light)} nodeStrokeWidth={0} />}
           {navOn && showMini && <Panel position="bottom-right" className="omino-minix-panel"><button className="omino-fxlegend__x omino-minix" onClick={() => setShowMini(false)} aria-label="Hide overview" title="Hide overview (turn back on in Settings)">×</button></Panel>}
@@ -6917,11 +7241,32 @@ ${LIGHT_CSS}
   font: inherit; font-size: 14px; font-weight: 600; color: var(--o-ink); cursor: pointer; background: transparent; border: 1px solid var(--o-border); border-radius: 12px;
 }
 .omino-settings__export:hover { background: var(--o-hover); }
+.omino-canvas.is-editing { box-shadow: inset 0 0 0 2px var(--sky); }
+.omino-canvas.is-editing .react-flow__node { cursor: grab; }
+.omino-canvas.is-editing .react-flow__node.dragging { cursor: grabbing; }
+.omino-editbar { display: flex; align-items: center; flex-wrap: wrap; justify-content: center; gap: 8px; max-width: calc(100vw - 32px); margin-top: 10px; padding: 7px 8px 7px 16px; color: var(--o-ink); background: var(--o-card); border: 1px solid var(--sky); border-radius: 999px; box-shadow: 0 12px 36px var(--o-shadow2); font-size: 13px; }
+.omino-editbar.is-note { padding: 9px 18px; border-color: var(--o-border); font-weight: 600; }
+.omino-editbar__txt { display: flex; align-items: baseline; gap: 10px; margin-right: 6px; }
+.omino-editbar__txt b { font-weight: 600; }
+.omino-editbar__txt i { font-style: normal; font-family: var(--mono); font-size: 11px; color: var(--o-muted); }
+.omino-editbar button { height: 32px; padding: 0 14px; font: inherit; font-size: 13px; font-weight: 600; color: var(--o-ink); cursor: pointer; background: transparent; border: 1px solid var(--o-border); border-radius: 999px; }
+.omino-editbar button:hover { background: var(--o-hover); }
+.omino-editbar__seg { display: inline-flex; gap: 0; }
+.omino-editbar__seg button { border-radius: 0; margin: 0; }
+.omino-editbar__seg button:first-child { border-radius: 999px 0 0 999px; }
+.omino-editbar__seg button:last-child { border-radius: 0 999px 999px 0; border-left: 0; }
+.omino-editbar button.is-on { background: var(--o-hover); box-shadow: inset 0 0 0 1px var(--sky); }
+.omino-editbar button.is-primary { color: var(--o-on-accent); background: var(--sky); border-color: var(--sky); }
+.omino-editbar button:focus-visible { outline: 2px solid var(--sky); outline-offset: 2px; }
 .omino-round {
   position: relative; width: 46px; height: 46px; display: grid; place-items: center; padding: 0;
   font: inherit; color: var(--o-ink); cursor: pointer; background: var(--o-card); border: 1px solid var(--o-border); border-radius: 50%;
 }
 .omino-round:hover { background: var(--o-hover); }
+.omino-round:disabled { opacity: 0.35; cursor: default; }
+.omino-round:disabled:hover { background: var(--o-card); }
+.omino-undo { display: flex; gap: 8px; margin: 10px 14px 0 0; }
+.omino-undo .omino-round { width: 40px; height: 40px; box-shadow: 0 8px 24px var(--o-shadow2); }
 .omino-round:focus-visible { outline: 2px solid var(--sky); outline-offset: 2px; }
 .omino-round.is-sky { color: var(--sky); }
 .omino-round.is-on { color: var(--sky); border-color: var(--sky); }
