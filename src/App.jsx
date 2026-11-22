@@ -1,3 +1,4 @@
+// v8.9 (cont.): fixed the Pathway Tracker card on a phone: with the mini map open the card now scrolls as one piece (name, Back and Follow, stations, map) instead of squeezing its body and letting the map spill past the bottom edge.
 // v8.9 (cont.): the overview window always shows the stations; its Whole pathway button opens a mini map of every object in the pathway at its real place on the canvas, the current line picked out, the tracker's station ringed and labelled, any object clickable.
 // v8.9 (cont.): the Pathway Tracker has a small overview window, a metro line of the current pathway: one station per object, the tracker's own station ringed, stations behind it filled and ahead of it open, +N where the pathway forks, dashed ends where it comes from or leads on to another pathway, and a loop marker for cycles. Click any station to move the tracker there; the strip scrolls to keep it in view and can be folded away.
 // v8.9 (cont.): the Follow card is now the Pathway Tracker, and while it is moving along a pathway an open description card follows it: an enzyme or hormonal-signal card shows the onward line the tracker shows, an object card shows the object it stands on, a pathway card shows that object's pathway.
@@ -6005,15 +6006,16 @@ function FollowModes({ mode, onMode }) {
   );
 }
 function TrackerMap({ line, mini, onStation, onJump }) {
-  const box = useRef(null), [wide, setWide] = useState(false), cur = line.st[line.at];
+  const box = useRef(null), root = useRef(null), [wide, setWide] = useState(false), cur = line.st[line.at];
   const mm = useMemo(() => (wide ? mini(line) : null), [wide, line]); // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => { // keep the tracker's own station in the middle of the window
     const el = box.current && box.current.querySelector(".is-cur");
     if (el) box.current.scrollTo({ left: el.offsetLeft - box.current.clientWidth / 2 + el.offsetWidth / 2, behavior: "smooth" });
   }, [cur && cur.id, line.name]);
+  useEffect(() => { if (wide && root.current) root.current.scrollIntoView({ block: "nearest", behavior: "smooth" }); }, [wide]);
   const dot = (i) => i < line.at ? "is-past" : i === line.at ? "is-cur" : "is-next";
   return (
-    <div className="omino-metro nodrag nopan nowheel" style={line.color ? { "--lc": line.color } : undefined} role="group" aria-label={`${line.name} overview`}>
+    <div className="omino-metro nodrag nopan nowheel" ref={root} style={line.color ? { "--lc": line.color } : undefined} role="group" aria-label={`${line.name} overview`}>
       <div className="omino-metro__head">
         <b>{line.name}</b><em>station {line.at + 1} of {line.st.length}{line.loopTo ? " · loops" : ""}</em>
         <button className="omino-metro__more" onClick={() => setWide((v) => !v)} aria-expanded={wide} title={wide ? "Back to the stations only" : "Show the whole pathway as a mini map"}><span>{wide ? "Stations only" : "Whole pathway"}</span><Icon d={ICON.chevR} size={12} /></button>
@@ -7668,6 +7670,9 @@ ${LIGHT_CSS}
 .omino-metro__end button { position: relative; z-index: 1; max-width: 84px; padding: 3px 8px; font: 600 9.5px/1.2 var(--mono, monospace); color: var(--o-ink2); cursor: pointer; background: var(--o-card); border: 1px dashed var(--lc); border-radius: 999px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .omino-metro__end button:hover { color: var(--o-ink); border-style: solid; }
 .omino-rdx__pathbody { padding: 4px 14px 14px; text-align: center; overflow: auto; }
+.omino-rdx--path { overflow-y: auto; overscroll-behavior: contain; scrollbar-width: thin; }
+.omino-rdx--path .omino-rdx__top, .omino-rdx--path .omino-rdx__modes { flex: none; }
+.omino-rdx--path .omino-rdx__pathbody { flex: none; overflow: visible; }
 .omino-rdx__empty { text-align: left; color: var(--o-muted); font-size: 12.5px; line-height: 1.5; }
 .omino-rdx__empty .omino-edgecard__enz { display: block; margin: 10px auto 0; }
 .omino-rdx__ctl { display: flex; align-items: center; gap: 6px; padding: 8px 12px 12px; border-top: 1px solid var(--o-line-soft); }
@@ -7679,6 +7684,7 @@ ${LIGHT_CSS}
 @media (max-width: 760px) {
   .omino-rdx { left: 8px; right: 8px; top: auto; bottom: 8px; width: auto; max-height: 52%; }
   .omino-rdx__row { grid-template-columns: 1fr 70px 30px; }
+  .omino-metro__mini svg { height: min(190px, 26dvh); }
 }
 @media (prefers-reduced-motion: reduce) {
   .omino-node { transition: none; }
