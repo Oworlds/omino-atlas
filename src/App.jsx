@@ -1,4 +1,6 @@
-// v8.9 (cont.): the Follow card is now the Pathways Tracker, and while it is moving along a pathway an open description card follows it: an enzyme or hormonal-signal card shows the onward line the tracker shows, an object card shows the object it stands on, a pathway card shows that object's pathway.
+// v8.9 (cont.): the overview window always shows the stations; its Whole pathway button opens a mini map of every object in the pathway at its real place on the canvas, the current line picked out, the tracker's station ringed and labelled, any object clickable.
+// v8.9 (cont.): the Pathway Tracker has a small overview window, a metro line of the current pathway: one station per object, the tracker's own station ringed, stations behind it filled and ahead of it open, +N where the pathway forks, dashed ends where it comes from or leads on to another pathway, and a loop marker for cycles. Click any station to move the tracker there; the strip scrolls to keep it in view and can be folded away.
+// v8.9 (cont.): the Follow card is now the Pathway Tracker, and while it is moving along a pathway an open description card follows it: an enzyme or hormonal-signal card shows the onward line the tracker shows, an object card shows the object it stands on, a pathway card shows that object's pathway.
 // v8.9 (cont.): while editing, Undo and Redo arrows appear on the canvas, top right, just under the Settings and Edit buttons (also Ctrl/Cmd+Z and Ctrl/Cmd+Shift+Z or Ctrl+Y). Every drag (a card or a whole group) and Reset all is one step; the steps are forgotten when you Save or Cancel.
 // v8.9: Edit mode moves whole groups. A drag on any card now carries its group with it: each pathway (with its title, enzymes' co-substrates and side cards), each organ hub (the hub with its ring of targets and drugs), and each pharmacology cluster (a target with the drugs placed beside it). The lines in the Edit bar switch between Groups and Cards; hold Alt while dragging to move one card. The group under the pointer is outlined; Save, Cancel (Esc) and Reset all work on groups exactly as on single cards, and the saved layout is still only the cards that moved (localStorage "omino.layout.v1").
 // v8.8: Edit button, right of Settings. Edit mode makes every card (and pathway title) draggable, with Save, Cancel (Esc) and Reset all in a bar at the top; Save keeps the arrangement on this device (localStorage "omino.layout.v1", only the cards that moved) and re-aims the lines at the sides that now face each other. Outside Edit mode cards are fixed, and P puts everything back and clears the saved layout. While editing, clicks do not open cards.
@@ -4338,6 +4340,49 @@ const EDIT_GROUPS = (() => {
   return { of, names, members };
 })();
 
+// v8.9: Pathway Tracker overview. buildMetroLine draws the pathway the tracker is on as one line of stations, like a metro line:
+// it walks from the object the tracker stands on, back along the way in and forward along the way out (the lines the tracker has picked first),
+// keeps to that pathway's own objects, stops at a repeat (a cycle is rotated so the tracker sits near the front and the line loops back),
+// and notes forks, and where the line comes from or leads on to another pathway.
+const isStationId = (id) => { const n = NODE_BY[id]; return !!n && n.kind !== "cofactor" && !n.title && n.rx !== "organ"; }; // a real object, not a co-substrate chip, pathway title or organ hub
+function buildMetroLine(at, track, adj) {
+  const own = (id) => (PATH_OF[id] && PATH_OF[id] !== "pharm" && PATHWAYS[PATH_OF[id]] ? PATH_OF[id] : null);
+  const pw = own(at), max = pw ? 60 : 5;
+  const isStn = isStationId;
+  const ok = (id) => isStn(id) && (!pw || PATH_OF[id] === pw);
+  const edgesOf = (id, dir) => (((dir === "out" ? adj.out : adj.inn)[id]) || []).filter((e) => (pw ? !e.data.fx : true) && ok(dir === "out" ? e.target : e.source));
+  const far = (e, dir) => (dir === "out" ? e.target : e.source);
+  const step = (id, dir, seen, pref) => { const l = edgesOf(id, dir).filter((e) => !seen.has(far(e, dir))); return l.find((e) => e.id === pref) || l[0] || null; };
+  const fwd = [], seen = new Set([at]);
+  let c = at, pref = track.out;
+  for (let i = 0; i < max; i++) { const e = step(c, "out", seen, pref); if (!e) break; c = e.target; seen.add(c); fwd.push(c); pref = null; }
+  const prev = fwd.length > 1 ? fwd[fwd.length - 2] : at; // a reversible step back to the previous station is not a loop
+  const closing = edgesOf(c, "out").find((e) => seen.has(e.target) && e.target !== prev && e.target !== c), loopTo = closing ? closing.target : null;
+  let st, cyc = false;
+  if (pw && loopTo === at && fwd.length >= 3) { // a cycle: the tracker sits a couple of stations in, so what came before is on show too
+    const ring = [at, ...fwd], k = ring.length, pre = Math.min(2, k - 1);
+    st = [...ring.slice(k - pre), ...ring.slice(0, k - pre)]; cyc = true;
+  } else {
+    const back = [], seenB = new Set(seen);
+    c = at; pref = track.inn;
+    for (let i = 0; i < max; i++) { const e = step(c, "in", seenB, pref); if (!e) break; c = e.source; seenB.add(c); back.unshift(c); pref = null; }
+    st = [...back, at, ...fwd];
+  }
+  const inLine = new Set(st);
+  const via = (a, b) => (adj.out[a] || []).find((e) => e.target === b) || null;
+  const stations = st.map((id, i) => {
+    const e = i ? via(st[i - 1], id) : null, nx = st[i + 1], alt = [...new Set(edgesOf(id, "out").map((x) => x.target).filter((t) => t !== nx && !inLine.has(t)))];
+    return { id, name: nm(id), via: e && e.data.label ? e.data.label : "", viaId: e ? e.id : null, alt: alt.map(nm) };
+  });
+  const idx = st.indexOf(at), lastLoop = pw && loopTo && inLine.has(loopTo) ? (cyc ? st[0] : loopTo) : null;
+  const edge = (list, dir) => { const e = (list || []).find((x) => !x.data.fx && isStn(far(x, dir)) && !inLine.has(far(x, dir))); return e ? { id: far(e, dir), label: PATHWAYS[PATH_OF[far(e, dir)]]?.label || nm(far(e, dir)) } : null; };
+  return {
+    pw, name: pw ? PATHWAYS[pw].label : `Around ${nm(at)}`, color: pw ? PATHWAYS[pw].color : null,
+    st: stations, at: idx, loopTo: lastLoop, loopName: lastLoop ? nm(lastLoop) : "",
+    head: pw ? edge(adj.inn[st[0]], "in") : null, tail: pw && !lastLoop ? edge(adj.out[st[st.length - 1]], "out") : null,
+  };
+}
+
 /* ================================================================== */
 /* 3. Custom node + edge                                               */
 /* ================================================================== */
@@ -5959,7 +6004,54 @@ function FollowModes({ mode, onMode }) {
     </div>
   );
 }
-function PathPanel({ at, inE, outE, nIn, nOut, iIn, iOut, onBack, onFollow, onCycleIn, onCycleOut, onClose, onMode, onStand, standId, open }) {
+function TrackerMap({ line, mini, onStation, onJump }) {
+  const box = useRef(null), [wide, setWide] = useState(false), cur = line.st[line.at];
+  const mm = useMemo(() => (wide ? mini(line) : null), [wide, line]); // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => { // keep the tracker's own station in the middle of the window
+    const el = box.current && box.current.querySelector(".is-cur");
+    if (el) box.current.scrollTo({ left: el.offsetLeft - box.current.clientWidth / 2 + el.offsetWidth / 2, behavior: "smooth" });
+  }, [cur && cur.id, line.name]);
+  const dot = (i) => i < line.at ? "is-past" : i === line.at ? "is-cur" : "is-next";
+  return (
+    <div className="omino-metro nodrag nopan nowheel" style={line.color ? { "--lc": line.color } : undefined} role="group" aria-label={`${line.name} overview`}>
+      <div className="omino-metro__head">
+        <b>{line.name}</b><em>station {line.at + 1} of {line.st.length}{line.loopTo ? " · loops" : ""}</em>
+        <button className="omino-metro__more" onClick={() => setWide((v) => !v)} aria-expanded={wide} title={wide ? "Back to the stations only" : "Show the whole pathway as a mini map"}><span>{wide ? "Stations only" : "Whole pathway"}</span><Icon d={ICON.chevR} size={12} /></button>
+      </div>
+      <div className="omino-metro__scroll" ref={box}>
+        <ol className="omino-metro__line">
+          {line.head && <li className="omino-metro__end is-head"><button onClick={() => onJump(line.head.id)} title={`Comes from ${line.head.label}`}>{line.head.label}</button></li>}
+          {line.st.map((x, i) => (
+            <li key={x.id} className={`omino-metro__st ${dot(i)}`}>
+              {x.alt.length > 0 && <span className="omino-metro__alt" title={`Also leads to ${x.alt.join(", ")}`}>+{x.alt.length}</span>}
+              <button className="omino-metro__dot" onClick={() => onStation(i)} aria-current={i === line.at ? "step" : undefined} aria-label={`${x.name}${i === line.at ? " (you are here)" : ""}`} title={x.via ? `${x.name} · reached by ${x.via}` : x.name} />
+              <span className="omino-metro__name">{x.name}</span>
+            </li>
+          ))}
+          {line.loopTo && <li className="omino-metro__end is-tail"><button onClick={() => onStation(0)} title={`Loops back to ${line.loopName}`}>↻ {line.loopName}</button></li>}
+          {line.tail && <li className="omino-metro__end is-tail"><button onClick={() => onJump(line.tail.id)} title={`Leads on to ${line.tail.label}`}>{line.tail.label}</button></li>}
+        </ol>
+      </div>
+      {wide && mm && mm.pts.length > 0 && (
+        <div className="omino-metro__mini">
+          <svg viewBox={mm.vb.join(" ")} preserveAspectRatio="xMidYMid meet" role="img" aria-label={`The whole ${line.name} pathway, ${mm.pts.length} objects`}>
+            {mm.edges.map((e, i) => <line key={i} x1={e.x1} y1={e.y1} x2={e.x2} y2={e.y2} className={e.on ? "is-on" : ""} vectorEffect="non-scaling-stroke" />)}
+            {mm.pts.map((q) => (
+              <g key={q.id} className={`omino-metro__pt${q.on ? " is-on" : ""}${q.cur ? " is-cur" : ""}`} onClick={() => onJump(q.id)}>
+                <title>{q.name}</title>
+                <circle className="hit" cx={q.x} cy={q.y} r={mm.r * 1.9} />
+                <circle className="dot" cx={q.x} cy={q.y} r={q.cur ? mm.r * 1.7 : q.on ? mm.r * 1.15 : mm.r * 0.8} vectorEffect="non-scaling-stroke" />
+              </g>
+            ))}
+            {mm.pts.filter((q) => q.cur).map((q) => <text key={q.id} className="omino-metro__lbl" x={q.x} y={q.y - mm.r * 2.6} fontSize={mm.r * 2.6} textAnchor="middle" strokeWidth={mm.r * 0.9}>{q.name}</text>)}
+          </svg>
+          <p>{mm.pts.length} objects · filled = on this line · click any to go there</p>
+        </div>
+      )}
+    </div>
+  );
+}
+function PathPanel({ at, inE, outE, nIn, nOut, iIn, iOut, onBack, onFollow, onCycleIn, onCycleOut, onClose, onMode, onStand, standId, open, line, mini, onStation, onJump }) {
   const o = outE && edgeHow(outE), i = inE && edgeHow(inE), c = (o || i || {}).color || "#A1A1AA";
   const side = (e, n, k, dir, go, cyc) => (
     <div className="omino-follow__side">
@@ -5971,9 +6063,9 @@ function PathPanel({ at, inE, outE, nIn, nOut, iIn, iOut, onBack, onFollow, onCy
     </div>
   );
   return (
-    <div className="omino-rdx omino-rdx--path nodrag nopan nowheel" role="dialog" aria-label="Pathways Tracker" style={{ "--c": c }}>
+    <div className="omino-rdx omino-rdx--path nodrag nopan nowheel" role="dialog" aria-label="Pathway Tracker" style={{ "--c": c }}>
       <div className="omino-rdx__top">
-        <div><b>Pathways Tracker</b><span>walk a pathway, object by object</span></div>
+        <div><b>Pathway Tracker</b><span>walk a pathway, object by object</span></div>
         <button className="omino-rdx__x" onClick={onClose} aria-label="Close" title="Close"><Icon d={ICON.close} size={16} /></button>
       </div>
       <FollowModes mode="path" onMode={onMode} />
@@ -5995,6 +6087,7 @@ function PathPanel({ at, inE, outE, nIn, nOut, iIn, iOut, onBack, onFollow, onCy
           {standId && <button className="omino-edgecard__enz" onClick={() => onStand(standId)}>Stand on {nm(standId)}</button>}
         </div>
       )}
+      {at && line && line.st.length > 0 && <TrackerMap line={line} mini={mini} onStation={onStation} onJump={onJump} />}
     </div>
   );
 }
@@ -6011,9 +6104,9 @@ function RedoxPanel({ i, setI, playing, setPlaying, onClose, onMode }) {
   const netL = Object.entries(net).filter(([, v]) => v < 0).map(([k, v]) => [k, -v]).sort((a, b) => first2(a[0]) - first2(b[0])), netR = Object.entries(net).filter(([, v]) => v > 0);
   const eqText = (l) => l.map(([k, v]) => `${v > 1 ? v + " " : ""}${RDX_SP[k][0]}`).join(" + ");
   return (
-    <div className="omino-rdx nodrag nopan nowheel" role="dialog" aria-label="Pathways Tracker: electrons and hydrogens">
+    <div className="omino-rdx nodrag nopan nowheel" role="dialog" aria-label="Pathway Tracker: electrons and hydrogens">
       <div className="omino-rdx__top">
-        <div><b>Pathways Tracker</b><span>electrons and hydrogens, one glucose start to finish</span></div>
+        <div><b>Pathway Tracker</b><span>electrons and hydrogens, one glucose start to finish</span></div>
         <button className="omino-rdx__x" onClick={onClose} aria-label="Close" title="Close"><Icon d={ICON.close} size={16} /></button>
       </div>
       <FollowModes mode="redox" onMode={onMode} />
@@ -6397,6 +6490,7 @@ function Atlas() {
     [out, inn].forEach((m) => Object.values(m).forEach((l) => l.sort((x, y) => rank(x) - rank(y))));
     return { out, inn };
   }, [shownEdges, shownNodes]);
+  const trackLine = useMemo(() => (track && fpOpen && rdx == null ? buildMetroLine(track.at, track, adj) : null), [track, fpOpen, rdx, adj]); // v8.9: the metro overview of the tracker's pathway
   // Bring an object to a comfortable, readable view: zoom held between 0.7x and 1.5x, and the object sat a little below centre so the card above it is centred too
   // With a description card open on the right, aim for the middle of the canvas that is still visible (only when that leaves a workable width)
   const cardSpace = () => {
@@ -6433,6 +6527,26 @@ function Atlas() {
     setFpOpen(true); setRdx(null); setRdxPlay(false);
     flyTo(at);
     syncCard(at);
+  };
+  const buildMini = (line) => { // the whole pathway (or, for a target or drug, the neighbourhood), at the cards' real positions
+    const on = new Set(line.st.map((x) => x.id)), ids = new Set();
+    if (line.pw) shownNodes.forEach((n) => { if (!n.hidden && PATH_OF[n.id] === line.pw && isStationId(n.id)) ids.add(n.id); });
+    else line.st.forEach((x) => { ids.add(x.id); [...(adj.out[x.id] || []), ...(adj.inn[x.id] || [])].forEach((e) => [e.source, e.target].forEach((id) => { if (isStationId(id)) ids.add(id); })); });
+    line.st.forEach((x) => ids.add(x.id));
+    const at = new Map(shownNodes.map((n) => [n.id, n.position])), pts = [...ids].filter((id) => at.has(id)).map((id) => ({ id, x: at.get(id).x, y: at.get(id).y, name: nm(id), on: on.has(id), cur: id === line.st[line.at]?.id }));
+    if (!pts.length) return null;
+    const have = new Set(pts.map((q) => q.id)), pos = new Map(pts.map((q) => [q.id, q])), steps = new Set(line.st.slice(1).map((x, i) => `${line.st[i].id}>${x.id}`)), edges = [];
+    pts.forEach((q) => (adj.out[q.id] || []).forEach((e) => { if (have.has(e.target) && (!line.pw || !e.data.fx)) edges.push({ x1: q.x, y1: q.y, x2: pos.get(e.target).x, y2: pos.get(e.target).y, on: steps.has(`${q.id}>${e.target}`) }); }));
+    const xs = pts.map((q) => q.x), ys = pts.map((q) => q.y), x0 = Math.min(...xs), x1 = Math.max(...xs), y0 = Math.min(...ys), y1 = Math.max(...ys);
+    let r = Math.max(x1 - x0, y1 - y0, 200) / 70;
+    for (let k = 0; k < 4; k++) { const sc = Math.min(390 / (x1 - x0 + r * 18), 190 / (y1 - y0 + r * 8)); r = Math.max(20, 4.2 / sc); } // objects about 4 px across on screen, whatever the pathway's size
+    return { pts, edges, r, vb: [x0 - r * 9, y0 - r * 5, x1 - x0 + r * 18, y1 - y0 + r * 8] };
+  };
+  const goStation = (i) => { // a station on the overview: stand there, keeping the line the tracker is walking
+    const L = trackLine, x = L && L.st[i]; if (!x) return;
+    const nx = L.st[i + 1];
+    setTrack({ at: x.id, inn: x.viaId || adj.inn[x.id]?.[0]?.id || null, out: (nx && nx.viaId) || adj.out[x.id]?.[0]?.id || null });
+    flyTo(x.id); syncCard(x.id);
   };
   const standOn = (at) => { // "Stand on" an object with no line picked yet: line up its first way in and out
     if (!at) return;
@@ -6499,7 +6613,7 @@ function Atlas() {
     if (sx < 0 || sy < 0 || sx > v.clientWidth || sy > v.clientHeight) return;
     setCenter(n.position.x, n.position.y + (track && track.at === last ? 80 / zoom : 0), { zoom, duration: 500 });
   }, [cur]); // eslint-disable-line react-hooks/exhaustive-deps
-  // v8.9: the Pathways Tracker drives an open description card: whatever the tracker now shows, the card shows
+  // v8.9: the Pathway Tracker drives an open description card: whatever the tracker now shows, the card shows
   useEffect(() => {
     if (!track || !cur || !fpOpen || rdx != null) return;
     const outE = edgeById[track.out], d = nodes.find((x) => x.id === track.at)?.data, t = d?.mol ? "mol" : d?.rx, same = (a, id) => cur.t === a && cur.id === id;
@@ -6674,7 +6788,7 @@ function Atlas() {
           <button className={`omino-round ${ptOpen ? "is-on" : ""}`} onClick={() => setPtOpen((v) => !v)} aria-pressed={ptOpen} aria-label="Periodic table" title="Periodic table">
             <Icon d={ICON.table} />{ptOpen && <i />}
           </button>
-          <button className={`omino-round ${fpOpen ? "is-on" : ""}`} onClick={toggleFp} aria-pressed={fpOpen} aria-label="Pathways Tracker" title="Pathways Tracker: walk a pathway, or follow the electrons and hydrogens of one glucose">
+          <button className={`omino-round ${fpOpen ? "is-on" : ""}`} onClick={toggleFp} aria-pressed={fpOpen} aria-label="Pathway Tracker" title="Pathway Tracker: walk a pathway, or follow the electrons and hydrogens of one glucose">
             <Icon d={ICON.redox} />{fpOpen && <i />}
           </button>
           <button data-settings className={`omino-round ${stOpen ? "is-on" : "is-sky"}`} onClick={() => setStOpen((v) => !v)} aria-pressed={stOpen} aria-expanded={stOpen} aria-label="Settings" title="Settings"><Icon d={ICON.settings} /></button>
@@ -6856,7 +6970,7 @@ function Atlas() {
             const inE = track ? edgeById[track.inn] : null, outE = track ? edgeById[track.out] : null, ins = track ? adj.inn[track.at] || [] : [], outs = track ? adj.out[track.at] || [] : [];
             return <PathPanel at={track?.at} inE={inE} outE={outE} nIn={ins.length} nOut={outs.length} iIn={Math.max(0, ins.findIndex((x) => x.id === track?.inn))} iOut={Math.max(0, outs.findIndex((x) => x.id === track?.out))}
               onBack={() => hop(inE, "in")} onFollow={() => hop(outE, "out")} onCycleIn={() => cycle("in")} onCycleOut={() => cycle("out")} onClose={closeFp}
-              onMode={(m) => (m === "redox" ? modeRedox() : modePath())} onStand={standOn} standId={!track && cardNode ? cardNode : null} open={open} />;
+              onMode={(m) => (m === "redox" ? modeRedox() : modePath())} onStand={standOn} standId={!track && cardNode ? cardNode : null} open={open} line={trackLine} mini={buildMini} onStation={goStation} onJump={standOn} />;
           })())}
         {cur && <InfoCard cur={cur} open={open} swap={swap} fit={fit} onBack={stack.length > 1 ? () => setStack((s) => s.slice(0, -1)) : null} onClose={() => setStack([])}
           nav={cardNode ? { canPrev: canStep("in"), canNext: canStep("out"), onPrev: () => stepCard("in"), onNext: () => stepCard("out") } : null} />}
@@ -7511,6 +7625,48 @@ ${LIGHT_CSS}
 .omino-rdx__modes button:hover { color: var(--o-ink); }
 .omino-rdx__modes button.is-on { color: var(--o-ink); background: var(--o-hover); border-color: var(--o-accent); }
 .omino-rdx__modes button:focus-visible { outline: 2px solid var(--o-accent); outline-offset: 2px; }
+.omino-metro { flex: none; margin: 0 14px 12px; --lc: var(--sky); border: 1px solid var(--o-border); border-radius: 12px; background: color-mix(in srgb, var(--o-ink) 4%, transparent); text-align: left; }
+.omino-metro__head { display: flex; align-items: center; gap: 8px; padding: 8px 8px 8px 10px; color: var(--o-ink); }
+.omino-metro__head b { flex: 1; min-width: 0; font-size: 11.5px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: color-mix(in srgb, var(--lc) var(--o-keep), var(--o-ink)); }
+.omino-metro__head em { font: normal 500 10px var(--mono, monospace); color: var(--o-muted); white-space: nowrap; }
+.omino-metro__more { flex: none; display: inline-flex; align-items: center; gap: 4px; padding: 3px 8px; font: 600 10px var(--mono, monospace); color: var(--o-ink2); cursor: pointer; background: transparent; border: 1px solid var(--o-border); border-radius: 999px; }
+.omino-metro__more:hover { color: var(--o-ink); border-color: var(--lc); }
+.omino-metro__more svg { transition: transform .15s; }
+.omino-metro__more[aria-expanded="true"] svg { transform: rotate(90deg); }
+.omino-metro__mini { margin: 0 8px 8px; padding: 6px 4px 4px; border-top: 1px solid var(--o-border); }
+.omino-metro__mini svg { display: block; width: 100%; height: 190px; }
+.omino-metro__mini line { stroke: var(--lc); stroke-width: 1.2px; opacity: .3; }
+.omino-metro__mini line.is-on { stroke-width: 2.4px; opacity: .95; }
+.omino-metro__pt { cursor: pointer; }
+.omino-metro__pt .hit { fill: transparent; }
+.omino-metro__pt .dot { fill: var(--o-card); stroke: var(--lc); stroke-width: 1.2px; opacity: .6; }
+.omino-metro__pt.is-on .dot { fill: var(--lc); opacity: 1; }
+.omino-metro__pt.is-cur .dot { fill: var(--o-card); stroke-width: 3px; opacity: 1; }
+.omino-metro__pt:hover .dot { opacity: 1; stroke-width: 2.4px; }
+.omino-metro__lbl { fill: var(--o-ink); font-weight: 700; paint-order: stroke; stroke: var(--o-card); stroke-linejoin: round; pointer-events: none; }
+.omino-metro__mini p { margin: 4px 0 0; text-align: center; font: 500 9.5px var(--mono, monospace); color: var(--o-muted); }
+.omino-metro__scroll { overflow-x: auto; padding: 0 6px 8px; scrollbar-width: thin; }
+.omino-metro__line { list-style: none; margin: 0; padding: 0; display: flex; width: max-content; }
+.omino-metro__st, .omino-metro__end { position: relative; flex: none; width: 92px; display: flex; flex-direction: column; align-items: center; }
+.omino-metro__st { padding-top: 22px; }
+.omino-metro__st::before { content: ""; position: absolute; top: 27px; left: 0; right: 0; height: 4px; background: var(--lc); border-radius: 2px; }
+.omino-metro__st:first-child::before { left: 50%; }
+.omino-metro__st:last-child::before { right: 50%; }
+.omino-metro__st.is-next::before { opacity: .38; }
+.omino-metro__dot { position: relative; z-index: 1; flex: none; width: 14px; height: 14px; padding: 0; cursor: pointer; border: 2px solid var(--lc); border-radius: 50%; background: var(--o-card); }
+.omino-metro__st.is-past .omino-metro__dot { background: var(--lc); }
+.omino-metro__st.is-cur .omino-metro__dot { width: 20px; height: 20px; margin-top: -3px; border-width: 5px; box-shadow: 0 0 0 4px color-mix(in srgb, var(--lc) 28%, transparent); }
+.omino-metro__dot:hover { box-shadow: 0 0 0 4px color-mix(in srgb, var(--lc) 28%, transparent); }
+.omino-metro__dot:focus-visible { outline: 2px solid var(--sky); outline-offset: 3px; }
+.omino-metro__name { margin-top: 6px; max-width: 84px; text-align: center; font-size: 10.5px; line-height: 1.25; color: var(--o-muted); overflow-wrap: anywhere; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+.omino-metro__st.is-cur .omino-metro__name { color: var(--o-ink); font-weight: 700; }
+.omino-metro__alt { position: absolute; top: 2px; left: 50%; transform: translateX(-50%); padding: 0 5px; font: 600 9px var(--mono, monospace); color: var(--o-muted); border: 1px solid var(--lc); border-radius: 999px; background: var(--o-card); }
+.omino-metro__end { padding-top: 19px; }
+.omino-metro__end::before { content: ""; position: absolute; top: 29px; height: 0; border-top: 3px dashed var(--lc); opacity: .55; left: 0; right: 0; }
+.omino-metro__end.is-head::before { left: 50%; }
+.omino-metro__end.is-tail::before { right: 50%; }
+.omino-metro__end button { position: relative; z-index: 1; max-width: 84px; padding: 3px 8px; font: 600 9.5px/1.2 var(--mono, monospace); color: var(--o-ink2); cursor: pointer; background: var(--o-card); border: 1px dashed var(--lc); border-radius: 999px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.omino-metro__end button:hover { color: var(--o-ink); border-style: solid; }
 .omino-rdx__pathbody { padding: 4px 14px 14px; text-align: center; overflow: auto; }
 .omino-rdx__empty { text-align: left; color: var(--o-muted); font-size: 12.5px; line-height: 1.5; }
 .omino-rdx__empty .omino-edgecard__enz { display: block; margin: 10px auto 0; }
