@@ -1,3 +1,4 @@
+// v8.6: Follow is one panel. The round Follow button in the top bar opens it with two tabs: Pathways (Back / Follow walks the canvas object by object, with the connection, its enzyme card and the 1/2 cycler; clicking a line, or the card arrows, opens it here instead of a floating card) and e⁻ and H (the glucose tour, unchanged). Closing it dismisses the standing point; the camera keeps the object clear of the panel.
 // v8.5: substrates (the co-substrate chips beside each molecule) are hidden on the canvas by default. The S button, the Substrates setting or the S key shows them; Default Settings hides them again. Opening a card or search result for a co-substrate still reveals them.
 // v8.4: periodic table panel runs down to the bottom of the canvas (rows stretch to fill it), and a Medically relevant / All elements toggle sits in its top bar. Medically relevant (default) shows the 71 elements with a body, drug, imaging or toxic role; All elements shows all 118. The legend lists only the categories on show.
 // v8.3: the periodic table lists all 118 elements (63 added: the rest of the lanthanides, the actinides, period 7 to oganesson, and the missing main-group and transition elements), with an actinide row and a 89–103 placeholder. New "Actinide" category and "No known biological role" tag; elements with a drug, imaging or toxic story (Ge, Kr, Ru, Pd, Cs, Ho, Re, Ir, At, Ac, Be, Po, Rn, Th, U, Pu) carry In drugs / Toxicity text. The panel is wider (up to 1680 px) and its rows scale with window height so the whole table fits over the canvas.
@@ -4252,44 +4253,6 @@ function OminoEdge({ id, sourceX, sourceY, targetX, targetY, sourcePosition, tar
   );
 }
 
-// Hovers just above the object the person is "standing on" and follows it as the view moves. Back / Follow hop along the lines in or out of it.
-function FollowCard({ at, inE, outE, nIn, nOut, iIn, iOut, onBack, onFollow, onCycleIn, onCycleOut, onClose, open }) {
-  const [tx, ty, zoom] = useStore((s) => s.transform);
-  const cw = useStore((s) => s.width);
-  const node = useStore((s) => s.nodeInternals.get(at));
-  const box = React.useRef(null), [w, setW] = useState(300);
-  React.useLayoutEffect(() => { if (box.current && box.current.offsetWidth !== w) setW(box.current.offsetWidth); });
-  if (!node || !node.width) return null;
-  const pa = node.positionAbsolute || node.position;
-  // sits just below the object; on a narrow screen it is kept clear of the left tool column and the right edge, with its pointer still aimed at the object
-  const sx = pa.x * zoom + tx, sy = (pa.y + node.height / 2) * zoom + ty, lo = (cw < 700 ? 60 : 12) + w / 2, hi = cw - 8 - w / 2;
-  const cx = hi < lo ? cw / 2 : Math.min(Math.max(sx, lo), hi), ax = Math.min(Math.max(sx - cx, 20 - w / 2), w / 2 - 20);
-  const o = outE && edgeHow(outE), i = inE && edgeHow(inE), c = (o || i || {}).color || "#A1A1AA";
-  const side = (e, n, k, dir, go, cyc) => (
-    <div className="omino-follow__side">
-      <button className="omino-follow__arrow" disabled={!e} onClick={go} aria-label={dir === "in" ? "Back" : "Follow"} title={e ? `${dir === "in" ? "Back" : "Follow"}: centre on ${nm(dir === "in" ? e.source : e.target)}` : dir === "in" ? "Nothing leads into this" : "This leads nowhere further"}>
-        {dir === "in" && <Icon d={ICON.chevL} size={18} />}<span>{dir === "in" ? "Back" : "Follow"}</span>{dir === "out" && <Icon d={ICON.chevR} size={18} />}
-      </button>
-      <small>{e ? nm(dir === "in" ? e.source : e.target) : "—"}</small>
-      {n > 1 && <button className="omino-follow__cyc" onClick={cyc} title="Switch to another connection">{k + 1}/{n}</button>}
-    </div>
-  );
-  return (
-    <div ref={box} className="omino-follow nodrag nopan nowheel" style={{ left: cx, top: sy, "--c": c, "--ax": `${ax}px` }}>
-      <button className="omino-follow__x" onClick={onClose} aria-label="Dismiss" title="Dismiss">×</button>
-      <div className="omino-follow__name">{nm(at)}</div>
-      <div className="omino-follow__row">
-        {side(inE, nIn, iIn, "in", onBack, onCycleIn)}
-        <div className="omino-follow__mid">
-          {o ? <><div className="omino-follow__how" style={{ color: o.color }}>{o.how}</div>{o.detail && <div className="omino-follow__detail">{o.detail}</div>}</> : <div className="omino-follow__detail">End of the line</div>}
-          {outE?.data.main && outE.data.label && <button className="omino-edgecard__enz" onClick={() => open("enz", outE.data.label)}>Open enzyme card</button>}
-        </div>
-        {side(outE, nOut, iOut, "out", onFollow, onCycleOut)}
-      </div>
-    </div>
-  );
-}
-
 function PathwayNode({ data }) {
   return (
     <div className={`omino-pathtitle ${data.dim ? "is-dim" : ""}`} style={{ "--c": PATHWAYS[data.path].color, width: data.w }}>
@@ -5776,7 +5739,54 @@ function RdxEq({ side }) {
     </React.Fragment>
   ))}</>;
 }
-function RedoxPanel({ i, setI, playing, setPlaying, onClose }) {
+// Follow panel: one home for following. "Pathways" walks the canvas object by object (Back / Follow); "e⁻ and H" follows one glucose, step by step.
+function FollowModes({ mode, onMode }) {
+  return (
+    <div className="omino-rdx__modes" role="tablist" aria-label="What to follow">
+      {[["path", "Pathways"], ["redox", "e⁻ and H"]].map(([k, l]) => <button key={k} role="tab" aria-selected={mode === k} className={mode === k ? "is-on" : ""} onClick={() => mode !== k && onMode(k)}>{l}</button>)}
+    </div>
+  );
+}
+function PathPanel({ at, inE, outE, nIn, nOut, iIn, iOut, onBack, onFollow, onCycleIn, onCycleOut, onClose, onMode, onStand, standId, open }) {
+  const o = outE && edgeHow(outE), i = inE && edgeHow(inE), c = (o || i || {}).color || "#A1A1AA";
+  const side = (e, n, k, dir, go, cyc) => (
+    <div className="omino-follow__side">
+      <button className="omino-follow__arrow" disabled={!e} onClick={go} aria-label={dir === "in" ? "Back" : "Follow"} title={e ? `${dir === "in" ? "Back" : "Follow"}: centre on ${nm(dir === "in" ? e.source : e.target)}` : dir === "in" ? "Nothing leads into this" : "This leads nowhere further"}>
+        {dir === "in" && <Icon d={ICON.chevL} size={18} />}<span>{dir === "in" ? "Back" : "Follow"}</span>{dir === "out" && <Icon d={ICON.chevR} size={18} />}
+      </button>
+      <small>{e ? nm(dir === "in" ? e.source : e.target) : "—"}</small>
+      {n > 1 && <button className="omino-follow__cyc" onClick={cyc} title="Switch to another connection">{k + 1}/{n}</button>}
+    </div>
+  );
+  return (
+    <div className="omino-rdx omino-rdx--path nodrag nopan nowheel" role="dialog" aria-label="Follow a pathway" style={{ "--c": c }}>
+      <div className="omino-rdx__top">
+        <div><b>Follow</b><span>walk a pathway, object by object</span></div>
+        <button className="omino-rdx__x" onClick={onClose} aria-label="Close" title="Close"><Icon d={ICON.close} size={16} /></button>
+      </div>
+      <FollowModes mode="path" onMode={onMode} />
+      {at ? (
+        <div className="omino-rdx__pathbody">
+          <div className="omino-follow__name">{nm(at)}</div>
+          <div className="omino-follow__row">
+            {side(inE, nIn, iIn, "in", onBack, onCycleIn)}
+            <div className="omino-follow__mid">
+              {o ? <><div className="omino-follow__how" style={{ color: o.color }}>{o.how}</div>{o.detail && <div className="omino-follow__detail">{o.detail}</div>}</> : <div className="omino-follow__detail">End of the line</div>}
+              {outE?.data.main && outE.data.label && <button className="omino-edgecard__enz" onClick={() => open("enz", outE.data.label)}>Open enzyme card</button>}
+            </div>
+            {side(outE, nOut, iOut, "out", onFollow, onCycleOut)}
+          </div>
+        </div>
+      ) : (
+        <div className="omino-rdx__pathbody omino-rdx__empty">
+          Click any line on the canvas to stand on it, then use Back and Follow to walk the pathway. For the electrons and hydrogens of one glucose, switch to e⁻ and H.
+          {standId && <button className="omino-edgecard__enz" onClick={() => onStand(standId)}>Stand on {nm(standId)}</button>}
+        </div>
+      )}
+    </div>
+  );
+}
+function RedoxPanel({ i, setI, playing, setPlaying, onClose, onMode }) {
   const n = RDX_STEPS.length, s = RDX_STEPS[i], st = RDX_STATE[i], pv = i ? RDX_STATE[i - 1] : RDX_START;
   const stage = RDX_STAGES.find((x) => x[0] === s.stage);
   const dp = (() => { const a = rdxPools(s.R), b = rdxPools(s.L); return Object.fromEntries(Object.keys(a).map((k) => [k, a[k] - b[k]])); })();
@@ -5791,9 +5801,10 @@ function RedoxPanel({ i, setI, playing, setPlaying, onClose }) {
   return (
     <div className="omino-rdx nodrag nopan nowheel" role="dialog" aria-label="Follow electrons and hydrogens">
       <div className="omino-rdx__top">
-        <div><b>Follow e⁻ and H</b><span>one glucose, start to finish</span></div>
+        <div><b>Follow</b><span>electrons and hydrogens, one glucose start to finish</span></div>
         <button className="omino-rdx__x" onClick={onClose} aria-label="Close" title="Close"><Icon d={ICON.close} size={16} /></button>
       </div>
+      <FollowModes mode="redox" onMode={onMode} />
       <div className="omino-rdx__stages" role="tablist">
         {RDX_STAGES.map(([id, label]) => <button key={id} role="tab" aria-selected={s.stage === id} className={s.stage === id ? "is-on" : ""} onClick={() => { setPlaying(false); setI(first(id)); }}>{label}</button>)}
       </div>
@@ -5858,6 +5869,7 @@ function Atlas() {
   const [ptOpen, setPtOpen] = useState(false); // periodic table panel
   const [rdx, setRdx] = useState(null); // Follow e⁻ and H: index of the step being shown, or null when the panel is closed
   const [rdxPlay, setRdxPlay] = useState(false);
+  const [fpOpen, setFpOpen] = useState(false); // Follow panel: Pathways (rdx == null) or e⁻ and H (rdx = step)
   const rdxLit = useMemo(() => (rdx == null ? null : RDX_LIT(rdx)), [rdx]); // canvas objects on the route so far
   const [stOpen, setStOpen] = useState(false); // settings panel
   const [navOn, setNavOn] = useState(false); // navigation add-ons (tool column, minimap, legend, filter chips): the canvas opens clear and the round compass button in the top bar engages them
@@ -6072,7 +6084,10 @@ function Atlas() {
   // Follow e⁻ and H: the lines and objects of the current step glow on top of the route so far
   const edgesOut = useMemo(() => (rdxLit ? edgesBase.map((e) => (rdxLit.curEdges.has(e.id) ? { ...e, className: "is-picked", zIndex: 1000, data: { ...e.data, active: true, faded: false } } : e)) : edgesBase), [edgesBase, rdxLit]);
   const nodesOut = useMemo(() => (rdxLit ? nodesBase.map((n) => (rdxLit.curNodes.has(n.id) ? { ...n, className: "is-end" } : n)) : nodesBase), [nodesBase, rdxLit]);
-  const toggleRdx = () => { if (rdx == null) { setHideS(false); setTrack(null); setPtOpen(false); setRdx(0); } else { setRdx(null); setRdxPlay(false); } };
+  const closeFp = () => { setFpOpen(false); setRdx(null); setRdxPlay(false); setTrack(null); };
+  const toggleFp = () => { if (fpOpen) closeFp(); else setFpOpen(true); };
+  const modeRedox = () => { setHideS(false); setTrack(null); setPtOpen(false); setRdx(0); };
+  const modePath = () => { setRdx(null); setRdxPlay(false); };
 
   // Neighbours of every visible object, main enzymatic steps first
   const edgeById = useMemo(() => Object.fromEntries(shownEdges.map((e) => [e.id, e])), [shownEdges]);
@@ -6091,7 +6106,13 @@ function Atlas() {
     const w = c.offsetWidth + 28;
     return v.clientWidth - w >= 420 ? w : 0;
   };
-  const flyTo = (nid) => { const n = getNode(nid); if (!n) return; const z = Math.min(Math.max(getZoom(), 0.7), 1.5); setCenter(n.position.x + cardSpace() / 2 / z, n.position.y + 80 / z, { zoom: z, duration: 700 }); };
+  const flyTo = (nid) => { // aim the object at the part of the canvas the description card and the Follow panel leave free
+    const n = getNode(nid); if (!n) return; const z = Math.min(Math.max(getZoom(), 0.7), 1.5);
+    const cv = document.querySelector(".omino-canvas"), pn = document.querySelector(".omino-rdx"), cw = cv ? cv.clientWidth : 1200, narrow = cw <= 760;
+    const pw = !narrow ? (pn ? pn.offsetWidth : 440) + 88 : 0, ph = narrow ? (pn ? pn.offsetHeight : 230) + 16 : 0; // left column on a desktop, bottom sheet on a phone
+    const left = !narrow && cw - cardSpace() - pw >= 420 ? pw : 0;
+    setCenter(n.position.x + cardSpace() / 2 / z - left / 2 / z, n.position.y + (narrow ? ph / 2 : 80) / z, { zoom: z, duration: 700 });
+  };
   const pickEdge = (ev, e) => { // stand on whichever end of the clicked line is nearer the click
     if (e.data?.fx === "organ") return; // lines to the organ cards are not selectable
     if (track && (track.out === e.id || track.inn === e.id)) { setTrack(null); return; }
@@ -6100,6 +6121,7 @@ function Atlas() {
     const atSource = Math.hypot(a.position.x - pt.x, a.position.y - pt.y) <= Math.hypot(b.position.x - pt.x, b.position.y - pt.y);
     const at = atSource ? e.source : e.target;
     setTrack(atSource ? { at, out: e.id, inn: adj.inn[at]?.[0]?.id || null } : { at, inn: e.id, out: adj.out[at]?.[0]?.id || null });
+    setFpOpen(true); setRdx(null); setRdxPlay(false); // the Follow panel is where following happens
     // a long line, or a zoomed-out map, makes the card hard to read: fly in to it
     if (Math.hypot(a.position.x - b.position.x, a.position.y - b.position.y) * getZoom() > 320 || getZoom() < 0.7) flyTo(at);
   };
@@ -6109,8 +6131,14 @@ function Atlas() {
     setTrack(dir === "out"
       ? { at, inn: e.id, out: (outs.find((x) => x.target !== e.source) || outs[0])?.id || null }
       : { at, out: e.id, inn: (ins.find((x) => x.source !== e.target) || ins[0])?.id || null });
+    setFpOpen(true); setRdx(null); setRdxPlay(false);
     flyTo(at);
     syncCard(at);
+  };
+  const standOn = (at) => { // "Stand on" an object with no line picked yet: line up its first way in and out
+    if (!at) return;
+    setTrack({ at, inn: adj.inn[at]?.[0]?.id || null, out: adj.out[at]?.[0]?.id || null });
+    flyTo(at); syncCard(at);
   };
   // The open description card follows the canvas: hopping to an object swaps the card to it
   const NODE_CARDS = ["mol", "drug", "target", "organ"];
@@ -6136,7 +6164,7 @@ function Atlas() {
   useEffect(() => {
     if (rdx == null) return;
     const k = (ev) => {
-      if (ev.key === "Escape") { setRdx(null); setRdxPlay(false); return; }
+      if (ev.key === "Escape") { closeFp(); return; }
       if (ev.target.closest && ev.target.closest("input, textarea")) return;
       if (ev.key === "ArrowRight") { setRdxPlay(false); setRdx((v) => Math.min(RDX_STEPS.length - 1, v + 1)); }
       else if (ev.key === "ArrowLeft") { setRdxPlay(false); setRdx((v) => Math.max(0, v - 1)); }
@@ -6334,8 +6362,8 @@ function Atlas() {
           <button className={`omino-round ${ptOpen ? "is-on" : ""}`} onClick={() => setPtOpen((v) => !v)} aria-pressed={ptOpen} aria-label="Periodic table" title="Periodic table">
             <Icon d={ICON.table} />{ptOpen && <i />}
           </button>
-          <button className={`omino-round ${rdx != null ? "is-on" : ""}`} onClick={toggleRdx} aria-pressed={rdx != null} aria-label="Follow electrons and hydrogens" title="Follow electrons and hydrogens, glucose to water">
-            <Icon d={ICON.redox} />{rdx != null && <i />}
+          <button className={`omino-round ${fpOpen ? "is-on" : ""}`} onClick={toggleFp} aria-pressed={fpOpen} aria-label="Follow pathways, electrons and hydrogens" title="Follow a pathway, or the electrons and hydrogens of one glucose">
+            <Icon d={ICON.redox} />{fpOpen && <i />}
           </button>
           <button data-settings className={`omino-round ${stOpen ? "is-on" : "is-sky"}`} onClick={() => setStOpen((v) => !v)} aria-pressed={stOpen} aria-expanded={stOpen} aria-label="Settings" title="Settings"><Icon d={ICON.settings} /></button>
           {stOpen && (
@@ -6463,11 +6491,6 @@ function Atlas() {
             </div>
           </Panel>}
 
-          {track && (() => {
-            const inE = edgeById[track.inn], outE = edgeById[track.out], ins = adj.inn[track.at] || [], outs = adj.out[track.at] || [];
-            return <FollowCard at={track.at} inE={inE} outE={outE} nIn={ins.length} nOut={outs.length} iIn={Math.max(0, ins.findIndex((x) => x.id === track.inn))} iOut={Math.max(0, outs.findIndex((x) => x.id === track.out))}
-              onBack={() => hop(inE, "in")} onFollow={() => hop(outE, "out")} onCycleIn={() => cycle("in")} onCycleOut={() => cycle("out")} onClose={() => setTrack(null)} open={open} />;
-          })()}
           {navOn && showChips && <Panel position="bottom-center"><div className="omino-chiprows">
             {showLoc && <div className="omino-chips nowheel nopan" onWheel={chipWheel}>
               {Object.entries(LOCS).map(([id, l]) => <button key={id} className={`omino-chip omino-chip--loc ${locFocus === id ? "is-on" : ""}`} style={{ "--c": l.color }} onClick={() => selectLoc(id)} aria-pressed={locFocus === id}><i />{l.label}</button>)}
@@ -6489,7 +6512,14 @@ function Atlas() {
           <PeriodicTable q={query.trim().toLowerCase()} sel={cur?.t === "el" ? cur.id : null} onPick={(e) => (cur?.t === "el" ? swap("el", e.sym) : open("el", e.sym))} onClose={() => setPtOpen(false)}
             width={cur ? "min(1680px, calc(100% - 440px))" : "min(1680px, calc(100% - 96px))"} />
         )}
-        {rdx != null && <RedoxPanel i={rdx} setI={setRdx} playing={rdxPlay} setPlaying={setRdxPlay} onClose={() => { setRdx(null); setRdxPlay(false); }} />}
+        {fpOpen && (rdx != null
+          ? <RedoxPanel i={rdx} setI={setRdx} playing={rdxPlay} setPlaying={setRdxPlay} onClose={closeFp} onMode={(m) => (m === "path" ? modePath() : modeRedox())} />
+          : (() => {
+            const inE = track ? edgeById[track.inn] : null, outE = track ? edgeById[track.out] : null, ins = track ? adj.inn[track.at] || [] : [], outs = track ? adj.out[track.at] || [] : [];
+            return <PathPanel at={track?.at} inE={inE} outE={outE} nIn={ins.length} nOut={outs.length} iIn={Math.max(0, ins.findIndex((x) => x.id === track?.inn))} iOut={Math.max(0, outs.findIndex((x) => x.id === track?.out))}
+              onBack={() => hop(inE, "in")} onFollow={() => hop(outE, "out")} onCycleIn={() => cycle("in")} onCycleOut={() => cycle("out")} onClose={closeFp}
+              onMode={(m) => (m === "redox" ? modeRedox() : modePath())} onStand={standOn} standId={!track && cardNode ? cardNode : null} open={open} />;
+          })())}
         {cur && <InfoCard cur={cur} open={open} swap={swap} fit={fit} onBack={stack.length > 1 ? () => setStack((s) => s.slice(0, -1)) : null} onClose={() => setStack([])}
           nav={cardNode ? { canPrev: canStep("in"), canNext: canStep("out"), onPrev: () => stepCard("in"), onNext: () => stepCard("out") } : null} />}
       </div>
@@ -7117,6 +7147,14 @@ ${LIGHT_CSS}
 .omino-rdx__net b { font-size: 10.5px; letter-spacing: .06em; text-transform: uppercase; color: var(--o-muted); }
 .omino-rdx__net span { line-height: 1.5; color: var(--o-ink); }
 .omino-rdx__net small { font-size: 11px; line-height: 1.5; color: var(--o-muted); }
+.omino-rdx__modes { display: flex; gap: 2px; margin: 0 12px 8px; padding: 2px; border: 1px solid var(--o-border); border-radius: 999px; background: var(--o-sunk); }
+.omino-rdx__modes button { flex: 1; font-weight: 600; font-size: 12px; font-family: inherit; color: var(--o-muted); background: transparent; border: 1px solid transparent; border-radius: 999px; padding: 6px 10px; cursor: pointer; white-space: nowrap; }
+.omino-rdx__modes button:hover { color: var(--o-ink); }
+.omino-rdx__modes button.is-on { color: var(--o-ink); background: var(--o-hover); border-color: var(--o-accent); }
+.omino-rdx__modes button:focus-visible { outline: 2px solid var(--o-accent); outline-offset: 2px; }
+.omino-rdx__pathbody { padding: 4px 14px 14px; text-align: center; overflow: auto; }
+.omino-rdx__empty { text-align: left; color: var(--o-muted); font-size: 12.5px; line-height: 1.5; }
+.omino-rdx__empty .omino-edgecard__enz { display: block; margin: 10px auto 0; }
 .omino-rdx__ctl { display: flex; align-items: center; gap: 6px; padding: 8px 12px 12px; border-top: 1px solid var(--o-line-soft); }
 .omino-rdx__ctl button { height: 30px; min-width: 34px; padding: 0 10px; display: grid; place-items: center; font-weight: 600; font-size: 12px; font-family: inherit; color: var(--o-ink); background: var(--o-soft); border: 1px solid var(--o-border); border-radius: 999px; cursor: pointer; }
 .omino-rdx__ctl button:hover:not(:disabled) { background: var(--o-hover2); }
