@@ -1,3 +1,4 @@
+// v8.9 (cont.): the Follow card is now the Pathways Tracker, and while it is moving along a pathway an open description card follows it: an enzyme or hormonal-signal card shows the onward line the tracker shows, an object card shows the object it stands on, a pathway card shows that object's pathway.
 // v8.9 (cont.): while editing, Undo and Redo arrows appear on the canvas, top right, just under the Settings and Edit buttons (also Ctrl/Cmd+Z and Ctrl/Cmd+Shift+Z or Ctrl+Y). Every drag (a card or a whole group) and Reset all is one step; the steps are forgotten when you Save or Cancel.
 // v8.9: Edit mode moves whole groups. A drag on any card now carries its group with it: each pathway (with its title, enzymes' co-substrates and side cards), each organ hub (the hub with its ring of targets and drugs), and each pharmacology cluster (a target with the drugs placed beside it). The lines in the Edit bar switch between Groups and Cards; hold Alt while dragging to move one card. The group under the pointer is outlined; Save, Cancel (Esc) and Reset all work on groups exactly as on single cards, and the saved layout is still only the cards that moved (localStorage "omino.layout.v1").
 // v8.8: Edit button, right of Settings. Edit mode makes every card (and pathway title) draggable, with Save, Cancel (Esc) and Reset all in a bar at the top; Save keeps the arrangement on this device (localStorage "omino.layout.v1", only the cards that moved) and re-aims the lines at the sides that now face each other. Outside Edit mode cards are fixed, and P puts everything back and clears the saved layout. While editing, clicks do not open cards.
@@ -5953,7 +5954,7 @@ function RdxEq({ side }) {
 // Follow panel: one home for following. "Pathways" walks the canvas object by object (Back / Follow); "e⁻ and H" follows one glucose, step by step.
 function FollowModes({ mode, onMode }) {
   return (
-    <div className="omino-rdx__modes" role="tablist" aria-label="What to follow">
+    <div className="omino-rdx__modes" role="tablist" aria-label="What to track">
       {[["path", "Pathways"], ["redox", "e⁻ and H"]].map(([k, l]) => <button key={k} role="tab" aria-selected={mode === k} className={mode === k ? "is-on" : ""} onClick={() => mode !== k && onMode(k)}>{l}</button>)}
     </div>
   );
@@ -5970,9 +5971,9 @@ function PathPanel({ at, inE, outE, nIn, nOut, iIn, iOut, onBack, onFollow, onCy
     </div>
   );
   return (
-    <div className="omino-rdx omino-rdx--path nodrag nopan nowheel" role="dialog" aria-label="Follow a pathway" style={{ "--c": c }}>
+    <div className="omino-rdx omino-rdx--path nodrag nopan nowheel" role="dialog" aria-label="Pathways Tracker" style={{ "--c": c }}>
       <div className="omino-rdx__top">
-        <div><b>Follow</b><span>walk a pathway, object by object</span></div>
+        <div><b>Pathways Tracker</b><span>walk a pathway, object by object</span></div>
         <button className="omino-rdx__x" onClick={onClose} aria-label="Close" title="Close"><Icon d={ICON.close} size={16} /></button>
       </div>
       <FollowModes mode="path" onMode={onMode} />
@@ -5990,7 +5991,7 @@ function PathPanel({ at, inE, outE, nIn, nOut, iIn, iOut, onBack, onFollow, onCy
         </div>
       ) : (
         <div className="omino-rdx__pathbody omino-rdx__empty">
-          Click any line on the canvas to stand on it, then use Back and Follow to walk the pathway. For the electrons and hydrogens of one glucose, switch to e⁻ and H.
+          Click any line on the canvas to stand on it, then use Back and Follow to walk the pathway with the tracker. For the electrons and hydrogens of one glucose, switch to e⁻ and H.
           {standId && <button className="omino-edgecard__enz" onClick={() => onStand(standId)}>Stand on {nm(standId)}</button>}
         </div>
       )}
@@ -6010,9 +6011,9 @@ function RedoxPanel({ i, setI, playing, setPlaying, onClose, onMode }) {
   const netL = Object.entries(net).filter(([, v]) => v < 0).map(([k, v]) => [k, -v]).sort((a, b) => first2(a[0]) - first2(b[0])), netR = Object.entries(net).filter(([, v]) => v > 0);
   const eqText = (l) => l.map(([k, v]) => `${v > 1 ? v + " " : ""}${RDX_SP[k][0]}`).join(" + ");
   return (
-    <div className="omino-rdx nodrag nopan nowheel" role="dialog" aria-label="Follow electrons and hydrogens">
+    <div className="omino-rdx nodrag nopan nowheel" role="dialog" aria-label="Pathways Tracker: electrons and hydrogens">
       <div className="omino-rdx__top">
-        <div><b>Follow</b><span>electrons and hydrogens, one glucose start to finish</span></div>
+        <div><b>Pathways Tracker</b><span>electrons and hydrogens, one glucose start to finish</span></div>
         <button className="omino-rdx__x" onClick={onClose} aria-label="Close" title="Close"><Icon d={ICON.close} size={16} /></button>
       </div>
       <FollowModes mode="redox" onMode={onMode} />
@@ -6498,6 +6499,19 @@ function Atlas() {
     if (sx < 0 || sy < 0 || sx > v.clientWidth || sy > v.clientHeight) return;
     setCenter(n.position.x, n.position.y + (track && track.at === last ? 80 / zoom : 0), { zoom, duration: 500 });
   }, [cur]); // eslint-disable-line react-hooks/exhaustive-deps
+  // v8.9: the Pathways Tracker drives an open description card: whatever the tracker now shows, the card shows
+  useEffect(() => {
+    if (!track || !cur || !fpOpen || rdx != null) return;
+    const outE = edgeById[track.out], d = nodes.find((x) => x.id === track.at)?.data, t = d?.mol ? "mol" : d?.rx, same = (a, id) => cur.t === a && cur.id === id;
+    const objectCard = t && NODE_CARDS.includes(t) ? [t, track.at] : null;
+    let want = null;
+    if (cur.t === "enz") want = outE?.data.main && outE.data.label ? ["enz", outE.data.label] : objectCard; // the line the tracker offers, else the object it stands on
+    else if (NODE_CARDS.includes(cur.t)) want = objectCard;
+    else if (cur.t === "path") { const pw = PATH_OF[track.at]; want = pw && PATHWAYS[pw] ? ["path", pw] : null; }
+    if (!want || same(want[0], want[1])) return;
+    if (NODE_CARDS.includes(want[0])) hopped.current = true; // the tracker already moved the view there
+    swap(want[0], want[1]);
+  }, [track?.at, track?.out, track?.inn]); // eslint-disable-line react-hooks/exhaustive-deps
   const canStep = (dir) => !!cardNode && ((dir === "out" ? adj.out : adj.inn)[cardNode] || []).length > 0;
   const stepCard = (dir) => { // the card's < > arrows: hop from the object the card is showing
     if (!cardNode) return;
@@ -6660,7 +6674,7 @@ function Atlas() {
           <button className={`omino-round ${ptOpen ? "is-on" : ""}`} onClick={() => setPtOpen((v) => !v)} aria-pressed={ptOpen} aria-label="Periodic table" title="Periodic table">
             <Icon d={ICON.table} />{ptOpen && <i />}
           </button>
-          <button className={`omino-round ${fpOpen ? "is-on" : ""}`} onClick={toggleFp} aria-pressed={fpOpen} aria-label="Follow pathways, electrons and hydrogens" title="Follow a pathway, or the electrons and hydrogens of one glucose">
+          <button className={`omino-round ${fpOpen ? "is-on" : ""}`} onClick={toggleFp} aria-pressed={fpOpen} aria-label="Pathways Tracker" title="Pathways Tracker: walk a pathway, or follow the electrons and hydrogens of one glucose">
             <Icon d={ICON.redox} />{fpOpen && <i />}
           </button>
           <button data-settings className={`omino-round ${stOpen ? "is-on" : "is-sky"}`} onClick={() => setStOpen((v) => !v)} aria-pressed={stOpen} aria-expanded={stOpen} aria-label="Settings" title="Settings"><Icon d={ICON.settings} /></button>
