@@ -1,3 +1,5 @@
+// v9.9.13: FIX the periodic table was invisible: the Hybrid cell view (v8.9) reused the class omino-cell, which the periodic table's element tiles also use, so every tile became a full-canvas black layer. The Hybrid cell view is now omino-cellview (its parts keep their omino-cell__ names); the tiles are unchanged.
+// v9.9.11: Network view, 3D: the chosen object stays where it is while the rest of the network keeps turning; a new button (◎, beside the labels and contrast buttons) cycles what is held: the chosen object, its whole pathway, or nothing. Let go (tap empty space, or choose something else) and what was held eases back into the turning network, at its regular place, and turns with it again.
 // v9.9.10: Network view: the object popup (name, link chips, Back / Follow, Description card / Pathway card / Show in atlas) is gone. Choosing an object, or tapping one of its vectors, stands the Pathway Tracker on it; Back / Follow, the 1/2 branch cycler, the trail and the arrow keys all run through the tracker, and Description card / Pathway card / Show in atlas sit at the foot of the tracker while the Network view is open.
 // v9.9.2: Network view is 3D only (the 2D toggle is gone; the atlas canvas is the flat map). While the Network view is open, the Pathway Tracker's overview is a stripped-down 3D GPS (the pathway at its real places on a tilted ground plane, road behind faded, road ahead bold, the tracker's arrow) in place of the metro line; it glides to centre each object the tracker moves to, and the network centres it too. With the Network closed the metro line is unchanged. Pharmacology, organ hubs and histology (glands, endocrine cells) appear only on the 2D canvas: the Network view leaves them out and has no Rx / Org switches. The app opens in the 3D Network view. The OMINO button goes to the 3D view centred on the TCA cycle, and every object revolves counterclockwise about it until an object is selected (a finger down holds the turning; the fit and zoom/pan controls end the TCA framing). Settings is a popup window (backdrop, close button, Esc) with a 3D view section: auto-rotation on/off, speed (0.25x to 4x) and direction. The Network view's search box is gone. Open OWORLD and the Pathway Tracker moved from the top bar into Settings (Tools). The compass button / "Navigation tools" setting now shows or hides the navigation buttons (zoom, fit) of every view: canvas, network and hybrid cell. The 3D view has a play / pause button at the top of its left column; the default rotation speed is 0.25x; the top-bar Edit button shows on the canvas view only (and while an edit is in progress). The GPS arrow always heads north (up the canvas).
 // v8.9 (cont.): Network view: choosing a pathway object lifts every vector of that pathway to full strength (the canvas's pathway focus), with their arrowheads; the lined-up steps and the trail still stand out on top.
@@ -4441,8 +4443,9 @@ function netStep(S) { // one tick of the layout: nodes push apart, links and gro
   S.alpha = Math.max(0, a * 0.992 - 0.0004); S.ticks++;
 }
 function netProject(S, cam, W, H) { // turn, then (in 3D) a little perspective: near objects larger and brighter
-  const cy = Math.cos(cam.yaw), sy = Math.sin(cam.yaw), cp = Math.cos(cam.pitch), sp = Math.sin(cam.pitch), { x, y, z, sx, sy: sY, sz, sf, n } = S, ox = cam.ox || 0, oy = cam.oy || 0, oz = cam.oz || 0; // the network turns about (ox, oy, oz): the middle of the TCA cycle
+  const cy0 = Math.cos(cam.yaw), sy0 = Math.sin(cam.yaw), po = S.po, cp = Math.cos(cam.pitch), sp = Math.sin(cam.pitch), { x, y, z, sx, sy: sY, sz, sf, n } = S, ox = cam.ox || 0, oy = cam.oy || 0, oz = cam.oz || 0; // the network turns about (ox, oy, oz): the middle of the TCA cycle
   for (let i = 0; i < n; i++) {
+    let cy = cy0, sy = sy0; if (po && po[i]) { const ya = cam.yaw - po[i]; cy = Math.cos(ya); sy = Math.sin(ya); } // a held object (or pathway) turns by less than the rest: it sits out the automatic rotation
     const ax = x[i] - ox, ay = y[i] - oy, az = z[i] - oz, x1 = ax * cy + az * sy, z1 = -ax * sy + az * cy, y2 = ay * cp - z1 * sp, z2 = ay * sp + z1 * cp, f = 1 / Math.max(0.35, 1 + (z2 / 1100) * cam.persp);
     sx[i] = W / 2 + cam.px + x1 * cam.zoom * f; sY[i] = H / 2 + cam.py + y2 * cam.zoom * f; sz[i] = z2; sf[i] = f;
   }
@@ -4503,7 +4506,7 @@ const NET_PAL = {
 };
 function NetworkView({ data, focusId, home, rot, setRot, nav, onClose, onOpen, onGroup, onStand, onHop, tracking, lined }) {
   const box = useRef(null), cvs = useRef(null), St = useRef(null), inp = useRef(null);
-  const flat = false, [labels, setLabels] = useState(true), [light, setLight] = useState(false), [mols, setMols] = useState(true), [sel, setSel] = useState(-1), [q, setQ] = useState(""), showRx = true, showOrg = true;
+  const flat = false, [labels, setLabels] = useState(true), [light, setLight] = useState(false), [mols, setMols] = useState(true), [sel, setSel] = useState(-1), [pin, setPin] = useState(1), [q, setQ] = useState(""), showRx = true, showOrg = true;
   const hid = useMemo(() => Uint8Array.from(data.nodes, (q0) => ((!showRx && (q0.shape === 1 || q0.shape === 2)) || (!showOrg && q0.hub) ? 1 : 0)), [data, showRx, showOrg]); // pharmacology (targets, drugs) and organ hubs can be hidden here
   const [walk, setWalk] = useState([]), [fi, setFi] = useState({ out: 0, inn: 0 }); // the pathway follower: the nodes walked so far, and which branch is lined up each way
   const adjN = useMemo(() => { // directed enzyme steps per object (organ hubs left out, as in the atlas follower); the main pathway line comes first, then pharmacology links
@@ -4526,6 +4529,12 @@ function NetworkView({ data, focusId, home, rot, setRot, nav, onClose, onOpen, o
     data.edges.forEach((e, i) => { if (e[8] === id && e[7] !== 3 && e[7] !== 5 && !hid[e[0]] && !hid[e[1]]) l.push(i); }); return l;
   }, [sel, data, hid]);
   ui.current.pw = pw;
+  const pinSet = useMemo(() => { // what is held still: nothing, the chosen object, or the chosen object's whole pathway (an object outside any pathway holds alone)
+    if (!pin || sel < 0) return null; const u8 = new Uint8Array(data.nodes.length), g = data.nodes[sel].g;
+    if (pin === 2 && g.startsWith("path:")) data.nodes.forEach((q0, i) => { if (q0.g === g && !hid[i]) u8[i] = 1; }); else u8[sel] = 1;
+    return u8;
+  }, [sel, pin, data, hid]);
+  ui.current.pinSet = pinSet;
   const pend = useRef(null), tapR = useRef(null);
   useEffect(() => { setFi(pend.current || { out: 0, inn: 0 }); pend.current = null; }, [sel]);
   useEffect(() => { // the lines the tracker has lined up are the ones lit here
@@ -4559,7 +4568,7 @@ function NetworkView({ data, focusId, home, rot, setRot, nav, onClose, onOpen, o
     const s = { S: netSeed(data, false), tca, home: true, spin: true, hold: false, hr: 0, hf: 0, t0: 0, groups, emap, eoff, nbr, deg, byDeg, kindIdx, cam: { yaw: 0.6, pitch: 0.35, persp: 1, zoom: 1, px: 0, py: 0, ox: 0, oy: 0, oz: 0 }, tgt: { yaw: 0.6, pitch: 0.35, persp: 1 }, goal: null, hover: -1, autofit: true, match: new Set(), rad: new Float32Array(n), order: Array.from({ length: n }, (_, i) => i), raf: 0, W: 800, H: 600, dpr: 1 };
     s.order.sort((a, b) => deg[a] - deg[b]); s.order0 = s.order.slice(); // hubs drawn on top when flat
     St.current = s;
-    s.goto = (i) => { const c = s.cam, cy = Math.cos(c.yaw), sy = Math.sin(c.yaw), cp = Math.cos(c.pitch), sp = Math.sin(c.pitch), S = s.S, ax = S.x[i] - (c.ox || 0), ay = S.y[i] - (c.oy || 0), az = S.z[i] - (c.oz || 0), x1 = ax * cy + az * sy, z1 = -ax * sy + az * cy, y2 = ay * cp - z1 * sp, z = Math.max(c.zoom, 1.6), z2 = ay * sp + z1 * cp, f = 1 / Math.max(0.35, 1 + (z2 / 1100) * c.persp);
+    s.goto = (i) => { const c = s.cam, ya = c.yaw - ((s.S.po && s.S.po[i]) || 0), cy = Math.cos(ya), sy = Math.sin(ya), cp = Math.cos(c.pitch), sp = Math.sin(c.pitch), S = s.S, ax = S.x[i] - (c.ox || 0), ay = S.y[i] - (c.oy || 0), az = S.z[i] - (c.oz || 0), x1 = ax * cy + az * sy, z1 = -ax * sy + az * cy, y2 = ay * cp - z1 * sp, z = Math.max(c.zoom, 1.6), z2 = ay * sp + z1 * cp, f = 1 / Math.max(0.35, 1 + (z2 / 1100) * c.persp);
       // aim the object at the part of the view the description card and the object panel leave free, as the canvas does: left of the card, a little above the middle (a phone has no card, and keeps the panel's height clear instead)
       const bx = box.current, Wn = bx ? bx.clientWidth : 800, card = document.querySelector(".omino-ecard"), cw = (card ? card.offsetWidth : 348) + 28, inf = document.querySelector(".omino-rdx--path"), dx = Wn - cw >= 420 ? cw / 2 : 0, dy = Wn <= 760 ? (inf ? inf.offsetHeight : 200) / 2 + 8 : 80;
       s.goal = { zoom: z, px: -x1 * z * f - dx, py: -y2 * z * f - dy }; s.autofit = false; s.home = false; wake(); };
@@ -4569,7 +4578,11 @@ function NetworkView({ data, focusId, home, rot, setRot, nav, onClose, onOpen, o
       if (cv.width !== Math.round(W * dpr) || cv.height !== Math.round(H * dpr)) { cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr); }
       s.W = W; s.H = H; let busy = false;
       { let mx = 0, my = 0, mz = 0; const ti = s.tca; if (ti.length) { for (const k of ti) { mx += S.x[k]; my += S.y[k]; mz += S.z[k]; } mx /= ti.length; my /= ti.length; mz /= ti.length; } cam.ox = mx; cam.oy = my; cam.oz = mz; } // the TCA cycle is the middle of the world
-      { const tn = performance.now(), dt = Math.min(64, tn - (s.t0 || tn)); s.t0 = tn; const ro = rotR.current; if (s.spin && ro.on && !s.hold) { cam.yaw += (ro.ccw ? -1 : 1) * dt * 0.00016 * ro.speed; s.tgt.yaw = cam.yaw; } if (s.spin && ro.on) busy = true; } // everything revolves counterclockwise about it until an object is picked
+      { const tn = performance.now(), dt = Math.min(64, tn - (s.t0 || tn)); s.t0 = tn; const ro = rotR.current; let dyaw = 0; if (s.spin && ro.on && !s.hold) { dyaw = (ro.ccw ? -1 : 1) * dt * 0.00016 * ro.speed; cam.yaw += dyaw; s.tgt.yaw = cam.yaw; } if (s.spin && ro.on) busy = true;
+        // held objects: each one the viewer is holding still (the chosen object, or the whole chosen pathway) keeps the turn it had, so it lags further behind the revolving rest; once released the lag eases to nothing, the shortest way round, and it is back at its regular place in the turning network
+        const pin = u.pinSet; if (!S.po || S.po.length !== S.n) S.po = new Float32Array(S.n);
+        const po = S.po, TP = Math.PI * 2, dk = Math.exp(-dt / 260);
+        for (let k = 0; k < S.n; k++) { if (pin && pin[k]) { if (dyaw) po[k] += dyaw; } else if (po[k]) { let v = po[k]; if (v > Math.PI || v < -Math.PI) v -= TP * Math.round(v / TP); v *= dk; if (Math.abs(v) < 0.002) v = 0; else busy = true; po[k] = v; } } } // everything revolves counterclockwise about it until an object is picked
       if (S.alpha > 0.03) { for (let k = 0; k < 3; k++) netStep(S); busy = true; }
       for (const k of ["yaw", "pitch", "persp"]) { const d = s.tgt[k] - cam[k]; if (Math.abs(d) > 0.002) { cam[k] += d * 0.14; busy = true; } else cam[k] = s.tgt[k]; }
       const homeGo = () => { s.hf++; if (s.hf % 30 === 1 || !s.hr) { const r = []; for (let k = 0; k < S.n; k++) { const dx = S.x[k] - cam.ox, dy = S.y[k] - cam.oy, dz = S.z[k] - cam.oz; r.push(dx * dx + dy * dy + dz * dz); } r.sort((a, b) => a - b); s.hr = Math.sqrt(r[Math.floor(r.length * 0.85)] || 1e4); } return { zoom: Math.min(3, Math.max(0.05, (Math.min(W, H) / 2 - 30) / Math.max(s.hr, 60))), px: 0, py: 0 }; }; // TCA in the middle, the rest of the atlas wheeling round it
@@ -4630,7 +4643,7 @@ function NetworkView({ data, focusId, home, rot, setRot, nav, onClose, onOpen, o
     wake();
     return () => { if (s.raf) cancelAnimationFrame(s.raf); s.raf = 0; };
   }, [data]); // eslint-disable-line react-hooks/exhaustive-deps
-  useEffect(() => { wake(); }, [light, labels, sel, mols, walk, fi, hid, pw]);
+  useEffect(() => { wake(); }, [light, labels, sel, mols, walk, fi, hid, pw, pinSet]);
   useEffect(() => { if (rot.on && St.current) { setSpin(true); wake(); } }, [rot.on]); // eslint-disable-line react-hooks/exhaustive-deps // turning rotation back on in Settings sets the view turning
   useEffect(() => { if (sel >= 0 && St.current) setSpin(false); }, [sel]); // eslint-disable-line react-hooks/exhaustive-deps // an object is selected: the turning stops
   useEffect(() => { const s = St.current; if (!s) return; setSel(-1); setWalk([]); setSpin(true); s.home = true; s.goal = null; s.autofit = false; s.tgt.pitch = 0.35; s.tgt.persp = 1; wake(); }, [home]); // eslint-disable-line react-hooks/exhaustive-deps // the Omino button: back to the TCA view, turning
@@ -4674,6 +4687,7 @@ function NetworkView({ data, focusId, home, rot, setRot, nav, onClose, onOpen, o
         {nav && <button onClick={() => zoomBy(1 / 1.4)} aria-label="Zoom out" title="Zoom out">−</button>}
         <button className={labels ? "is-on" : ""} onClick={() => setLabels((v) => !v)} aria-pressed={labels} aria-label="Labels" title="Labels on the busiest objects">L</button>
         <button className={mols ? "is-on" : ""} onClick={() => setMols((v) => !v)} aria-pressed={mols} aria-label="Skeletal formulas" title="Skeletal formulas in place of dots, for every object the atlas can draw (they appear as you zoom in)">⌬</button>
+        <button className={pin ? "is-on" : ""} onClick={() => setPin((v) => (v + 1) % 3)} aria-label={`Hold still: ${["off", "chosen object", "chosen pathway"][pin]}`} title={["Holding nothing still: tap to hold the chosen object still while the rest turns", "Holding the chosen object still while the rest turns: tap to hold its whole pathway instead", "Holding the chosen pathway still while the rest turns: tap to turn everything"][pin]}>{pin === 2 ? "◎◎" : "◎"}</button>
         <button className={light ? "is-on" : ""} onClick={() => setLight((v) => !v)} aria-pressed={light} aria-label="Contrast" title="Light or dark map">◐</button>
         {nav && <button onClick={fit} aria-label="Fit" title="Fit the whole network">⤢</button>}
         <button onClick={relayout} aria-label="Re-lay out" title="Shake it out again">↻</button>
@@ -4912,7 +4926,7 @@ function CellView({ nav, onClose, onPath, onCard, onPathCard, onLocCard }) {
   const C = cas >= 0 ? CELL_CASCADES[cas] : null, st = C ? C.steps[Math.min(step, C.steps.length - 1)] : null, cc = comp ? cellComp(comp) : null, locKey = { ext: "ext", pm: "pm", cyt: "cyt", nuc: "nuc", er: "er", mit: "mit", per: "per" }[comp];
   const here = comp ? CELL_CASCADES.map((c, i) => [i, c.steps.findIndex((x) => x[1] === comp)]).filter((x) => x[1] >= 0) : [];
   return (
-    <div className="omino-cell nodrag nopan nowheel" ref={box} role="region" aria-label="Hybrid cell">
+    <div className="omino-cellview nodrag nopan nowheel" ref={box} role="region" aria-label="Hybrid cell">
       <canvas ref={cvs} aria-label="A cut-open hybrid cell you can turn and zoom into" />
       <div className="omino-cell__tools" role="toolbar" aria-label="Cell tools">
         {nav && <button onClick={() => zoomBy(1.35)} aria-label="Zoom in" title="Zoom in">+</button>}
@@ -6576,6 +6590,7 @@ function FollowModes({ mode, onMode }) {
     </div>
   );
 }
+// v9.9.12: the 3D GPS is a constellation: the pathway's objects are stars at their real places, joined by thin lines (dim behind, bright ahead), the tracker's star sparkles, the rest of the map is faint stars, over a drifting night sky.
 // v9.9.2: the Pathway Tracker's overview in the 3D Network view is a 3D GPS: the pathway at its real places on the canvas, laid on a tilted ground plane
 // with perspective (the road runs off toward the horizon), the road behind faded and the road ahead bold, the tracker's arrow on it, nothing else.
 // The view glides to centre each object the tracker moves to (Back, Follow, a tapped stop); drag to turn the ground, double-tap to square up.
@@ -6585,12 +6600,6 @@ function gpsLayout(n) { // a gently winding road: every stop one block further a
   return P;
 }
 const gpsF = (v) => Math.round(v * 10) / 10;
-function gpsRoad(P, a, b) { // Catmull-Rom through the stops a..b, drawn as cubic curves so every stop sits on the road
-  if (b <= a) return "";
-  const g = (i) => P[Math.max(0, Math.min(P.length - 1, i))]; let d = `M${gpsF(P[a][0])} ${gpsF(P[a][1])}`;
-  for (let i = a; i < b; i++) { const p0 = g(i - 1), p1 = g(i), p2 = g(i + 1), p3 = g(i + 2); d += `C${gpsF(p1[0] + (p2[0] - p0[0]) / 6)} ${gpsF(p1[1] + (p2[1] - p0[1]) / 6)} ${gpsF(p2[0] - (p3[0] - p1[0]) / 6)} ${gpsF(p2[1] - (p3[1] - p1[1]) / 6)} ${gpsF(p2[0])} ${gpsF(p2[1])}`; }
-  return d;
-}
 const gpsCut = (t, k) => (t.length > k ? t.slice(0, k - 1) + "…" : t);
 function TrackerGps({ line, mm, onStation }) {
   const n = line.st.length, at = line.at, [yaw, setYaw] = useState(0), [c, setC] = useState(null), cRef = useRef(null), raf = useRef(0), drag = useRef(null);
@@ -6601,6 +6610,7 @@ function TrackerGps({ line, mm, onStation }) {
     const d = []; for (let i = 1; i < n; i++) d.push(Math.hypot(P[i][0] - P[i - 1][0], P[i][1] - P[i - 1][1])); d.sort((x, y) => x - y);
     return { P, real, k: 62 / Math.max(d.length ? d[Math.floor(d.length / 2)] : 1, 1) };
   }, [line, mm, n]);
+  const sky = useMemo(() => { let r = 12345; const rnd = () => ((r = (r * 1664525 + 1013904223) >>> 0) / 4294967296); return Array.from({ length: 90 }, () => ({ x: rnd(), y: rnd(), r: 0.35 + rnd() * rnd() * 1.5, d: rnd() * 5, p: 0.02 + rnd() * 0.06 })); }, []); // a fixed scatter of background stars; the nearer ones (larger) drift more as the view glides
   const tx = G.P[at][0], ty = G.P[at][1];
   useEffect(() => { // glide to the object the tracker now stands on
     cancelAnimationFrame(raf.current); const from = cRef.current || [tx, ty], t0 = performance.now(), far = Math.hypot(tx - from[0], ty - from[1]) * G.k > 900;
@@ -6610,29 +6620,28 @@ function TrackerGps({ line, mm, onStation }) {
   const ctr = c || [tx, ty], cy = Math.cos(yaw), sy = Math.sin(yaw);
   const proj = (p) => { const dx = (p[0] - ctr[0]) * G.k, dy = (p[1] - ctr[1]) * G.k, rx = dx * cy - dy * sy, ry = dx * sy + dy * cy, z = -ry * sp, f = D / Math.max(60, D + z); return { x: rx * f, y: ry * cp * f, f, z }; };
   const Q = G.P.map(proj), Qa = Q.map((q) => [q.x, q.y]);
-  const grid = []; { const g = 60 / G.k, gx = Math.round(ctr[0] / g) * g, gy = Math.round(ctr[1] / g) * g, R = 9; for (let i = -R; i <= R; i++) { const a = proj([gx + i * g, gy - R * g]), b = proj([gx + i * g, gy + R * g]), c2 = proj([gx - R * g, gy + i * g]), d = proj([gx + R * g, gy + i * g]); grid.push(`M${gpsF(a.x)} ${gpsF(a.y)}L${gpsF(b.x)} ${gpsF(b.y)}M${gpsF(c2.x)} ${gpsF(c2.y)}L${gpsF(d.x)} ${gpsF(d.y)}`); } }
   const side = [], dots = []; if (G.real && mm) { mm.edges.forEach((e) => { if (e.on) return; const a = proj([e.x1, e.y1]), b = proj([e.x2, e.y2]); side.push(`M${gpsF(a.x)} ${gpsF(a.y)}L${gpsF(b.x)} ${gpsF(b.y)}`); }); mm.pts.forEach((q) => { if (!q.on) { const r = proj([q.x, q.y]); dots.push(<circle key={q.id} className="omino-gps__ctx" cx={gpsF(r.x)} cy={gpsF(r.y)} r={gpsF(Math.max(1.4, 2.4 * r.f))} />); } }); }
-  const segs = []; for (let i = 0; i < n - 1; i++) segs.push({ i, d: gpsRoad(Qa, i, i + 1), z: (Q[i].z + Q[i + 1].z) / 2, f: (Q[i].f + Q[i + 1].f) / 2 }); segs.sort((a, b) => b.z - a.z);
+  const segs = []; for (let i = 0; i < n - 1; i++) segs.push({ i, d: `M${gpsF(Qa[i][0])} ${gpsF(Qa[i][1])}L${gpsF(Qa[i + 1][0])} ${gpsF(Qa[i + 1][1])}`, z: (Q[i].z + Q[i + 1].z) / 2, f: (Q[i].f + Q[i + 1].f) / 2 }); segs.sort((a, b) => b.z - a.z);
   const order = Q.map((q, i) => i).sort((a, b) => Q[b].z - Q[a].z);
-  const nN = proj([ctr[0], ctr[1] - 40 / G.k]), ang = (Math.atan2(nN.x - proj(ctr).x, -(nN.y - proj(ctr).y)) * 180) / Math.PI; // the arrow always heads north (up the canvas), however the ground is turned
   const wid = (f, w) => gpsF(Math.min(w * 1.5, Math.max(w * 0.45, w * f)));
   return (
     <div className="omino-gps">
-      <svg viewBox={`${-W / 2} ${-H * 0.7} ${W} ${H}`} preserveAspectRatio="xMidYMid slice" role="img" aria-label={`${line.name} in 3D: stop ${at + 1} of ${n}`}
+      <svg viewBox={`${-W / 2} ${-H * 0.7} ${W} ${H}`} preserveAspectRatio="xMidYMid slice" role="img" aria-label={`${line.name} as a constellation: star ${at + 1} of ${n}`}
         onPointerMove={(e) => { if (e.buttons === 1 && drag.current != null) { const dx = e.clientX - drag.current; drag.current = e.clientX; setYaw((v) => v - dx * 0.01); } }}
         onPointerDown={(e) => { drag.current = e.clientX; }} onPointerUp={() => { drag.current = null; }} onPointerLeave={() => { drag.current = null; }} onDoubleClick={() => setYaw(0)}>
-        <path className="omino-gps__grid" d={grid.join("")} />
+        <defs><radialGradient id="omino-gps-glow"><stop offset="0" style={{ stopColor: "var(--lc)", stopOpacity: 0.55 }} /><stop offset="1" style={{ stopColor: "var(--lc)", stopOpacity: 0 }} /></radialGradient></defs>
+        {sky.map((q, k) => { const SW = W * 1.4, SH = H * 1.4, mx = (v, m) => ((v % m) + m) % m, x = mx(q.x * SW - ctr[0] * G.k * q.p - yaw * 40 * q.p * 10, SW) - SW / 2, y = mx(q.y * SH - ctr[1] * G.k * q.p, SH) - SH * 0.7 + H * 0.2; return <circle key={k} className="omino-gps__sky" cx={gpsF(x)} cy={gpsF(y)} r={gpsF(q.r)} style={{ animationDelay: `${gpsF(q.d)}s` }} />; })}
         {side.length > 0 && <path className="omino-gps__side" d={side.join("")} />}
         {dots}
-        {segs.map((g) => <path key={"c" + g.i} className="omino-gps__case" d={g.d} strokeWidth={wid(g.f, 13)} />)}
-        {segs.map((g) => <path key={"r" + g.i} className={g.i < at ? "omino-gps__past" : "omino-gps__ahead"} d={g.d} strokeWidth={wid(g.f, 7)} />)}
-        {order.map((i) => { const q = Q[i], r = gpsF(Math.max(2.6, (i === at + 1 ? 6.5 : 5) * q.f)); return (
+        {segs.map((g) => <path key={"r" + g.i} className={g.i < at ? "omino-gps__past" : "omino-gps__ahead"} d={g.d} strokeWidth={wid(g.f, 2.2)} />)}
+        {order.map((i) => { const q = Q[i], r = gpsF(Math.max(1.8, (i === at + 1 ? 4.6 : 3.4) * q.f)); return (
           <g key={line.st[i].id} className={`omino-gps__stop ${i < at ? "is-past" : i === at ? "is-cur" : "is-next"}`}>
-            {i !== at && <circle className="dot" cx={gpsF(q.x)} cy={gpsF(q.y)} r={r} strokeWidth={gpsF(Math.max(1.4, 2.2 * q.f))} />}
+            {i !== at && <><circle className="halo" cx={gpsF(q.x)} cy={gpsF(q.y)} r={gpsF(r * 3.4)} /><circle className="dot" cx={gpsF(q.x)} cy={gpsF(q.y)} r={r} /></>}
+            {i === at + 1 && <circle className="next" cx={gpsF(q.x)} cy={gpsF(q.y)} r={gpsF(r + 4.5)} />}
             <circle className="hit" cx={gpsF(q.x)} cy={gpsF(q.y)} r={15} onClick={() => onStation(i)}><title>{line.st[i].via ? `${line.st[i].name} · reached by ${line.st[i].via}` : line.st[i].name}</title></circle>
           </g>); })}
         {order.map((i) => { if (i < at - 1 || i > at + 3) return null; const q = Q[i], big = i === at || i === at + 1, sd = i % 2 ? 1 : -1; return <text key={"l" + i} className={`omino-gps__lbl${big ? " is-big" : ""}${i < at ? " is-past" : ""}`} x={gpsF(q.x + sd * 13)} y={gpsF(q.y + 3.5)} textAnchor={sd > 0 ? "start" : "end"} opacity={gpsF(Math.min(1, 0.35 + q.f * 0.65))}>{gpsCut(line.st[i].name, big ? 28 : 22)}</text>; })}
-        <g className="omino-gps__me" transform={`translate(${gpsF(Q[at].x)} ${gpsF(Q[at].y)})`}><circle className="pulse" r={17} /><g style={{ transform: `rotate(${gpsF(ang)}deg)` }}><path d="M0 -13L9 10L0 5L-9 10Z" /></g></g>
+        <g className="omino-gps__me" transform={`translate(${gpsF(Q[at].x)} ${gpsF(Q[at].y)})`}><circle className="glow" r={30} fill="url(#omino-gps-glow)" /><circle className="pulse" r={11} /><path className="spark" d="M0 -17Q2 -2 17 0Q2 2 0 17Q-2 2 -17 0Q-2 -2 0 -17Z" /><circle className="core" r={3.6} /></g>
       </svg>
     </div>
   );
@@ -8339,8 +8348,8 @@ ${LIGHT_CSS}
 .omino-rdx__modes button:hover { color: var(--o-ink); }
 .omino-rdx__modes button.is-on { color: var(--o-ink); background: var(--o-hover); border-color: var(--o-accent); }
 .omino-rdx__modes button:focus-visible { outline: 2px solid var(--o-accent); outline-offset: 2px; }
-.omino-cell { position: absolute; inset: 0; z-index: 7; overflow: hidden; touch-action: none; user-select: none; background: #0a0a0c; }
-.omino-cell canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; touch-action: none; cursor: grab; }
+.omino-cellview { position: absolute; inset: 0; z-index: 7; overflow: hidden; touch-action: none; user-select: none; background: #0a0a0c; }
+.omino-cellview canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; touch-action: none; cursor: grab; }
 .omino-cell__tools { position: absolute; top: 12px; left: 12px; display: flex; flex-direction: column; gap: 6px; padding: 6px; background: var(--o-card); border: 1px solid var(--o-border); border-radius: 14px; }
 .omino-cell__tools button { width: 38px; height: 38px; padding: 0; font: 600 16px var(--mono, monospace); color: var(--o-ink); cursor: pointer; background: transparent; border: 1px solid var(--o-border); border-radius: 10px; }
 .omino-cell__tools button:hover { background: var(--o-hover); }
@@ -8446,28 +8455,34 @@ ${LIGHT_CSS}
 .omino-rdx__ctl button:disabled { opacity: .35; cursor: default; }
 .omino-rdx__ctl button.is-play { min-width: 64px; color: var(--sky); border-color: var(--sky); }
 .omino-rdx__ctl input[type=range] { flex: 1; min-width: 0; accent-color: var(--o-accent); }
-.omino-gps { position: relative; margin: 0 8px 8px; border: 1px solid var(--o-border); border-radius: 10px; overflow: hidden; background: color-mix(in srgb, var(--lc) 4%, var(--o-card)); }
-.omino-gps::before { content: ""; position: absolute; inset: 0 0 auto 0; height: 38%; z-index: 1; pointer-events: none; background: linear-gradient(var(--o-card), transparent); } /* the horizon fades into the sky */
+.omino-gps { position: relative; margin: 0 8px 8px; border: 1px solid color-mix(in srgb, var(--lc) 35%, #1c2440); border-radius: 10px; overflow: hidden; background: radial-gradient(120% 95% at 50% 105%, #1a2248 0%, #0b1020 52%, #04060d 100%); } /* always a night sky, in the light theme too */
+.omino-gps::before { content: ""; position: absolute; inset: 0 0 auto 0; height: 22%; z-index: 1; pointer-events: none; background: linear-gradient(#04060d, transparent); }
 .omino-gps > svg { display: block; width: 100%; height: 230px; touch-action: none; cursor: grab; }
-.omino-gps__grid { fill: none; stroke: var(--o-ink); stroke-width: 1; opacity: .07; }
-.omino-gps__side { fill: none; stroke: var(--lc); stroke-width: 1.2; opacity: .22; }
-.omino-gps__ctx { fill: var(--lc); opacity: .28; }
-.omino-gps__case { fill: none; stroke: var(--o-card); stroke-linecap: round; stroke-linejoin: round; }
-.omino-gps__past, .omino-gps__ahead { fill: none; stroke: var(--lc); stroke-linecap: round; stroke-linejoin: round; }
-.omino-gps__past { opacity: .32; }
-.omino-gps__stop .dot { fill: var(--o-card); stroke: var(--lc); }
-.omino-gps__stop.is-past .dot { fill: color-mix(in srgb, var(--lc) 45%, var(--o-card)); }
+.omino-gps__sky { fill: #dfe7ff; opacity: .5; animation: omino-twinkle 4.5s ease-in-out infinite; }
+@keyframes omino-twinkle { 0%, 100% { opacity: .15; } 50% { opacity: .75; } }
+.omino-gps__side { fill: none; stroke: #8fa3d6; stroke-width: .8; opacity: .16; }
+.omino-gps__ctx { fill: #b9c6ec; opacity: .38; }
+.omino-gps__past, .omino-gps__ahead { fill: none; stroke: var(--lc); stroke-linecap: round; }
+.omino-gps__past { opacity: .28; stroke-dasharray: 2 5; }
+.omino-gps__ahead { opacity: .9; filter: drop-shadow(0 0 3px var(--lc)); }
+.omino-gps__stop .halo { fill: var(--lc); opacity: .16; }
+.omino-gps__stop .dot { fill: #f4f7ff; filter: drop-shadow(0 0 3px var(--lc)); }
+.omino-gps__stop.is-past .dot { fill: color-mix(in srgb, var(--lc) 45%, #fff); opacity: .55; }
+.omino-gps__stop.is-past .halo { opacity: .07; }
+.omino-gps__stop .next { fill: none; stroke: var(--lc); stroke-width: 1; opacity: .7; }
 .omino-gps__stop .hit { fill: transparent; cursor: pointer; }
-.omino-gps__stop:hover .dot { stroke-width: 3.4; }
-.omino-gps__lbl { font: 600 10px var(--mono, monospace); fill: var(--o-muted); paint-order: stroke; stroke: var(--o-card); stroke-width: 3.4px; stroke-linejoin: round; pointer-events: none; }
+.omino-gps__stop:hover .dot { fill: #fff; }
+.omino-gps__lbl { font: 600 10px var(--mono, monospace); fill: #aebbe3; paint-order: stroke; stroke: #04060d; stroke-width: 3.4px; stroke-linejoin: round; }
 .omino-gps__lbl.is-past { fill-opacity: .7; }
-.omino-gps__lbl.is-big { font-size: 11.5px; font-weight: 700; fill: var(--o-ink); }
+.omino-gps__lbl.is-big { font-size: 11.5px; font-weight: 700; fill: #fff; }
 .omino-gps__me { pointer-events: none; }
-.omino-gps__me path { fill: var(--lc); stroke: var(--o-card); stroke-width: 2.4; stroke-linejoin: round; }
-.omino-gps__me g { transition: transform .35s ease; }
-.omino-gps__me .pulse { fill: var(--lc); opacity: .2; }
+.omino-gps__me .spark { fill: #fff; filter: drop-shadow(0 0 4px var(--lc)); transform-origin: 0 0; animation: omino-spark 2.6s ease-in-out infinite; }
+.omino-gps__me .core { fill: var(--lc); }
+.omino-gps__me .pulse { fill: none; stroke: var(--lc); stroke-width: 1.2; opacity: .55; transform-origin: 0 0; animation: omino-pulse 2.6s ease-out infinite; }
+@keyframes omino-spark { 0%, 100% { transform: scale(.85) rotate(0deg); } 50% { transform: scale(1.1) rotate(8deg); } }
+@keyframes omino-pulse { 0% { transform: scale(.7); opacity: .7; } 100% { transform: scale(2.2); opacity: 0; } }
 @media (max-width: 760px) { .omino-gps > svg { height: min(230px, 32dvh); } }
-@media (prefers-reduced-motion: reduce) { .omino-gps__me g { transition: none; } }
+@media (prefers-reduced-motion: reduce) { .omino-gps__sky, .omino-gps__me .spark, .omino-gps__me .pulse { animation: none; } }
 @media (max-width: 760px) {
   .omino-rdx { left: 8px; right: 8px; top: auto; bottom: 8px; width: auto; max-height: 52%; }
   .omino-rdx__row { grid-template-columns: 1fr 70px 30px; }
