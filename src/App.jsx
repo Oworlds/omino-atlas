@@ -1,18 +1,16 @@
-// v8.9 (cont.): Eicosanoids part 13: receptor targets tethered to the new mediators: GPR32 (resolvin D1, aspirin-triggered RvD1, RvD3; Immune hub), GPR101 (RvD5 of n-3 DPA; Immune hub), plus ALX/FPR2 on AT-RvD1 and ChemR23 on RvE2. None is drawn for the conjugates or for RvT (none established). Still to do: MaR3 of n-3 DPA (structure to be checked), RvD5 on the DHA side (7S,17S-diol; acts on GPR32), maresin receptors for the n-3 DPA maresins.
-// v8.9 (cont.): Eicosanoids part 12: resolvins D3, D4 and D6 from 17S-HDHA (5-lipoxygenase, 4,5-epoxide route; RvD3 left of, RvD4 right of 17-HDHA, RvD6 upper left). Still to do: MaR3 of n-3 DPA (structure to be checked), receptors drawn as tethered targets for RvD3 (GPR32) and for RvT and the n-3 DPA mediators (none established for the last two).
-// v8.9 (cont.): Eicosanoids part 11: resolvin E2 (5-lipoxygenase, then reduction) and resolvin E3 (12/15-lipoxygenase) from 18R-HEPE, in a row with resolvin E1; 18R-HEPE now feeds all three E-series resolvins; the n-3 DPA resolvin and protectin row moved right to make room. Still to do: RvD3, RvD4 (4S,5R,17S; Δ6,8,10,13,15,19) and RvD6 on the DHA side (need free space near the 17-HDHA column; RvD3 and RvD6 structures still to be checked), MaR3 of n-3 DPA (structure to be checked), receptors for RvT and the n-3 DPA mediators (none established).
-// v8.9 (cont.): Eicosanoids part 10: n-3 DPA protectins and maresins (17S-HDPA → PD1 and PD2 of n-3 DPA; n-3 DPA → 14-HDPA by 12-lipoxygenase → MaR1 and MaR2 of n-3 DPA); the resolvin T block moved right to make room. Still to do: RvD3, RvD4 (4S,5R,17S; Δ6,8,10,13,15,19) and RvD6 (RvD3 and RvD6 structures still to be checked), RvE2 (5S,18R; Δ6,8,11,14,16) and RvE3 (17,18-diol; Δ5,8,11,13,15) from 18-HEPE, MaR3 of n-3 DPA, receptors for RvT and the n-3 DPA mediators (none established; GPR101 reported for RvD5 of n-3 DPA).
-// v8.9 (cont.): Eicosanoids part 9: 18R-HEPE as its own node (aspirin-acetylated COX-2 route to resolvin E1; plain 18-HEPE is now the cytochrome P450 product), n-3 DPA (EPA → DPA by elongase) with the n-3 DPA D-series resolvins (17S-HDPA → RvD1, RvD2 and RvD5 of n-3 DPA) and the 13-series resolvins (13R-HDPA by COX-2 → RvT1, RvT2, RvT3, RvT4, by neutrophil 5-lipoxygenase), placed right of the EPA column. No receptors drawn for the conjugates (none established; stated on the MCTR1, RCTR1 and PCTR1 cards). Still to do: n-3 DPA protectins (PD1 and PD2 of n-3 DPA) and maresins (MaR1 and MaR2 of n-3 DPA), the other D-series resolvins (RvD3, RvD4, RvD6), RvE2 and RvE3, receptors for RvT and the n-3 DPA resolvins (GPR101 for RvD5 of n-3 DPA has been reported; not yet drawn).
-// v8.9 (cont.): Eicosanoids part 8: resolvin conjugates in tissue regeneration (RCTR1 → RCTR2 → RCTR3, above resolvin D1) and protectin conjugates in tissue regeneration (PCTR1 → PCTR2 → PCTR3, above protectin D1), each with glutathione, GGT and dipeptidase steps; corrected the formulas of MCTR2 and MCTR3. Still to do: 18R-HEPE as its own node (stereochemistry is not drawn), receptors for the conjugates (not yet known), resolvin T and the n-3 DPA resolvins.
-// v8.9 (cont.): Eicosanoids part 7: maresin conjugates in tissue regeneration (14-HDHA → MCTR1 → MCTR2 → MCTR3, with glutathione, GGT and dipeptidase), 17R-HDHA as its own node on the aspirin-triggered route, and the COX-2 product of 2-AG (prostaglandin E₂ glyceryl ester). Still to do: resolvin conjugates (RCTR) and protectin conjugates (PCTR), 18R-HEPE (drawn together with 18-HEPE because stereochemistry is not shown).
-// v8.9 (cont.): Eicosanoids part 6: maresins (DHA → 14-HDHA → maresin 1, 12-lipoxygenase), aspirin-triggered resolvin D1 (17R), and GPR18 (resolvin D2) and GPR37 (protectin D1) as tethered receptors. Still to do: resolvin T and protectin conjugates (RCTR/PCTR, MCTR), COX-2 products of 2-AG (PGE₂ glyceryl ester), 17R-HDHA and 18R-HEPE as separate nodes.
-// v8.9 (cont.): Eicosanoids part 5: pro-resolving mediators from DHA and EPA (17-HDHA → resolvin D1, resolvin D2 and protectin D1; 18-HEPE → resolvin E1; placed above the pathway) and the endocannabinoids (NAPE → anandamide → FAAH → ethanolamine; DAG → 2-arachidonoylglycerol → MAGL → glycerol, drawn as a local copy of the triglyceride-pathway glycerol so no long arrow crosses the atlas; right of the HETE row; the lipid class list had two lipid keys, so pl2m, NAPE and DAG now sit in the second one). Receptor targets tethered to their ligands: ALX/FPR2 (lipoxin A₄, resolvin D1), ChemR23 (resolvin E1), CB1 (with dronabinol and nabilone), CB2, and the enzymes FAAH and MAGL. Two clinical panels (omega-3 fatty acids and resolution of inflammation; cannabinoids and the endocannabinoid system) on the Eicosanoids card. Still to do: maresins (12-LOX route from DHA), aspirin-triggered 17R-resolvins drawn as separate nodes, resolvin T and protectin conjugates, GPR18 and GPR37 as tethered receptors, endocannabinoid-derived prostaglandin glyceryl esters (COX-2 on 2-AG).
-// v8.9 (cont.): Eicosanoids part 4: inactivation of PGE₂ (15-PGDH → 15-keto-PGE₂, PTGR1 → 13,14-dihydro-15-keto-PGE₂, below PGE₂) and seven clinical panels on the Eicosanoids pathway card (AERD, leukotrienes in asthma, platelet thromboxane/prostacyclin and aspirin, NSAID adverse effects, ductus arteriosus, pulmonary arterial hypertension, glaucoma and prostaglandin drops). The panel table now has a pw field: panels with pw:"eico" list on the Eicosanoids card; those without it stay on Purine catabolism. Still to do: resolvins/protectins (DHA, EPA), endocannabinoids (2-AG, anandamide).
-// v8.9 (cont.): Eicosanoids part 3: 12-HETE, 15-HETE and lipoxin A₄ (12/15-lipoxygenase, transcellular synthesis), and the cytochrome P450 products 14,15-EET, 14,15-DHET (soluble epoxide hydrolase) and 20-HETE, placed above the pathway; receptor targets tethered to their ligands: IP (Cardiovascular, with prostacyclin analogues and selexipag), TP (Cardiovascular and Respiratory), FP (Gonads, with latanoprost-type eye drops and carboprost), DP1/DP2 (Respiratory), BLT1 (Immune). Still to do: resolvins/protectins (DHA, EPA), endocannabinoids (2-AG), 15-PGDH degradation and urinary metabolites, clinical panels (AERD, PDA, PAH, glaucoma).
-// v8.9 (cont.): Eicosanoids part 2: prostacyclin (PGIS) and thromboxane A₂ (TXAS) with their stable hydrolysis products 6-keto-PGF₁α and TXB₂ (fused-ring drawings), and the 5-lipoxygenase branch: 5-HPETE → LTA₄ → LTB₄ and LTC₄ → LTD₄ → LTE₄ (left of arachidonate); 5-LOX added as a Respiratory-hub target with zileuton, CysLT₁ tethered to LTD₄. Still to do: 12/15-LOX, lipoxins, EETs/20-HETE, resolvins, endocannabinoids, degradation (15-PGDH), receptor targets and drugs (DP, FP, IP, TP, BLT), clinical panels.
-// v8.9 (cont.): Eicosanoids part 1 (new pathway, upper left of glycolysis; the old “Arachidonate → prostaglandins” stub is gone and COX now acts on arachidonate): membrane phospholipid → arachidonate (PLA₂) → PGH₂ (COX-1/COX-2) → PGE₂, PGD₂, PGF₂α, each with its structure, synthase card, location and class, and the PGE receptor tethered to PGE₂. Still to do: prostacyclin and thromboxane (fused-ring drawings), the 5-LOX branch and leukotrienes, 12/15-LOX, lipoxins, EETs, resolvins, endocannabinoids, receptors and drugs for each, clinical panels.
-// v8.9 (cont.): fructose is now on the canvas (left of fructose 6-phosphate, class Sugar, glycolysis colour) with a Hexokinase (fructokinase in liver) arrow into F6P, and GLUT2, GLUT5 and GLUT7 are tethered to it. GLUT6 (SLC2A6, intracellular, Immune hub, also Nervous system) and GLUT7 (SLC2A7, distal gut, Gastrointestinal hub) added, so GLUT1–7 are all present; GLUT6 and GLUT7 tether to glucose, GLUT7 also to fructose.
-// v8.9 (cont.): GLUT1–5 (SLC2A1–5) added as facilitated-diffusion transporter cards: GLUT1 and GLUT3 on the Nervous system hub (blood–brain barrier and neurons), GLUT2 on the Endocrine hub (β-cell glucose sensor) and also listed on the Hepatic, Gastrointestinal and Renal hubs, GLUT4 on the Endocrine hub (insulin-regulated) and also on the Skeletal hub, GLUT5 (fructose) on the Gastrointestinal hub. GLUT1–4 are tethered to glucose and carry the glucose and HbA1c lab links. No fructose molecule exists on the canvas yet, so GLUT5 has no tether line.
+// v9.9.10: Network view: the object popup (name, link chips, Back / Follow, Description card / Pathway card / Show in atlas) is gone. Choosing an object, or tapping one of its vectors, stands the Pathway Tracker on it; Back / Follow, the 1/2 branch cycler, the trail and the arrow keys all run through the tracker, and Description card / Pathway card / Show in atlas sit at the foot of the tracker while the Network view is open.
+// v9.9.2: Network view is 3D only (the 2D toggle is gone; the atlas canvas is the flat map). While the Network view is open, the Pathway Tracker's overview is a stripped-down 3D GPS (the pathway at its real places on a tilted ground plane, road behind faded, road ahead bold, the tracker's arrow) in place of the metro line; it glides to centre each object the tracker moves to, and the network centres it too. With the Network closed the metro line is unchanged. Pharmacology, organ hubs and histology (glands, endocrine cells) appear only on the 2D canvas: the Network view leaves them out and has no Rx / Org switches. The app opens in the 3D Network view. The OMINO button goes to the 3D view centred on the TCA cycle, and every object revolves counterclockwise about it until an object is selected (a finger down holds the turning; the fit and zoom/pan controls end the TCA framing). Settings is a popup window (backdrop, close button, Esc) with a 3D view section: auto-rotation on/off, speed (0.25x to 4x) and direction. The Network view's search box is gone. Open OWORLD and the Pathway Tracker moved from the top bar into Settings (Tools). The compass button / "Navigation tools" setting now shows or hides the navigation buttons (zoom, fit) of every view: canvas, network and hybrid cell. The 3D view has a play / pause button at the top of its left column; the default rotation speed is 0.25x; the top-bar Edit button shows on the canvas view only (and while an edit is in progress). The GPS arrow always heads north (up the canvas).
+// v8.9 (cont.): Network view: choosing a pathway object lifts every vector of that pathway to full strength (the canvas's pathway focus), with their arrowheads; the lined-up steps and the trail still stand out on top.
+// v8.9 (cont.): Network view: Rx and Org buttons hide pharmacology (targets, drugs and their links) and organ hubs (and their lines); hidden objects drop out of picking, search, labels and the pathway follower, and the counts follow.
+// v8.9 (cont.): Network vectors are the canvas's: same colours, line styles and arrowheads (flat bar for inhibition) on every vector, resting at the canvas's 0.4; no hover lift, nothing dimmed; only the selected vectors (the steps lined up in and out of the chosen object, and the follower's trail) lift to full strength, and tapping a vector selects it as on the canvas. Steps that share two objects (glycolysis and gluconeogenesis) are drawn as separate arcs, so each keeps its own colour.
+// v8.9 (cont.): Network vectors use the canvas colours and styles (pathway colour for main enzyme steps, grey dashed for other links, red/green dashed, blue and amber for pharmacology, thin tethers and organ lines), the selected object's links at full strength. Choosing an object centres it as the canvas does: left of the description card, a little above the middle.
+// v8.9 (cont.): Network view opens in 3D. Enzyme steps are directed: arrowheads (all steps once zoomed in; always for the selected object, the trail, and steps that leave one pathway for another), enzyme names on the trail and the selected object's links, and steps between pathways pull their pathways together and are drawn in amber. Pathway follower in the object panel: Back / Follow along the enzyme steps (arrow keys too), a branch button to cycle alternatives, and a trail that stays highlighted; each stop opens its card.
+// v8.9 (cont.): Network and Hybrid cell summon cards. Network: choosing an object opens its description card (pathway / hub / pharmacology card for objects with no card) and the panel gains Description card and Pathway card buttons. Hybrid cell: tapping a compartment opens its description card; pathway chips open the pathway card, with a separate arrow to show it in the atlas. On narrow screens cards open from the buttons only.
+// v8.9 (cont.): Network view structures (flat and 3D) are drawn at the atlas canvas scale (CANVAS_K) and, like the coloured shapes, change size only slightly when zooming (the same zs factor); no size cap and no perspective shrink for structures in 3D; the layout reserves room for the true size.
+// v8.9 (cont.): Hybrid cell (header button): a cut-open composite cell in pseudo-3D (drag to turn, pinch or scroll to zoom, double-tap resets; cut-open, slow turn and step-name toggles). Compartment names are tappable and explain themselves with the atlas pathways that run there. Twelve core cascades (cAMP/PKA, Gq/IP3/Ca2+, insulin/AKT/mTORC1, RAS/MAPK, JAK/STAT, nuclear receptors, NO/cGMP, AMPK, Wnt, TGF-beta/SMAD, NF-kB, apoptosis) each run as numbered stations placed in the compartment where the step happens, with Back / Play / Next and links to atlas cards and pathways. Steps are teaching-level simplifications. Add a cascade by adding one entry to CELL_CASCADES.
+// v8.9 (cont.): the Network layout now allows for the size each object is drawn at (its structure, or its dot): objects push apart until their drawings clear, links stand off by that size, and the whole map is laid out roomier, so neighbouring structures no longer pile up. It is wider, so zoom in to read a structure.
+// v8.9 (cont.): Network view skeletal formulas (the structure button, on by default, flat and 3D): every compound the atlas can draw (192 of them) is shown as its skeletal formula, drawn from the same atoms, bonds and labels as its card, instead of a dot, over a faint pathway-coloured halo; structures too small to read at the current zoom stay as dots. Targets, drugs, hormones and organ hubs have no structure in the atlas, so they keep their shapes.
+// v8.9 (cont.): Network view (header button): every object and link on the map as a force-directed network, flat like a map or a 3D cloud you turn. Colour is the pathway / organ hub / pharmacology group; circle compound, triangle target, square drug, diamond organ hub. Search, labels (L), light/dark, fit, 2D/3D, re-lay out; tap an object for its links, Open card or Show in atlas. An open description card's object is selected in the network.
 // v8.9 (cont.): fixed the Pathway Tracker card on a phone: with the mini map open the card now scrolls as one piece (name, Back and Follow, stations, map) instead of squeezing its body and letting the map spill past the bottom edge.
 // v8.9 (cont.): the overview window always shows the stations; its Whole pathway button opens a mini map of every object in the pathway at its real place on the canvas, the current line picked out, the tracker's station ringed and labelled, any object clickable.
 // v8.9 (cont.): the Pathway Tracker has a small overview window, a metro line of the current pathway: one station per object, the tracker's own station ringed, stations behind it filled and ahead of it open, +N where the pathway forks, dashed ends where it comes from or leads on to another pathway, and a loop marker for cycles. Click any station to move the tracker there; the strip scrolls to keep it in view and can be folded away.
@@ -215,7 +213,7 @@ function zig(n, subs, dx = 26, dbl = [], het = {}) {
   return { atoms, bonds };
 }
 // β-D-fructofuranose; top = what hangs off C1 ("HO" or "P")
-function furanose(c1, c6) {
+function furanose(c1) {
   const atoms = [], bonds = [], R = 30;
   const V = { O: [0, -R], C2: [28.5, -9.3], C3: [17.6, 24.3], C4: [-17.6, 24.3], C5: [-28.5, -9.3] };
   atoms.push(A("O", V.O, "O", "O"), ...["C2", "C3", "C4", "C5"].map((k) => C(k, V[k])));
@@ -228,8 +226,7 @@ function furanose(c1, c6) {
   const k1 = rot(u1, 60); // C1 and C6 are CH2 vertices: the next bond turns 120° so the carbon shows as a corner
   c1 === "P" ? phos(atoms, bonds, "p1", "C1", [x1, y1], k1) : hy("O1", "C1", [x1 + k1[0] * 30, y1 + k1[1] * 30], true);
   const [x6, y6, u6] = out("C5"); atoms.push(C("C6", [x6, y6])); bonds.push(["C5", "C6"]);
-  const k6 = rot(u6, 60);
-  c6 === "HO" ? hy("O6", "C6", [x6 + k6[0] * 30, y6 + k6[1] * 30], false) : phos(atoms, bonds, "p6", "C6", [x6, y6], k6); // v8.9: free fructose has a plain C6 hydroxyl
+  phos(atoms, bonds, "p6", "C6", [x6, y6], rot(u6, 60));
   return { atoms, bonds };
 }
 const g1pAtoms = chairAtoms().filter((a) => a.id !== "O1");
@@ -242,7 +239,6 @@ const MOLS = {
     return { name: "β-D-Glucose 1-phosphate", atoms, bonds };
   })(),
   f6p: { name: "Fructose 6-phosphate", ...furanose("HO") },
-  fructose: { name: "Fructose", ...furanose("HO", "HO") }, // v8.9
   fbp: { name: "Fructose 1,6-bisphosphate", ...furanose("P") },
   gap: { name: "Glyceraldehyde 3-phosphate", ...zig(3, [[0, "=O"], [1, "OH"], [2, "OP"]]) },
   dhap: { name: "Dihydroxyacetone phosphate", ...zig(3, [[0, "OH"], [1, "=O"], [2, "OP"]]) },
@@ -1081,7 +1077,7 @@ const PATHWAYS = {
 };
 const PATH_OF = {};
 Object.entries({
-  glycolysis: ["glucose", "g6p", "f6p", "fbp", "gap", "dhap", "bpg13", "pg3", "pg2", "pep", "pyruvate", "lactate", "fructose"],
+  glycolysis: ["glucose", "g6p", "f6p", "fbp", "gap", "dhap", "bpg13", "pg3", "pg2", "pep", "pyruvate", "lactate"],
   glycogen: ["g1p", "glycogen", "udpglc"],
   ppp: ["p6gl", "p6g", "ru5p", "r5p", "xu5p", "s7p", "e4p"],
   tca: ["acetylcoa", "citrate", "isocitrate", "akg", "succoa", "succinate", "fumarate", "malate", "oaa"],
@@ -1326,10 +1322,6 @@ COSUBS.forEach((c, i) => {
   layout[c.id] = [layout[at][0] + dx, layout[at][1] + dy];
 });
 NODES.push(...COSUBS);
-// v8.9: free fructose, left of F6P. Hexokinase (muscle, adipose) or, in liver, fructokinase takes it into glycolysis; the GLUT transporters that carry it tether to this node.
-NODES.push(M("fructose", "C6H12O6", "Dietary ketohexose (sucrose, fruit, high-fructose syrups). It enters cells through GLUT5 (gut) and GLUT2 and GLUT7, and skips the phosphofructokinase-1 control point."));
-layout.fructose = [-760, 990];
-EDGES.push({ id: "fr1", source: "fructose", target: "f6p", label: "Hexokinase (fructokinase in liver)", main: true, sh: "r", th: "l" });
 
 // Urea cycle (left of the TCA ring), amino-acid hubs, and links from the integrated map
 const U = { x: -2300, y: RING_Y() };
@@ -2514,7 +2506,7 @@ const TARGETS = [
   ["t_pparg", "PPARγ", "receptor", "PPARG", "Nuclear receptor of adipose tissue. Activation promotes adipocyte differentiation, fatty acid storage as triacylglycerol and insulin sensitivity.", ["tag"], null, "r"],
   ["t_cps1", "Carbamoyl phosphate synthetase I", "enzyme", "CPS1", "First and rate-limiting step of the urea cycle (liver mitochondria): ammonia and bicarbonate become carbamoyl phosphate. It needs N-acetylglutamate as an allosteric activator.", ["cp"], null, "l"],
   ["t_ugt", "UDP-glucuronosyltransferase", "enzyme", "UGT1A1, 1A6, 1A9", "Attaches glucuronate to bilirubin (UGT1A1) and to many drugs, making them water-soluble for bile or urine. Drugs and bilirubin compete for it; low UGT1A1 activity causes Gilbert syndrome.", ["bilirubin"], "UDP-glucuronosyltransferase", "l"],
-  ["t_cox", "Cyclooxygenase (COX-1, COX-2)", "enzyme", "PTGS1, PTGS2", "Converts arachidonic acid to prostaglandin H₂, the precursor of prostaglandins and thromboxane A₂. COX-1 makes platelet thromboxane; COX-2 is induced in inflammation.", ["arachid"], null, "r"],
+  ["t_cox", "Cyclooxygenase (COX-1, COX-2)", "enzyme", "PTGS1, PTGS2", "Converts arachidonic acid to prostaglandin H₂, the precursor of prostaglandins and thromboxane A₂. COX-1 makes platelet thromboxane; COX-2 is induced in inflammation.", ["c_pg"], null, "r"],
   ["t_cpt1", "Carnitine palmitoyltransferase I", "enzyme", "CPT1A", "Outer mitochondrial membrane enzyme that moves the acyl group of fatty acyl-CoA onto carnitine so long-chain fatty acids can enter mitochondria. It is the rate-limiting step of β-oxidation and is inhibited by malonyl-CoA.", ["facyl", "acylcarn"], "Carnitine palmitoyltransferase I (CPT1)", "r"],
   ["t_pcc", "Propionyl-CoA carboxylase", "enzyme", "PCCA, PCCB", "Biotin-dependent mitochondrial enzyme that carboxylates propionyl-CoA to D-methylmalonyl-CoA. Deficiency is propionic acidaemia: neonatal vomiting, acidosis, hyperammonaemia and raised propionylcarnitine; treatment is protein restriction, carnitine and, in some, biotin trial.", ["propcoa", "mmd"], "Propionyl-CoA carboxylase", "r"],
   ["t_mcm", "Methylmalonyl-CoA mutase", "enzyme", "MMUT (MUT)", "Mitochondrial enzyme that needs adenosylcobalamin (vitamin B₁₂) to turn L-methylmalonyl-CoA into succinyl-CoA. Deficiency or B₁₂ defects cause methylmalonic acidaemia; B₁₂ deficiency raises methylmalonic acid, a useful test.", ["mml", "succoa"], "Methylmalonyl-CoA mutase", "r"],
@@ -2539,383 +2531,11 @@ const DRUGS = [
 ];
 
 // Two link stubs for pathways the atlas does not draw (same convention as "→ bile → gut")
-/* ---- v8.9: Eicosanoids, part 1 (open canvas upper left of glycolysis): membrane phospholipid → arachidonate (PLA₂) → PGH₂ (COX-1/COX-2) → PGE₂, PGD₂, PGF₂α.
-   Still to draw: prostacyclin and thromboxane (needs fused-ring drawings), the 5-lipoxygenase branch (leukotrienes), 12/15-LOX products, lipoxins, resolvins, EETs, endocannabinoids, degradation. ---- */
-PATHWAYS.eico = { label: "Eicosanoids", color: "#f43f9d" };
-const prostanoid = (name, c9, c11, a6k, om) => { // om: "k" = 15-keto, "dk" = 13,14-dihydro-15-keto // cyclopentane ring C8–C12; α chain (C7 to the carboxylate C1) from C8, ω chain (C13 to C20, 15-OH) from C12
-  const m = dmol(name, 0.8);
-  m.at("c8", 0, 0).ring("r", "c8", 210, 5);
-  const k9 = m.id("r", 1), k10 = m.id("r", 2), k11 = m.id("r", 3), k12 = m.id("r", 4);
-  const sub = (cid, k, kind) => (kind === "=O" ? m.to(cid, cid + "x", m.out("r", k), "O", "O", 2) : kind === "OH" ? m.to(cid, cid + "x", m.out("r", k), k === 3 ? "HO" : "OH", "O", 1, k === 3 ? { align: "end" } : undefined) : null);
-  if (c9 === "OO") { m.to(k10, "ob", m.out("r", 2), "O–O", "O", 1, undefined, 38); m.bond(k9, "ob"); m.bond(k11, "ob"); } else { sub(k9, 1, c9); sub(k11, 3, c11); }
-  m.walk("c8", 30, -60, [["a7"], ["a6"], ["a5", null, null, a6k ? 1 : 2], ["a4"], ["a3"], ["a2"], ["a1", "COO", "O", 1, { q: "−" }]]);
-  m.walk(k12, -42, 60, [["b13"], ["b14", null, null, om === "dk" ? 1 : 2], ["b15"], ["b16"], ["b17"], ["b18"], ["b19"], ["b20"]]);
-  om ? m.to("b15", "o15", -90, "O", "O", 2) : m.to("b15", "o15", -90, "OH", "O");
-  if (a6k) m.to("a6", "o6", -90, "O", "O", 2);
-  return m;
-};
-const pgi = (name) => { // prostacyclin: cyclopentane fused to a tetrahydrofuran whose ring carbon C6 carries the exocyclic C5=C6 enol ether
-  const m = dmol(name, 0.8);
-  m.at("c8", 0, 0).ring("r", "c8", 210, 5);
-  const k9 = m.id("r", 1), k11 = m.id("r", 3), k12 = m.id("r", 4), at = (id) => m.atoms.find((a) => a.id === id);
-  m.to(k11, "o11", m.out("r", 3), "HO", "O", 1, { align: "end" });
-  m.walk(k12, -42, 60, [["b13"], ["b14", null, null, 2], ["b15"], ["b16"], ["b17"], ["b18"], ["b19"], ["b20"]]);
-  m.to("b15", "o15", -90, "OH", "O");
-  const P = at("c8"), Q = at(k9), [cx, cy] = m.ctr.r.c, mx = (P.x + Q.x) / 2, my = (P.y + Q.y) / 2, nl = Math.hypot(mx - cx, my - cy);
-  const ap = BL / (2 * Math.tan(Math.PI / 5)), R = BL / (2 * Math.sin(Math.PI / 5)), C2 = [mx + ((mx - cx) / nl) * ap, my + ((my - cy) / nl) * ap];
-  const ang = (a) => (Math.atan2(a.y - C2[1], a.x - C2[0]) * 180) / Math.PI, aP = ang(P), sg = Math.sign(((ang(Q) - aP + 540) % 360) - 180);
-  const V = (k) => [C2[0] + R * dcos(aP - sg * 72 * k), C2[1] + R * dsin(aP - sg * 72 * k)];
-  m.at("a7", ...V(1)).at("a6", ...V(2)).at("o6", ...V(3), "O", "O");
-  m.bond("c8", "a7").bond("a7", "a6").bond("a6", "o6").bond("o6", k9);
-  m.walk("a6", ang(at("a6")), 60, [["a5", null, null, 2], ["a4"], ["a3"], ["a2"], ["a1", "COO", "O", 1, { q: "−" }]]);
-  return m;
-};
-const thromb = (name, oxetane) => { // thromboxane ring: oxane (O at k2); TXA₂ adds an oxetane O bridge, TXB₂ is the opened hemiacetal
-  const m = dmol(name, 0.8);
-  m.at("c2", 0, 0).ring("r", "c2", 150, 6, [], { 2: ["O", "O"] });
-  const k = (i) => m.id("r", i);
-  if (oxetane) { m.to(k(4), "o6", m.out("r", 4), "O", "O", 1, undefined, BL * 0.9); m.bond(k(3), "o6"); m.bond(k(5), "o6"); }
-  else { m.to(k(3), "oh6", m.out("r", 3), "HO", "O", 1, { align: "end" }); m.to(k(5), "oh4", m.out("r", 5), "OH", "O"); }
-  m.walk(k(0), -30, 60, [["a7"], ["a6"], ["a5", null, null, 2], ["a4"], ["a3"], ["a2"], ["a1", "COO", "O", 1, { q: "−" }]]);
-  m.walk(k(1), 30, -60, [["b13"], ["b14", null, null, 2], ["b15"], ["b16"], ["b17"], ["b18"], ["b19"], ["b20"]]);
-  m.to("b15", "o15", 90, "OH", "O");
-  return m;
-};
-const leuko = (name, dbl, subs, extra) => { // C20 chain from the carboxylate (c0 = C1); extra = [carbon index, id, label, element]
-  const z = zig(20, [[0, "COOL"], ...subs], 26, dbl);
-  (extra || []).forEach(([i, id, text, el]) => { const c = z.atoms.find((a) => a.id === `c${i}`), d = i % 2 ? -1 : 1; z.atoms.push(A(id, [c.x, c.y + 30 * d], text, el)); z.bonds.push([`c${i}`, id]); });
-  return { name, scale: 0.55, ...z };
-};
-Object.assign(MOLS, {
-  pl2m: { name: "Membrane phospholipid (arachidonoyl at sn-2)", ...zig(3, [[0, "EST"], [1, "EST"], [2, "OP"]]),
-    key: "Glycerophospholipid: R on the upper ester = a saturated fatty acyl (sn-1); R on the lower ester = arachidonoyl, 20:4 ω-6 (sn-2); the phosphate carries a head group (choline, ethanolamine, inositol or serine)." },
-  arachid: { name: "Arachidonate (20:4 ω-6)", scale: 0.55, ...zig(20, [[0, "COOL"]], 26, [5, 8, 11, 14]) },
-  pgh2: prostanoid("Prostaglandin H₂ (PGH₂)", "OO"),
-  pge2: prostanoid("Prostaglandin E₂ (PGE₂)", "=O", "OH"),
-  pgd2: prostanoid("Prostaglandin D₂ (PGD₂)", "OH", "=O"),
-  pgf2a: prostanoid("Prostaglandin F₂α (PGF₂α)", "OH", "OH"),
-  pgi2: pgi("Prostacyclin (PGI₂)"),
-  k6pgf1: prostanoid("6-Keto-PGF₁α", "OH", "OH", true),
-  txa2: thromb("Thromboxane A₂ (TXA₂)", true),
-  txb2: thromb("Thromboxane B₂ (TXB₂)", false),
-  hpete5: leuko("5-HPETE (5-hydroperoxyeicosatetraenoate)", [6, 8, 11, 14], [], [[4, "ooh", "OOH", "O"]]),
-  lta4: (() => { const z = leuko("Leukotriene A₄ (LTA₄)", [7, 9, 11, 14], [], []), a = z.atoms.find((q) => q.id === "c4"), b = z.atoms.find((q) => q.id === "c5");
-    z.atoms.push(A("ep", [(a.x + b.x) / 2, (a.y + b.y) / 2 + 24], "O", "O")); z.bonds.push(["c4", "ep"], ["c5", "ep"]); return z; })(),
-  ltb4: leuko("Leukotriene B₄ (LTB₄)", [6, 8, 10, 14], [[4, "OH"], [11, "OH"]], []),
-  ltc4: leuko("Leukotriene C₄ (LTC₄)", [7, 9, 11, 14], [[4, "OH"]], [[5, "sg", "S–γGlu–Cys–Gly", "S"]]),
-  ltd4: leuko("Leukotriene D₄ (LTD₄)", [7, 9, 11, 14], [[4, "OH"]], [[5, "sg", "S–Cys–Gly", "S"]]),
-  lte4: leuko("Leukotriene E₄ (LTE₄)", [7, 9, 11, 14], [[4, "OH"]], [[5, "sg", "S–Cys", "S"]]),
-  hete12: leuko("12-HETE", [5, 8, 10, 14], [[11, "OH"]], []),
-  hete15: leuko("15-HETE", [5, 8, 11, 13], [[14, "OH"]], []),
-  lxa4: leuko("Lipoxin A₄ (LXA₄)", [7, 9, 11, 13], [[4, "OH"], [5, "OH"], [14, "OH"]], []),
-  eet: { ...(() => { const z = leuko("X", [5, 8, 11], [], []), a = z.atoms.find((q) => q.id === "c13"), b = z.atoms.find((q) => q.id === "c14"); z.atoms.push(A("ep", [(a.x + b.x) / 2, (a.y + b.y) / 2 + 24], "O", "O")); z.bonds.push(["c13", "ep"], ["c14", "ep"]); return z; })(), name: "14,15-EET (epoxyeicosatrienoate)" },
-  dhet: leuko("14,15-DHET", [5, 8, 11], [[13, "OH"], [14, "OH"]], []),
-  hete20: leuko("20-HETE", [5, 8, 11, 14], [[19, "OH"]], []),
-  k15pge2: prostanoid("15-Keto-PGE₂", "=O", "OH", false, "k"),
-  pgem: prostanoid("13,14-Dihydro-15-keto-PGE₂", "=O", "OH", false, "dk"),
-});
 NODES.push(
-  M("pl2m", "R–CO–O / R′–CO–O / phosphate-X", "Cell membranes keep arachidonate esterified at the sn-2 position of phospholipids. Nothing is made until a phospholipase cuts it out."),
-  M("arachid", "C20H32O2", "The 20-carbon ω-6 fatty acid that all series-2 prostanoids and series-4 leukotrienes are made from. Free arachidonate is scarce; its release is the rate-limiting step for eicosanoid synthesis."),
-  M("pgh2", "C20H32O5", "Unstable cyclic endoperoxide made by COX; it lasts only minutes and is the common parent of prostaglandins D₂, E₂, F₂α, prostacyclin and thromboxane A₂. Which one a cell makes depends on the synthase it expresses."),
-  M("pge2", "C20H32O5", "The most abundant prostanoid: fever, pain sensitisation, vasodilation, gastric mucus and bicarbonate, uterine contraction, closure of the ductus arteriosus (blocked by NSAIDs, kept open by PGE₁/PGE₂ analogues). Acts on EP1–EP4."),
-  M("pgd2", "C20H32O5", "Made by mast cells and the brain: bronchoconstriction and vasodilation (flushing after niacin), promotes sleep, and attracts Th2 cells and eosinophils through DP2 (CRTH2). Acts on DP1 and DP2."),
-  M("pgf2a", "C20H34O5", "Uterine and bronchial smooth-muscle contraction and lowers intra-ocular pressure by raising uveoscleral outflow. Analogues (latanoprost, carboprost, dinoprostone relatives) are used in glaucoma, labour induction and postpartum haemorrhage. Acts on FP."),
+  { id: "c_pg", kind: "cofactor", label: "Arachidonate → prostaglandins, thromboxane", formula: "", note: "Link to a pathway not drawn yet", w: 330, pharm: true },
 );
-NODES.push(
-  M("pgi2", "C20H32O4", "Prostacyclin, made by endothelium: vasodilator and the strongest natural inhibitor of platelet aggregation (IP receptor, cAMP). Half-life about 30 seconds; it hydrolyses to 6-keto-PGF₁α. The balance with platelet thromboxane A₂ is what aspirin and coxibs shift."),
-  M("k6pgf1", "C20H34O5", "Stable, inactive hydrolysis product of prostacyclin; its urinary or plasma level is the usual readout of PGI₂ production."),
-  M("txa2", "C20H32O4", "Platelet product of COX-1: strong platelet aggregator and vasoconstrictor (TP receptor, Gq). Half-life about 30 seconds. Low-dose aspirin lowers it for the life of the platelet (7–10 days)."),
-  M("txb2", "C20H34O5", "Stable, inactive product of TXA₂ hydrolysis; serum TXB₂ is the usual measure of platelet COX-1 activity (and of aspirin's effect)."),
-  M("hpete5", "C20H32O4", "5-Lipoxygenase puts a hydroperoxide on C5 of arachidonate. It is reduced to 5-HETE by peroxidases or taken on to LTA₄."),
-  M("lta4", "C20H30O3", "Unstable allylic epoxide (half-life seconds) and the branch point: LTA₄ hydrolase makes LTB₄ in neutrophils, and LTC₄ synthase adds glutathione in mast cells and eosinophils. Cells that lack the second enzyme can pass LTA₄ on (transcellular synthesis)."),
-  M("ltb4", "C20H32O4", "Potent neutrophil chemoattractant (BLT1): attracts and activates neutrophils, promotes adhesion and degranulation. Raised in gout, inflammatory bowel disease, psoriasis and cystic fibrosis airways."),
-  M("ltc4", "C30H47N3O9S", "First cysteinyl leukotriene (a glutathione conjugate), made by mast cells, eosinophils and basophils and exported by MRP1. With LTD₄ it is the old \u201cslow-reacting substance of anaphylaxis\u201d: bronchoconstriction, plasma leakage and mucus."),
-  M("ltd4", "C25H40N2O6S", "LTC₄ minus its glutamate (γ-glutamyl transferase). The most potent bronchoconstrictor of the three cysteinyl leukotrienes, acting on CysLT₁ (blocked by montelukast and zafirlukast)."),
-  M("lte4", "C23H37NO5S", "Stable end product of the cysteinyl leukotrienes (a dipeptidase removes the glycine) and excreted in urine, where urinary LTE₄ marks leukotriene production. A weaker agonist but long-lived; raised in aspirin-exacerbated respiratory disease."),
-);
-{ const Y0 = -3700, X0 = -4400, ST = 440;
-  Object.assign(layout, { pgi2: [X0 + 2000, Y0 + 3.3 * ST], txa2: [X0 + 3000, Y0 + 3.3 * ST], k6pgf1: [X0 + 2000, Y0 + 4.5 * ST], txb2: [X0 + 3000, Y0 + 4.5 * ST],
-    hpete5: [X0 - 1500, Y0 + ST], lta4: [X0 - 2900, Y0 + ST], ltb4: [X0 - 3500, Y0 + 2.4 * ST], ltc4: [X0 - 1900, Y0 + 2.4 * ST], ltd4: [X0 - 1900, Y0 + 3.5 * ST], lte4: [X0 - 1900, Y0 + 4.6 * ST] });
-  [["c_ei4", "→ H₂O (epoxide)", "hpete5", 0, -ST * 0.55], ["c_ei5", "+ GSH", "lta4", 330, ST * 0.95], ["c_ei6", "→ glutamate", "ltc4", 330, ST / 2], ["c_ei7", "→ glycine", "ltd4", 330, ST / 2]].forEach(([id, label, at, dx, dy]) => {
-    NODES.push({ id, kind: "cofactor", label, formula: "", note: "Co-substrate / co-product" });
-    place.branch(at, [id], dx, dy); PATH_OF[id] = "eico";
-  });
-  ["pgi2", "k6pgf1", "txa2", "txb2", "hpete5", "lta4", "ltb4", "ltc4", "ltd4", "lte4"].forEach((i) => (PATH_OF[i] = "eico"));
-}
-NODES.push( // part 3: 12/15-lipoxygenase products, lipoxin A₄ and the cytochrome P450 products
-  M("hete12", "C20H32O3", "12-Lipoxygenase product of platelets and skin (via 12-HpETE): promotes platelet activation and cancer-cell adhesion. Raised in psoriatic skin."),
-  M("hete15", "C20H32O3", "15-Lipoxygenase product (ALOX15 in eosinophils and airway epithelium, ALOX15B in skin and prostate), made through 15-HpETE. It is a pro-inflammatory marker in asthma but also the entry to the lipoxins."),
-  M("lxa4", "C20H32O5", "Lipoxin A₄: a specialised pro-resolving mediator. It stops neutrophil entry, promotes macrophage clearance of apoptotic cells and eases inflammation (ALX/FPR2 receptor). Made when two cells pass intermediates (neutrophil 5-LOX with platelet 12-LOX, or epithelium 15-LOX with leukocyte 5-LOX). Aspirin-triggered 15-epi-lipoxins arise from acetylated COX-2."),
-  M("eet", "C20H32O3", "Epoxyeicosatrienoate made by CYP2C8, CYP2C9 and CYP2J2 (endothelium, heart, kidney): endothelium-derived hyperpolarising factor, vasodilator, anti-inflammatory and natriuretic. It lasts only minutes because soluble epoxide hydrolase opens it."),
-  M("dhet", "C20H34O4", "Diol made from the EETs by soluble epoxide hydrolase (sEH): much weaker, so sEH inhibitors are being tested to keep EETs high in hypertension and inflammation."),
-  M("k15pge2", "C20H30O5", "First inactivation product of PGE₂ (15-hydroxyl oxidised to a ketone). It binds EP receptors only weakly."),
-  M("pgem", "C20H32O5", "Inactive product after the 13,14 double bond is reduced; it is further β- and ω-oxidised to the urinary metabolite PGE-M (11α-hydroxy-9,15-dioxo-2,3,4,5-tetranor-prostane-1,20-dioic acid), the usual readout of whole-body PGE₂ production."),
-  M("hete20", "C20H32O3", "ω-Hydroxylation of arachidonate by CYP4A and CYP4F (kidney, vessels): constricts small arteries and inhibits tubular sodium transport, so it opposes EETs. High 20-HETE is linked to hypertension and to injury after stroke."),
-);
-Object.assign(layout, { k15pge2: [-5400, -1760], pgem: [-5400, -1300], hete12: [-3300, -4250], hete15: [-5300, -4250], lxa4: [-6300, -3930], eet: [-2400, -4250], dhet: [-2400, -3750], hete20: [-1500, -4250] });
-["hete12", "hete15", "lxa4", "eet", "dhet", "hete20", "k15pge2", "pgem"].forEach((i) => (PATH_OF[i] = "eico"));
-[["c_ei8", "→ NADH (+ NAD⁺)", -5070, -1830], ["c_ei9", "+ NADPH → NADP⁺", -5070, -1530]].forEach(([id, label, x, y]) => { NODES.push({ id, kind: "cofactor", label, formula: "", note: "Co-substrate / co-product" }); layout[id] = [x, y]; PATH_OF[id] = "eico"; });
-{ const Y0 = -3700, X0 = -4400, ST = 440;
-  layout.pl2m = [X0, Y0]; layout.arachid = [X0, Y0 + ST]; layout.pgh2 = [X0, Y0 + 2 * ST];
-  layout.pge2 = [X0 - 1000, Y0 + 3.3 * ST]; layout.pgd2 = [X0, Y0 + 3.3 * ST]; layout.pgf2a = [X0 + 1000, Y0 + 3.3 * ST];
-  [["c_ei1", "+ H₂O → lysophospholipid", "pl2m", -330, ST / 2], ["c_ei2", "+ 2 O₂ (via PGG₂)", "arachid", -330, ST / 2], ["c_ei3", "+ GSH (mPGES-1)", "pgh2", -330, ST * 0.95]].forEach(([id, label, at, dx, dy]) => {
-    NODES.push({ id, kind: "cofactor", label, formula: "", note: "Co-substrate / co-product" });
-    place.branch(at, [id], dx, dy); PATH_OF[id] = "eico";
-  });
-  NODES.push({ id: "t_eico", kind: "pathway", title: true, label: PATHWAYS.eico.label, formula: "", note: "", path: "eico" });
-  layout.t_eico = [X0, Y0 - 235]; PATH_OF.t_eico = "eico";
-  ["pl2m", "arachid", "pgh2", "pge2", "pgd2", "pgf2a"].forEach((i) => (PATH_OF[i] = "eico"));
-}
-EDGES.push(
-  { id: "ei1", source: "pl2m", target: "arachid", label: "Phospholipase A₂ (cPLA₂α)", main: true, sh: "b", th: "t" },
-  { id: "ei2", source: "arachid", target: "pgh2", label: "Cyclooxygenase (COX-1, COX-2)", main: true, sh: "b", th: "t" },
-  { id: "ei3", source: "pgh2", target: "pge2", label: "PGE synthase (mPGES-1)", main: true, sh: "b", th: "t" },
-  { id: "ei4", source: "pgh2", target: "pgd2", label: "PGD synthase (H-PGDS, L-PGDS)", main: true, sh: "b", th: "t" },
-  { id: "ei5", source: "pgh2", target: "pgf2a", label: "PGF synthase (AKR1C3, AKR1B1)", main: true, sh: "b", th: "t" },
-  { id: "ei6", source: "pgh2", target: "pgi2", label: "Prostacyclin synthase (PGIS, CYP8A1)", main: true, sh: "b", th: "t" },
-  { id: "ei7", source: "pgi2", target: "k6pgf1", label: "Non-enzymatic hydrolysis (PGI₂)", main: true, sh: "b", th: "t" },
-  { id: "ei8", source: "pgh2", target: "txa2", label: "Thromboxane synthase (TXAS, CYP5A1)", main: true, sh: "b", th: "t" },
-  { id: "ei9", source: "txa2", target: "txb2", label: "Non-enzymatic hydrolysis (TXA₂)", main: true, sh: "b", th: "t" },
-  { id: "ei10", source: "arachid", target: "hpete5", label: "5-Lipoxygenase (5-LOX, with FLAP)", main: true, sh: "l", th: "r" },
-  { id: "ei11", source: "hpete5", target: "lta4", label: "5-LOX (LTA₄ synthase activity)", main: true, sh: "l", th: "r" },
-  { id: "ei12", source: "lta4", target: "ltb4", label: "LTA₄ hydrolase", main: true, sh: "b", th: "t" },
-  { id: "ei13", source: "lta4", target: "ltc4", label: "LTC₄ synthase", main: true, sh: "b", th: "t" },
-  { id: "ei14", source: "ltc4", target: "ltd4", label: "γ-Glutamyl transferase (GGT)", main: true, sh: "b", th: "t" },
-  { id: "ei15", source: "ltd4", target: "lte4", label: "Dipeptidase", main: true, sh: "b", th: "t" },
-  { id: "ei16", source: "arachid", target: "hete12", label: "12-Lipoxygenase (ALOX12)", main: true, sh: "r", th: "b" },
-  { id: "ei17", source: "arachid", target: "hete15", label: "15-Lipoxygenase (ALOX15, ALOX15B)", main: true, sh: "t", th: "b" },
-  { id: "ei18", source: "hete15", target: "lxa4", label: "5-Lipoxygenase (lipoxin synthesis)", main: true, sh: "l", th: "r" },
-  { id: "ei19", source: "lta4", target: "lxa4", label: "12-Lipoxygenase (transcellular lipoxin synthesis)", main: true, sh: "t", th: "b" },
-  { id: "ei20", source: "arachid", target: "eet", label: "CYP epoxygenase (CYP2C8, CYP2C9, CYP2J2)", main: true, sh: "r", th: "b" },
-  { id: "ei21", source: "eet", target: "dhet", label: "Soluble epoxide hydrolase (sEH)", main: true, sh: "b", th: "t" },
-  { id: "ei23", source: "pge2", target: "k15pge2", label: "15-Hydroxyprostaglandin dehydrogenase (15-PGDH)", main: true, sh: "b", th: "t" },
-  { id: "ei24", source: "k15pge2", target: "pgem", label: "Prostaglandin Δ13-reductase (PTGR1)", main: true, sh: "b", th: "t" },
-  { id: "ei22", source: "arachid", target: "hete20", label: "CYP ω-hydroxylase (CYP4A, CYP4F)", main: true, sh: "r", th: "b" },
-);
-
-/* ---- v8.9 part 5: pro-resolving mediators from DHA and EPA, and the endocannabinoids ---- */
-const pufa = (name, n, dbl, subs) => ({ name, scale: 0.55, ...zig(n, [[0, "COOL"], ...subs], 26, dbl) }); // C1 at the left; hydroxyl on Cn = subs index n-1; dbl = Δ numbers
-Object.assign(MOLS, {
-  dha: pufa("Docosahexaenoate (DHA, 22:6 ω-3)", 22, [4, 7, 10, 13, 16, 19], []),
-  epa: pufa("Eicosapentaenoate (EPA, 20:5 ω-3)", 20, [5, 8, 11, 14, 17], []),
-  hdha17: pufa("17S-HDHA (17-hydroxy-docosahexaenoate)", 22, [4, 7, 10, 13, 15, 19], [[16, "OH"]]),
-  rvd1: pufa("Resolvin D1 (RvD1)", 22, [4, 9, 11, 13, 15, 19], [[6, "OH"], [7, "OH"], [16, "OH"]]),
-  rvd2: pufa("Resolvin D2 (RvD2)", 22, [4, 8, 10, 12, 14, 19], [[6, "OH"], [15, "OH"], [16, "OH"]]),
-  pd1: pufa("Protectin D1 (PD1, neuroprotectin D1)", 22, [4, 7, 11, 13, 15, 19], [[9, "OH"], [16, "OH"]]),
-  hepe18: pufa("18-HEPE (18-hydroxy-eicosapentaenoate)", 20, [5, 8, 11, 14, 16], [[17, "OH"]]),
-  rve1: pufa("Resolvin E1 (RvE1)", 20, [6, 8, 10, 14, 16], [[4, "OH"], [11, "OH"], [17, "OH"]]),
-  hdha14: pufa("14-HDHA (14-hydroxy-docosahexaenoate)", 22, [4, 7, 10, 12, 16, 19], [[13, "OH"]]),
-  mar1: pufa("Maresin 1 (MaR1)", 22, [4, 8, 10, 12, 16, 19], [[6, "OH"], [13, "OH"]]),
-  atrvd1: pufa("Aspirin-triggered resolvin D1 (AT-RvD1, 17R)", 22, [4, 9, 11, 13, 15, 19], [[6, "OH"], [7, "OH"], [16, "OH"]]),
-  hdha17r: pufa("17R-HDHA (aspirin-triggered)", 22, [4, 7, 10, 13, 15, 19], [[16, "OH"]]),
-  pge2g: (() => { const m = prostanoid("Prostaglandin E₂ glyceryl ester (PGE₂-G)", "=O", "OH"), a = m.atoms.find((x) => x.id === "a1"); a.text = "COO–glyceryl"; delete a.q; return m; })(),
-  ...(() => { const mk = (name, sg) => { const z = zig(22, [[0, "COOL"], [13, "OH"]], 26, [4, 7, 9, 11, 16, 19]), c = z.atoms.find((q) => q.id === "c12");
-      z.atoms.push(A("sg", [c.x, c.y + 30], sg, "S")); z.bonds.push(["c12", "sg"]); return { name, scale: 0.55, ...z }; };
-    return { mctr1: mk("Maresin conjugate in tissue regeneration 1 (MCTR1)", "S–γGlu–Cys–Gly"), mctr2: mk("MCTR2", "S–Cys–Gly"), mctr3: mk("MCTR3", "S–Cys") }; })(),
-  ...(() => { const mk = (name, dbl, oh, si, sg) => { const z = zig(22, [[0, "COOL"], ...oh.map((i) => [i, "OH"])], 26, dbl), c = z.atoms.find((q) => q.id === `c${si}`), d = si % 2 ? -1 : 1;
-      z.atoms.push(A("sg", [c.x, c.y + 30 * d], sg, "S")); z.bonds.push([`c${si}`, "sg"]); return { name, scale: 0.55, ...z }; };
-    return { rctr1: mk("Resolvin conjugate in tissue regeneration 1 (RCTR1)", [4, 9, 11, 13, 15, 19], [6, 16], 7, "S–γGlu–Cys–Gly"), rctr2: mk("RCTR2", [4, 9, 11, 13, 15, 19], [6, 16], 7, "S–Cys–Gly"), rctr3: mk("RCTR3", [4, 9, 11, 13, 15, 19], [6, 16], 7, "S–Cys"),
-      pctr1: mk("Protectin conjugate in tissue regeneration 1 (PCTR1)", [4, 7, 10, 12, 14, 19], [16], 15, "S–γGlu–Cys–Gly"), pctr2: mk("PCTR2", [4, 7, 10, 12, 14, 19], [16], 15, "S–Cys–Gly"), pctr3: mk("PCTR3", [4, 7, 10, 12, 14, 19], [16], 15, "S–Cys") }; })(),
-  nape: { name: "N-Arachidonoyl-phosphatidylethanolamine (NAPE)", ...zig(3, [[0, "EST"], [1, "EST"], [2, "OP"]]),
-    key: "Glycerophospholipid: R on the upper ester = sn-1 fatty acyl, R on the lower ester = sn-2 fatty acyl; the phosphate carries ethanolamine whose nitrogen bears an arachidonoyl group (made from phosphatidylethanolamine by an N-acyltransferase)." },
-  dag: { name: "Diacylglycerol (sn-1 stearoyl, sn-2 arachidonoyl)", ...zig(3, [[0, "EST"], [1, "EST"], [2, "OH"]]),
-    key: "Glycerol with two fatty acyl esters; R on the lower ester = arachidonoyl (sn-2), R on the upper ester = stearoyl (sn-1). Released from PIP₂ by phospholipase C-β." },
-  aea: (() => { const z = zig(20, [[0, "=O"]], 26, [5, 8, 11, 14]);
-    z.atoms.push(A("an", [-26, 0], "NH", "N"), C("ae1", [-52, 15]), C("ae2", [-78, 0]), A("aeo", [-78, -30], "OH", "O"));
-    z.bonds.push(["c0", "an"], ["an", "ae1"], ["ae1", "ae2"], ["ae2", "aeo"]);
-    return { name: "Anandamide (N-arachidonoylethanolamine, AEA)", scale: 0.55, ...z }; })(),
-  ag2: (() => { const z = zig(20, [[0, "=O"]], 26, [5, 8, 11, 14]);
-    z.atoms.push(A("go", [-26, 0], "O", "O"), C("g2", [-52, 15]), C("gu", [-78, 0]), A("guo", [-78, -30], "OH", "O"), C("gl", [-78, 30]), A("glo", [-78, 60], "OH", "O"));
-    z.bonds.push(["c0", "go"], ["go", "g2"], ["g2", "gu"], ["gu", "guo"], ["g2", "gl"], ["gl", "glo"]);
-    return { name: "2-Arachidonoylglycerol (2-AG)", scale: 0.55, ...z }; })(),
-  etha: { name: "Ethanolamine", ...zig(2, [[0, "OH"], [1, "NH3"]]) },
-  glyc: { name: "Glycerol (released from 2-AG)", ...zig(3, [[0, "OH"], [1, "OH"], [2, "OH"]]) },
-});
-NODES.push(
-  M("dha", "C22H32O2", "The 22-carbon ω-3 fatty acid of fish oil, algae and the brain and retina (from α-linolenate only in small amounts). Released from membrane phospholipids by phospholipase A₂; lipoxygenases turn it into resolvins and protectins."),
-  M("epa", "C20H30O2", "The 20-carbon ω-3 fatty acid of fish oil. It competes with arachidonate for COX and 5-LOX (weaker series-3 prostanoids and series-5 leukotrienes) and is the parent of the E-series resolvins."),
-  M("hdha17", "C22H32O3", "Made by 15-lipoxygenase from DHA (through 17S-HpDHA). It is the branch point for D-series resolvins and for protectin D1. Aspirin-acetylated COX-2 makes the 17R epimer instead (aspirin-triggered resolvins)."),
-  M("rvd1", "C22H32O5", "Resolvin D1: a specialised pro-resolving mediator. Stops neutrophil entry, raises macrophage uptake of apoptotic cells and bacteria, and lowers pain signalling (ALX/FPR2 and GPR32). Active in the nanomolar range."),
-  M("rvd2", "C22H32O5", "Resolvin D2: limits neutrophil recruitment and improves bacterial clearance, protecting against sepsis in animals (GPR18 receptor)."),
-  M("pd1", "C22H32O4", "Protectin D1 (neuroprotectin D1 in the brain and retina): protects neurons and retinal pigment cells from oxidative injury and turns off inflammation. Low in the brains of people with Alzheimer disease."),
-  M("hepe18", "C20H30O3", "Made from EPA by cytochrome P450 (mostly the 18R form, some 18S). It is a substrate for 5-lipoxygenase on the way to resolvin E1. The aspirin-triggered 18R form is drawn separately."),
-  M("rve1", "C20H30O5", "Resolvin E1: acts on ChemR23 (and blocks BLT1) to stop neutrophil entry, speed clearance of dead cells and lower platelet activation."),
-  M("hdha14", "C22H32O3", "Made by 12-lipoxygenase from DHA (platelets, macrophages) through 14S-HpDHA; the branch to maresins."),
-  M("mar1", "C22H32O4", "Maresin 1 (macrophage mediator of resolution and tissue regeneration): stops neutrophil entry, raises macrophage clearance of dead cells and speeds tissue repair; also lowers neuropathic pain in animals (LGR6 and RORα receptors)."),
-  M("atrvd1", "C22H32O5", "The 17R epimer of resolvin D1, made when aspirin acetylates COX-2 (which then makes 17R-HpDHA, taken on by 5-lipoxygenase). Same actions as RvD1 but resists inactivation, so it lasts longer."),
-  M("hdha17r", "C22H32O3", "The 17R epimer of 17-HDHA, made by aspirin-acetylated COX-2 (17R-HpDHA, reduced). Stereochemistry is not shown in the drawing, so it looks like the 17S form."),
-  M("pge2g", "C23H38O7", "Prostaglandin E₂ glyceryl ester: COX-2 oxygenates 2-AG in the same way as arachidonate, and PGE synthase finishes it. It acts on its own receptor (a P2Y6-type site) and ends endocannabinoid signalling while starting a prostanoid one. Hydrolysed to PGE₂ slowly."),
-  M("mctr1", "C32H47N3O9S", "Glutathione conjugate of the 13,14-epoxide of DHA (made by 12-lipoxygenase): a maresin conjugate in tissue regeneration. Speeds tissue repair and clears bacteria in animals."),
-  M("mctr2", "C27H40N2O6S", "MCTR1 minus its glutamate (γ-glutamyl transferase): cysteinyl-glycinyl conjugate, still active."),
-  M("mctr3", "C25H37NO5S", "MCTR2 minus its glycine (dipeptidase): cysteinyl conjugate, the last of the maresin conjugates; it promotes tissue regeneration and limits neutrophil entry."),
-  M("rctr1", "C32H47N3O10S", "Glutathione adduct of the 7,8-epoxide of resolvin D1 (made by 5-lipoxygenase from 17-HDHA): a conjugate that speeds tissue regeneration, clears bacteria and lowers pain signalling in animals."),
-  M("rctr2", "C27H40N2O7S", "RCTR1 minus its glutamate (GGT): cysteinyl-glycinyl conjugate, still active."),
-  M("rctr3", "C25H37NO6S", "RCTR2 minus its glycine (dipeptidase): cysteinyl conjugate, the last of the series."),
-  M("pctr1", "C32H47N3O9S", "Glutathione adduct of the 16,17-epoxide that also gives protectin D1: promotes regeneration and limits neutrophil entry; found in human tissue during healing and in the brain."),
-  M("pctr2", "C27H40N2O6S", "PCTR1 minus its glutamate (GGT): cysteinyl-glycinyl conjugate."),
-  M("pctr3", "C25H37NO5S", "PCTR2 minus its glycine (dipeptidase): cysteinyl conjugate, the last in the series."),
-  M("nape", "R–CO–O / R′–CO–O / phosphate–ethanolamine–N–arachidonoyl", "Membrane phospholipid made on demand (calcium raises the N-acyltransferase). It is the parent of anandamide and of other N-acylethanolamines."),
-  M("dag", "R–CO–O / R′–CO–O / OH", "Diacylglycerol released from phosphatidylinositol bisphosphate by phospholipase C-β after a Gq-coupled receptor (mGluR5, M1) is activated. The sn-2 arachidonoyl is cut out by DAG lipase."),
-  M("aea", "C22H37NO2", "Anandamide, the first endocannabinoid found: made on demand in the postsynaptic membrane and sent backward across the synapse to CB1 (partial agonist, also TRPV1). Lasts minutes before FAAH cuts it."),
-  M("ag2", "C23H38O4", "2-Arachidonoylglycerol, the most abundant endocannabinoid in the brain and a full agonist at CB1 and CB2. Made by DAG lipase-α and removed by MAG lipase (about 85% of brain breakdown); the arachidonate released there is a major source for brain prostaglandins."),
-  M("etha", "C2H7NO", "Product of anandamide hydrolysis (with arachidonate). Re-used for phosphatidylethanolamine synthesis."),
-  M("glyc", "C3H8O3", "Glycerol released by MAGL (the same molecule as the glycerol of triglyceride breakdown, drawn here so the endocannabinoid route stays in one place). Phosphorylated by glycerol kinase and used for triglyceride or glucose synthesis."),
-);
-{ const ST = 440;
-  Object.assign(layout, { dha: [-5000, -4900], hdha17: [-5000, -4900 - ST], rvd1: [-6000, -4900 - 2 * ST], rvd2: [-5000, -4900 - 2 * ST], pd1: [-4000, -4900 - 2 * ST],
-    epa: [-2600, -4900], hepe18: [-2600, -4900 - ST], rve1: [-2600, -4900 - 2 * ST],
-    rctr1: [-6000, -6220], rctr2: [-6000, -6660], rctr3: [-6000, -7100], pctr1: [-4000, -6220], pctr2: [-4000, -6660], pctr3: [-4000, -7100],
-    hdha17r: [-7000, -4900], pge2g: [2000, -4300 + ST], mctr1: [-3300, -4900 - ST], mctr2: [-3300, -4900 - 2 * ST], mctr3: [-3300, -4900 - 3 * ST],
-    hdha14: [-3800, -4900], mar1: [-3800, -4900 - ST], atrvd1: [-7000, -4900 - ST],
-    nape: [-400, -4300], aea: [-400, -4300 + ST], etha: [-400, -4300 + 2 * ST], dag: [800, -4300], ag2: [800, -4300 + ST], glyc: [800, -4300 + 2 * ST] });
-  ["rctr1", "rctr2", "rctr3", "pctr1", "pctr2", "pctr3", "hdha17r", "pge2g", "mctr1", "mctr2", "mctr3", "hdha14", "mar1", "atrvd1", "dha", "epa", "hdha17", "rvd1", "rvd2", "pd1", "hepe18", "rve1", "nape", "dag", "aea", "ag2", "etha", "glyc"].forEach((i) => (PATH_OF[i] = "eico"));
-  [["c_ei10", "+ O₂, NADPH (18-hydroxylation)", "epa", 330, -ST / 2 - ST], ["c_ei11", "→ arachidonate", "aea", 330, ST / 2 - ST], ["c_ei12", "→ arachidonate", "ag2", 330, ST / 2 - ST]].forEach(([id, label, at, dx, dy]) => {
-    NODES.push({ id, kind: "cofactor", label, formula: "", note: "Co-substrate / co-product" });
-    layout[id] = [layout[at][0] + dx, layout[at][1] + dy + ST]; PATH_OF[id] = "eico";
-  });
-}
-EDGES.push(
-  { id: "ei25", source: "dha", target: "hdha17", label: "15-Lipoxygenase (ALOX15, ALOX15B)", main: true, sh: "t", th: "b" },
-  { id: "ei26", source: "hdha17", target: "rvd1", label: "5-Lipoxygenase (D-series resolvins)", main: true, sh: "t", th: "b" },
-  { id: "ei27", source: "hdha17", target: "rvd2", label: "5-Lipoxygenase (D-series resolvins)", main: true, sh: "t", th: "b" },
-  { id: "ei28", source: "hdha17", target: "pd1", label: "15-Lipoxygenase and epoxide hydrolase (protectin D1)", main: true, sh: "t", th: "b" },
-  { id: "ei29", source: "epa", target: "hepe18", label: "Cytochrome P450 (18-hydroxylation)", main: true, sh: "t", th: "b" },
-  { id: "ei30", source: "hepe18", target: "rve1", label: "5-Lipoxygenase and LTA₄ hydrolase (resolvin E1)", main: true, sh: "t", th: "b" },
-  { id: "ei31", source: "nape", target: "aea", label: "NAPE-phospholipase D (NAPE-PLD)", main: true, sh: "b", th: "t" },
-  { id: "ei32", source: "aea", target: "etha", label: "Fatty acid amide hydrolase (FAAH)", main: true, sh: "b", th: "t" },
-  { id: "ei33", source: "dag", target: "ag2", label: "Diacylglycerol lipase-α (DAGLα)", main: true, sh: "b", th: "t" },
-  { id: "ei34", source: "ag2", target: "glyc", label: "Monoacylglycerol lipase (MAGL)", main: true, sh: "b", th: "t" },
-  { id: "ei35", source: "dha", target: "hdha14", label: "12-Lipoxygenase (ALOX12)", main: true, sh: "r", th: "l" },
-  { id: "ei36", source: "hdha14", target: "mar1", label: "12-Lipoxygenase and epoxide hydrolase (maresin 1)", main: true, sh: "t", th: "b" },
-  { id: "ei37", source: "dha", target: "hdha17r", label: "Aspirin-acetylated COX-2 (17R-HpDHA)", main: true, sh: "l", th: "r" },
-  { id: "ei38", source: "hdha17r", target: "atrvd1", label: "5-Lipoxygenase (D-series resolvins)", main: true, sh: "t", th: "b" },
-  { id: "ei39", source: "hdha14", target: "mctr1", label: "12-Lipoxygenase epoxide + glutathione (GST, LTC₄ synthase)", main: true, sh: "t", th: "b" },
-  { id: "ei40", source: "mctr1", target: "mctr2", label: "γ-Glutamyl transferase (GGT)", main: true, sh: "t", th: "b" },
-  { id: "ei41", source: "mctr2", target: "mctr3", label: "Dipeptidase", main: true, sh: "t", th: "b" },
-  { id: "ei42", source: "ag2", target: "pge2g", label: "Cyclooxygenase-2 and PGE synthase (2-AG route)", main: true, sh: "r", th: "l" },
-  { id: "ei43", source: "hdha17", target: "rctr1", label: "5-Lipoxygenase epoxide + glutathione (GST, LTC₄ synthase; RCTR1)", main: true, sh: "t", th: "b" },
-  { id: "ei44", source: "rctr1", target: "rctr2", label: "γ-Glutamyl transferase (GGT)", main: true, sh: "t", th: "b" },
-  { id: "ei45", source: "rctr2", target: "rctr3", label: "Dipeptidase", main: true, sh: "t", th: "b" },
-  { id: "ei46", source: "hdha17", target: "pctr1", label: "15-Lipoxygenase epoxide + glutathione (GST, LTC₄ synthase; PCTR1)", main: true, sh: "t", th: "b" },
-  { id: "ei47", source: "pctr1", target: "pctr2", label: "γ-Glutamyl transferase (GGT)", main: true, sh: "t", th: "b" },
-  { id: "ei48", source: "pctr2", target: "pctr3", label: "Dipeptidase", main: true, sh: "t", th: "b" },
-);
-
-/* ---- v8.9 part 9: 18R-HEPE, n-3 DPA resolvins and the 13-series resolvins (RvT) ---- */
-Object.assign(MOLS, {
-  hepe18r: pufa("18R-HEPE (aspirin-triggered)", 20, [5, 8, 11, 14, 16], [[17, "OH"]]),
-  dpa: pufa("Docosapentaenoate (n-3 DPA, 22:5 ω-3)", 22, [7, 10, 13, 16, 19], []),
-  hdpa17: pufa("17S-HDPA (17-hydroxy-docosapentaenoate)", 22, [7, 10, 13, 15, 19], [[16, "OH"]]),
-  rvd1n3: pufa("Resolvin D1 of n-3 DPA (RvD1 n-3 DPA)", 22, [9, 11, 13, 15, 19], [[6, "OH"], [7, "OH"], [16, "OH"]]),
-  rvd2n3: pufa("Resolvin D2 of n-3 DPA (RvD2 n-3 DPA)", 22, [8, 10, 12, 14, 19], [[6, "OH"], [15, "OH"], [16, "OH"]]),
-  rvd5n3: pufa("Resolvin D5 of n-3 DPA (RvD5 n-3 DPA)", 22, [8, 10, 13, 15, 19], [[6, "OH"], [16, "OH"]]),
-  hdpa13: pufa("13R-HDPA (13-hydroxy-docosapentaenoate)", 22, [7, 10, 14, 16, 19], [[12, "OH"]]),
-  rvt1: pufa("Resolvin T1 (RvT1)", 22, [8, 10, 14, 16, 18], [[6, "OH"], [12, "OH"], [19, "OH"]]),
-  rvt2: pufa("Resolvin T2 (RvT2)", 22, [8, 10, 14, 16, 19], [[6, "OH"], [11, "OH"], [12, "OH"]]),
-  rvt3: pufa("Resolvin T3 (RvT3)", 22, [9, 11, 14, 16, 19], [[6, "OH"], [7, "OH"], [12, "OH"]]),
-  rvt4: pufa("Resolvin T4 (RvT4)", 22, [8, 10, 14, 16, 19], [[6, "OH"], [12, "OH"]]),
-});
-NODES.push(
-  M("hepe18r", "C20H30O3", "The 18R epimer of 18-HEPE, made when aspirin acetylates COX-2 (which then makes 18R-HpEPE from EPA; atorvastatin has a similar effect). Stereochemistry is not shown in the drawing, so it looks like 18-HEPE. It is taken on by 5-lipoxygenase to resolvin E1."),
-  M("dpa", "C22H34O2", "The 22-carbon ω-3 fatty acid between EPA and DHA (elongase from EPA; the next steps lead on to DHA). It circulates in plasma lipids and is the parent of its own family of pro-resolving mediators: D-series resolvins, protectins, maresins and the 13-series resolvins (RvT). Common ELOVL2 variants raise its level."),
-  M("hdpa17", "C22H34O3", "Made by 15-lipoxygenase from n-3 DPA (through 17S-HpDPA): the branch point for the n-3 DPA D-series resolvins, in the same place as 17-HDHA on the DHA route."),
-  M("rvd1n3", "C22H34O5", "7S,8R,17S-trihydroxy-n-3 DPA: the same hydroxyl pattern as resolvin D1 but with one double bond fewer. Limits neutrophil entry and raises macrophage clearance of bacteria in mice; found in human plasma and tissue."),
-  M("rvd2n3", "C22H34O5", "7S,16R,17S-trihydroxy-n-3 DPA: the n-3 DPA counterpart of resolvin D2. Reduces neutrophil recruitment and raises macrophage uptake of bacteria and dead cells in animals."),
-  M("rvd5n3", "C22H34O4", "7S,17S-dihydroxy-n-3 DPA: the n-3 DPA counterpart of resolvin D5. Raises macrophage phagocytosis and lowers neutrophil entry in animals; GPR101 has been reported as its receptor."),
-  M("hdpa13", "C22H34O3", "Made by endothelial COX-2 from n-3 DPA (13R-HpDPA, reduced by peroxidase). Atorvastatin raises it through S-nitrosylation of COX-2; COX-2 inhibitors lower it. Neutrophils turn it into the four resolvins T."),
-  M("rvt1", "C22H34O5", "7,13,20-trihydroxy-n-3 DPA: a 13-series resolvin made by neutrophil 5-lipoxygenase from 13R-HDPA. Increases survival and bacterial clearance in mouse infection and lowers neutrophil tissue entry."),
-  M("rvt2", "C22H34O5", "7,12,13-trihydroxy-n-3 DPA: 13-series resolvin; lowers neutrophil entry and raises macrophage phagocytosis in animals."),
-  M("rvt3", "C22H34O5", "7,8,13-trihydroxy-n-3 DPA: 13-series resolvin made in the same neutrophil–endothelial step; same protective actions in mouse infection."),
-  M("rvt4", "C22H34O4", "7,13-dihydroxy-n-3 DPA: 13-series resolvin; an enzymatic oxygenation can convert it to RvT1."),
-);
-{ const ST = 440;
-  Object.assign(layout, { hepe18r: [-1850, -4900 - ST], dpa: [-1000, -4900], hdpa17: [-1000, -4900 - ST],
-    rvd1n3: [-800, -4900 - 2 * ST], rvd2n3: [-100, -4900 - 2 * ST], rvd5n3: [600, -4900 - 2 * ST],
-    hdpa13: [1900, -4900], rvt1: [925, -4900 - ST], rvt2: [1575, -4900 - ST], rvt3: [2225, -4900 - ST], rvt4: [2875, -4900 - ST] });
-  ["hepe18r", "dpa", "hdpa17", "rvd1n3", "rvd2n3", "rvd5n3", "hdpa13", "rvt1", "rvt2", "rvt3", "rvt4"].forEach((i) => (PATH_OF[i] = "eico"));
-}
-EDGES.push(
-  { id: "ei49", source: "epa", target: "hepe18r", label: "Aspirin-acetylated COX-2 (18R-HpEPE)", main: true, sh: "r", th: "l" },
-  { id: "ei50", source: "hepe18r", target: "rve1", label: "5-Lipoxygenase and LTA₄ hydrolase (resolvin E1)", main: true, sh: "t", th: "b" },
-  { id: "ei51", source: "epa", target: "dpa", label: "Elongase (ELOVL2, ELOVL5)", main: true, sh: "r", th: "l" },
-  { id: "ei52", source: "dpa", target: "hdpa17", label: "15-Lipoxygenase (ALOX15, ALOX15B)", main: true, sh: "t", th: "b" },
-  { id: "ei53", source: "hdpa17", target: "rvd1n3", label: "5-Lipoxygenase (D-series resolvins)", main: true, sh: "t", th: "b" },
-  { id: "ei54", source: "hdpa17", target: "rvd2n3", label: "5-Lipoxygenase (D-series resolvins)", main: true, sh: "t", th: "b" },
-  { id: "ei55", source: "hdpa17", target: "rvd5n3", label: "5-Lipoxygenase (D-series resolvins)", main: true, sh: "t", th: "b" },
-  { id: "ei56", source: "dpa", target: "hdpa13", label: "Cyclooxygenase-2 (13R-HpDPA; raised by atorvastatin)", main: true, sh: "b", th: "b" },
-  { id: "ei57", source: "hdpa13", target: "rvt1", label: "5-Lipoxygenase (13-series resolvins)", main: true, sh: "t", th: "b" },
-  { id: "ei58", source: "hdpa13", target: "rvt2", label: "5-Lipoxygenase (13-series resolvins)", main: true, sh: "t", th: "b" },
-  { id: "ei59", source: "hdpa13", target: "rvt3", label: "5-Lipoxygenase (13-series resolvins)", main: true, sh: "t", th: "b" },
-  { id: "ei60", source: "hdpa13", target: "rvt4", label: "5-Lipoxygenase (13-series resolvins)", main: true, sh: "t", th: "b" },
-);
-
-/* ---- v8.9 part 10: protectins and maresins of n-3 DPA ---- */
-Object.assign(MOLS, {
-  hdpa14: pufa("14S-HDPA (14-hydroxy-docosapentaenoate)", 22, [7, 10, 12, 16, 19], [[13, "OH"]]),
-  mar1n3: pufa("Maresin 1 of n-3 DPA (MaR1 n-3 DPA)", 22, [8, 10, 12, 16, 19], [[6, "OH"], [13, "OH"]]),
-  mar2n3: pufa("Maresin 2 of n-3 DPA (MaR2 n-3 DPA)", 22, [7, 9, 11, 16, 19], [[12, "OH"], [13, "OH"]]),
-  pd1n3: pufa("Protectin D1 of n-3 DPA (PD1 n-3 DPA)", 22, [7, 11, 13, 15, 19], [[9, "OH"], [16, "OH"]]),
-  pd2n3: pufa("Protectin D2 of n-3 DPA (PD2 n-3 DPA)", 22, [7, 10, 12, 14, 19], [[15, "OH"], [16, "OH"]]),
-});
-NODES.push(
-  M("hdpa14", "C22H34O3", "Made by 12-lipoxygenase from n-3 DPA (through 14S-HpDPA, platelets and macrophages): the branch to the n-3 DPA maresins, in the same place as 14-HDHA on the DHA route."),
-  M("mar1n3", "C22H34O4", "7S,14S-dihydroxy-n-3 DPA: the n-3 DPA counterpart of maresin 1. Lowers neutrophil chemotaxis and adhesion, raises macrophage phagocytosis, and protects against organ injury after ischaemia–reperfusion in mice."),
-  M("mar2n3", "C22H34O4", "13,14-dihydroxy-n-3 DPA: a maresin of n-3 DPA made by opening the 13,14-epoxide of 14-HpDPA. Peaks early (about 4 hours) in mouse peritonitis."),
-  M("pd1n3", "C22H34O4", "10R,17S-dihydroxy-n-3 DPA: the n-3 DPA counterpart of protectin D1. Lowers neutrophil chemotaxis, raises macrophage phagocytosis, and peaks about 4 hours into mouse peritonitis."),
-  M("pd2n3", "C22H34O4", "16,17-dihydroxy-n-3 DPA: the n-3 DPA counterpart of protectin D2. Levels in mouse exudates rise twice, at peak neutrophil entry and late in resolution."),
-);
-{ const ST = 440;
-  Object.assign(layout, { hdpa14: [50, -4900], mar1n3: [-250, -4900 - ST], mar2n3: [350, -4900 - ST], pd1n3: [1300, -4900 - 2 * ST], pd2n3: [2000, -4900 - 2 * ST] });
-  ["hdpa14", "mar1n3", "mar2n3", "pd1n3", "pd2n3"].forEach((i) => (PATH_OF[i] = "eico"));
-}
-EDGES.push(
-  { id: "ei61", source: "dpa", target: "hdpa14", label: "12-Lipoxygenase (ALOX12)", main: true, sh: "r", th: "l" },
-  { id: "ei62", source: "hdpa14", target: "mar1n3", label: "12-Lipoxygenase and epoxide hydrolase (maresin 1)", main: true, sh: "t", th: "b" },
-  { id: "ei63", source: "hdpa14", target: "mar2n3", label: "Epoxide hydrolase (maresin 2)", main: true, sh: "t", th: "b" },
-  { id: "ei64", source: "hdpa17", target: "pd1n3", label: "15-Lipoxygenase and epoxide hydrolase (protectin D1)", main: true, sh: "t", th: "b" },
-  { id: "ei65", source: "hdpa17", target: "pd2n3", label: "Epoxide hydrolase (protectin D2)", main: true, sh: "t", th: "b" },
-);
-
-/* ---- v8.9 part 11: resolvin E2 and E3 ---- */
-Object.assign(MOLS, {
-  rve2: pufa("Resolvin E2 (RvE2)", 20, [6, 8, 11, 14, 16], [[4, "OH"], [17, "OH"]]),
-  rve3: pufa("Resolvin E3 (RvE3)", 20, [5, 8, 11, 13, 15], [[16, "OH"], [17, "OH"]]),
-});
-NODES.push(
-  M("rve2", "C20H30O4", "Resolvin E2 (5S,18R-dihydroxy-EPA): like RvE1 but with its 12-hydroxyl missing. Limits neutrophil entry in animals; a partial activator of ChemR23 that also blocks BLT1."),
-  M("rve3", "C20H30O4", "Resolvin E3 (17,18-dihydroxy-EPA, both 18R and 18S forms): a vicinal diol made by 12/15-lipoxygenase. Limits neutrophil entry and chemotaxis in animals."),
-);
-{ const ST = 440;
-  Object.assign(layout, { rve2: [-2000, -4900 - 2 * ST], rve3: [-1400, -4900 - 2 * ST] });
-  ["rve2", "rve3"].forEach((i) => (PATH_OF[i] = "eico"));
-}
-EDGES.push(
-  { id: "ei66", source: "hepe18r", target: "rve2", label: "5-Lipoxygenase and reduction (resolvin E2)", main: true, sh: "t", th: "b" },
-  { id: "ei67", source: "hepe18r", target: "rve3", label: "12/15-Lipoxygenase (resolvin E3)", main: true, sh: "t", th: "b" },
-);
-
-/* ---- v8.9 part 12: resolvins D3, D4 and D6 ---- */
-Object.assign(MOLS, {
-  rvd3: pufa("Resolvin D3 (RvD3)", 22, [5, 7, 9, 13, 15, 19], [[3, "OH"], [10, "OH"], [16, "OH"]]),
-  rvd4: pufa("Resolvin D4 (RvD4)", 22, [6, 8, 10, 13, 15, 19], [[3, "OH"], [4, "OH"], [16, "OH"]]),
-  rvd6: pufa("Resolvin D6 (RvD6)", 22, [5, 7, 10, 13, 15, 19], [[3, "OH"], [16, "OH"]]),
-});
-NODES.push(
-  M("rvd3", "C22H32O5", "Resolvin D3 (4S,11R,17S-trihydroxy-DHA): appears late in resolution in mouse peritonitis. Lowers neutrophil entry, raises macrophage clearance of dead cells and bacteria; acts on the human GPR32 receptor."),
-  M("rvd4", "C22H32O5", "Resolvin D4 (4S,5R,17S-trihydroxy-DHA): production persists late into resolution. Raises macrophage clearance of bacteria and dead cells in mouse Staphylococcus aureus infection."),
-  M("rvd6", "C22H32O4", "Resolvin D6 (4S,17S-dihydroxy-DHA): the least well characterised D-series resolvin; a 4,17-diol thought to come from the same 4,5-epoxide as RvD3 and RvD4."),
-);
-{ const ST = 440;
-  Object.assign(layout, { rvd3: [-6000, -4900 - ST], rvd4: [-4400, -4900 - ST], rvd6: [-7000, -4900 - 2 * ST] });
-  ["rvd3", "rvd4", "rvd6"].forEach((i) => (PATH_OF[i] = "eico"));
-}
-EDGES.push(
-  { id: "ei68", source: "hdha17", target: "rvd3", label: "5-Lipoxygenase (4,5-epoxide; RvD3, RvD4, RvD6)", main: true, sh: "l", th: "r" },
-  { id: "ei69", source: "hdha17", target: "rvd4", label: "5-Lipoxygenase (4,5-epoxide; RvD3, RvD4, RvD6)", main: true, sh: "r", th: "l" },
-  { id: "ei70", source: "hdha17", target: "rvd6", label: "5-Lipoxygenase (4,5-epoxide; RvD3, RvD4, RvD6)", main: true, sh: "t", th: "b" },
-);
-
+layout.c_pg = [1800, 2380];
+PATH_OF.c_pg = "pharm";
 
 // Auto-placement: each target sits on its preferred side of its metabolite, its drug just beyond it, and nothing overlaps
 // an existing node or crosses an existing arrow.
@@ -3295,8 +2915,6 @@ Object.entries({
 }).forEach(([l, ids]) => ids.split(" ").forEach((id) => (LOC_OF[id] = [...(LOC_OF[id] || []), l])));
 Object.entries({ cyt: "andros e1s thcort thcone pdiol ptriol allothf cortol cortolone", er: "testog ohf6 e3g", ext: "andros testog e1s thcort thcone pdiol ptriol allothf cortol cortolone ohf6 e3g" }).forEach(([l, ids]) => ids.split(" ").forEach((id) => (LOC_OF[id] = [...(LOC_OF[id] || []), l]))); // v7.31
 Object.entries({ cyt: "adenine inosine adenosine guanosine hypox guanine xanth uricacid allantoin", ext: "adenine adenosine hypox xanth uricacid allantoin" }).forEach(([l, ids]) => ids.split(" ").forEach((id) => (LOC_OF[id] = [...(LOC_OF[id] || []), l]))); // v7.33
-Object.entries({ cyt: "fructose arachid hpete5 lta4 hete12 hete15 eet hete20", ext: "fructose pge2 pgd2 pgf2a pgi2 k6pgf1 txa2 txb2 ltb4 ltc4 ltd4 lte4 lxa4 dhet k15pge2 pgem", pm: "pl2m", er: "pgh2" }).forEach(([l, ids]) => ids.split(" ").forEach((id) => (LOC_OF[id] = [...(LOC_OF[id] || []), l]))); // v8.9
-Object.entries({ cyt: "dha epa hdha17 hepe18 etha glyc hdha14 hepe18r dpa hdpa17 hdpa13 hdpa14", ext: "rvd1 rvd2 pd1 rve1 aea ag2 mar1 atrvd1 pge2g mctr1 mctr2 mctr3 rctr1 rctr2 rctr3 pctr1 pctr2 pctr3 rvd1n3 rvd2n3 rvd5n3 rvt1 rvt2 rvt3 rvt4 mar1n3 mar2n3 pd1n3 pd2n3 rve2 rve3 rvd3 rvd4 rvd6", pm: "nape dag aea ag2" }).forEach(([l, ids]) => ids.split(" ").forEach((id) => (LOC_OF[id] = [...(LOC_OF[id] || []), l]))); // v8.9 part 5
 Object.values(HOR).forEach((h) => { if (h.kind === "hormone") LOC_OF[h.id] = ["ext"]; }); // v8.7: circulating hormones sit in blood
 const hasLoc = (id, l) => (LOC_OF[id] || []).includes(l);
 
@@ -4001,38 +3619,6 @@ ORGAN_RX.push( // v7.36: renal urate transport (target-only rows; the uricosuric
   ["rn", "t_glut9", "GLUT9 (urate exit to blood)", "transporter", "SLC2A9", "Basolateral uniporter that lets urate reabsorbed by URAT1 leave the cell into the blood. Common variants change serum urate more than any other gene, and loss of function gives renal hypouricaemia. Glucose in the tubule (SGLT2 inhibitors, diabetes) exchanges with urate at this transporter, so glucosuria lowers serum urate.", null, null, null, null, null, null, null, ["bl"]],
   ["rn", "t_npt14", "NPT1 / NPT4 (phosphate-linked urate transporters)", "transporter", "SLC17A1, SLC17A3", "Voltage-driven anion channels on the apical side of proximal tubule cells that let urate out into the urine (and, in the case of NPT1, take up phosphate). Variants change urate excretion and gout risk modestly; the transporters also carry some drugs.", null, null, null, null, null, null, null, ["ap"]],
 );
-ORGAN_RX.push( // v8.9: eicosanoid synthesis inhibitor on the Respiratory hub
-  ["rs", "t_5lox", "5-Lipoxygenase (with FLAP)", "enzyme", "ALOX5, ALOX5AP", "Moves from the nucleoplasm to the nuclear envelope when calcium rises and takes arachidonate from FLAP; makes 5-HPETE and LTA₄, the start of all leukotrienes (LTB₄, LTC₄, LTD₄, LTE₄) and of lipoxins.", "d_zileu", "Zileuton", "5-LOX inhibitors", "zileuton", "Add-on for chronic asthma (leukotriene synthesis blocker, so it also acts when receptor blockers cannot). Adverse effects: liver enzyme rise (check ALT), headache, CYP1A2 inhibition raises theophylline and warfarin levels.", "inhibit", "Iron-site redox inhibitor of 5-LOX, so fewer leukotrienes of every kind.", ["cyt", "nuc"]],
-  ["cv", "t_ip", "IP receptor (prostacyclin)", "receptor", "PTGIR", "Gs-coupled receptor on vascular smooth muscle and platelets: raises cAMP, so vessels dilate and platelets stay quiet. It is the target of prostacyclin made by endothelium (and of PGI₂ analogues).", "d_pgi", "Prostacyclin analogues and IP agonists", "Prostanoid vasodilators", "epoprostenol (IV), treprostinil (SC, IV, inhaled, oral), iloprost (inhaled), selexipag (oral)", "Pulmonary arterial hypertension (lower pulmonary vascular resistance, better exercise capacity and survival) and digital ischaemia in scleroderma (iloprost). Adverse effects: flushing, headache, jaw pain, diarrhoea, hypotension. Epoprostenol has a half-life of minutes: stopping the infusion suddenly causes rebound pulmonary hypertension, and central lines carry sepsis risk.", "activate", "More cAMP, so pulmonary and systemic arteries relax and platelet aggregation falls.", ["pm"]],
-  ["cv", "t_tp", "TP receptor (thromboxane)", "receptor", "TBXA2R", "Gq-coupled receptor on platelets, vascular and bronchial smooth muscle: TXA₂ (and the isoprostanes) cause platelet shape change and aggregation, vasoconstriction and bronchoconstriction. Seratrodast and ramatroban (Japan) are antagonists; the target is also what low-dose aspirin protects by removing its ligand.", null, null, null, null, null, null, null, ["pm"]],
-  ["go", "t_fp", "FP receptor (PGF₂α)", "receptor", "PTGFR", "Gq-coupled receptor in myometrium, corpus luteum and the ciliary muscle and trabecular meshwork of the eye: contracts the uterus and opens the uveoscleral outflow route.", "d_fp", "PGF₂α analogues", "FP-receptor agonists", "latanoprost, travoprost, bimatoprost, tafluprost (eye); carboprost and dinoprost (uterus)", "Eye drops are first-line for glaucoma and ocular hypertension (once daily, lower pressure by 25–35%); adverse effects: iris darkening, eyelash growth, conjunctival redness, periorbital fat loss. Carboprost treats postpartum haemorrhage that does not respond to oxytocin (caution in asthma: bronchoconstriction), and dinoprost is used in veterinary labour induction.", "activate", "Smooth-muscle contraction in the uterus and more uveoscleral outflow in the eye.", ["pm"]],
-  ["rs", "t_dp2", "DP receptors (DP1, DP2/CRTH2)", "receptor", "PTGDR, PTGDR2", "PGD₂ from mast cells acts on DP1 (Gs: vasodilation and flushing) and on DP2 (Gi, also called CRTH2) on Th2 cells, eosinophils and basophils, which draws them into the airway. DP2 antagonists (fevipiprant and others) were tested in asthma without clear benefit; laropiprant (DP1) was used with niacin to reduce flushing but withdrawn.", null, null, null, null, null, null, null, ["pm"]],
-  ["im", "t_blt1", "BLT1 receptor (LTB₄)", "receptor", "LTB4R", "Gi-coupled receptor on neutrophils, monocytes and effector T cells: LTB₄ guides them along a gradient and activates adhesion and degranulation. Antagonists have not yet reached routine use.", null, null, null, null, null, null, null, ["pm"]],
-);
-Object.assign(EXIST_ORG, { t_glut2: ["hp", "gi", "rn"], t_glut4: ["sk"], t_glut6: ["cn"], t_ip: ["rs"], t_tp: ["rs"] }); // v8.9: GLUT2 also acts in liver, gut and kidney; GLUT4 in skeletal muscle
-ORGAN_RX.push( // v8.9: the facilitated-diffusion hexose transporters SLC2A1–5 (target-only rows: no drug class acts on them yet)
-  ["cn", "t_glut1", "GLUT1 (basal glucose uptake)", "transporter", "SLC2A1", "High-affinity glucose uniporter (Km about 1–3 mM) that is always in the membrane and not controlled by insulin. It carries glucose across red-cell membranes and the endothelium of the blood–brain barrier, and into astrocytes, placenta and many cancer cells (the uptake that FDG-PET images). Heterozygous loss of function causes GLUT1 deficiency syndrome: CSF glucose below about 40 mg/dL with normal blood glucose (CSF to blood ratio under about 0.45), infantile seizures, microcephaly, developmental delay and a movement disorder. A ketogenic diet treats it because ketones reach the brain by other carriers; phenobarbital, valproate and methylxanthines can block GLUT1 and are best avoided.", null, null, null, null, null, null, null, ["pm"]],
-  ["cn", "t_glut3", "GLUT3 (neuronal glucose uptake)", "transporter", "SLC2A3", "Glucose uniporter with the highest affinity of the family (Km about 1.5 mM), so neurons keep taking up glucose even when blood glucose is low. It is the main neuronal carrier, also found in placenta and testis, and is not insulin-regulated. Copy-number changes of the gene have been reported in neurodevelopmental disorders.", null, null, null, null, null, null, null, ["pm"]],
-  ["en", "t_glut2", "GLUT2 (glucose sensor carrier)", "transporter", "SLC2A2", "Low-affinity, high-capacity bidirectional uniporter (Km about 15–20 mM) of pancreatic β cells, hepatocytes, the basolateral membrane of enterocytes and of proximal tubule cells. It also carries fructose and galactose. In β cells it lets intracellular glucose follow blood glucose so glucokinase can act as the sensor; in the liver it lets glucose in after meals and out during fasting; in gut and kidney it is the exit route for glucose that SGLT1 and SGLT2 take up from the lumen. Loss of function causes Fanconi–Bickel syndrome (glycogen storage disease XI): hepatomegaly, fasting hypoglycaemia with postprandial hyperglycaemia, proximal tubulopathy (glucosuria, phosphaturia, aminoaciduria, rickets) and galactose intolerance.", null, null, null, null, null, null, null, ["pm", "bl"]],
-  ["en", "t_glut4", "GLUT4 (insulin-regulated glucose uptake)", "transporter", "SLC2A4", "The insulin-responsive uniporter of skeletal and cardiac muscle and adipocytes (Km about 5 mM). Between meals it waits in intracellular storage vesicles; insulin signalling through IRS, PI3K and Akt (which inhibits TBC1D4/AS160) sends the vesicles to the plasma membrane, and muscle contraction does the same through AMPK without insulin. Failure of this translocation is the central defect of insulin resistance and type 2 diabetes, and why exercise lowers blood glucose even when insulin action is poor. Muscle takes up most of a meal's glucose by this route.", null, null, null, null, null, null, null, ["pm", "cyt"]],
-  ["im", "t_glut6", "GLUT6 (intracellular glucose carrier)", "transporter", "SLC2A6", "Class III glucose uniporter of spleen, leukocytes and brain (microglia). An N-terminal dileucine motif keeps most of it in intracellular vesicles instead of the cell surface, so it probably moves glucose across vesicle membranes. Its affinity is low (Km about 5 mM) and its physiological role in people is not well settled; no human disease is tied to it. Not to be confused with GLUT9 (SLC2A9), the urate carrier.", null, null, null, null, null, null, null, ["cyt"]],
-  ["gi", "t_glut7", "GLUT7 (high-affinity glucose and fructose carrier)", "transporter", "SLC2A7", "Class II uniporter on the apical membrane of the distal small intestine and colon, with some in testis and prostate. It binds both glucose (Km about 0.3 mM) and fructose (Km about 0.06 mM) very tightly, so it can scavenge sugar that the upper gut (SGLT1, GLUT5) has left. Its part in human absorption is still being worked out.", null, null, null, null, null, null, null, ["ap"]],
-  ["gi", "t_glut5", "GLUT5 (fructose transporter)", "transporter", "SLC2A5", "Fructose-specific uniporter on the apical (lumen) side of jejunal enterocytes, with smaller amounts in kidney, sperm and microglia; it does not carry glucose. Absorption is limited, so a large fructose load, especially without glucose, reaches the colon: bloating, gas and osmotic diarrhoea (fructose malabsorption). This is distinct from hereditary fructose intolerance, where aldolase B deficiency makes fructose 1-phosphate build up and causes hypoglycaemia and liver injury. Fructose leaves the enterocyte through GLUT2 and in the liver enters glycolysis below the phosphofructokinase control point.", null, null, null, null, null, null, null, ["ap"]],
-);
-[["t_glut1", "glucose"], ["t_glut2", "glucose"], ["t_glut3", "glucose"], ["t_glut4", "glucose"], ["t_glut6", "glucose"], ["t_glut7", "glucose"], ["t_glut2", "fructose"], ["t_glut5", "fructose"], ["t_glut7", "fructose"], ["t_ep", "pge2"], ["t_cyslt1", "ltd4"], ["t_5lox", "arachid"], ["t_ip", "pgi2"], ["t_tp", "txa2"], ["t_fp", "pgf2a"], ["t_dp2", "pgd2"], ["t_blt1", "ltb4"]].forEach(([target, met]) => { RX_ACTS.push({ target, met }); RX_ANCHORS.add(met); EDGES.push({ id: `rx_${target}_${met}`, source: target, target: met, label: "", fx: "tether", auto: true, path: "pharm" }); }); // v8.9
-ORGAN_RX.push( // v8.9 part 5: receptors and enzymes of the pro-resolving and endocannabinoid routes
-  ["im", "t_alx", "ALX/FPR2 receptor (lipoxin A₄, resolvin D1)", "receptor", "FPR2", "Gi-coupled receptor on neutrophils, monocytes and macrophages that is read as a stop signal by lipoxin A₄, aspirin-triggered lipoxins and resolvin D1: less neutrophil transmigration, more macrophage clearance of dead cells. It also binds annexin A1 and serum amyloid A, so the effect depends on the ligand. No drug acts on it yet.", null, null, null, null, null, null, null, ["pm"]],
-  ["im", "t_chemr23", "ChemR23 receptor (resolvin E1)", "receptor", "CMKLR1", "Gi-coupled receptor on macrophages, dendritic cells and neutrophils (also the receptor of chemerin). Resolvin E1 binding lowers NF-κB signalling and raises phagocytosis. No drug acts on it yet.", null, null, null, null, null, null, null, ["pm"]],
-  ["im", "t_gpr18", "GPR18 receptor (resolvin D2)", "receptor", "GPR18", "Gi/o-coupled receptor on neutrophils, monocytes and macrophages (also called DRV2) that is reported to mediate resolvin D2: less neutrophil entry, more macrophage phagocytosis. N-arachidonoylglycine, a relative of anandamide, may also act on it. No drug acts on it yet.", null, null, null, null, null, null, null, ["pm"]],
-  ["im", "t_gpr32", "GPR32 receptor (resolvin D1, D3)", "receptor", "GPR32", "Gi-coupled receptor on human neutrophils, monocytes and macrophages (mice have no clear counterpart) that is reported to mediate resolvin D1, aspirin-triggered resolvin D1, resolvin D3 and resolvin D5: less neutrophil entry, more macrophage phagocytosis. No drug acts on it yet.", null, null, null, null, null, null, null, ["pm"]],
-  ["im", "t_gpr101", "GPR101 receptor (resolvin D5 of n-3 DPA)", "receptor", "GPR101", "Orphan Gs-coupled receptor reported to mediate the actions of resolvin D5 of n-3 DPA on macrophages and neutrophils in mouse arthritis and infection. Evidence is from a small number of animal studies. No drug acts on it yet.", null, null, null, null, null, null, null, ["pm"]],
-  ["cn", "t_gpr37", "GPR37 receptor (protectin D1)", "receptor", "GPR37", "Orphan G-protein-coupled receptor of oligodendrocytes and neurons (and macrophages) reported as a receptor for neuroprotectin D1; it also binds prosaposin-derived peptides, and a GPR37 substrate accumulates in juvenile parkinsonism. The assignment is recent and still debated.", null, null, null, null, null, null, null, ["pm"]],
-  ["cn", "t_cb1", "CB1 receptor (cannabinoid)", "receptor", "CNR1", "Gi/o-coupled receptor, the most abundant GPCR in the brain (hippocampus, cerebellum, basal ganglia, cortex, also on peripheral sensory nerves, gut, fat and liver). Anandamide and 2-AG are its natural agonists; THC is a partial agonist. Presynaptic activation lowers Ca²⁺ entry and transmitter release, which explains impaired memory and coordination, analgesia, antiemesis and appetite.", "d_cb1", "Cannabinoid receptor agonists", "CB1 agonists (THC-type)", "dronabinol (oral, solution), nabilone (oral)", "Chemotherapy-induced nausea and vomiting that fails other antiemetics (both) and anorexia with weight loss in AIDS (dronabinol). Adverse effects: dizziness, sedation, dysphoria, tachycardia and orthostasis, psychosis in predisposed patients, misuse; use with caution in cardiac disease and in patients with a psychotic or substance-use history. Rimonabant, an inverse agonist, was withdrawn for depression and suicidality.", "activate", "Less presynaptic transmitter release in the vomiting centre and gut, and more appetite drive.", ["pm"]],
-  ["im", "t_cb2", "CB2 receptor (cannabinoid)", "receptor", "CNR2", "Gi-coupled receptor mainly on B cells, macrophages, microglia and other immune cells (little in healthy neurons). 2-AG is its main natural ligand; CB2 activation lowers cytokine release and cell migration, so selective agonists are being tested for inflammatory and neuropathic pain without the CB1 psychoactivity.", null, null, null, null, null, null, null, ["pm"]],
-  ["cn", "t_faah", "Fatty acid amide hydrolase (FAAH)", "enzyme", "FAAH", "Membrane-bound serine hydrolase that destroys anandamide and other fatty acid amides. Inhibitors raise anandamide without direct CB1 stimulation, so they should lessen pain and anxiety without THC-like effects; none is approved, and the 2016 BIA 10-2474 trial ended with one death and brain toxicity from off-target inhibition (PF-04457845 was safe but failed in osteoarthritis pain).", null, null, null, null, null, null, null, ["er"]],
-  ["cn", "t_magl", "Monoacylglycerol lipase (MAGL)", "enzyme", "MGLL", "Serine hydrolase that breaks down 2-AG (and supplies arachidonate for brain prostaglandins). MAGL inhibitors raise 2-AG and lower PGE₂ in the brain; in animals they relieve pain and neuroinflammation but chronic inhibition desensitises CB1. Research only.", null, null, null, null, null, null, null, ["cyt"]],
-);
-[["t_gpr18", "rvd2"], ["t_gpr32", "rvd1"], ["t_gpr32", "atrvd1"], ["t_gpr32", "rvd3"], ["t_gpr101", "rvd5n3"], ["t_alx", "atrvd1"], ["t_chemr23", "rve2"], ["t_gpr37", "pd1"], ["t_alx", "lxa4"], ["t_alx", "rvd1"], ["t_chemr23", "rve1"], ["t_cb1", "aea"], ["t_cb1", "ag2"], ["t_cb2", "ag2"], ["t_faah", "aea"], ["t_magl", "ag2"]].forEach(([target, met]) => { RX_ACTS.push({ target, met }); RX_ANCHORS.add(met); EDGES.push({ id: `rx_${target}_${met}`, source: target, target: met, label: "", fx: "tether", auto: true, path: "pharm" }); }); // v8.9 part 5
 ORGAN_RX.push(
   ["ad", "t_cyp11b2", "Aldosterone synthase", "enzyme", "CYP11B2", "Mitochondrial P450 of zona glomerulosa that makes aldosterone from 11-deoxycorticosterone in three steps (11β-hydroxylation, 18-hydroxylation, 18-oxidation). Driven by angiotensin II and K⁺, not ACTH. Osilodrostat blocks it as well as CYP11B1; no drug is used mainly for it yet.", null, null, null, null, null, null, ["mit"]],
   ["ad", "t_cyp21a2", "21-Hydroxylase", "enzyme", "CYP21A2", "Microsomal P450 that adds the 21-hydroxyl to progesterone and 17-OH-progesterone. Its loss is the commonest cause of congenital adrenal hyperplasia: low cortisol, high ACTH, and precursors pushed into androgens. Treatment replaces the missing hormones instead of acting on the enzyme.", null, null, null, null, null, null, ["er"]],
@@ -4393,7 +3979,6 @@ Object.entries({ thcort: "cort", thcone: "cort", ptriol: "ohp17", andros: "testo
 Object.entries({ allothf: "cort", cortol: "cort", cortolone: "cort", ohf6: "cort" }).forEach(([id, ks]) => addLab(id, ks)); // v7.32
 Object.entries({ uricacid: "ua cr uca", xanth: "ua", hypox: "ua", t_xo: "ua cr", t_ada: "wbc hb plt cr alt ast", t_pnp: "wbc hb plt cr alt ast", t_uric: "ua k phos ca cr ldh" }).forEach(([id, ks]) => addLab(id, ks)); // v7.33
 ["t_oat13", "t_abcg2", "t_glut9", "t_npt14"].forEach((id) => addLab(id, "ua cr")); // v7.36
-Object.entries({ t_glut1: "glu", t_glut2: "glu glur a1c", t_glut3: "glu", t_glut4: "glu glur a1c tg", t_glut6: "glu", t_glut7: "glu", t_5lox: "alt ast", t_tp: "plt pt ptt" }).forEach(([id, ks]) => addLab(id, ks)); // v8.9
 const ORG_LAB = { cv: "tni ck ldh tc ldl hdl tg k", rn: "bun cr crcl na k cl hco3 osm uosm uprot ua", rs: "po2 pco2 ph", sk: "ca phos alp pth ck uca ua esr", gi: "amy lip", cn: "na", hp: "alt ast alp bilt bild prot alb", en: "glu glur a1c cort", on: "wbc hb plt mcv ua ldh cr alt ast bilt", im: "igg iga igm ige wbc esr prot alb", vt: "hb mcv retic ca phos alp pth uca pt ptt", ai: "wbc cr bun alt ast bilt k mg" };
 ORG_LAB.uc = "uca uox ua ph uosm";
 ORG_LAB.ad = "cort acth ohp17 dheas k na glu"; ORG_LAB.go = "testo lh fsh prl ohp17 dheas";
@@ -4435,7 +4020,6 @@ const CLS = {
   sugarp:  { label: "Sugar phosphate",    color: "#8ab8ff" },
   polysac: { label: "Polysaccharide",     color: "#a3e36f" },
   nucsugar:{ label: "Nucleotide sugar",   color: "#c7a8ff" },
-  eico:    { label: "Eicosanoid",         color: "#f43f9d" },
   lipid:   { label: "Lipid",              color: "#f2c94c" },
   fatty:   { label: "Fatty acid",         color: "#f2c94c" },
   acyl:    { label: "Acyl-CoA",           color: "#ffb454" },
@@ -4454,13 +4038,11 @@ const CLS = {
 const CLS_OF = {};
 Object.entries({
   amino:   ["ornithine", "citrulline", "argsucc", "glycine", "ala"],   // the 20 protein amino acids come from AA_CLASS
-  sugar:   ["glucose", "fructose"],
-  eico:    ["arachid", "pgh2", "pge2", "pgd2", "pgf2a", "pgi2", "k6pgf1", "txa2", "txb2", "hpete5", "lta4", "ltb4", "ltc4", "ltd4", "lte4", "hete12", "hete15", "lxa4", "eet", "dhet", "hete20", "k15pge2", "pgem", "dha", "epa", "hdha17", "rvd1", "rvd2", "pd1", "hepe18", "rve1", "aea", "ag2", "hdha14", "mar1", "atrvd1", "hdha17r", "pge2g", "mctr1", "mctr2", "mctr3", "rctr1", "rctr2", "rctr3", "pctr1", "pctr2", "pctr3", "hepe18r", "dpa", "hdpa17", "rvd1n3", "rvd2n3", "rvd5n3", "hdpa13", "rvt1", "rvt2", "rvt3", "rvt4", "hdpa14", "mar1n3", "mar2n3", "pd1n3", "pd2n3", "rve2", "rve3", "rvd3", "rvd4", "rvd6"],
-  lipid:   ["pl2m"],
+  sugar:   ["glucose"],
   sugarp:  ["g1p", "g6p", "f6p", "fbp", "gap", "dhap", "p6gl", "p6g", "ru5p", "r5p", "xu5p", "s7p", "e4p"],
   polysac: ["glycogen"],
   nucsugar:["udpglc"],
-  lipid:   ["glycerol", "glyc3p", "tag", "pl2m", "nape", "dag", "glyc"],
+  lipid:   ["glycerol", "glyc3p", "tag"],
   fatty:   ["fa"],
   acyl:    ["facyl", "malonyl"],
   coa:     ["acetylcoa", "succoa", "hmgcoa"],
@@ -4580,62 +4162,6 @@ const PUD = {
     feat: ["AMP → IMP + NH₃ (AMP deaminase)", "IMP + aspartate + GTP → adenylosuccinate (adenylosuccinate synthetase)", "Adenylosuccinate → AMP + fumarate (ADSL)"],
     tx: ["The net result is aspartate → fumarate + NH₃: fumarate refills the TCA cycle (anaplerosis) and the ammonia leaves with glutamine and, in liver, urea", "Keeps AMP low and the energy-charge high during exercise (see ATP breakdown in exercise)", "The same lyase acts in de novo purine synthesis, so one gene defect (ADSL) shows up in both places"] },
 };
-Object.assign(PUD, { // v8.9: eicosanoid disorders and drug effects (pw groups them on the Eicosanoids card)
-  aerd: { pw: "eico", name: "Aspirin-exacerbated respiratory disease", inh: "Acquired (not an allergy)", also: ["AERD", "Samter triad", "aspirin-induced asthma", "NSAID-exacerbated respiratory disease", "nasal polyps asthma aspirin", "aspirin sensitivity"],
-    at: ["t_cox", "lte4", "ltd4", "t_cyslt1", "t_5lox", "pge2"], lb: ["Presentation", "Diagnosis", "Management"],
-    mech: "Blocking COX-1 removes PGE₂, the brake on 5-lipoxygenase and on mast-cell activation, so cysteinyl leukotrienes (LTC₄, LTD₄, LTE₄) surge and drive bronchospasm and mucus. The airways of these patients already make too much leukotriene and too little PGE₂. This is a pharmacologic cross-reaction, not IgE-mediated allergy.",
-    feat: ["Adult-onset asthma with chronic rhinosinusitis and nasal polyps (the triad)", "Rhinorrhoea, bronchospasm and sometimes flushing or abdominal pain 30 to 120 minutes after aspirin or another COX-1 inhibitor", "Cross-reacts with all COX-1 inhibitors; weak COX-1 inhibitors (paracetamol at high dose) and COX-2 selective drugs are usually tolerated"],
-    dx: ["History, then a supervised oral aspirin challenge in a setting that can treat bronchospasm", "Urinary LTE₄ is high at baseline and rises further after challenge; peripheral eosinophilia is common"],
-    tx: ["Avoid aspirin and other COX-1 inhibitors; celecoxib and paracetamol (limited dose) are alternatives", "Intranasal corticosteroids, leukotriene modifiers (montelukast, zileuton), polypectomy and sinus surgery", "Aspirin desensitisation followed by daily aspirin lowers polyp regrowth and asthma control needs; dupilumab or omalizumab for refractory disease"] },
-  asth: { pw: "eico", name: "Leukotrienes in asthma and allergic rhinitis", inh: "Multifactorial", also: ["montelukast", "zafirlukast", "zileuton", "leukotriene receptor antagonist", "LTRA", "exercise-induced bronchoconstriction", "neuropsychiatric events montelukast"],
-    at: ["ltd4", "ltc4", "lte4", "t_cyslt1", "t_5lox", "ltb4"], lb: ["Effects", "Markers", "Drugs"],
-    mech: "Mast cells and eosinophils release LTC₄, converted to LTD₄ and LTE₄, which act on CysLT₁ in the airway: bronchoconstriction, mucus, oedema and eosinophil recruitment. LTB₄ recruits neutrophils, which matter in severe and smoking-related disease.",
-    feat: ["Late-phase and nocturnal bronchoconstriction, exercise- and allergen-induced symptoms", "Nasal blockage in allergic rhinitis", "Cysteinyl leukotrienes are one of several mediators, so blocking them helps some patients more than others"],
-    dx: ["Urinary LTE₄ reflects total cysteinyl leukotriene production (not part of routine work-up)"],
-    tx: ["Montelukast, zafirlukast: CysLT₁ antagonists, once or twice daily, add-on or for exercise-induced bronchoconstriction and rhinitis; montelukast carries a boxed warning for neuropsychiatric events (agitation, depression, suicidality)", "Zileuton: 5-LOX inhibitor; check ALT and watch for CYP1A2 interactions (theophylline, warfarin)", "Inhaled corticosteroids remain the backbone: they do not stop leukotriene synthesis"] },
-  plt: { pw: "eico", name: "Platelet thromboxane, prostacyclin and aspirin", inh: "Physiology and pharmacology", also: ["aspirin", "low-dose aspirin", "antiplatelet", "aspirin resistance", "thromboxane B2", "coxib cardiovascular risk", "rofecoxib", "serum TXB2"],
-    at: ["txa2", "txb2", "pgi2", "k6pgf1", "t_cox", "t_tp", "t_ip"], lb: ["Balance", "Effects of aspirin and coxibs", "Practical points"],
-    mech: "Platelets make TXA₂ through COX-1 (aggregation, vasoconstriction); endothelium makes PGI₂ through COX-2 and prostacyclin synthase (the opposite). Aspirin acetylates a serine in the COX channel, an irreversible block. Platelets have no nucleus, so they cannot replace the enzyme and the effect lasts for their 7 to 10 day life; endothelial cells resynthesise COX within hours.",
-    feat: ["Low-dose aspirin (75 to 100 mg) lowers TXA₂ by more than 95% with little effect on endothelial prostacyclin; higher doses add GI and renal harm without more platelet effect", "Coxibs lower PGI₂ without lowering platelet TXA₂, which tips the balance towards thrombosis (the cardiovascular signal that led to the withdrawal of rofecoxib)", "Serum TXB₂ measures platelet COX-1 inhibition; urinary 11-dehydro-TXB₂ and 2,3-dinor-6-keto-PGF₁α follow production of thromboxane and prostacyclin"],
-    tx: ["Secondary prevention after myocardial infarction, stroke or stent: aspirin; clopidogrel and others act on P2Y₁₂ instead", "Ibuprofen taken before aspirin competes for the COX-1 channel and can blunt the antiplatelet effect; take aspirin first", "Stop 7 to 10 days before surgery if bleeding risk matters"] },
-  nsaid: { pw: "eico", name: "NSAID adverse effects (stomach, kidney, blood pressure)", inh: "Drug effect", also: ["NSAID gastropathy", "NSAID nephropathy", "peptic ulcer NSAID", "NSAID hypertension", "analgesic nephropathy", "misoprostol", "NSAID pregnancy ductus"],
-    at: ["t_cox", "pge2", "pgi2", "t_ep"], lb: ["What happens", "At risk", "Prevention"],
-    mech: "COX-1 and COX-2 make prostaglandins that protect the stomach (mucus, bicarbonate, blood flow) and keep the afferent arteriole of the kidney open when the circulation is under-filled; they also lower blood pressure by promoting renal sodium and water loss. NSAIDs remove all of this.",
-    feat: ["Dyspepsia, ulcer, bleeding and perforation (COX-1 and the direct acid effect of the drug)", "Acute kidney injury and hyperkalaemia in dehydration, heart failure, cirrhosis or with ACE inhibitor and diuretic (the “triple whammy”); papillary necrosis in chronic use", "Higher blood pressure, fluid retention, less effect of antihypertensives; thrombotic risk with coxibs and high-dose diclofenac", "In the third trimester, premature closure of the ductus arteriosus"],
-    tx: ["Prevent GI harm with a proton-pump inhibitor, or misoprostol (a PGE₁ analogue: diarrhoea, and contraindicated in pregnancy)", "Use the lowest dose for the shortest time; avoid in CKD, heart failure and with anticoagulants where possible", "Test and treat Helicobacter pylori before long-term use"] },
-  pda: { pw: "eico", name: "Ductus arteriosus (patent, or kept open)", inh: "Developmental", also: ["patent ductus arteriosus", "PDA", "indomethacin", "alprostadil", "prostaglandin E1 neonate", "ductal-dependent circulation", "ibuprofen lysine", "paracetamol PDA"],
-    at: ["pge2", "t_cox", "t_ep", "pgi2"], lb: ["Presentation", "Diagnosis", "Treatment"],
-    mech: "Before birth the ductus stays open because PGE₂ (and PGI₂) relax its wall through EP₄ and low oxygen tension keeps the production high. After birth, oxygen rises and prostaglandin levels fall, and the ductus closes within days. A premature infant has a ductus that stays sensitive to prostaglandins and is less sensitive to oxygen.",
-    feat: ["Patent ductus in a preterm infant: continuous murmur, bounding pulses, wide pulse pressure, heart failure and pulmonary overcirculation", "Duct-dependent lesions (pulmonary atresia, critical coarctation, transposition) need the ductus open to survive until surgery"],
-    dx: ["Echocardiography (ductal size and direction of flow)", "Chest radiograph: cardiomegaly and pulmonary plethora"],
-    tx: ["Close a haemodynamically significant ductus with a COX inhibitor: indomethacin, ibuprofen (or paracetamol); surgical or catheter closure if it fails", "Keep it open with an alprostadil (PGE₁) infusion until a duct-dependent lesion can be repaired (apnoea is the main adverse effect)", "Maternal NSAIDs in late pregnancy can close the fetal ductus too early"] },
-  pah: { pw: "eico", name: "Pulmonary arterial hypertension (prostacyclin pathway)", inh: "Idiopathic, heritable (BMPR2) or associated", also: ["pulmonary hypertension", "PAH", "epoprostenol", "treprostinil", "iloprost", "selexipag", "prostacyclin deficiency", "scleroderma digital ulcers"],
-    at: ["pgi2", "t_ip", "txa2", "t_tp", "k6pgf1"], lb: ["Presentation", "Diagnosis", "Treatment"],
-    mech: "Pulmonary arteries make less prostacyclin synthase and urinary prostacyclin metabolites are low, while thromboxane production rises: vasoconstriction, platelet activation and smooth-muscle proliferation then narrow the vessels. The prostacyclin pathway is one of three drug targets next to endothelin and nitric oxide.",
-    feat: ["Exertional breathlessness, fatigue, syncope, signs of right heart failure", "Raised pulmonary artery pressure with normal wedge pressure on right-heart catheterisation"],
-    dx: ["Echocardiography, then right-heart catheterisation (mean PAP above 20 mm Hg with normal wedge pressure and raised resistance)", "Exclude left heart, lung and clot disease (V/Q scan)"],
-    tx: ["Prostacyclin analogues (epoprostenol, treprostinil, iloprost) and the oral IP agonist selexipag, often with an endothelin antagonist and a PDE5 inhibitor or sGC stimulator; sotatercept for selected patients", "Epoprostenol must not be interrupted (rebound), and lines carry infection risk", "Iloprost is also given for digital ischaemia in systemic sclerosis"] },
-  glauc: { pw: "eico", name: "Glaucoma and prostaglandin eye drops", inh: "Multifactorial", also: ["glaucoma", "ocular hypertension", "latanoprost", "bimatoprost", "travoprost", "uveoscleral outflow", "prostaglandin analogue eye drops", "eyelash growth"],
-    at: ["t_fp", "pgf2a"], lb: ["What the drops do", "Diagnosis", "Treatment"],
-    mech: "FP-receptor agonists remodel the ciliary muscle and extracellular matrix and open the uveoscleral outflow pathway, so aqueous humour drains better and intra-ocular pressure falls by 25 to 35%.",
-    feat: ["Open-angle glaucoma is often silent until peripheral field loss; angle-closure glaucoma presents with a painful red eye and halos", "Drop effects: conjunctival redness, iris and eyelid darkening, longer lashes, periorbital fat loss, rarely macular oedema or herpes keratitis reactivation"],
-    dx: ["Tonometry, optic disc appearance, visual fields and optical coherence tomography"],
-    tx: ["First-line: once-daily prostaglandin analogue at night (latanoprost, travoprost, bimatoprost, tafluprost)", "Add timolol, a carbonic anhydrase inhibitor or an α₂ agonist if pressure stays high; laser or surgery if medical therapy fails"] },
-});
-Object.assign(PUD, { // v8.9 part 5
-  srm: { pw: "eico", name: "Omega-3 fatty acids and resolution of inflammation", inh: "Physiology and pharmacology", also: ["fish oil", "icosapent ethyl", "omega-3 fatty acids", "resolvins", "protectins", "specialised pro-resolving mediators", "hypertriglyceridemia fish oil", "docosahexaenoic acid", "eicosapentaenoic acid"],
-    at: ["dha", "epa", "rvd1", "rve1", "pd1", "t_alx", "t_chemr23"], lb: ["Where they act", "Evidence and measurement", "Clinical use"],
-    mech: "Inflammation is switched off by an active programme: the same lipoxygenases that make leukotrienes use DHA and EPA to make resolvins and protectins, which stop neutrophil entry and make macrophages clear dead cells. Lipoxin A₄ (from arachidonate) does the same. Aspirin adds to this by making longer-lived 17R and 18R forms.",
-    feat: ["Resolvins D1 and D2 act on ALX/FPR2, GPR32 and GPR18; RvE1 on ChemR23 and BLT1; protectin D1 on neutrophils, T cells and glia", "EPA and DHA also replace arachidonate in membranes, so weaker series-3 prostanoids and series-5 leukotrienes are made and platelet thromboxane A₂ is lower", "Evidence for resolvins is largely from animal studies; no resolvin is a licensed drug"],
-    dx: ["Plasma triglycerides (omega-3 drugs lower them by about 20 to 30%), and the omega-3 index (EPA + DHA in red-cell membranes) as a research measure", "Resolvin levels are measured by mass spectrometry in research only"],
-    tx: ["Triglycerides 500 mg/dL or higher: prescription omega-3 ethyl esters (4 g/day) to lower pancreatitis risk", "Icosapent ethyl 4 g/day: lower cardiovascular events in statin-treated patients with triglycerides 135 to 499 mg/dL (REDUCE-IT); adverse effects include atrial fibrillation and minor bleeding", "Over-the-counter fish oil has not shown consistent cardiovascular benefit in the general population; DHA is added to infant formula for brain and retina development"] },
-  ecb: { pw: "eico", name: "Cannabinoids and the endocannabinoid system", inh: "Physiology and pharmacology", also: ["cannabis", "THC", "tetrahydrocannabinol", "marijuana", "cannabinoid hyperemesis syndrome", "dronabinol", "nabilone", "rimonabant", "synthetic cannabinoids", "K2", "spice", "cannabidiol", "CB1", "CB2", "anandamide", "2-AG", "FAAH inhibitor"],
-    at: ["t_cb1", "t_cb2", "aea", "ag2", "t_faah", "t_magl"], lb: ["Presentation", "Diagnosis", "Management"],
-    mech: "Anandamide and 2-AG are made on demand by the postsynaptic neuron and travel backward to CB1 on the presynaptic terminal (Gi/o: less Ca²⁺ entry, less transmitter release). CB2 on immune cells lowers cytokine release. THC is a partial CB1 agonist that acts everywhere at once, so it gives effects the short, local endocannabinoid signal does not.",
-    feat: ["Intoxication: euphoria, impaired short-term memory and coordination, conjunctival injection, dry mouth, tachycardia, increased appetite; panic or psychosis in predisposed people", "Cannabinoid hyperemesis syndrome: chronic heavy use with cycles of nausea, vomiting and abdominal pain, relieved by hot showers or baths; usual antiemetics work poorly", "Synthetic cannabinoids (“K2”, “Spice”) are full agonists and are far more dangerous: agitation, psychosis, seizures, tachycardia and acute kidney injury; a standard urine drug screen does not detect them", "Rimonabant (CB1 inverse agonist, for obesity) was withdrawn in 2008 because of depression, anxiety and suicidality"],
-    dx: ["Clinical; a urine immunoassay detects THC metabolites (positive for days after occasional use and weeks after daily use) but does not show current impairment", "Exclude other causes of cyclic vomiting and abdominal pain before attributing them to cannabinoid hyperemesis"],
-    tx: ["Cannabinoid hyperemesis: stop cannabis (the only cure); supportive fluids; haloperidol, droperidol or topical capsaicin shorten attacks", "Dronabinol and nabilone (CB1 agonists): chemotherapy-induced nausea that fails other drugs, and dronabinol for anorexia in HIV; nabiximols and cannabidiol (Epidiolex, for Lennox–Gastaut, Dravet and tuberous sclerosis seizures) act through other mechanisms as well", "No FAAH or MAGL inhibitor is approved: after the 2016 BIA 10-2474 trial death, FAAH drug development slowed sharply"] },
-});
 const PUD_BY = {};
 Object.entries(PUD).forEach(([k, z]) => z.at.forEach((h) => (PUD_BY[h] = [...(PUD_BY[h] || []), k])));
 const pudText = (id) => (PUD_BY[id] || []).map((k) => [PUD[k].name, ...PUD[k].also].join(" ")).join(" ");
@@ -4872,6 +4398,562 @@ function buildMetroLine(at, track, adj) {
 }
 
 /* ================================================================== */
+/* 3b. Network view (v8.9)                                             */
+/* ================================================================== */
+// The whole atlas as one force-directed network, flat like a map or as a 3D cloud you can turn. Objects are nodes (circle: compound,
+// triangle: target, square: drug, diamond: organ hub), lines are the atlas's own links, colour is the pathway / organ hub / pharmacology
+// group from the Edit groups above, and each group is pulled together so pathways stay recognisable. Pure functions first (they are
+// what lays the network out and projects it), then the NetworkView component.
+function netRand(seed) { let a = seed >>> 0; return () => { a = (a + 0x6d2b79f5) >>> 0; let t = a; t = Math.imul(t ^ (t >>> 15), t | 1); t ^= t + Math.imul(t ^ (t >>> 7), t | 61); return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }
+function netSeed(data, flat, seed = 11) {
+  const n = data.nodes.length, rnd = netRand(seed), keys = [...new Set(data.nodes.map((q) => q.g))], gix = new Map(keys.map((k, i) => [k, i])), deg = new Int32Array(n);
+  data.edges.forEach((e) => { deg[e[0]]++; deg[e[1]]++; });
+  const wr = Float32Array.from(data.nodes, (q, i) => (q.md ? (q.md * CANVAS_K) / 2 : (3 + Math.sqrt(deg[i]) * 1.3) * (q.hub ? 1.6 : 1))); // how far each object reaches, in map units
+  const R = Math.max(140 + Math.sqrt(n) * 7, 1.5 * Math.sqrt(wr.reduce((a, r) => a + (r + 8) * (r + 8), 0)));
+  const home = new Float32Array(keys.length * 3), zhome = new Float32Array(keys.length);
+  keys.forEach((_, i) => { const t = (i + 0.5) / keys.length, ph = Math.acos(1 - 2 * t), th = Math.PI * (1 + Math.sqrt(5)) * i; home[i * 3] = R * Math.sin(ph) * Math.cos(th); home[i * 3 + 1] = R * Math.sin(ph) * Math.sin(th); zhome[i] = R * Math.cos(ph); home[i * 3 + 2] = flat ? 0 : zhome[i]; });
+  const S = { n, flat, zhome, wr, alpha: 1, ticks: 0, x: new Float32Array(n), y: new Float32Array(n), z: new Float32Array(n), vx: new Float32Array(n), vy: new Float32Array(n), vz: new Float32Array(n), gOf: new Int16Array(n), ng: keys.length, gsum: new Float32Array(keys.length * 4), ea: Int32Array.from(data.edges, (e) => e[0]), eb: Int32Array.from(data.edges, (e) => e[1]), ek: Uint8Array.from(data.edges, (e) => e[2]), ej: Uint8Array.from(data.edges, (e) => (e[5] && data.nodes[e[0]].g !== data.nodes[e[1]].g ? 1 : 0)), /* ej: an enzyme step that leaves its pathway for another */ sx: new Float32Array(n), sy: new Float32Array(n), sz: new Float32Array(n), sf: new Float32Array(n), rnd };
+  data.nodes.forEach((q, i) => { const g = gix.get(q.g); S.gOf[i] = g; S.x[i] = home[g * 3] + (rnd() - 0.5) * 60; S.y[i] = home[g * 3 + 1] + (rnd() - 0.5) * 60; S.z[i] = flat ? 0 : home[g * 3 + 2] + (rnd() - 0.5) * 60; });
+  return S;
+}
+function netStep(S) { // one tick of the layout: nodes push apart, links and groups pull together
+  const { n, x, y, z, vx, vy, vz, gOf, ng, gsum, ea, eb, ek, ej, flat, wr } = S, a = S.alpha, ac = Math.max(a, 0.2);
+  gsum.fill(0);
+  for (let i = 0; i < n; i++) { const g = gOf[i] * 4; gsum[g] += x[i]; gsum[g + 1] += y[i]; gsum[g + 2] += z[i]; gsum[g + 3]++; }
+  for (let i = 0; i < n; i++) {
+    for (let j = i + 1; j < n; j++) {
+      const dx = x[i] - x[j], dy = y[i] - y[j], dz = z[i] - z[j]; let d2 = dx * dx + dy * dy + dz * dz;
+      if (d2 > 90000) continue; if (d2 < 36) d2 = 36;
+      const d = Math.sqrt(d2), rs = wr[i] + wr[j] + 40; let f = (1000 * a) / (d2 * d);
+      if (d < rs) f += ((rs - d) / d) * 0.4 * ac; // overlapping: push apart until their drawings clear
+      vx[i] += dx * f; vy[i] += dy * f; vz[i] += dz * f; vx[j] -= dx * f; vy[j] -= dy * f; vz[j] -= dz * f;
+    }
+  }
+  for (let e = 0; e < ea.length; e++) {
+    const i = ea[e], j = eb[e], dx = x[j] - x[i], dy = y[j] - y[i], dz = z[j] - z[i], d = Math.sqrt(dx * dx + dy * dy + dz * dz) || 1, f = ((d - (ek[e] === 0 ? 24 : 34) - (wr[i] + wr[j]) * 0.7) / d) * (ej[e] ? 0.17 : 0.09) * a; // enzyme steps between pathways pull their two pathways together
+    vx[i] += dx * f; vy[i] += dy * f; vz[i] += dz * f; vx[j] -= dx * f; vy[j] -= dy * f; vz[j] -= dz * f;
+  }
+  for (let i = 0; i < n; i++) {
+    const g = gOf[i] * 4, c = gsum[g + 3] || 1, k = 0.012 * a;
+    vx[i] += (gsum[g] / c - x[i]) * k - x[i] * 0.0018 * a; vy[i] += (gsum[g + 1] / c - y[i]) * k - y[i] * 0.0018 * a; vz[i] += (gsum[g + 2] / c - z[i]) * k - z[i] * 0.0018 * a;
+    vx[i] *= 0.78; vy[i] *= 0.78; vz[i] *= 0.78; x[i] += vx[i]; y[i] += vy[i]; z[i] = flat ? z[i] * 0.8 : z[i] + vz[i];
+  }
+  S.alpha = Math.max(0, a * 0.992 - 0.0004); S.ticks++;
+}
+function netProject(S, cam, W, H) { // turn, then (in 3D) a little perspective: near objects larger and brighter
+  const cy = Math.cos(cam.yaw), sy = Math.sin(cam.yaw), cp = Math.cos(cam.pitch), sp = Math.sin(cam.pitch), { x, y, z, sx, sy: sY, sz, sf, n } = S, ox = cam.ox || 0, oy = cam.oy || 0, oz = cam.oz || 0; // the network turns about (ox, oy, oz): the middle of the TCA cycle
+  for (let i = 0; i < n; i++) {
+    const ax = x[i] - ox, ay = y[i] - oy, az = z[i] - oz, x1 = ax * cy + az * sy, z1 = -ax * sy + az * cy, y2 = ay * cp - z1 * sp, z2 = ay * sp + z1 * cp, f = 1 / Math.max(0.35, 1 + (z2 / 1100) * cam.persp);
+    sx[i] = W / 2 + cam.px + x1 * cam.zoom * f; sY[i] = H / 2 + cam.py + y2 * cam.zoom * f; sz[i] = z2; sf[i] = f;
+  }
+}
+const NET_DASH = [[], [5, 5], [7, 6], [2, 5], [], [], [7, 6]], NET_LW = [1.7, 1.2, 1.7, 1.1, 1.7, 1.1, 1.7], NET_AL = 0.4, NET_RANK = [5, 2, 4, 1, 3, 0, 4]; // by style: 0 main step, 1 other link, 2 green dashed (activation), 3 tether, 4 solid pharmacology, 5 organ line, 6 red dashed (inhibition, flat bar head); every line rests at the canvas's 0.4
+function netCtrl(S, eo, e, bend, out) { // control point of a link that shares its two objects with another link (opposite steps, e.g. glycolysis and gluconeogenesis, are drawn as two arcs, never on top of each other)
+  const o = eo[e]; if (!o) return false; const a = S.ea[e], b = S.eb[e], dx = S.sx[b] - S.sx[a], dy = S.sy[b] - S.sy[a], d = Math.hypot(dx, dy) || 1, sg = a < b ? 1 : -1, k = (2 * o * Math.min(bend, d * 0.3)) / d;
+  out[0] = (S.sx[a] + S.sx[b]) / 2 - sg * dy * k; out[1] = (S.sy[a] + S.sy[b]) / 2 + sg * dx * k; return true;
+}
+const NET_COL = new Map();
+const netCol = (c, light) => { const k = (c || "") + (light ? "L" : "D"); let v = NET_COL.get(k); if (!v) { v = toneHex(c || (light ? LIGHT.ink : "#FFFFFF"), light); NET_COL.set(k, v); } return v; }; // the canvas's tone for a vector colour
+function netBar(ctx, x1, y1, x2, y2, r, size) { // the flat head of an inhibiting vector
+  const dx = x2 - x1, dy = y2 - y1, d = Math.hypot(dx, dy); if (d < r + 4) return;
+  const ux = dx / d, uy = dy / d, tx = x2 - ux * r, ty = y2 - uy * r, h = size * 0.7;
+  ctx.moveTo(tx - uy * h, ty + ux * h); ctx.lineTo(tx + uy * h, ty - ux * h);
+}
+function netArrow(ctx, x1, y1, x2, y2, r, size) { // an arrowhead pointing at (x2, y2), stopping r short of it (add to a path, then fill)
+  const dx = x2 - x1, dy = y2 - y1, d = Math.hypot(dx, dy); if (d < r + size + 2) return;
+  const ux = dx / d, uy = dy / d, tx = x2 - ux * r, ty = y2 - uy * r;
+  ctx.moveTo(tx, ty); ctx.lineTo(tx - ux * size + uy * size * 0.5, ty - uy * size - ux * size * 0.5); ctx.lineTo(tx - ux * size - uy * size * 0.5, ty - uy * size + ux * size * 0.5); ctx.closePath();
+}
+const sel2 = (u) => { const l = []; if (u.sel < 0) return l; ["out", "inn"].forEach((d) => { const a = u.adj[d][u.sel] || []; if (a.length) l.push(a[u.fi[d] % a.length].e); }); return l; }; // the next step each way, lined up by the follower
+function netFit(S, cam, W, H) { // zoom and pan so the whole network just fits
+  const cy = Math.cos(cam.yaw), sy = Math.sin(cam.yaw), cp = Math.cos(cam.pitch), sp = Math.sin(cam.pitch); let a = 1e9, b = -1e9, c = 1e9, d = -1e9;
+  for (let i = 0; i < S.n; i++) { const ax = S.x[i] - (cam.ox || 0), ay = S.y[i] - (cam.oy || 0), az = S.z[i] - (cam.oz || 0), x1 = ax * cy + az * sy, z1 = -ax * sy + az * cy, y2 = ay * cp - z1 * sp; if (x1 < a) a = x1; if (x1 > b) b = x1; if (y2 < c) c = y2; if (y2 > d) d = y2; }
+  const w = Math.max(b - a, 40), h = Math.max(d - c, 40), z = Math.min((W - 150) / w, (H - 150) / h);
+  return { zoom: Math.max(0.05, z), px: -((a + b) / 2) * z, py: -((c + d) / 2) * z };
+}
+
+// Skeletal formulas in the Network view: each structure the atlas can draw (the same atoms, bonds and labels as its cards) is painted once
+// to a small canvas per light/dark setting, then stamped wherever that object sits. Objects without one (targets, drugs, hormones...) keep their shape.
+const netEl = (theme) => (theme === "light" ? { chalk: LIGHT.ink, O: LIGHT.flagRed, N: LIGHT.blue, P: LIGHT.amber, S: "#7d6a00", X: LIGHT.purple, M: "#b4531a", F: LIGHT.green, Cl: LIGHT.green } : { chalk: "#ffffff", O: "#ff7a7a", N: "#7fb0ff", P: "#ffb454", S: "#f2d95c", X: "#c7a8ff", M: "#ff9d5c", F: "#8ee0a0", Cl: "#6fe08c" });
+const NET_SPR = new Map();
+function netMolSprite(key, theme) {
+  const ck = key + "|" + theme; if (NET_SPR.has(ck)) return NET_SPR.get(ck);
+  const mol = MOLS[key]; if (!mol || typeof document === "undefined") return null;
+  const { x0, y0, w, h } = bounds(mol), Q = 2, cv = document.createElement("canvas"); cv.width = Math.ceil(w * Q); cv.height = Math.ceil(h * Q);
+  const g = cv.getContext("2d"), pal = netEl(theme), byId = Object.fromEntries(mol.atoms.map((a) => [a.id, a]));
+  g.scale(Q, Q); g.translate(-x0, -y0); g.strokeStyle = pal.chalk; g.fillStyle = pal.chalk; g.lineWidth = 1.8; g.lineCap = "round"; g.lineJoin = "round";
+  mol.bonds.forEach(([a, b, order, side]) => {
+    const pa = byId[a], pb = byId[b]; if (!pa || !pb) return; const ls = bondLines(pa, pb, order, side);
+    if (order === "w") { const [x1, y1, x2, y2] = ls[0], len = Math.hypot(x2 - x1, y2 - y1) || 1, nx = (-(y2 - y1) / len) * 4.2, ny = ((x2 - x1) / len) * 4.2; g.beginPath(); g.moveTo(x1, y1); g.lineTo(x2 + nx, y2 + ny); g.lineTo(x2 - nx, y2 - ny); g.closePath(); g.fill(); g.stroke(); }
+    else ls.forEach((l) => { g.beginPath(); g.moveTo(l[0], l[1]); g.lineTo(l[2], l[3]); g.stroke(); });
+  });
+  g.textBaseline = "alphabetic"; g.textAlign = "left";
+  mol.atoms.filter((a) => a.text).forEach((a) => { // NH2 -> N H with a lowered 2, the way the cards set it
+    const runs = a.text.split(/(\d+)/).filter(Boolean).map((t) => ({ t, sub: /^\d+$/.test(t) })), font = (sub) => `500 ${sub ? 11 : 15}px ui-sans-serif, system-ui, sans-serif`; let tot = 0;
+    runs.forEach((r) => { g.font = font(r.sub); r.w = g.measureText(r.t).width; tot += r.w; });
+    const x = a.x + (a.align === "start" ? -5 : a.align === "end" ? 5 : 0); let cx = a.align === "start" ? x : a.align === "end" ? x - tot : x - tot / 2; g.fillStyle = pal[a.el] || pal.chalk;
+    runs.forEach((r) => { g.font = font(r.sub); g.fillText(r.t, cx, a.y + 5.4 + (r.sub ? 4 : 0)); cx += r.w; });
+    if (a.q) { g.font = "500 12px ui-sans-serif, system-ui, sans-serif"; g.textAlign = "center"; g.fillText(a.q, a.x + (a.qd ? a.qd[0] : 8), a.y + (a.qd ? a.qd[1] : -8) + 4.3); g.textAlign = "left"; }
+  });
+  const spr = { cv, w, h }; NET_SPR.set(ck, spr); return spr;
+}
+const NET_PAL = {
+  dark: { bg: "#0a0a0c", edge: "140,180,255", fx: "192,132,252", hi: "#ffffff", ink: "#f4f4f6", halo: "#0a0a0c" },
+  light: { bg: "#e9e9ec", edge: "40,100,160", fx: "130,60,190", hi: "#111114", ink: "#111114", halo: "#e9e9ec" },
+};
+function NetworkView({ data, focusId, home, rot, setRot, nav, onClose, onOpen, onGroup, onStand, onHop, tracking, lined }) {
+  const box = useRef(null), cvs = useRef(null), St = useRef(null), inp = useRef(null);
+  const flat = false, [labels, setLabels] = useState(true), [light, setLight] = useState(false), [mols, setMols] = useState(true), [sel, setSel] = useState(-1), [q, setQ] = useState(""), showRx = true, showOrg = true;
+  const hid = useMemo(() => Uint8Array.from(data.nodes, (q0) => ((!showRx && (q0.shape === 1 || q0.shape === 2)) || (!showOrg && q0.hub) ? 1 : 0)), [data, showRx, showOrg]); // pharmacology (targets, drugs) and organ hubs can be hidden here
+  const [walk, setWalk] = useState([]), [fi, setFi] = useState({ out: 0, inn: 0 }); // the pathway follower: the nodes walked so far, and which branch is lined up each way
+  const adjN = useMemo(() => { // directed enzyme steps per object (organ hubs left out, as in the atlas follower); the main pathway line comes first, then pharmacology links
+    const out = data.nodes.map(() => []), inn = data.nodes.map(() => []);
+    data.edges.forEach((e, i) => { if (e[2] === 2 || data.nodes[e[0]].hub || data.nodes[e[1]].hub || hid[e[0]] || hid[e[1]]) return; out[e[0]].push({ e: i, o: e[1] }); inn[e[1]].push({ e: i, o: e[0] }); });
+    const rank = (it) => (data.edges[it.e][5] ? 0 : data.edges[it.e][2] === 1 ? 2 : 1); [out, inn].forEach((m) => m.forEach((l) => l.sort((x, y) => rank(x) - rank(y))));
+    return { out, inn };
+  }, [data, hid]);
+  const ui = useRef({}); ui.current = { flat, labels, light, sel, mols, walk, fi, adj: adjN, hid };
+  const [turn, setTurn] = useState(true); // is the view turning (the play / pause button)
+  const setSpin = (v) => { const s0 = St.current; if (s0) s0.spin = v; setTurn(v); };
+  const rotR = useRef(rot); rotR.current = rot; // the Settings window's rotation choices: on or off, speed, direction
+  const cbk = useRef({}); cbk.current = { onOpen, onGroup, onStand, onHop, data };
+  // choosing an object summons its description card (skipped on a narrow screen, where the card is a full sheet over the map; the buttons still open it)
+  const edgeStand = useRef(null);
+  const pick = (i, keep) => { setSel(i); if (!keep) setWalk(i < 0 ? [] : [i]); const es = edgeStand.current; edgeStand.current = null; cbk.current.onStand && cbk.current.onStand(i < 0 ? null : cbk.current.data.nodes[i].id, es); if (i < 0) return; if (St.current) St.current.goto(i); const c = cbk.current, nd = c.data.nodes[i], el = cvs.current; if (!nd || (el && el.clientWidth <= 760)) return; if (nd.card) c.onOpen(nd.id); else c.onGroup(nd.g); };
+  const pickR = useRef(pick); pickR.current = pick;
+  const pw = useMemo(() => { // choosing a pathway object brings out every vector of its pathway (the canvas's pathway focus), not only the lined-up steps
+    const g = sel >= 0 ? data.nodes[sel].g : ""; if (!g.startsWith("path:")) return []; const id = g.slice(5), l = [];
+    data.edges.forEach((e, i) => { if (e[8] === id && e[7] !== 3 && e[7] !== 5 && !hid[e[0]] && !hid[e[1]]) l.push(i); }); return l;
+  }, [sel, data, hid]);
+  ui.current.pw = pw;
+  const pend = useRef(null), tapR = useRef(null);
+  useEffect(() => { setFi(pend.current || { out: 0, inn: 0 }); pend.current = null; }, [sel]);
+  useEffect(() => { // the lines the tracker has lined up are the ones lit here
+    if (!lined || sel < 0) return; const at = (d, id) => Math.max(0, (adjN[d][sel] || []).findIndex((it) => data.edges[it.e][3] === id));
+    setFi({ out: at("out", lined.out), inn: at("inn", lined.inn) });
+  }, [lined?.out, lined?.inn, sel]); // eslint-disable-line react-hooks/exhaustive-deps
+  tapR.current = (mx, my) => { // a tap on a vector stands on whichever end is nearer the tap and lines that vector up (a second tap lets go), as on the canvas; a tap on empty space clears
+    const s = St.current; if (!s) return; const S = s.S, cp = [0, 0], bend = 18 * Math.min(2.4, Math.max(0.7, Math.pow(s.cam.zoom, 0.45))); let best = -1, bd = 8;
+    for (let e = 0; e < S.ea.length; e++) { const st = data.edges[e][7]; if (st === 5 || data.edges[e][2] === 2 || hid[S.ea[e]] || hid[S.eb[e]]) continue; const a = S.ea[e], b = S.eb[e], c = netCtrl(S, s.eoff, e, bend, cp); if (Math.max(S.sx[a], S.sx[b]) < mx - bd || Math.min(S.sx[a], S.sx[b]) > mx + bd || Math.max(S.sy[a], S.sy[b]) < my - bd || Math.min(S.sy[a], S.sy[b]) > my + bd) { if (!c) continue; }
+      let px = S.sx[a], py = S.sy[a]; for (let k = 1; k <= 8; k++) { const t = k / 8, u1 = 1 - t, qx = c ? u1 * u1 * S.sx[a] + 2 * u1 * t * cp[0] + t * t * S.sx[b] : S.sx[a] + (S.sx[b] - S.sx[a]) * t, qy = c ? u1 * u1 * S.sy[a] + 2 * u1 * t * cp[1] + t * t * S.sy[b] : S.sy[a] + (S.sy[b] - S.sy[a]) * t, vx = qx - px, vy = qy - py, l2 = vx * vx + vy * vy, w = l2 ? Math.max(0, Math.min(1, ((mx - px) * vx + (my - py) * vy) / l2)) : 0, d = Math.hypot(px + vx * w - mx, py + vy * w - my); if (d < bd) { bd = d; best = e; } px = qx; py = qy; }
+    }
+    if (best < 0) { pickR.current(-1); return; }
+    const a = S.ea[best], b = S.eb[best], i = Math.hypot(S.sx[a] - mx, S.sy[a] - my) <= Math.hypot(S.sx[b] - mx, S.sy[b] - my) ? a : b, dir = i === a ? "out" : "inn", k = adjN[dir][i].findIndex((it) => it.e === best); if (k < 0) { pickR.current(i); return; }
+    if (ui.current.sel === i && sel2(ui.current).includes(best)) { pickR.current(-1); return; }
+    const nf = { out: 0, inn: 0, [dir]: k }; if (ui.current.sel === i) setFi(nf); else pend.current = nf;
+    edgeStand.current = { line: data.edges[best][3], dir };
+    pickR.current(i);
+  };
+  // Back / Follow now live in the Pathway Tracker: the arrow keys ask it to step, and it moves the selection here
+  useEffect(() => { const k = (e) => { if (e.target.closest && e.target.closest("input")) return; if (e.key === "ArrowRight") cbk.current.onHop && cbk.current.onHop("out"); else if (e.key === "ArrowLeft") cbk.current.onHop && cbk.current.onHop("inn"); }; window.addEventListener("keydown", k); return () => window.removeEventListener("keydown", k); }, []);
+  const wake = () => { const s = St.current; if (s && !s.raf) s.raf = requestAnimationFrame(s.frame); };
+  useEffect(() => { // the layout, the camera and the draw loop
+    const nbr = data.nodes.map(() => []); data.edges.forEach(([a, b]) => { nbr[a].push(b); nbr[b].push(a); });
+    const deg = nbr.map((l) => l.length), n = data.nodes.length, byDeg = data.nodes.map((_, i) => i).sort((a, b) => deg[b] - deg[a]);
+    const kindIdx = [0, 1, 2].map((k) => data.edges.map((e, i) => (e[2] === k ? i : -1)).filter((i) => i >= 0));
+    const emap = new Map(), eoff = new Float32Array(data.edges.length), pm = new Map(); data.edges.forEach((e, i) => { const k = e[0] * n + e[1]; if (!emap.has(k)) emap.set(k, i); if (e[0] !== e[1]) { const pk = Math.min(e[0], e[1]) * n + Math.max(e[0], e[1]); if (!pm.has(pk)) pm.set(pk, []); pm.get(pk).push(i); } });
+    pm.forEach((l) => { if (l.length > 1) l.forEach((e, k) => { eoff[e] = k - (l.length - 1) / 2; }); }); // links between the same two objects fan out as arcs
+    const gm = new Map(); data.edges.forEach((e, i) => { const k = (e[6] || "") + "|" + e[7]; let g = gm.get(k); if (!g) { g = { c: e[6] || null, d: e[7], idx: [] }; gm.set(k, g); } g.idx.push(i); });
+    const groups = [...gm.values()].sort((a, b) => NET_RANK[a.d] - NET_RANK[b.d]); // faint links first, main enzyme steps on top
+    const tca = data.nodes.map((q0, i) => (q0.g === "path:tca" ? i : -1)).filter((i) => i >= 0);
+    const s = { S: netSeed(data, false), tca, home: true, spin: true, hold: false, hr: 0, hf: 0, t0: 0, groups, emap, eoff, nbr, deg, byDeg, kindIdx, cam: { yaw: 0.6, pitch: 0.35, persp: 1, zoom: 1, px: 0, py: 0, ox: 0, oy: 0, oz: 0 }, tgt: { yaw: 0.6, pitch: 0.35, persp: 1 }, goal: null, hover: -1, autofit: true, match: new Set(), rad: new Float32Array(n), order: Array.from({ length: n }, (_, i) => i), raf: 0, W: 800, H: 600, dpr: 1 };
+    s.order.sort((a, b) => deg[a] - deg[b]); s.order0 = s.order.slice(); // hubs drawn on top when flat
+    St.current = s;
+    s.goto = (i) => { const c = s.cam, cy = Math.cos(c.yaw), sy = Math.sin(c.yaw), cp = Math.cos(c.pitch), sp = Math.sin(c.pitch), S = s.S, ax = S.x[i] - (c.ox || 0), ay = S.y[i] - (c.oy || 0), az = S.z[i] - (c.oz || 0), x1 = ax * cy + az * sy, z1 = -ax * sy + az * cy, y2 = ay * cp - z1 * sp, z = Math.max(c.zoom, 1.6), z2 = ay * sp + z1 * cp, f = 1 / Math.max(0.35, 1 + (z2 / 1100) * c.persp);
+      // aim the object at the part of the view the description card and the object panel leave free, as the canvas does: left of the card, a little above the middle (a phone has no card, and keeps the panel's height clear instead)
+      const bx = box.current, Wn = bx ? bx.clientWidth : 800, card = document.querySelector(".omino-ecard"), cw = (card ? card.offsetWidth : 348) + 28, inf = document.querySelector(".omino-rdx--path"), dx = Wn - cw >= 420 ? cw / 2 : 0, dy = Wn <= 760 ? (inf ? inf.offsetHeight : 200) / 2 + 8 : 80;
+      s.goal = { zoom: z, px: -x1 * z * f - dx, py: -y2 * z * f - dy }; s.autofit = false; s.home = false; wake(); };
+    s.frame = () => {
+      s.raf = 0; const cv = cvs.current, bx = box.current; if (!cv || !bx) return;
+      const u = ui.current, S = s.S, cam = s.cam, r = bx.getBoundingClientRect(), dpr = Math.min(2, window.devicePixelRatio || 1), W = Math.max(200, r.width), H = Math.max(200, r.height);
+      if (cv.width !== Math.round(W * dpr) || cv.height !== Math.round(H * dpr)) { cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr); }
+      s.W = W; s.H = H; let busy = false;
+      { let mx = 0, my = 0, mz = 0; const ti = s.tca; if (ti.length) { for (const k of ti) { mx += S.x[k]; my += S.y[k]; mz += S.z[k]; } mx /= ti.length; my /= ti.length; mz /= ti.length; } cam.ox = mx; cam.oy = my; cam.oz = mz; } // the TCA cycle is the middle of the world
+      { const tn = performance.now(), dt = Math.min(64, tn - (s.t0 || tn)); s.t0 = tn; const ro = rotR.current; if (s.spin && ro.on && !s.hold) { cam.yaw += (ro.ccw ? -1 : 1) * dt * 0.00016 * ro.speed; s.tgt.yaw = cam.yaw; } if (s.spin && ro.on) busy = true; } // everything revolves counterclockwise about it until an object is picked
+      if (S.alpha > 0.03) { for (let k = 0; k < 3; k++) netStep(S); busy = true; }
+      for (const k of ["yaw", "pitch", "persp"]) { const d = s.tgt[k] - cam[k]; if (Math.abs(d) > 0.002) { cam[k] += d * 0.14; busy = true; } else cam[k] = s.tgt[k]; }
+      const homeGo = () => { s.hf++; if (s.hf % 30 === 1 || !s.hr) { const r = []; for (let k = 0; k < S.n; k++) { const dx = S.x[k] - cam.ox, dy = S.y[k] - cam.oy, dz = S.z[k] - cam.oz; r.push(dx * dx + dy * dy + dz * dz); } r.sort((a, b) => a - b); s.hr = Math.sqrt(r[Math.floor(r.length * 0.85)] || 1e4); } return { zoom: Math.min(3, Math.max(0.05, (Math.min(W, H) / 2 - 30) / Math.max(s.hr, 60))), px: 0, py: 0 }; }; // TCA in the middle, the rest of the atlas wheeling round it
+      const go = s.goal || (s.home ? homeGo() : s.autofit ? netFit(S, cam, W, H) : null);
+      if (go) { let off = 0; for (const k of ["zoom", "px", "py"]) { const d = go[k] - cam[k]; off += Math.abs(d) / (k === "zoom" ? Math.max(cam.zoom, 0.01) : 40); cam[k] += d * 0.18; } if (off > 0.01) busy = true; else if (s.goal) s.goal = null; }
+      netProject(S, cam, W, H);
+      const ctx = cv.getContext("2d"), pal = u.light ? NET_PAL.light : NET_PAL.dark, nodes = data.nodes, sx = S.sx, sy = S.sy, sf = S.sf, foc = u.sel, near = null; // no hover lift, no dimming of the rest: as on the canvas
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.fillStyle = pal.bg; ctx.fillRect(0, 0, W, H);
+      const ea = S.ea, eb = S.eb, lit = u.light, eo = s.eoff, zs = Math.min(2.4, Math.max(0.7, Math.pow(cam.zoom, 0.45))), bend = 18 * zs, cp = [0, 0];
+      const seg = (e) => { const a = ea[e], b = eb[e]; ctx.moveTo(sx[a], sy[a]); if (netCtrl(S, eo, e, bend, cp)) ctx.quadraticCurveTo(cp[0], cp[1], sx[b], sy[b]); else ctx.lineTo(sx[b], sy[b]); };
+      const hd = u.hid; for (const g of s.groups) { ctx.beginPath(); for (const e of g.idx) if (!hd[ea[e]] && !hd[eb[e]]) seg(e); ctx.setLineDash(NET_DASH[g.d]); ctx.lineWidth = NET_LW[g.d]; ctx.globalAlpha = NET_AL; ctx.strokeStyle = netCol(g.c, lit); ctx.stroke(); } // every vector as on the canvas: its pathway or effect colour and line style, resting at 0.4; nothing lifts on hover
+      ctx.setLineDash([]); ctx.globalAlpha = 1;
+      const line = (e, w) => { ctx.beginPath(); seg(e); ctx.setLineDash(NET_DASH[data.edges[e][7]]); ctx.lineWidth = w; ctx.globalAlpha = 1; ctx.strokeStyle = netCol(data.edges[e][6], lit); ctx.stroke(); ctx.setLineDash([]); };
+      const n0 = S.n, we = [], hi = sel2(u), hl = new Set();
+      for (const e of u.pw) line(e, 2.2); // every vector of the chosen object's pathway at full strength
+      if (u.walk.length > 1) { for (let k = 0; k + 1 < u.walk.length; k++) { const p0 = u.walk[k], q1 = u.walk[k + 1], e = s.emap.has(p0 * n0 + q1) ? s.emap.get(p0 * n0 + q1) : s.emap.get(q1 * n0 + p0); if (e !== undefined) we.push(e); } we.forEach((e) => line(e, 2.6)); } // the trail the follower has walked: full strength, in the vectors' own colours
+      hi.forEach((e) => { line(e, 2.6); hl.add(ea[e]); hl.add(eb[e]); }); // only the selected vectors (the lined-up steps in and out of the chosen object) lift to full strength, as a picked line does on the canvas
+      const order = u.flat && S.flat && cam.persp < 0.02 ? s.order0 : (s.order = s.order.slice().sort((a, b) => S.sz[b] - S.sz[a]));
+      for (const i of order) {
+        if (hd[i]) continue;
+        const q0 = nodes[i], x = sx[i], y = sy[i]; let rad = (2.4 + Math.sqrt(s.deg[i]) * 1.25) * zs * (S.flat ? 1 : sf[i]) * (q0.hub ? 1.6 : 1), spr = null, sw = 0, sh = 0;
+        if (u.mols && q0.mol) { spr = netMolSprite(q0.mol, u.light ? "light" : "dark"); if (spr) { const kk = CANVAS_K * zs; /* same zoom response as the coloured shapes (zs), flat or 3D, no depth shrink */ sw = spr.w * kk; sh = spr.h * kk; if (Math.max(sw, sh) < 8) spr = null; else rad = Math.max(sw, sh) / 2; } }
+        s.rad[i] = rad;
+        if (x < -rad - 20 || y < -rad - 20 || x > W + rad + 20 || y > H + rad + 20) continue;
+        ctx.globalAlpha = (near && !near.has(i) ? 0.16 : 1) * (S.flat ? 1 : Math.min(1, Math.max(0.35, 0.4 + (sf[i] - 0.75)))); ctx.fillStyle = q0.color; ctx.beginPath();
+        if (spr) { const a0 = ctx.globalAlpha; ctx.globalAlpha = a0 * 0.13; ctx.arc(x, y, rad * 0.62, 0, 6.2832); ctx.fill(); ctx.globalAlpha = a0; ctx.drawImage(spr.cv, x - sw / 2, y - sh / 2, sw, sh); }
+        else if (q0.shape === 1) { ctx.moveTo(x, y - rad * 1.2); ctx.lineTo(x + rad * 1.1, y + rad * 0.8); ctx.lineTo(x - rad * 1.1, y + rad * 0.8); ctx.closePath(); }
+        else if (q0.shape === 2) ctx.rect(x - rad * 0.85, y - rad * 0.85, rad * 1.7, rad * 1.7);
+        else if (q0.shape === 3) { ctx.moveTo(x, y - rad * 1.3); ctx.lineTo(x + rad * 1.3, y); ctx.lineTo(x, y + rad * 1.3); ctx.lineTo(x - rad * 1.3, y); ctx.closePath(); }
+        else ctx.arc(x, y, rad, 0, 6.2832);
+        if (!spr) ctx.fill();
+        if (i === u.sel || s.match.has(i) || hl.has(i)) { ctx.globalAlpha = hl.has(i) && i !== u.sel && !s.match.has(i) ? 0.75 : 1; ctx.strokeStyle = pal.hi; ctx.lineWidth = i === u.sel ? 2.2 : 1.4; ctx.beginPath(); ctx.arc(x, y, rad + 4, 0, 6.2832); ctx.stroke(); } // the two ends of a lit vector light up with it
+      }
+      { // arrowheads on every vector the canvas gives one (none on tethers and organ lines); a flat bar for inhibition
+        const tip = (e, size, bar) => { const a = ea[e], b = eb[e]; if (sx[b] < -20 || sx[b] > W + 20 || sy[b] < -20 || sy[b] > H + 20) return; const c = netCtrl(S, eo, e, bend, cp), tx = c ? cp[0] : sx[a], ty = c ? cp[1] : sy[a]; if (bar) netBar(ctx, tx, ty, sx[b], sy[b], s.rad[b] + 2, size); else netArrow(ctx, tx, ty, sx[b], sy[b], s.rad[b] + 2, size); };
+        for (const g of s.groups) { if (g.d === 3 || g.d === 5) continue; const bar = g.d === 6; ctx.beginPath(); for (const e of g.idx) if (!hd[ea[e]] && !hd[eb[e]]) tip(e, 5 * zs, bar); ctx.globalAlpha = NET_AL; ctx.fillStyle = ctx.strokeStyle = netCol(g.c, lit); if (bar) { ctx.lineWidth = 1.8; ctx.stroke(); } else ctx.fill(); }
+        for (const e of u.pw) { const st = data.edges[e][7]; if (st === 3 || st === 5) continue; ctx.beginPath(); tip(e, 6.5 * zs, st === 6); ctx.globalAlpha = 1; ctx.fillStyle = ctx.strokeStyle = netCol(data.edges[e][6], lit); if (st === 6) { ctx.lineWidth = 2.2; ctx.stroke(); } else ctx.fill(); }
+        for (const e of [...we, ...hi]) { const bar = data.edges[e][7] === 6, st = data.edges[e][7]; if (st === 3 || st === 5) continue; ctx.beginPath(); tip(e, 9 * zs, bar); ctx.globalAlpha = 1; ctx.fillStyle = ctx.strokeStyle = netCol(data.edges[e][6], lit); if (bar) { ctx.lineWidth = 2.6; ctx.stroke(); } else ctx.fill(); }
+        ctx.globalAlpha = 1;
+      }
+      ctx.globalAlpha = 1; ctx.font = "600 11px ui-monospace, SFMono-Regular, Menlo, monospace"; ctx.textAlign = "center"; ctx.textBaseline = "alphabetic"; ctx.lineJoin = "round";
+      const boxes = [], tag = (i, force) => {
+        if (hd[i]) return false;
+        const t = nodes[i].label, w = ctx.measureText(t).width + 4, x = sx[i], y = sy[i] - s.rad[i] - 5;
+        if (x < 0 || y < 12 || x > W || y > H) return false;
+        const L = x - w / 2, T = y - 12; if (!force && boxes.some((b) => L < b[0] + b[2] && L + w > b[0] && T < b[1] + b[3] && T + 14 > b[1])) return false;
+        ctx.lineWidth = 3.5; ctx.strokeStyle = pal.halo; ctx.strokeText(t, x, y); ctx.fillStyle = pal.ink; ctx.fillText(t, x, y); boxes.push([L, T, w, 14]); return true;
+      };
+      if (foc >= 0) { tag(foc, true); let c = 0; for (const i of s.nbr[foc]) if (c < 28 && tag(i, false)) c++; }
+      let c2 = 0; for (const i of s.match) if (c2 < 30 && tag(i, true)) c2++;
+      if (u.labels) { let budget = Math.round(10 + Math.min(44, cam.zoom * 14)), c3 = 0; for (const i of s.byDeg) { if (c3 >= budget) break; if (near && !near.has(i)) continue; if (tag(i, false)) c3++; } }
+      { // enzyme names on the selected vectors and the trail
+        const eLab = (e) => { let t = data.edges[e][4]; if (!t) return; if (t.length > 34) t = t.slice(0, 33) + "…"; const a2 = ea[e], b2 = eb[e], c = netCtrl(S, eo, e, bend, cp), x = c ? 0.25 * sx[a2] + 0.5 * cp[0] + 0.25 * sx[b2] : (sx[a2] + sx[b2]) / 2, y = c ? 0.25 * sy[a2] + 0.5 * cp[1] + 0.25 * sy[b2] : (sy[a2] + sy[b2]) / 2; if (x < 0 || y < 12 || x > W || y > H) return; const w = ctx.measureText(t).width + 4, L = x - w / 2, T = y - 12; if (boxes.some((b) => L < b[0] + b[2] && L + w > b[0] && T < b[1] + b[3] && T + 14 > b[1])) return; ctx.lineWidth = 3.5; ctx.strokeStyle = pal.halo; ctx.strokeText(t, x, y); ctx.fillStyle = netCol(data.edges[e][6], u.light); ctx.fillText(t, x, y); boxes.push([L, T, w, 14]); };
+        hi.forEach(eLab); we.slice(-12).forEach(eLab);
+      }
+      if (busy) s.raf = requestAnimationFrame(s.frame);
+    };
+    wake();
+    return () => { if (s.raf) cancelAnimationFrame(s.raf); s.raf = 0; };
+  }, [data]); // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => { wake(); }, [light, labels, sel, mols, walk, fi, hid, pw]);
+  useEffect(() => { if (rot.on && St.current) { setSpin(true); wake(); } }, [rot.on]); // eslint-disable-line react-hooks/exhaustive-deps // turning rotation back on in Settings sets the view turning
+  useEffect(() => { if (sel >= 0 && St.current) setSpin(false); }, [sel]); // eslint-disable-line react-hooks/exhaustive-deps // an object is selected: the turning stops
+  useEffect(() => { const s = St.current; if (!s) return; setSel(-1); setWalk([]); setSpin(true); s.home = true; s.goal = null; s.autofit = false; s.tgt.pitch = 0.35; s.tgt.persp = 1; wake(); }, [home]); // eslint-disable-line react-hooks/exhaustive-deps // the Omino button: back to the TCA view, turning
+  useEffect(() => { if (sel >= 0 && hid[sel]) { setSel(-1); setWalk([]); } }, [hid]); // eslint-disable-line react-hooks/exhaustive-deps // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => { // pointer: drag turns (3D) or pans (flat; shift or right button always pans), pinch and wheel zoom, tap picks
+    const el = cvs.current; if (!el) return; const pts = new Map(); let drag = null, pinch = 0;
+    const at = (e) => { const r = el.getBoundingClientRect(); return [e.clientX - r.left, e.clientY - r.top]; };
+    const hit = (mx, my) => { const s = St.current; if (!s) return -1; const S = s.S; let best = -1, bz = 1e9; for (let i = 0; i < S.n; i++) { if (ui.current.hid[i]) continue; const dx = S.sx[i] - mx, dy = S.sy[i] - my, r = s.rad[i] + 5; if (dx * dx + dy * dy <= r * r && S.sz[i] < bz) { best = i; bz = S.sz[i]; } } return best; };
+    const zoomAt = (mx, my, k) => { const s = St.current, c = s.cam, z = Math.min(40, Math.max(0.05, c.zoom * k)), kk = z / c.zoom, cx = mx - s.W / 2, cy = my - s.H / 2; c.px = cx - (cx - c.px) * kk; c.py = cy - (cy - c.py) * kk; c.zoom = z; s.goal = null; s.autofit = false; s.home = false; wake(); };
+    const down = (e) => { const s = St.current; if (!s) return; el.setPointerCapture(e.pointerId); const [x, y] = at(e); pts.set(e.pointerId, [x, y]); s.hold = true; drag = { moved: 0, shift: e.shiftKey || e.button === 2 }; if (pts.size === 2) { const [a, b] = [...pts.values()]; pinch = Math.hypot(a[0] - b[0], a[1] - b[1]); } s.autofit = false; s.goal = null; };
+    const move = (e) => {
+      const s = St.current; if (!s) return; const [x, y] = at(e);
+      if (!pts.has(e.pointerId)) { const h = hit(x, y); if (h !== s.hover) { s.hover = h; el.style.cursor = h >= 0 ? "pointer" : ""; wake(); } return; }
+      const [px, py] = pts.get(e.pointerId); pts.set(e.pointerId, [x, y]); const dx = x - px, dy = y - py, c = s.cam; drag.moved += Math.abs(dx) + Math.abs(dy);
+      if (pts.size >= 2) { const [a, b] = [...pts.values()], d = Math.hypot(a[0] - b[0], a[1] - b[1]); if (pinch) zoomAt((a[0] + b[0]) / 2, (a[1] + b[1]) / 2, d / pinch); pinch = d; c.px += dx / 2; c.py += dy / 2; }
+      else if (ui.current.flat || drag.shift) { c.px += dx; c.py += dy; s.home = false; }
+      else { c.yaw -= dx * 0.008; c.pitch = Math.max(-1.4, Math.min(1.4, c.pitch + dy * 0.008)); s.tgt.yaw = c.yaw; s.tgt.pitch = c.pitch; }
+      wake();
+    };
+    const up = (e) => { const s = St.current; if (s) s.hold = false; if (!s || !pts.has(e.pointerId)) return; const [x, y] = pts.get(e.pointerId); pts.delete(e.pointerId); pinch = 0; if (drag && drag.moved < 5 && pts.size === 0) { const h = hit(x, y); if (h >= 0) pickR.current(h); else tapR.current(x, y); } };
+    const wheel = (e) => { e.preventDefault(); const [x, y] = at(e); zoomAt(x, y, Math.exp(-e.deltaY * 0.0015)); };
+    const leave = () => { const s = St.current; if (s && s.hover >= 0) { s.hover = -1; wake(); } };
+    el.addEventListener("pointerdown", down); el.addEventListener("pointermove", move); el.addEventListener("pointerup", up); el.addEventListener("pointercancel", up); el.addEventListener("pointerleave", leave); el.addEventListener("wheel", wheel, { passive: false });
+    return () => { el.removeEventListener("pointerdown", down); el.removeEventListener("pointermove", move); el.removeEventListener("pointerup", up); el.removeEventListener("pointercancel", up); el.removeEventListener("pointerleave", leave); el.removeEventListener("wheel", wheel); };
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  const idx = useMemo(() => new Map(data.nodes.map((q0, i) => [q0.id, i])), [data]);
+  // an open card's object is selected here; the view only moves to it once the layout has settled (until then it keeps fitting)
+  useEffect(() => { if (focusId && idx.has(focusId) && St.current) { const ni = idx.get(focusId), pv = ui.current.sel; setSel(ni); setWalk((w) => { if (w.includes(ni)) return w; if (tracking && pv >= 0 && w.includes(pv)) { if (adjN.out[pv].some((it) => it.o === ni)) return [...w.slice(0, w.lastIndexOf(pv) + 1), ni].slice(-200); if (adjN.inn[pv].some((it) => it.o === ni)) return [ni, ...w.slice(w.indexOf(pv))].slice(-200); } return [ni]; }); if (St.current.S.alpha < 0.05) St.current.goto(idx.get(focusId)); } }, [focusId, data]); // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => { const s = St.current; if (!s) return; const t = q.trim().toLowerCase(); s.match = new Set(t.length < 2 ? [] : data.nodes.map((q0, i) => (!hid[i] && q0.label.toLowerCase().includes(t) ? i : -1)).filter((i) => i >= 0)); wake(); }, [q, data, hid]); // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => { const k = (e) => { if (e.key === "Escape" && !(e.target.closest && e.target.closest("input"))) { if (sel >= 0) setSel(-1); else onClose(); } }; window.addEventListener("keydown", k); return () => window.removeEventListener("keydown", k); }, [sel, onClose]);
+  const zoomBy = (k) => { const s = St.current; if (!s) return; s.goal = null; s.autofit = false; const c = s.cam, z = Math.min(40, Math.max(0.05, c.zoom * k)); c.px *= z / c.zoom; c.py *= z / c.zoom; c.zoom = z; s.home = false; wake(); };
+  const fit = () => { const s = St.current; if (!s) return; s.goal = null; s.autofit = true; s.home = false; wake(); };
+  const relayout = () => { const s = St.current; if (!s) return; const keep = { cam: s.cam, tgt: s.tgt }; s.S = netSeed(data, !!ui.current.flat, Math.floor(Math.random() * 1e6)); if (!ui.current.flat) for (let i = 0; i < s.S.n; i++) s.S.z[i] += (s.S.rnd() - 0.5) * 10; Object.assign(s, keep); s.autofit = true; s.goal = null; setSel(-1); setWalk([]); wake(); };
+  const pal = light ? NET_PAL.light : NET_PAL.dark;
+  return (
+    <div className="omino-net nodrag nopan nowheel" ref={box} style={{ background: pal.bg }} role="region" aria-label="Network view">
+      <canvas ref={cvs} aria-label={`Network of ${data.nodes.length} objects and ${data.edges.length} links`} />
+      <div className="omino-net__tools" role="toolbar" aria-label="Network tools">
+        <button className={turn && rot.on ? "is-on" : ""} onClick={() => { if (turn && rot.on) setSpin(false); else { if (!rot.on) setRot((r) => ({ ...r, on: true })); setSpin(true); wake(); } }} aria-pressed={turn && rot.on} aria-label={turn && rot.on ? "Pause rotation" : "Play rotation"} title={turn && rot.on ? "Pause the turning" : "Turn the view again"}>{turn && rot.on ? "❚❚" : "▶"}</button>
+        {nav && <button onClick={() => zoomBy(1.4)} aria-label="Zoom in" title="Zoom in">+</button>}
+        {nav && <button onClick={() => zoomBy(1 / 1.4)} aria-label="Zoom out" title="Zoom out">−</button>}
+        <button className={labels ? "is-on" : ""} onClick={() => setLabels((v) => !v)} aria-pressed={labels} aria-label="Labels" title="Labels on the busiest objects">L</button>
+        <button className={mols ? "is-on" : ""} onClick={() => setMols((v) => !v)} aria-pressed={mols} aria-label="Skeletal formulas" title="Skeletal formulas in place of dots, for every object the atlas can draw (they appear as you zoom in)">⌬</button>
+        <button className={light ? "is-on" : ""} onClick={() => setLight((v) => !v)} aria-pressed={light} aria-label="Contrast" title="Light or dark map">◐</button>
+        {nav && <button onClick={fit} aria-label="Fit" title="Fit the whole network">⤢</button>}
+        <button onClick={relayout} aria-label="Re-lay out" title="Shake it out again">↻</button>
+      </div>
+      <div className="omino-net__stat">{data.nodes.length - hid.reduce((a, b) => a + b, 0)} objects · {data.edges.reduce((a, e) => a + (hid[e[0]] || hid[e[1]] ? 0 : 1), 0)} links · drag to turn, shift-drag to pan · scroll to zoom{mols ? " · structures where the atlas has them" : ""}</div>
+    </div>
+  );
+}
+
+/* ================================================================== */
+/* 3c. Cell view (v8.9)                                                */
+/* ================================================================== */
+// A hybrid cell: one composite cell with every compartment where signalling happens (membrane, cytosol, nucleus, ER, mitochondria, Golgi,
+// lysosome, peroxisome, cytoskeleton), cut open and turnable in pseudo-3D (plain canvas, no 3D library). Twelve core cascades run through it,
+// each a chain of stations placed in the compartment where that step happens. Compartment text comes from LOCS above; the atlas pathways listed
+// for a compartment are worked out from the compartments the atlas already gives its objects; each cascade links to cards and pathways in the atlas.
+const CELL_R = 300;
+const CELL_COMPS = [
+  { id: "ext", loc: "ext", label: "Extracellular space", short: "Outside" },
+  { id: "pm", loc: "pm" }, { id: "cyt", loc: "cyt" }, { id: "nuc", loc: "nuc" }, { id: "er", loc: "er" }, { id: "mit", loc: "mit" },
+  { id: "gol", label: "Golgi apparatus", short: "Golgi", color: "#38bdf8", desc: "Stack of flattened sacs that finishes and sorts proteins from the ER and ships them to the membrane or the lysosome. Receptors and channels pass through it on the way to the cell surface." },
+  { id: "lys", label: "Lysosome", short: "Lysosome", color: "#a78bfa", desc: "Acid-filled recycling compartment that digests proteins, lipids and glycogen. Its surface is where mTORC1 senses amino acids, so growth signals and nutrient supply meet here." },
+  { id: "per", loc: "per" },
+  { id: "mt", label: "Cytoskeleton", short: "Cytoskeleton", color: "#cbd5e1", desc: "Microtubules and actin filaments. They hold the cell's shape and carry vesicles, receptors and signalling complexes along tracks, for example to the nucleus." },
+];
+const cellComp = (id) => { const c = CELL_COMPS.find((x) => x.id === id), l = c.loc ? LOCS[c.loc] : {}; return { id, label: c.label || l.label, short: c.short || l.short, color: c.color || l.color, desc: c.desc || l.desc }; };
+// where: ext outside · pm membrane · cyt cytosol · nuc nucleus · er ER · mit mitochondrion · lys lysosome.  Teaching-level simplifications.
+const CELL_CASCADES = [
+  { id: "gs", name: "GPCR → cAMP → PKA", short: "cAMP · PKA", color: "#fb923c", site: 0, summary: "Adrenaline and glucagon raise cAMP, which switches on protein kinase A. Phosphodiesterases break cAMP down to end the signal.",
+    steps: [["Hormone (epinephrine, glucagon)", "ext", "Binds a Gs-coupled receptor on the cell surface."], ["GPCR (β-adrenergic, glucagon receptor)", "pm", "Binding reshapes the receptor so it can activate its G protein."], ["Gαs", "pm", "Swaps GDP for GTP and splits from Gβγ."], ["Adenylyl cyclase", "pm", "Switched on by Gαs-GTP; turns ATP into cAMP."], ["cAMP", "cyt", "The second messenger spreads through the cytosol."], ["Protein kinase A", "cyt", "cAMP frees the active subunits of PKA. PKA switches on phosphorylase kinase, which starts glycogen breakdown, and switches glycogen synthase off."], ["CREB", "nuc", "PKA enters the nucleus and phosphorylates CREB, which turns on genes such as PEPCK for gluconeogenesis."]],
+    refs: ["epi", "glucagon", "t_adrb1", "t_adrb2", "d_bb"], paths: ["glycogenolysis", "gluconeogenesis"] },
+  { id: "gq", name: "GPCR → Gq → IP₃, DAG, Ca²⁺", short: "Ca²⁺ · PKC", color: "#f472b6", site: 1, summary: "A Gq receptor splits a membrane lipid into IP₃ and DAG. IP₃ empties the ER's calcium store; Ca²⁺ and DAG then drive contraction, secretion and gene changes.",
+    steps: [["Ligand (norepinephrine at α₁)", "ext", "Binds a Gq-coupled receptor."], ["Gq-coupled receptor (α₁)", "pm", "Activates the G protein Gq."], ["Gαq", "pm", "Switches on phospholipase C-β."], ["Phospholipase C-β", "pm", "Cuts the membrane lipid PIP₂ into IP₃ and DAG."], ["IP₃ receptor", "er", "IP₃ opens this channel in the ER membrane and calcium floods out of the store."], ["Ca²⁺ · calmodulin", "cyt", "Cytosolic Ca²⁺ binds calmodulin. In smooth muscle that activates myosin light-chain kinase and the muscle contracts."], ["Protein kinase C", "cyt", "DAG and Ca²⁺ together activate PKC, which phosphorylates many targets."]],
+    refs: ["t_a1", "ne", "t_cav"], paths: [] },
+  { id: "ins", name: "Insulin → PI3K → AKT → mTORC1", short: "Insulin · AKT", color: "#38bdf8", site: 2, summary: "Insulin tells the cell the body is fed: glucose goes in, glycogen and protein are built, and the liver's glucose output is turned down.",
+    steps: [["Insulin", "ext", "Binds the insulin receptor."], ["Insulin receptor", "pm", "A receptor tyrosine kinase: its two halves phosphorylate each other."], ["IRS-1", "cyt", "Docking protein that is phosphorylated by the receptor."], ["PI3-kinase", "pm", "Docks on IRS-1 and makes the lipid PIP₃ in the membrane."], ["AKT (PKB)", "cyt", "Pulled to PIP₃ and switched on by PDK1 and mTORC2."], ["GLUT4 vesicles", "pm", "AKT sends GLUT4 transporters to the surface, so glucose enters muscle and fat."], ["GSK3", "cyt", "AKT switches GSK3 off, so glycogen synthase stays active and glycogen is built."], ["mTORC1", "lys", "On the lysosome, with amino acids, mTORC1 switches on protein and lipid synthesis."], ["FOXO", "nuc", "Phosphorylated by AKT and kept out of the nucleus, which quietens the gluconeogenic genes."]],
+    refs: ["insulin", "t_ir", "d_ins", "t_mtor", "d_mtori"], paths: ["glycogen", "glycolysis", "lipid"] },
+  { id: "mapk", name: "Growth factor → RAS → MAPK", short: "RAS · ERK", color: "#a3e635", site: 3, summary: "Growth factors push the cell to grow and divide through a chain of three kinases. Mutations that lock RAS on are common in cancer.",
+    steps: [["Growth factor (EGF)", "ext", "Binds its receptor tyrosine kinase."], ["Receptor tyrosine kinase (EGFR)", "pm", "Pairs up and phosphorylates itself."], ["GRB2 · SOS", "pm", "Adaptors dock on the phosphorylated receptor and bring in SOS."], ["RAS", "pm", "SOS swaps RAS from GDP to GTP, switching it on."], ["RAF", "cyt", "Active RAS recruits and activates RAF kinase."], ["MEK", "cyt", "RAF phosphorylates MEK."], ["ERK", "cyt", "MEK phosphorylates ERK, which then moves into the nucleus."], ["Transcription factors (ELK1, FOS, MYC)", "nuc", "ERK switches on genes that drive growth and division."]],
+    refs: ["t_egfr", "d_egfrtki", "d_egfrmab", "t_vegfr"], paths: [] },
+  { id: "jak", name: "Cytokine → JAK → STAT", short: "JAK · STAT", color: "#c084fc", site: 4, summary: "Cytokines and several hormones (growth hormone, prolactin, erythropoietin) signal straight to the nucleus through JAK kinases and STAT transcription factors.",
+    steps: [["Cytokine (growth hormone, prolactin)", "ext", "Binds a cytokine receptor."], ["Cytokine receptor", "pm", "Binding pulls two receptor chains together."], ["JAK", "pm", "Receptor-bound JAKs phosphorylate each other and the receptor."], ["STAT", "cyt", "Docks on the phosphorylated receptor and is phosphorylated by JAK."], ["STAT dimer", "cyt", "Two phosphorylated STATs pair up and leave the receptor."], ["STAT dimer on DNA", "nuc", "Enters the nucleus, binds DNA and turns genes on."]],
+    refs: ["t_jak", "d_jaki", "d_ruxo", "gh", "prl"], paths: ["hpgh", "hpp"] },
+  { id: "nr", name: "Steroid hormone → nuclear receptor", short: "Nuclear receptor", color: "#facc15", site: 5, summary: "Lipid-soluble hormones cross the membrane and act as transcription switches. The response is slow (hours) and long-lasting.",
+    steps: [["Steroid or thyroid hormone", "ext", "Carried on binding proteins; being lipid-soluble it slips through the plasma membrane."], ["Receptor with HSP90", "cyt", "The glucocorticoid and androgen receptors wait in the cytosol bound to HSP90 (oestrogen and thyroid receptors wait in the nucleus)."], ["Hormone–receptor dimer", "cyt", "The hormone releases HSP90 and receptors pair up."], ["Hormone response element", "nuc", "The dimer binds DNA and recruits co-activators."], ["New proteins", "er", "New mRNA is translated on ribosomes of the rough ER and the cell's behaviour changes."]],
+    refs: ["cortisol", "e2", "testo", "t_gr", "t_er", "t_ar", "t_vdr", "d_pred", "d_tamox"], paths: ["stero"] },
+  { id: "no", name: "NO → cGMP → PKG", short: "NO · cGMP", color: "#34d399", site: 6, summary: "Nitric oxide from the endothelium relaxes the muscle of blood vessels. Nitrates add NO; PDE5 inhibitors keep cGMP from being broken down.",
+    steps: [["Nitric oxide (NO)", "ext", "A gas made by endothelial cells that diffuses straight into the muscle cell."], ["Soluble guanylate cyclase", "cyt", "NO binds its haem and switches it on."], ["cGMP", "cyt", "Made from GTP; the second messenger."], ["Protein kinase G", "cyt", "cGMP activates PKG."], ["Ca²⁺ pumped back into the ER", "er", "PKG lowers cytosolic Ca²⁺ and opens K⁺ channels, so the smooth muscle relaxes."], ["PDE5", "cyt", "Breaks cGMP down; PDE5 inhibitors such as sildenafil prolong the signal."]],
+    refs: ["d_nitrate", "d_pde5"], paths: [] },
+  { id: "ampk", name: "Energy stress → AMPK", short: "AMPK", color: "#f87171", site: 7, summary: "AMPK is the cell's fuel gauge. When ATP runs low it switches on fuel-burning and switches off growth. Metformin acts partly through it.",
+    steps: [["Energy stress (AMP rising)", "mit", "Mitochondria make less ATP, so AMP and ADP climb."], ["LKB1", "cyt", "Kinase that phosphorylates AMPK once AMP has bound it."], ["AMPK", "cyt", "The fuel gauge switches on."], ["ACC", "cyt", "AMPK switches ACC off, so fat synthesis stops and fatty acids can enter mitochondria to be burned."], ["mTORC1", "lys", "AMPK dampens mTORC1, pausing growth and protein synthesis."], ["GLUT4", "pm", "More glucose transporters reach the surface."], ["PGC-1α", "nuc", "A co-activator that builds more mitochondria."]],
+    refs: ["t_ampk", "d_metf", "t_mtor"], paths: ["box", "lipid"] },
+  { id: "wnt", name: "Wnt → β-catenin", short: "Wnt · β-catenin", color: "#60a5fa", site: 8, summary: "Wnt signals steer development and keep stem-cell niches going. The pathway works by sparing β-catenin from destruction.",
+    steps: [["Wnt", "ext", "A secreted signal that binds Frizzled and LRP6 together."], ["Frizzled · LRP6", "pm", "The receptor pair brings Dishevelled to the membrane."], ["Dishevelled", "pm", "Blocks the destruction complex."], ["Destruction complex (APC, Axin, GSK3)", "cyt", "Normally tags β-catenin for destruction; now inhibited."], ["β-catenin", "cyt", "Escapes destruction and builds up."], ["β-catenin · TCF/LEF", "nuc", "In the nucleus it switches on genes for growth and cell fate."]],
+    refs: [], paths: [] },
+  { id: "tgf", name: "TGF-β → SMAD", short: "TGF-β · SMAD", color: "#e879f9", site: 9, summary: "TGF-β slows cell division and builds extracellular matrix. Loss of this brake contributes to cancer; too much of it drives scarring.",
+    steps: [["TGF-β", "ext", "Binds the type II receptor."], ["Type II receptor", "pm", "Recruits and phosphorylates the type I receptor."], ["Type I receptor (ALK5)", "pm", "A serine/threonine kinase that phosphorylates SMAD2 and SMAD3."], ["SMAD2/3", "cyt", "Phosphorylated by the receptor."], ["SMAD2/3 · SMAD4", "cyt", "Pairs with SMAD4 and moves toward the nucleus."], ["SMAD complex", "nuc", "With partners it controls genes for growth arrest and matrix."]],
+    refs: [], paths: [] },
+  { id: "nfkb", name: "TNF → IKK → NF-κB", short: "TNF · NF-κB", color: "#fbbf24", site: 10, summary: "The inflammatory alarm: TNF frees NF-κB from its inhibitor so it can switch on inflammatory genes.",
+    steps: [["TNF-α", "ext", "Binds the TNF receptor."], ["TNF receptor", "pm", "Three receptor chains cluster on binding TNF."], ["TRADD · TRAF2 · RIP1", "pm", "Adaptors assemble on the receptor."], ["IKK complex", "cyt", "Activated by the assembled adaptors."], ["IκB", "cyt", "Phosphorylated by IKK and sent to the proteasome."], ["NF-κB", "cyt", "Freed from IκB."], ["NF-κB on DNA", "nuc", "Switches on inflammatory genes such as cytokines and adhesion molecules."]],
+    refs: ["t_tnf", "d_tnfi"], paths: [] },
+  { id: "apop", name: "Apoptosis (intrinsic)", short: "Apoptosis", color: "#2dd4bf", site: 11, summary: "Programmed cell death is decided at the mitochondria: BCL-2 family proteins hold the gate and caspases carry out the demolition.",
+    steps: [["Death stimulus", "cyt", "DNA damage or loss of survival signals; p53 raises the BH3-only proteins."], ["BAX · BAK", "mit", "Activated BAX and BAK make pores in the outer mitochondrial membrane (BCL-2 holds them back)."], ["Cytochrome c", "mit", "Leaks out of the mitochondrion into the cytosol."], ["Apoptosome", "cyt", "Cytochrome c and APAF-1 assemble a wheel that recruits caspase-9."], ["Caspase-9", "cyt", "The initiator caspase starts the cascade."], ["Caspase-3", "cyt", "The executioner cuts hundreds of proteins; the cell shrinks and is cleared away."], ["DNA fragmentation", "nuc", "A nuclease released by caspase-3 cuts the DNA between nucleosomes."]],
+    refs: ["t_bcl2", "d_venet"], paths: [] },
+];
+
+function cellBuild() { // the cell: membrane, organelles, anchors for compartment labels, and where every cascade's stations sit
+  const R = CELL_R, rnd = netRand(5), dots = [], segs = [], norm = (v) => { const l = Math.hypot(v[0], v[1], v[2]) || 1; return [v[0] / l, v[1] / l, v[2] / l]; };
+  const cross = (a, b) => [a[1] * b[2] - a[2] * b[1], a[2] * b[0] - a[0] * b[2], a[0] * b[1] - a[1] * b[0]], add = (a, b, k = 1) => [a[0] + b[0] * k, a[1] + b[1] * k, a[2] + b[2] * k], dist = (a, b) => Math.hypot(a[0] - b[0], a[1] - b[1], a[2] - b[2]);
+  const cutDir = norm([0.35, -0.3, -1]), uu = norm(cross(cutDir, [0, 1, 0])), vv = cross(cutDir, uu), cutCos = Math.cos(0.98), rimCos = Math.cos(1.06);
+  const ring = (th, ph) => [0, 1, 2].map((k) => cutDir[k] * Math.cos(th) + (uu[k] * Math.cos(ph) + vv[k] * Math.sin(ph)) * Math.sin(th));
+  const dot = (p, r, c, a, o) => dots.push({ x: p[0], y: p[1], z: p[2], r, c, a, ...(o || {}) }), seg = (p, q, w, c, a) => segs.push({ x1: p[0], y1: p[1], z1: p[2], x2: q[0], y2: q[1], z2: q[2], w, c, a });
+  const poly = (pts, w, c, a) => { for (let i = 1; i < pts.length; i++) seg(pts[i - 1], pts[i], w, c, a); };
+  const fib = (n, i) => { const y = 1 - (2 * (i + 0.5)) / n, rr = Math.sqrt(1 - y * y), th = i * 2.39996; return [rr * Math.cos(th), y, rr * Math.sin(th)]; };
+  // membrane: two leaflets of lipid heads; the part inside the cut cone is dropped when the cell is shown cut open; a few surface proteins stand out
+  for (let i = 0; i < 560; i++) { const d = fib(560, i), c = d[0] * cutDir[0] + d[1] * cutDir[1] + d[2] * cutDir[2], m = { m: 1, cut: c > cutCos, rim: c > rimCos && c <= cutCos };
+    dot(d.map((v) => v * R), m.rim ? 6.4 : 5.2, "#94a3b8", 0.85, m); dot(d.map((v) => v * (R - 15)), m.rim ? 5.6 : 4.6, "#cbd5e1", 0.6, m); }
+  for (let i = 0; i < 30; i++) { const d = fib(30, i), c = d[0] * cutDir[0] + d[1] * cutDir[1] + d[2] * cutDir[2]; if (c > rimCos) continue; const a = d.map((v) => v * (R + 2)), b = d.map((v) => v * (R + 19)); seg(a, b, 3, "#f9a8d4", 0.9); dot(b, 4.2, "#f9a8d4", 0.95, { m: 1, cut: false }); }
+  // nucleus with pores, chromatin and nucleolus
+  const n0 = [30, 10, 40], nr = 92; dot(n0, nr, "#c084fc", 0.3, { sp: 2 });
+  for (let i = 0; i < 22; i++) dot(add(n0, fib(22, i), nr), 4.6, "#e9d5ff", 0.95);
+  for (let i = 0; i < 110; i++) { const d = norm([rnd() - 0.5, rnd() - 0.5, rnd() - 0.5]); dot(add(n0, d, nr * 0.78 * Math.cbrt(rnd())), 3, "#7c3aed", 0.7); }
+  dot(add(n0, [14, -10, 8]), 20, "#6d28d9", 0.92, { sp: 1 });
+  // rough ER ribbons hugging the nucleus (ribosome dots on them) and smooth ER tubes reaching out
+  const erPts = [];
+  for (let k = 0; k < 12; k++) { const rs = nr + 20 + (k % 3) * 12, ax = norm([rnd() - 0.5, rnd() - 0.5, rnd() - 0.5]), t1 = norm(cross(ax, [0.3, 1, 0.2])), t2 = cross(ax, t1), ph0 = rnd() * 6.28, pts = [];
+    for (let j = 0; j < 14; j++) { const ph = ph0 + j * 0.085, w = 1 + 0.06 * Math.sin(j * 1.3 + k), d = add(add([0, 0, 0], t1, Math.cos(ph) * Math.cos(0.35)), t2, Math.sin(ph) * Math.cos(0.35)); pts.push(add(n0, add(d, ax, Math.sin(0.35)), rs * w)); }
+    poly(pts, 6, "#a3e635", 0.85); pts.forEach((p, j) => { if (j % 2 === 0) dot(p, 2.1, "#365314", 0.85); erPts.push(p); }); }
+  for (let k = 0; k < 8; k++) { let p = erPts[Math.floor(rnd() * erPts.length)].slice(), dir = norm(add(p, n0, -1)); const pts = [p]; for (let j = 0; j < 8; j++) { dir = norm(add(dir, [rnd() - 0.5, rnd() - 0.5, rnd() - 0.5], 0.7)); p = add(p, dir, 17); if (Math.hypot(...p) > R - 40) break; pts.push(p); } poly(pts, 3.4, "#bef264", 0.7); }
+  // Golgi stack
+  const g0 = [-140, 50, -10]; for (let k = 0; k < 4; k++) { const pts = []; for (let j = -4; j <= 4; j++) pts.push([g0[0] + j * 13, g0[1] + (k - 1.5) * 15 + 0.35 * j * j, g0[2] + j * 3]); poly(pts, 7, "#38bdf8", 0.88); }
+  for (let k = 0; k < 6; k++) dot(add(g0, norm([rnd() - 0.5, rnd() - 0.5, rnd() - 0.5]), 70 + rnd() * 18), 4.2, "#7dd3fc", 0.9, { sp: 1 });
+  // mitochondria (capsule with cristae), lysosomes, peroxisomes: scattered with a few rules so none overlap
+  const placed = [n0, g0], free = (p, gap) => dist(p, n0) > nr + 48 && dist(p, g0) > 100 && Math.hypot(...p) < R - 55 && placed.every((q) => dist(p, q) > gap), mitos = [], lyso = [], pero = [];
+  const scatter = (n, gap, make) => { for (let tries = 0, got = 0; got < n && tries < 600; tries++) { const p = add([0, 0, 0], norm([rnd() - 0.5, rnd() - 0.5, rnd() - 0.5]), 140 + rnd() * 100); if (free(p, gap)) { placed.push(p); make(p); got++; } } };
+  scatter(7, 95, (p) => { const d = norm([rnd() - 0.5, rnd() - 0.5, rnd() - 0.5]), L = 38 + rnd() * 10, a = add(p, d, -L), b = add(p, d, L), pr = norm(cross(d, [0.2, 1, 0.1])); seg(a, b, 34, "#fb923c", 0.6); seg(a, b, 25, "#c2410c", 0.8);
+    for (let j = -2; j <= 2; j++) { const c = add(p, d, j * 14); seg(add(c, pr, -9), add(c, pr, 9), 3, "#fed7aa", 0.85); } mitos.push(p); });
+  scatter(6, 50, (p) => { dot(p, 12, "#a78bfa", 0.92, { sp: 1 }); lyso.push(p); });
+  scatter(4, 45, (p) => { dot(p, 9.5, "#eab308", 0.92, { sp: 1 }); pero.push(p); });
+  // microtubules from a centrosome beside the nucleus, and cytosolic ribosomes and proteins for a sense of volume
+  const c0 = add(n0, [-70, -45, -60]), mts = []; for (let k = 0; k < 14; k++) { const e = fib(14, k).map((v) => v * (R - 28)), pr = norm(cross(add(e, c0, -1), [0.4, 1, 0.3])), pts = []; for (let j = 0; j <= 8; j++) { const t = j / 8; pts.push(add(add(c0, add(e, c0, -1), t), pr, Math.sin(t * Math.PI) * 16)); } poly(pts, 2.2, "#cbd5e1", 0.35); mts.push(pts); }
+  for (let i = 0, got = 0; got < 240 && i < 2000; i++) { const p = add([0, 0, 0], norm([rnd() - 0.5, rnd() - 0.5, rnd() - 0.5]), 40 + rnd() * (R - 80)); if (dist(p, n0) > nr + 10) { dot(p, 2.2, "#93c5fd", 0.5); got++; } }
+  const sites = Array.from({ length: 12 }, (_, k) => ring(1.12, (k * Math.PI) / 6).map((v) => v * R));
+  const near = (list, p) => list.reduce((b, q) => (dist(q, p) < dist(b, p) ? q : b), list[0]);
+  const anchors = { pm: ring(1.12, 0.26).map((v) => v * R), ext: ring(1.12, 3.4).map((v) => v * (R + 80)), cyt: [-120, -115, -70], nuc: add(n0, [0, -nr * 0.9, -nr * 0.45]), er: add(n0, norm([-1, 0.4, -0.6]), nr + 24), mit: mitos[0], gol: add(g0, [0, -34, 0]), lys: lyso[0], per: pero[0], mt: mts[0][4] };
+  const stations = CELL_CASCADES.map((C) => { // each station sits where its compartment is, along the way from the cascade's patch of membrane toward the nucleus
+    const site = sites[C.site], nrm = norm(site), s0 = nrm.map((v) => v * (R - 34)), ne = add(n0, norm(add(site, n0, -1)), nr + 16), flow = norm(add(ne, s0, -1)), side = norm(cross(flow, cutDir)), tan = norm(cross(nrm, [0, 1, 0]));
+    const cnt = {}; C.steps.forEach((st) => { cnt[st[1]] = (cnt[st[1]] || 0) + 1; }); const seen = {};
+    return C.steps.map((st, i) => { const w = st[1], k = (seen[w] = (seen[w] || 0) + 1) - 1, m = cnt[w], mid = k - (m - 1) / 2;
+      if (w === "ext") return add(add(site, nrm, 64), tan, mid * 26);
+      if (w === "pm") return add(add(site, nrm, 2), tan, mid * 24);
+      if (w === "cyt") return add(add(s0, add(ne, s0, -1), 0.2 + (m > 1 ? (0.44 * k) / (m - 1) : 0.3)), side, Math.sin(i * 1.7) * 14);
+      if (w === "nuc") return add(add(n0, norm(add(site, n0, -1)), nr * 0.3), tan, mid * 22);
+      if (w === "er") return add(add(n0, norm(add(site, n0, -1)), nr + 26), tan, mid * 22);
+      const base = near(w === "mit" ? mitos : lyso, site), d = norm(add(base, site, -1)); return add(add(base, d, 16), tan, mid * 24);
+    });
+  });
+  const all = dots.concat(segs); return { R, n0, nr, cutDir, dots, segs, all, anchors, sites, stations, mitos, lyso, pero };
+}
+function cellRot(cam, x, y, z) { const cy = Math.cos(cam.yaw), sy = Math.sin(cam.yaw), cp = Math.cos(cam.pitch), sp = Math.sin(cam.pitch), x1 = x * cy + z * sy, z1 = -x * sy + z * cy; return [x1, y * cp - z1 * sp, y * sp + z1 * cp]; }
+function cellProject(D, cam, W, H) { // turn, then perspective; every item gets its screen place (sx, sy, sf) and depth (sz)
+  const F = CELL_R * 3.2, cy = Math.cos(cam.yaw), sy = Math.sin(cam.yaw), cp = Math.cos(cam.pitch), sp = Math.sin(cam.pitch), px = W / 2 + cam.px, py = H / 2 + cam.py;
+  for (const q of D.dots) { const x1 = q.x * cy + q.z * sy, z1 = -q.x * sy + q.z * cy, y2 = q.y * cp - z1 * sp, z2 = q.y * sp + z1 * cp, f = 1 / Math.max(0.35, 1 + z2 / F); q.sx = px + x1 * cam.zoom * f; q.sy = py + y2 * cam.zoom * f; q.sf = f; q.sz = z2; }
+  for (const q of D.segs) { const a1 = q.x1 * cy + q.z1 * sy, b1 = -q.x1 * sy + q.z1 * cy, a2 = q.x2 * cy + q.z2 * sy, b2 = -q.x2 * sy + q.z2 * cy, ya = q.y1 * cp - b1 * sp, za = q.y1 * sp + b1 * cp, yb = q.y2 * cp - b2 * sp, zb = q.y2 * sp + b2 * cp, fa = 1 / Math.max(0.35, 1 + za / F), fb = 1 / Math.max(0.35, 1 + zb / F);
+    q.ax = px + a1 * cam.zoom * fa; q.ay = py + ya * cam.zoom * fa; q.bx = px + a2 * cam.zoom * fb; q.by = py + yb * cam.zoom * fb; q.sf = (fa + fb) / 2; q.sz = (za + zb) / 2; }
+}
+function cellPoint(D, cam, p, W, H) { const [x1, y2, z2] = cellRot(cam, p[0], p[1], p[2]), f = 1 / Math.max(0.35, 1 + z2 / (CELL_R * 3.2)); return { x: W / 2 + cam.px + x1 * cam.zoom * f, y: H / 2 + cam.py + y2 * cam.zoom * f, f, z: z2 }; }
+
+function cellDraw(ctx, D, cam, W, H, u, now) { // paints one frame and returns what can be tapped
+  const R = CELL_R, z = cam.zoom, dim = u.cas >= 0 ? 0.6 : 1, hits = [];
+  ctx.globalAlpha = 1; ctx.fillStyle = "#0a0a0c"; ctx.fillRect(0, 0, W, H);
+  cellProject(D, cam, W, H); D.all.sort((a, b) => b.sz - a.sz); ctx.lineCap = "round"; ctx.lineJoin = "round";
+  for (const q of D.all) {
+    if (q.m && u.cut && q.cut) continue;
+    let a = q.a * Math.min(1, Math.max(0.35, 0.55 + 0.45 * (1 - (q.sz + R) / (2 * R)))) * dim;
+    if (q.m && !u.cut && q.sz < 0) a *= 0.4; // whole cell: the near membrane turns see-through
+    ctx.globalAlpha = a;
+    if (q.w !== undefined) { ctx.strokeStyle = q.c; ctx.lineWidth = Math.max(0.6, q.w * z * q.sf); ctx.beginPath(); ctx.moveTo(q.ax, q.ay); ctx.lineTo(q.bx, q.by); ctx.stroke(); continue; }
+    const r = q.r * z * q.sf; if (r < 0.5 || q.sx < -r || q.sy < -r || q.sx > W + r || q.sy > H + r) continue;
+    ctx.fillStyle = q.c; ctx.beginPath(); ctx.arc(q.sx, q.sy, r, 0, 6.2832); ctx.fill();
+    if (q.sp === 1) { ctx.globalAlpha = a * 0.35; ctx.fillStyle = "#ffffff"; ctx.beginPath(); ctx.arc(q.sx - r * 0.3, q.sy - r * 0.3, r * 0.42, 0, 6.2832); ctx.fill(); }
+    else if (q.sp === 2) { ctx.globalAlpha = 0.8 * dim; ctx.strokeStyle = "#e9d5ff"; ctx.lineWidth = 2; ctx.beginPath(); ctx.arc(q.sx, q.sy, r, 0, 6.2832); ctx.stroke(); }
+  }
+  ctx.globalAlpha = 1; ctx.font = "600 11px ui-monospace, SFMono-Regular, Menlo, monospace"; ctx.textAlign = "center"; ctx.textBaseline = "alphabetic";
+  const boxes = [], text = (t, x, y, col, force) => {
+    const w = ctx.measureText(t).width + 4, L = x - w / 2, T = y - 12; if (x < 0 || x > W || y < 10 || y > H) return false;
+    if (!force && boxes.some((b) => L < b[0] + b[2] && L + w > b[0] && T < b[1] + b[3] && T + 14 > b[1])) return false;
+    ctx.lineWidth = 3.5; ctx.strokeStyle = "#0a0a0c"; ctx.strokeText(t, x, y); ctx.fillStyle = col; ctx.fillText(t, x, y); boxes.push([L, T, w, 14]); return true;
+  };
+  CELL_COMPS.forEach((c) => { // compartment names, tappable
+    const cc = cellComp(c.id), P = cellPoint(D, cam, D.anchors[c.id], W, H), on = u.comp === c.id; ctx.globalAlpha = on ? 1 : u.cas >= 0 ? 0.55 : 0.95;
+    ctx.fillStyle = cc.color; ctx.beginPath(); ctx.arc(P.x, P.y, on ? 6 : 4.5, 0, 6.2832); ctx.fill();
+    if (on) { ctx.strokeStyle = "#ffffff"; ctx.lineWidth = 2; ctx.beginPath(); ctx.arc(P.x, P.y, 10, 0, 6.2832); ctx.stroke(); }
+    text(cc.short, P.x, P.y - 11, on ? "#ffffff" : cc.color, true); hits.push({ k: "comp", id: c.id, x: P.x, y: P.y - 4, r: 26 }); ctx.globalAlpha = 1;
+  });
+  if (u.cas >= 0) { // the cascade: its path through the cell, a station per step, and a pulse that runs to the current step
+    const C = CELL_CASCADES[u.cas], P = D.stations[u.cas].map((p) => cellPoint(D, cam, p, W, H)), n = P.length, cur = Math.min(u.step, n - 1);
+    const line = (a, b, w, al, dash) => { ctx.globalAlpha = al; ctx.strokeStyle = C.color; ctx.lineWidth = w; ctx.setLineDash(dash || []); ctx.beginPath(); for (let i = a; i <= b; i++) (i === a ? ctx.moveTo(P[i].x, P[i].y) : ctx.lineTo(P[i].x, P[i].y)); ctx.stroke(); ctx.setLineDash([]); };
+    line(0, n - 1, 10, 0.16); if (cur < n - 1) line(cur, n - 1, 2, 0.55, [5, 6]); if (cur > 0) { line(0, cur, 9, 0.28); line(0, cur, 2.8, 1); }
+    for (let i = 1; i < n; i++) { const a = P[i - 1], b = P[i], mx = (a.x + b.x) / 2, my = (a.y + b.y) / 2, an = Math.atan2(b.y - a.y, b.x - a.x); ctx.globalAlpha = i <= cur ? 1 : 0.55; ctx.fillStyle = C.color; ctx.beginPath(); ctx.moveTo(mx + Math.cos(an) * 7, my + Math.sin(an) * 7); ctx.lineTo(mx + Math.cos(an + 2.5) * 6, my + Math.sin(an + 2.5) * 6); ctx.lineTo(mx + Math.cos(an - 2.5) * 6, my + Math.sin(an - 2.5) * 6); ctx.closePath(); ctx.fill(); }
+    if (u.play && cur > 0) { const t = (now % 1100) / 1100, a = P[cur - 1], b = P[cur]; ctx.globalAlpha = 0.35; ctx.fillStyle = "#ffffff"; ctx.beginPath(); ctx.arc(a.x + (b.x - a.x) * t, a.y + (b.y - a.y) * t, 9, 0, 6.2832); ctx.fill(); ctx.globalAlpha = 1; ctx.beginPath(); ctx.arc(a.x + (b.x - a.x) * t, a.y + (b.y - a.y) * t, 4.5, 0, 6.2832); ctx.fill(); }
+    P.forEach((p, i) => { const r = (i === cur ? 12 : 8.5) * Math.min(1.25, Math.max(0.8, p.f)); ctx.globalAlpha = i <= cur ? 1 : 0.55; ctx.fillStyle = cellComp(C.steps[i][1]).color; ctx.beginPath(); ctx.arc(p.x, p.y, r, 0, 6.2832); ctx.fill();
+      ctx.strokeStyle = i === cur ? "#ffffff" : "#0a0a0c"; ctx.lineWidth = i === cur ? 2.5 : 1.5; ctx.stroke(); ctx.fillStyle = "#0a0a0c"; ctx.font = `700 ${i === cur ? 11 : 9}px ui-monospace, Menlo, monospace`; ctx.fillText(String(i + 1), p.x, p.y + (i === cur ? 4 : 3.2)); hits.push({ k: "step", i, x: p.x, y: p.y, r: r + 7 }); });
+    ctx.font = "600 11px ui-monospace, SFMono-Regular, Menlo, monospace"; ctx.globalAlpha = 1; text(C.steps[cur][0], P[cur].x, P[cur].y + 28, "#ffffff", true);
+    if (u.labels) P.forEach((p, i) => { if (i !== cur) { ctx.globalAlpha = i <= cur ? 1 : 0.7; text(C.steps[i][0], p.x, p.y + 24, i <= cur ? "#e5e7eb" : "#9ca3af", false); } });
+  }
+  ctx.globalAlpha = 1; return hits;
+}
+function CellView({ nav, onClose, onPath, onCard, onPathCard, onLocCard }) {
+  const box = useRef(null), cvs = useRef(null), St = useRef(null), D = useMemo(() => cellBuild(), []);
+  const [cas, setCas] = useState(-1), [step, setStep] = useState(0), [comp, setComp] = useState(null), [cut, setCut] = useState(true), [spin, setSpin] = useState(false), [labels, setLabels] = useState(true), [play, setPlay] = useState(false);
+  const ui = useRef({}); ui.current = { cas, step, comp, cut, labels, play, spin };
+  const cbk = useRef({}); cbk.current = { onLocCard };
+  const wake = () => { const s = St.current; if (s && !s.raf) s.raf = requestAnimationFrame(s.frame); };
+  const compPaths = useMemo(() => { // atlas pathways that run in each compartment, from the compartments the atlas gives its objects
+    const m = {}; initialNodes.forEach((n) => { const p = n.data.path; if (!p || p === "pharm" || !PATHWAYS[p]) return; (n.data.locs || []).forEach((l) => { ((m[p] = m[p] || {})[l] = (m[p][l] || 0) + 1); }); });
+    const out = {}; Object.entries(m).forEach(([p, cnt]) => { const tot = Object.values(cnt).reduce((a, b) => a + b, 0); Object.entries(cnt).forEach(([l, c]) => { if (c >= 3 || c / tot >= 0.25) (out[l] = out[l] || []).push([p, c]); }); });
+    Object.values(out).forEach((l) => l.sort((a, b) => b[1] - a[1])); return out;
+  }, []);
+  useEffect(() => { // camera and draw loop
+    const s = { cam: { yaw: 0.35, pitch: 0.2, zoom: 1, px: 0, py: 0 }, goal: null, hits: [], raf: 0, W: 800, H: 600, init: false, down: false };
+    St.current = s;
+    s.frame = (now) => {
+      s.raf = 0; const cv = cvs.current, bx = box.current; if (!cv || !bx) return; const u = ui.current, cam = s.cam, r = bx.getBoundingClientRect(), dpr = Math.min(2, window.devicePixelRatio || 1), W = Math.max(200, r.width), H = Math.max(200, r.height);
+      if (cv.width !== Math.round(W * dpr) || cv.height !== Math.round(H * dpr)) { cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr); }
+      s.W = W; s.H = H; s.zoom0 = Math.min(W, H) / (2.3 * CELL_R); if (!s.init) { cam.zoom = s.zoom0; s.init = true; }
+      let busy = false; if (u.spin && !s.down) { cam.yaw -= 0.004; busy = true; }
+      if (s.goal) { let off = 0; for (const k of ["zoom", "px", "py", "yaw", "pitch"]) if (s.goal[k] !== undefined) { const d = s.goal[k] - cam[k]; off += Math.abs(d) / (k === "zoom" ? Math.max(cam.zoom, 0.01) : k === "yaw" || k === "pitch" ? 0.05 : 40); cam[k] += d * 0.17; } if (off > 0.012) busy = true; else s.goal = null; }
+      if (u.play && u.cas >= 0) busy = true;
+      const ctx = cv.getContext("2d"); ctx.setTransform(dpr, 0, 0, dpr, 0, 0); s.hits = cellDraw(ctx, D, cam, W, H, u, now || 0);
+      if (busy) s.raf = requestAnimationFrame(s.frame);
+    };
+    wake(); return () => { if (s.raf) cancelAnimationFrame(s.raf); s.raf = 0; };
+  }, [D]); // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => { wake(); }, [cas, step, comp, cut, spin, labels, play]); // eslint-disable-line react-hooks/exhaustive-deps
+  const narrow = () => (St.current ? St.current.W <= 760 : false);
+  const fitTo = (pts, minZ = 0.8, maxZ = 2.4) => { // bring a set of 3D points into the free part of the screen
+    const s = St.current; if (!s || !pts.length) return; const rot = pts.map((p) => cellRot(s.cam, p[0], p[1], p[2])), xs = rot.map((q) => q[0]), ys = rot.map((q) => q[1]), w = Math.max(Math.max(...xs) - Math.min(...xs), 60), h = Math.max(Math.max(...ys) - Math.min(...ys), 60), nw = narrow();
+    const availH = nw ? s.H * 0.5 : s.H - 230, zoom = Math.min(maxZ, Math.max(minZ, Math.min((s.W - (nw ? 60 : 200)) / (w * 1.3), availH / (h * 1.3)))), cy = (nw ? 74 + availH / 2 : s.H / 2) - s.H / 2;
+    s.goal = { zoom, px: -((Math.max(...xs) + Math.min(...xs)) / 2) * zoom, py: cy - ((Math.max(...ys) + Math.min(...ys)) / 2) * zoom }; wake();
+  };
+  const reveal = (p) => { // pan only if a station has drifted out of the free part of the screen
+    const s = St.current; if (!s) return; const q = cellPoint(D, s.cam, p, s.W, s.H), top = 70, bot = narrow() ? s.H * 0.55 : s.H - 200;
+    if (q.x < s.W * 0.15 || q.x > s.W * 0.85 || q.y < top || q.y > bot) { s.goal = { zoom: s.cam.zoom, px: s.cam.px + (s.W / 2 - q.x), py: s.cam.py + ((top + bot) / 2 - q.y) }; wake(); }
+  };
+  const pickCascade = (i) => { setCas(i); setStep(0); setComp(null); setPlay(false); fitTo([...D.stations[i], D.sites[CELL_CASCADES[i].site]]); };
+  const pickComp = (id) => { setComp(id); setCas(-1); setPlay(false); const s = St.current; const lk = CELL_COMPS.find((c) => c.id === id)?.loc; if (lk && !(s && s.W <= 760)) cbk.current.onLocCard(lk); /* summon the compartment's description card */ if (s) { const [x1, y2] = cellRot(s.cam, ...D.anchors[id]); s.goal = { zoom: Math.max(s.cam.zoom, 1.4), px: -x1 * Math.max(s.cam.zoom, 1.4), py: (narrow() ? -40 : 0) - y2 * Math.max(s.cam.zoom, 1.4) }; wake(); } };
+  const goStep = (i) => { setStep(i); reveal(D.stations[cas][i]); };
+  useEffect(() => { // play: one step every couple of seconds, then stop at the last
+    if (!play || cas < 0) return; const last = CELL_CASCADES[cas].steps.length - 1;
+    const t = setInterval(() => setStep((i) => { if (i >= last) { setPlay(false); return i; } reveal(D.stations[cas][i + 1]); return i + 1; }), 2300); return () => clearInterval(t);
+  }, [play, cas]); // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => { const k = (e) => { if (e.target.closest && e.target.closest("input")) return;
+    if (e.key === "Escape") { if (cas >= 0 || comp) { setCas(-1); setComp(null); setPlay(false); } else onClose(); }
+    else if (cas >= 0 && e.key === "ArrowRight") goStep(Math.min(CELL_CASCADES[cas].steps.length - 1, step + 1)); else if (cas >= 0 && e.key === "ArrowLeft") goStep(Math.max(0, step - 1)); };
+    window.addEventListener("keydown", k); return () => window.removeEventListener("keydown", k); }, [cas, comp, step, onClose]); // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => { // pointer: drag turns the cell, shift or right button pans, pinch and wheel zoom, tap picks a compartment or a station
+    const el = cvs.current; if (!el) return; const pts = new Map(); let drag = null, pinch = 0;
+    const at = (e) => { const r = el.getBoundingClientRect(); return [e.clientX - r.left, e.clientY - r.top]; };
+    const hit = (x, y) => { const hs = St.current ? St.current.hits : []; for (let i = hs.length - 1; i >= 0; i--) { const h = hs[i]; if ((h.x - x) ** 2 + (h.y - y) ** 2 <= h.r * h.r) return h; } return null; };
+    const zoomAt = (mx, my, k) => { const s = St.current, c = s.cam, zz = Math.min(6, Math.max(0.3, c.zoom * k)), kk = zz / c.zoom, cx = mx - s.W / 2, cy = my - s.H / 2; c.px = cx - (cx - c.px) * kk; c.py = cy - (cy - c.py) * kk; c.zoom = zz; s.goal = null; wake(); };
+    const down = (e) => { const s = St.current; if (!s) return; el.setPointerCapture(e.pointerId); pts.set(e.pointerId, at(e)); drag = { moved: 0, shift: e.shiftKey || e.button === 2 }; s.down = true; s.goal = null; if (pts.size === 2) { const [a, b] = [...pts.values()]; pinch = Math.hypot(a[0] - b[0], a[1] - b[1]); } };
+    const move = (e) => { const s = St.current; if (!s || !pts.has(e.pointerId)) return; const [x, y] = at(e), [px, py] = pts.get(e.pointerId); pts.set(e.pointerId, [x, y]); const dx = x - px, dy = y - py, c = s.cam; drag.moved += Math.abs(dx) + Math.abs(dy);
+      if (pts.size >= 2) { const [a, b] = [...pts.values()], d = Math.hypot(a[0] - b[0], a[1] - b[1]); if (pinch) zoomAt((a[0] + b[0]) / 2, (a[1] + b[1]) / 2, d / pinch); pinch = d; c.px += dx / 2; c.py += dy / 2; }
+      else if (drag.shift) { c.px += dx; c.py += dy; } else { c.yaw -= dx * 0.008; c.pitch = Math.max(-1.4, Math.min(1.4, c.pitch + dy * 0.008)); }
+      wake(); };
+    const up = (e) => { const s = St.current; if (!s || !pts.has(e.pointerId)) return; const [x, y] = pts.get(e.pointerId); pts.delete(e.pointerId); pinch = 0; if (pts.size === 0) s.down = false;
+      if (drag && drag.moved < 5 && pts.size === 0) { const h = hit(x, y); if (!h) { if (ui.current.comp) setComp(null); } else if (h.k === "step") { setStep(h.i); setPlay(false); } else pickComp(h.id); } wake(); };
+    const wheel = (e) => { e.preventDefault(); const [x, y] = at(e); zoomAt(x, y, Math.exp(-e.deltaY * 0.0015)); };
+    const dbl = () => resetView();
+    el.addEventListener("pointerdown", down); el.addEventListener("pointermove", move); el.addEventListener("pointerup", up); el.addEventListener("pointercancel", up); el.addEventListener("wheel", wheel, { passive: false }); el.addEventListener("dblclick", dbl);
+    return () => { el.removeEventListener("pointerdown", down); el.removeEventListener("pointermove", move); el.removeEventListener("pointerup", up); el.removeEventListener("pointercancel", up); el.removeEventListener("wheel", wheel); el.removeEventListener("dblclick", dbl); };
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  const resetView = () => { const s = St.current; if (!s) return; s.goal = { zoom: s.zoom0, px: 0, py: narrow() ? -50 : 0, yaw: 0.35, pitch: 0.2 }; wake(); };
+  const zoomBy = (k) => { const s = St.current; if (!s) return; s.goal = null; const c = s.cam, zz = Math.min(6, Math.max(0.3, c.zoom * k)); c.px *= zz / c.zoom; c.py *= zz / c.zoom; c.zoom = zz; wake(); };
+  const C = cas >= 0 ? CELL_CASCADES[cas] : null, st = C ? C.steps[Math.min(step, C.steps.length - 1)] : null, cc = comp ? cellComp(comp) : null, locKey = { ext: "ext", pm: "pm", cyt: "cyt", nuc: "nuc", er: "er", mit: "mit", per: "per" }[comp];
+  const here = comp ? CELL_CASCADES.map((c, i) => [i, c.steps.findIndex((x) => x[1] === comp)]).filter((x) => x[1] >= 0) : [];
+  return (
+    <div className="omino-cell nodrag nopan nowheel" ref={box} role="region" aria-label="Hybrid cell">
+      <canvas ref={cvs} aria-label="A cut-open hybrid cell you can turn and zoom into" />
+      <div className="omino-cell__tools" role="toolbar" aria-label="Cell tools">
+        {nav && <button onClick={() => zoomBy(1.35)} aria-label="Zoom in" title="Zoom in">+</button>}
+        {nav && <button onClick={() => zoomBy(1 / 1.35)} aria-label="Zoom out" title="Zoom out">−</button>}
+        <button className={cut ? "is-on" : ""} onClick={() => setCut((v) => !v)} aria-pressed={cut} aria-label="Cut open" title={cut ? "Cut open: tap to close the cell" : "Whole cell: tap to cut it open"}>◔</button>
+        <button className={spin ? "is-on" : ""} onClick={() => setSpin((v) => !v)} aria-pressed={spin} aria-label="Turn slowly" title="Turn slowly">⟳</button>
+        <button className={labels ? "is-on" : ""} onClick={() => setLabels((v) => !v)} aria-pressed={labels} aria-label="Step names" title="Names of every step">Aa</button>
+        {nav && <button onClick={resetView} aria-label="Reset view" title="Reset the view (double-tap also does it)">⤢</button>}
+      </div>
+      <div className="omino-cell__chips" role="tablist" aria-label="Signalling cascades">
+        {CELL_CASCADES.map((c, i) => <button key={c.id} role="tab" aria-selected={cas === i} className={cas === i ? "is-on" : ""} style={{ "--cc": c.color }} onClick={() => (cas === i ? (setCas(-1), setPlay(false)) : pickCascade(i))} title={c.name}>{c.short}</button>)}
+      </div>
+      <div className="omino-cell__panel" role="group" aria-label={C ? C.name : cc ? cc.label : "Hybrid cell"}>
+        {C ? (<>
+          <div className="omino-cell__top"><i style={{ background: C.color }} /><b>{C.name}</b><button onClick={() => { setCas(-1); setPlay(false); }} aria-label="Close cascade">×</button></div>
+          <p>{C.summary}</p>
+          <div className="omino-cell__steps" role="tablist" aria-label="Steps">{C.steps.map((x, i) => <button key={i} role="tab" aria-selected={i === step} className={i === step ? "is-cur" : i < step ? "is-done" : ""} style={{ "--cc": cellComp(x[1]).color }} onClick={() => { setPlay(false); goStep(i); }} title={x[0]}>{i + 1}</button>)}</div>
+          <div className="omino-cell__now"><b>{st[0]}</b><button style={{ "--cc": cellComp(st[1]).color }} onClick={() => pickComp(st[1])}>{cellComp(st[1]).short}</button><span>{st[2]}</span></div>
+          <div className="omino-cell__acts">
+            <button onClick={() => { setPlay(false); goStep(Math.max(0, step - 1)); }} disabled={step === 0} aria-label="Previous step">‹ Back</button>
+            <button className="is-primary" onClick={() => { if (!play && step >= C.steps.length - 1) goStep(0); setPlay((v) => !v); }} aria-pressed={play}>{play ? "Pause" : "Play"}</button>
+            <button onClick={() => { setPlay(false); goStep(Math.min(C.steps.length - 1, step + 1)); }} disabled={step >= C.steps.length - 1} aria-label="Next step">Next ›</button>
+            <em>{step + 1} of {C.steps.length}</em>
+          </div>
+          {(C.refs.some((r) => NODE_BY[r]) || C.paths.length > 0) && <div className="omino-cell__links"><span>In the atlas</span>{C.refs.filter((r) => NODE_BY[r]).map((r) => <button key={r} onClick={() => onCard(r)}>{nm(r)}</button>)}{C.paths.map((pp) => <span key={pp} className="is-pathgrp"><button className="is-path" onClick={() => onPathCard(pp)} title="Open the pathway card">{PATHWAYS[pp].label}</button><button className="is-path" onClick={() => onPath(pp)} aria-label={`Show ${PATHWAYS[pp].label} in the atlas`} title="Show in the atlas">↗</button></span>)}</div>}
+        </>) : cc ? (<>
+          <div className="omino-cell__top"><i style={{ background: cc.color }} /><b>{cc.label}</b><button onClick={() => setComp(null)} aria-label="Close compartment">×</button></div>
+          <p>{cc.desc}</p>
+          {locKey && <div className="omino-cell__links"><span>Cards</span><button onClick={() => onLocCard(locKey)}>Description card</button></div>}
+          {here.length > 0 && <div className="omino-cell__links"><span>Signalling here</span>{here.map(([i, k]) => <button key={i} style={{ "--cc": CELL_CASCADES[i].color }} onClick={() => { pickCascade(i); setStep(k); setTimeout(() => reveal(D.stations[i][k]), 0); }}>{CELL_CASCADES[i].short}</button>)}</div>}
+          {locKey && (compPaths[locKey] || []).length > 0 && <div className="omino-cell__links"><span>Atlas pathways</span>{compPaths[locKey].slice(0, 8).map(([pp]) => <span key={pp} className="is-pathgrp"><button className="is-path" onClick={() => onPathCard(pp)} title="Open the pathway card">{PATHWAYS[pp].label}</button><button className="is-path" onClick={() => onPath(pp)} aria-label={`Show ${PATHWAYS[pp].label} in the atlas`} title="Show in the atlas">↗</button></span>)}</div>}
+        </>) : (<>
+          <div className="omino-cell__top"><b>Hybrid cell</b><button onClick={onClose} aria-label="Close cell view">×</button></div>
+          <p>One composite cell with every compartment where signals are sent, relayed and answered. Drag to turn it, pinch or scroll to zoom, tap a compartment name to read about it, or pick a cascade above to follow a signal from the membrane inward.</p>
+        </>)}
+      </div>
+    </div>
+  );
+}
+
+/* ================================================================== */
 /* 3. Custom node + edge                                               */
 /* ================================================================== */
 
@@ -5052,6 +5134,8 @@ const ICON = {
   grid: "M4 4h6.5v6.5H4zM13.5 4H20v6.5h-6.5zM4 13.5h6.5V20H4zM13.5 13.5H20V20h-6.5z",
   chevL: "M15 5l-7 7 7 7",
   undo: "M9 14L4 9l5-5M4 9h10.5a5.5 5.5 0 0 1 0 11H11",
+  cell: "M12 3.2c4.9 0 8.3 3.3 8.3 8.4 0 5-3.4 9.2-8.3 9.2s-8.3-4.2-8.3-9.2c0-5.1 3.4-8.4 8.3-8.4zM10.2 9.6a2.6 2.6 0 1 0 5.2 0 2.6 2.6 0 1 0-5.2 0M7.6 15.4h2.6M13.6 16.6l2.6-1.2",
+  network: "M3.5 6a2.5 2.5 0 1 0 5 0 2.5 2.5 0 1 0-5 0M15.5 6a2.5 2.5 0 1 0 5 0 2.5 2.5 0 1 0-5 0M9.5 18a2.5 2.5 0 1 0 5 0 2.5 2.5 0 1 0-5 0M8.5 6h7M5.5 8.5l4.5 7.2M18.5 8.5l-4.5 7.2",
   redo: "M15 14l5-5-5-5M20 9H9.5a5.5 5.5 0 0 0 0 11H13",
   chevR: "M9 5l7 7-7 7",
   search: "M11 4a7 7 0 1 0 0 14 7 7 0 0 0 0-14zM21 21l-4.5-4.5",
@@ -5615,54 +5699,6 @@ const EXPLAIN = {
 };
 const ENZN = {
   "Phenylalanine hydroxylase": "Adds a hydroxyl group to the ring of phenylalanine to make tyrosine, using O₂ and tetrahydrobiopterin (BH₄). Deficiency is phenylketonuria; some forms respond to BH₄ (sapropterin). Tyrosine then becomes an essential amino acid.",
-  "Phospholipase A₂ (cPLA₂α)": "Cuts the sn-2 ester of membrane phospholipids and releases arachidonate. Calcium (C2 domain) brings cytosolic PLA₂α to the nuclear envelope and ER, and MAP-kinase phosphorylation raises its activity; this is the rate-limiting step of eicosanoid synthesis. Glucocorticoids lower it indirectly (annexin-1 and lipocortin signalling, and less COX-2 expression); they do not block COX directly. Other sources: DAG lipase → 2-arachidonoylglycerol → MAG lipase.",
-  "Cyclooxygenase (COX-1, COX-2)": "One enzyme with two sites: the cyclooxygenase site adds two O₂ to arachidonate to make PGG₂, and the peroxidase site reduces it to PGH₂. COX-1 is constitutive (gastric mucosa, platelets, kidney); COX-2 is induced by cytokines and is also constitutive in kidney and endothelium. Aspirin acetylates a serine and blocks both irreversibly (platelets cannot make new enzyme); other NSAIDs are reversible; coxibs are COX-2 selective, which spares platelet thromboxane but also prostacyclin, hence the cardiovascular risk.",
-  "PGE synthase (mPGES-1)": "Glutathione-dependent isomerase of the perinuclear membrane, induced together with COX-2 in inflammation; it makes PGE₂ (cytosolic PGES and mPGES-2 are constitutive). Its PGE₂ drives fever, pain sensitisation and vasodilation.",
-  "PGD synthase (H-PGDS, L-PGDS)": "Hematopoietic PGDS (glutathione-dependent, mast cells and Th2 cells) makes the PGD₂ of allergy; lipocalin-type L-PGDS (brain, meninges, CSF as β-trace protein) makes the PGD₂ that promotes sleep.",
-  "PGF synthase (AKR1C3, AKR1B1)": "Aldo-keto reductases that reduce the 9,11-endoperoxide of PGH₂ to PGF₂α (9-ketoreductase activity also turns PGE₂ into PGF₂α).",
-  "Prostacyclin synthase (PGIS, CYP8A1)": "A cytochrome P450 (that acts as an isomerase) in endothelium and vascular smooth muscle. It is nitrated and inactivated by peroxynitrite, one reason prostacyclin falls in atherosclerosis. Coxibs lower prostacyclin more than platelet thromboxane.",
-  "Non-enzymatic hydrolysis (PGI₂)": "Prostacyclin opens spontaneously in water (half-life about 30 seconds) to the inactive 6-keto-PGF₁α.",
-  "Thromboxane synthase (TXAS, CYP5A1)": "A P450 in platelets that rearranges PGH₂ to TXA₂ (and to 12-HHT and malondialdehyde). Aspirin acts upstream by blocking platelet COX-1; thromboxane synthase inhibitors and TP-receptor blockers (ramatroban, seratrodast) are used in few places.",
-  "Non-enzymatic hydrolysis (TXA₂)": "The strained oxetane opens in water within about 30 seconds to inactive TXB₂.",
-  "5-Lipoxygenase (5-LOX, with FLAP)": "Non-heme iron dioxygenase of neutrophils, eosinophils, mast cells and monocytes. Calcium moves it to the nuclear envelope, where FLAP (5-lipoxygenase-activating protein) hands it arachidonate. Zileuton blocks it; FLAP inhibitors have been tried. It adds O₂ at C5 to make 5-HPETE.",
-  "5-LOX (LTA₄ synthase activity)": "The same enzyme removes water from 5-HPETE to make the epoxide LTA₄ (second step).",
-  "LTA₄ hydrolase": "Zinc enzyme of neutrophils (it is also an aminopeptidase that breaks down the chemotactic tripeptide Pro-Gly-Pro) that opens the epoxide to LTB₄.",
-  "LTC₄ synthase": "Glutathione S-transferase of the nuclear envelope (mast cells, eosinophils, basophils, platelets) that adds glutathione to C6 of LTA₄ and so makes LTC₄.",
-  "γ-Glutamyl transferase (GGT)": "Cell-surface enzyme (also the liver-enzyme marker GGT) that removes glutamate from LTC₄ to give LTD₄.",
-  "Dipeptidase": "Removes glycine from LTD₄ to give LTE₄ (membrane dipeptidase, renal and endothelial).",
-  "12-Lipoxygenase (ALOX12)": "Platelet-type 12-lipoxygenase: adds O₂ at C12 to make 12-HpETE, reduced to 12-HETE. Also provides the 12-LOX step of transcellular lipoxin synthesis, and on DHA it makes 14S-HpDHA, the start of the maresins. On n-3 DPA it makes 14S-HpDPA, the start of the n-3 DPA maresins.",
-  "15-Lipoxygenase (ALOX15, ALOX15B)": "Adds O₂ at C15 (eosinophils, airway epithelium, reticulocytes; ALOX15B in skin and prostate). With 5-LOX it makes lipoxins, and on DHA it makes 17S-HpDHA, the precursor of the D-series resolvins and protectin D1 (drawn above the pathway). On n-3 DPA it makes 17S-HpDPA, the start of the n-3 DPA resolvins.",
-  "5-Lipoxygenase (lipoxin synthesis)": "Leukocyte 5-LOX turns 15-HpETE into a 5,6-epoxide that is hydrolysed to lipoxin A₄ (and B₄).",
-  "12-Lipoxygenase (transcellular lipoxin synthesis)": "Neutrophils release LTA₄; platelets (12-LOX) take it up and convert it to lipoxins, an example of two cell types making a mediator that neither makes alone.",
-  "CYP epoxygenase (CYP2C8, CYP2C9, CYP2J2)": "Cytochrome P450 epoxygenases add an epoxide at one of the four double bonds, giving the four EET regioisomers (14,15-EET is shown). NADPH-dependent; CYP2C9 inhibitors (such as fluconazole and amiodarone) lower EETs.",
-  "Soluble epoxide hydrolase (sEH)": "Cytosolic hydrolase (EPHX2) that adds water to the EET epoxide and makes the much weaker diol (DHET). sEH inhibitors raise EETs and lower blood pressure in animals; none is approved.",
-  "CYP ω-hydroxylase (CYP4A, CYP4F)": "Hydroxylates the terminal (ω) carbon of arachidonate to 20-HETE. CYP4F2 also inactivates leukotriene B₄ and vitamin K, and its common variant changes warfarin dose.",
-  "15-Hydroxyprostaglandin dehydrogenase (15-PGDH)": "NAD⁺-dependent oxidation of the 15-hydroxyl, so the prostanoid loses most of its activity. Lung, liver and kidney inactivate about 90% of circulating PGE₂ and PGF₂α in one pass, which is why prostaglandins act only locally (prostacyclin, by contrast, mostly decays on its own). Low 15-PGDH in colon tumours raises PGE₂.",
-  "Prostaglandin Δ13-reductase (PTGR1)": "NADPH-dependent reduction of the 13,14 double bond (also the leukotriene B₄ inactivation step); the 13,14-dihydro-15-keto compounds are then β- and ω-oxidised and excreted in urine.",
-  "5-Lipoxygenase (D-series resolvins)": "On 17S-HpDHA, 5-lipoxygenase adds O₂ at C7 and forms a 7,8-epoxide that an epoxide hydrolase opens to RvD1 and RvD2 (with extra oxygenation steps in the second case); neutrophils make this step, using 17-HDHA passed from endothelium or epithelium (transcellular synthesis). Aspirin-triggered 17R-resolvins follow the same route. The same step turns 17S-HpDPA into the D-series resolvins of n-3 DPA (RvD1, RvD2 and RvD5).",
-  "12-Lipoxygenase and epoxide hydrolase (maresin 1)": "12-Lipoxygenase (macrophages, platelets) oxygenates 14S-HpDHA a second time to a 13S,14S-epoxide, and a soluble epoxide hydrolase opens it to maresin 1 (7R,14S-dihydroxy). Macrophages make it during the resolution phase and in tissue regeneration.",
-  "Aspirin-acetylated COX-2 (17R-HpDHA)": "Aspirin acetylates serine 516 of COX-2, which then no longer makes prostaglandins but oxygenates DHA to 17R-HpDHA (and EPA to 18R-HpEPE). Neutrophil 5-lipoxygenase takes it on to aspirin-triggered resolvin D1, one explanation for part of aspirin's benefit beyond lowering prostanoids; atorvastatin also tilts COX-2 toward this product in animals.",
-  "12-Lipoxygenase epoxide + glutathione (GST, LTC₄ synthase)": "The 13S,14S-epoxide of DHA made by 12-lipoxygenase is conjugated with glutathione by glutathione S-transferase (GSTM4) or LTC₄ synthase to give MCTR1; the same chemistry as LTC₄ synthesis, with a different substrate.",
-  "5-Lipoxygenase epoxide + glutathione (GST, LTC₄ synthase; RCTR1)": "The 7S,8S-epoxide that 5-lipoxygenase makes from 17-HDHA (the intermediate before resolvin D1) is opened by glutathione instead of water: glutathione S-transferase (GSTM4) or LTC₄ synthase makes RCTR1 in macrophages.",
-  "15-Lipoxygenase epoxide + glutathione (GST, LTC₄ synthase; PCTR1)": "The 16S,17S-epoxide made by 15-lipoxygenase from DHA (the intermediate before protectin D1) is opened by glutathione, through GSTM4 or LTC₄ synthase, to give PCTR1.",
-  "Cyclooxygenase-2 and PGE synthase (2-AG route)": "COX-2 (not COX-1) accepts 2-AG as a substrate and makes prostaglandin H₂ glyceryl ester; PGE synthase and the other synthases then give PGE₂-G and its relatives. The route makes COX-2 inhibitors raise 2-AG in the brain, a possible part of their effects on pain and anxiety.",
-  "15-Lipoxygenase and epoxide hydrolase (protectin D1)": "A second 15-lipoxygenase oxygenation of 17S-HpDHA gives a 16,17-epoxide, which an epoxide hydrolase opens to protectin D1 (10R,17S-dihydroxy). Made in macrophages, T cells and glia; the brain form is called neuroprotectin D1. The same route from 17S-HpDPA gives protectin D1 of n-3 DPA.",
-  "Cytochrome P450 (18-hydroxylation)": "Cytochrome P450 enzymes (including microbial ones) add an 18-hydroxyl to EPA, mostly the 18R form with some 18S. Endothelium and vascular cells make it. The aspirin route is drawn separately as 18R-HEPE.",
-  "Aspirin-acetylated COX-2 (18R-HpEPE)": "Acetylated COX-2 oxygenates EPA at C18 to 18R-HpEPE, which is reduced to 18R-HEPE. Neutrophil 5-lipoxygenase and LTA₄ hydrolase then make resolvin E1. Atorvastatin also tilts COX-2 toward this product in animals.",
-  "Elongase (ELOVL2, ELOVL5)": "Endoplasmic-reticulum elongases add two carbons to EPA (20:5) to give n-3 DPA (22:5), the intermediate on the way to DHA. Variants of ELOVL2 change DPA levels.",
-  "Cyclooxygenase-2 (13R-HpDPA; raised by atorvastatin)": "Endothelial COX-2 oxygenates n-3 DPA at C13 to 13R-HpDPA, which its peroxidase activity reduces to 13R-HDPA. Atorvastatin raises this through S-nitrosylation of COX-2, and COX-2 inhibitors lower it. Neutrophils then take 13R-HDPA on (transcellular synthesis).",
-  "5-Lipoxygenase and reduction (resolvin E2)": "Neutrophil 5-lipoxygenase makes the 5,6-epoxide from 18-HEPE (as for RvE1); reduction of the 5-hydroperoxide, rather than epoxide opening, gives the 5,18-diol RvE2.",
-  "12/15-Lipoxygenase (resolvin E3)": "12/15-Lipoxygenase (eosinophils, and other cells) oxygenates 18-HEPE at C17, giving the 17,18-diol resolvin E3. Both 18R-HEPE and 18S-HEPE are used, so there are two forms.",
-  "5-Lipoxygenase (4,5-epoxide; RvD3, RvD4, RvD6)": "5-Lipoxygenase acts on 17S-HpDHA at the carboxyl end (C4 and C5) instead of C7 and C8, making a 4S,5S-epoxide. Water opens it at C5 to give RvD4, or at C11 after the double bonds shift to give RvD3; RvD6 (a 4,17-diol) is thought to arise from the same epoxide. The route is proposed and the enzymes are not fully worked out.",
-  "Epoxide hydrolase (maresin 2)": "Water opens the 13,14-epoxide made from 14-HpDPA by 12-lipoxygenase at C13, giving the 13,14-diol maresin 2 of n-3 DPA (proposed route).",
-  "Epoxide hydrolase (protectin D2)": "Water opens the 16,17-epoxide made from 17S-HpDPA by 15-lipoxygenase at C16, giving the 16,17-diol protectin D2 of n-3 DPA (proposed route).",
-  "5-Lipoxygenase (13-series resolvins)": "Neutrophil 5-lipoxygenase acts on 13R-HDPA to make RvT1 (7,13,20-triol), RvT2 (7,12,13-triol), RvT3 (7,8,13-triol) and RvT4 (7,13-diol). Neutrophil and endothelial cells together make all four; they rise with atorvastatin.",
-  "5-Lipoxygenase and LTA₄ hydrolase (resolvin E1)": "Neutrophil 5-lipoxygenase makes a 5,6-epoxide from 18-HEPE, and LTA₄ hydrolase (the enzyme of leukotriene B₄) opens it to RvE1; the same enzymes turn from pro-inflammatory to pro-resolving products when the substrate changes.",
-  "NAPE-phospholipase D (NAPE-PLD)": "Zinc metallo-hydrolase of the membrane that splits NAPE into anandamide and phosphatidic acid. Other routes (ABHD4 plus GDE1, PLC and phosphatases) also form anandamide, so NAPE-PLD knockout animals still make it.",
-  "Fatty acid amide hydrolase (FAAH)": "Membrane serine hydrolase of the endoplasmic reticulum (brain, liver) that splits anandamide into arachidonate and ethanolamine, and also breaks down oleoylethanolamide and palmitoylethanolamide. FAAH inhibitors raise anandamide; none is approved, and the 2016 trial of BIA 10-2474 ended with a death from brain toxicity (off-target inhibition of other lipases).",
-  "Diacylglycerol lipase-α (DAGLα)": "Calcium-regulated lipase at the postsynaptic membrane that cuts the sn-1 ester of arachidonoyl-DAG to leave 2-AG. It is turned on when Gq-coupled receptors (mGluR5, M1) have activated phospholipase C-β, so 2-AG is made only when the synapse is active.",
-  "Monoacylglycerol lipase (MAGL)": "Serine hydrolase on presynaptic terminals and astrocytes that hydrolyses about 85% of brain 2-AG to arachidonate and glycerol. In the brain this is the main supply of free arachidonate for prostaglandin synthesis, so MAGL inhibitors both raise 2-AG and lower PGE₂.",
-  "Hexokinase (fructokinase in liver)": "Fructose + ATP → fructose 6-phosphate + ADP. Hexokinase does this in muscle and adipose tissue, where fructose is a poor substrate next to glucose. In the liver (and kidney and gut) fructokinase instead makes fructose 1-phosphate, which aldolase B splits into DHAP and glyceraldehyde; both routes bypass phosphofructokinase-1, so fructose is not slowed by the usual glycolytic brakes. Fructokinase deficiency (essential fructosuria) is harmless; aldolase B deficiency (hereditary fructose intolerance) is not.",
   "Hexokinase / Glucokinase": "Traps glucose as glucose 6-phosphate using ATP. Glucokinase (liver, β-cells) has a high Km and is not inhibited by G6P, so it tracks blood glucose; hexokinase is inhibited by its product.",
   "Pyruvate carboxylase": "Mitochondrial first step of gluconeogenesis: pyruvate + HCO₃⁻ + ATP → oxaloacetate. Needs biotin; acetyl-CoA activates it, so fatty acid oxidation switches it on. Oxaloacetate cannot cross the inner mitochondrial membrane, so it is reduced to malate, exported, and re-oxidised to oxaloacetate in the cytosol (generating the NADH that 1,3-BPG needs).",
   "PEP carboxykinase (PEPCK)": "Turns oxaloacetate into phosphoenolpyruvate with GTP, releasing CO₂. Two isoforms: cytosolic (PEPCK-C, the main one in liver and kidney) and mitochondrial (PEPCK-M), so PEP can be made before or after the malate shuttle. Induced by glucagon and cortisol, repressed by insulin.",
@@ -5781,81 +5817,6 @@ Object.assign(EXPLAIN, {
   coq: "Ubiquinone (coenzyme Q10) is a benzoquinone head on a long isoprenoid tail, so it dissolves in the lipid bilayer and diffuses between complexes. It takes two electrons and two protons to become ubiquinol (QH₂), and can also sit halfway as a semiquinone radical. It is made by the same mevalonate route as cholesterol, so statins lower it a little; primary CoQ10 deficiency causes encephalomyopathy and nephrotic syndrome, and CoQ10 is also an antioxidant in membranes.",
 });
 Object.assign(EXPLAIN, {
-  eico: "Eicosanoids are signalling lipids made from 20-carbon polyunsaturated fatty acids, mostly arachidonate. A phospholipase releases it from membranes; cyclooxygenases (COX-1, COX-2) turn it into PGH₂, the parent of the prostaglandins, prostacyclin and thromboxane, and lipoxygenases make leukotrienes and lipoxins. They act locally on G-protein-coupled receptors and are broken down within minutes. NSAIDs block COX, glucocorticoids lower PLA₂ and COX-2, and leukotriene-receptor blockers and 5-lipoxygenase inhibitors are used in asthma. Drawn so far: PLA₂, COX with PGE₂, PGD₂, PGF₂α, prostacyclin and thromboxane (and their stable hydrolysis products), the 5-lipoxygenase route to LTB₄ and the cysteinyl leukotrienes LTC₄, LTD₄ and LTE₄, 12-HETE, 15-HETE and lipoxin A₄, the cytochrome P450 products (EET, DHET, 20-HETE), the inactivation of PGE₂ by 15-PGDH and PTGR1, the pro-resolving mediators made from DHA and EPA (resolvins D1 to D4, D6, E1, E2 and E3, protectin D1, maresin 1 and the tissue-regeneration conjugates, with the aspirin-triggered 17R and 18R intermediates), the n-3 DPA resolvins, protectins and maresins (D-series and RvT1–RvT4), and the endocannabinoids anandamide and 2-arachidonoylglycerol with their breakdown by FAAH and MAGL.",
-  pl2m: "Membrane glycerophospholipid with arachidonate on the sn-2 carbon. Phospholipase A₂ releases the arachidonate and leaves a lysophospholipid (the precursor of PAF when the head group is choline and the sn-1 chain is an alkyl ether).",
-  arachid: "Essential-fatty-acid derivative: made from linoleate (elongation and desaturation) or eaten in meat and eggs, and stored in membrane phospholipids. Free arachidonate is converted by COX (prostanoids), lipoxygenases (leukotrienes, lipoxins, HETEs) and cytochrome P450 (EETs, 20-HETE), or re-esterified. Fish-oil EPA competes for the same enzymes and gives the weaker series-3 prostanoids.",
-  pgh2: "Cyclic endoperoxide (an O–O bridge across C9 and C11) with a half-life of minutes. It is not a signal itself: cell-specific synthases decide whether it becomes PGE₂, PGD₂, PGF₂α, prostacyclin or thromboxane A₂.",
-  pge2: "Made mainly by mPGES-1 after COX-2 induction. EP1 (Gq) contracts smooth muscle, EP2 and EP4 (Gs) relax it and raise cAMP, EP3 (Gi) lowers cAMP and reduces gastric acid. Fever (hypothalamic EP3), pain sensitisation, gastric cytoprotection, renal blood flow and ductus arteriosus patency all depend on it. Misoprostol is a PGE₁ analogue, dinoprostone is PGE₂.",
-  pgd2: "Mast-cell mediator of allergic bronchospasm and flushing; DP1 vasodilates, DP2 (CRTH2) draws Th2 cells, eosinophils and basophils. It is also the main prostaglandin of the brain, where it promotes sleep. Niacin flushing is PGD₂ released by skin Langerhans cells.",
-  pgi2: "The endothelial counterweight to platelet thromboxane: IP receptor (Gs) raises cAMP, so smooth muscle relaxes and platelets stay inactive. Epoprostenol and the analogues iloprost and treprostinil treat pulmonary arterial hypertension; selexipag is an oral IP agonist.",
-  k6pgf1: "Inactive hydrolysis product of prostacyclin, measured (with its urinary metabolites) as the index of PGI₂ synthesis.",
-  txa2: "Made from PGH₂ by platelet thromboxane synthase. TP receptor (Gq) activation changes platelet shape, releases granules and recruits more platelets; it also constricts vessels and bronchi. Because platelets have no nucleus, one aspirin dose silences COX-1 for the life of the platelet.",
-  txb2: "Inactive end product of TXA₂. Serum TXB₂ after clotting is a standard readout of platelet COX-1 activity and of aspirin's effect (aspirin resistance tests).",
-  hpete5: "Hydroperoxy intermediate of 5-lipoxygenase. Glutathione peroxidases reduce it to 5-HETE (which oxidises to 5-oxo-ETE, an eosinophil chemoattractant), or 5-LOX itself takes it on to LTA₄.",
-  lta4: "Epoxide intermediate (half-life under a minute). LTA₄ hydrolase gives LTB₄, LTC₄ synthase gives the cysteinyl leukotrienes, and the 15-lipoxygenase/5-lipoxygenase combination turns it into lipoxins (not yet drawn).",
-  ltb4: "Acts on BLT1 (Gi): neutrophil chemotaxis, adhesion and degranulation, and a second wave of cytokine release. High in the sputum of cystic fibrosis and in inflamed bowel and skin; a BLT1 antagonist or LTA₄ hydrolase inhibitor has not yet become a standard drug.",
-  ltc4: "Exported by MRP1 and converted outside the cell to LTD₄ and LTE₄. Causes the late phase of asthma and the plasma leakage of anaphylaxis.",
-  ltd4: "Binds CysLT₁ (Gq) on airway smooth muscle and vessels: bronchoconstriction, mucus and oedema. Montelukast, zafirlukast and pranlukast block CysLT₁; zileuton blocks the synthesis.",
-  lte4: "Long-lived urinary marker. Over-production in aspirin-exacerbated respiratory disease follows COX-1 blockade, which removes PGE₂'s brake on 5-lipoxygenase and mast cells.",
-  k15pge2: "Product of 15-PGDH. A weak EP ligand, so most of the activity of PGE₂ is lost in this step.",
-  pgem: "Stable plasma metabolite and precursor of urinary PGE-M. The equivalent for thromboxane is urinary 11-dehydro-TXB₂, and for prostacyclin 2,3-dinor-6-keto-PGF₁α; these urinary products are used to follow aspirin effect and to study inflammation.",
-  hete12: "Platelet and skin 12-lipoxygenase product (GPR31 is its receptor). It enhances platelet reactivity and tumour-cell adhesion; levels are high in psoriatic skin.",
-  hete15: "Product of 15-lipoxygenase; in asthmatic airways it is made in large amounts (eosinophils, epithelium) and stimulates mucus. It is also a branch point to lipoxin A₄.",
-  lxa4: "A pro-resolving lipid (the “stop” signal of inflammation): binds ALX/FPR2 on neutrophils and macrophages, stops neutrophil entry and encourages clearance of dead cells. Low in severe asthma and cystic fibrosis; aspirin-triggered lipoxins and stable analogues are being tested.",
-  eet: "Epoxide of arachidonate; four regioisomers are made. Hyperpolarises vascular smooth muscle (BKCa channels), dilates arteries, blocks NF-κB signalling and reduces sodium uptake in the collecting duct. Short-lived because of soluble epoxide hydrolase.",
-  dhet: "Inactive (or much weaker) diol produced from the EETs by sEH. The EET/DHET ratio in plasma reflects sEH activity.",
-  hete20: "Vasoconstrictor of renal and cerebral arterioles (it blocks BKCa channels) and inhibitor of tubular Na⁺–K⁺-ATPase and NKCC2. The opposite of the EETs; excess is linked to hypertension and to damage after ischaemic stroke.",
-  dha: "Essential-fatty-acid derivative (a little is made from α-linolenate; most comes from oily fish, fish oil and algae oil). The most abundant ω-3 in brain grey matter and the retina, where it makes up much of the photoreceptor membrane. Infant formula and the diet of pregnancy are supplemented for neural and visual development. It is the substrate of 15-lipoxygenase on the way to D-series resolvins and protectins.",
-  epa: "Eaten in oily fish and fish oil, or made slowly from α-linolenate. It replaces some arachidonate in membranes and competes for COX and 5-LOX, so the prostanoids and leukotrienes made from it (series 3 and 5) are weaker, and platelets make less thromboxane A₂. Icosapent ethyl (purified EPA ethyl ester, 4 g/day) lowered cardiovascular events in statin-treated patients with raised triglycerides (REDUCE-IT); a mixed EPA and DHA product did not (STRENGTH), so the benefit may be specific to the drug or dose.",
-  hdha17: "First stable product of 15-lipoxygenase on DHA (through the hydroperoxide 17S-HpDHA, reduced by glutathione peroxidase). Aspirin-acetylated COX-2 makes the 17R epimer, which leads to aspirin-triggered resolvins that last longer than the S forms.",
-  rvd1: "A specialised pro-resolving mediator: an active “stop” signal, not an immunosuppressant. It binds ALX/FPR2 and GPR32, reduces neutrophil transmigration, raises macrophage phagocytosis (efferocytosis) and shifts macrophages toward the repair type. Most evidence is from animals and small human studies; no resolvin is a drug yet (stable analogues are being tested).",
-  rvd2: "Binds GPR18 (DRV2) and lowers neutrophil recruitment while raising bacterial clearance by macrophages; protects mice from polymicrobial sepsis and limits ischaemia–reperfusion injury.",
-  pd1: "Acts on neutrophils, T cells and glia, lowers NF-κB signalling and blocks apoptosis in neurons and retinal pigment cells. In the brain and retina it is called neuroprotectin D1; it is reported low in Alzheimer disease tissue.",
-  hepe18: "The 18-hydroxylated EPA product made by cytochrome P450 (mostly 18R). It is itself weakly active and is measured in plasma as a marker of the E-series pathway.",
-  hepe18r: "Aspirin-triggered 18R form: made only when COX-2 is acetylated (or modified by atorvastatin), so low-dose aspirin shifts EPA toward this route. Same E-series products as 18-HEPE.",
-  dpa: "Intermediate between EPA and DHA, and a precursor of its own pro-resolving mediators. Found in oily fish, seal oil and some supplements; plasma levels are measured in omega-3 research. Not a drug.",
-  hdpa17: "First stable product of 15-lipoxygenase on n-3 DPA (through the hydroperoxide 17S-HpDPA): the start of the n-3 DPA D-series resolvins.",
-  rvd1n3: "n-3 DPA counterpart of resolvin D1 (7S,8R,17S-trihydroxy). Stops neutrophil entry and raises macrophage clearance of bacteria in mice. Research tool only.",
-  rvd2n3: "n-3 DPA counterpart of resolvin D2 (7S,16R,17S-trihydroxy). Reduces neutrophil recruitment in animals; found in human plasma and tissue.",
-  rvd5n3: "n-3 DPA counterpart of resolvin D5 (7S,17S-dihydroxy). Raises macrophage phagocytosis and lowers neutrophil entry in animals; GPR101 has been reported as its receptor.",
-  hdpa13: "Product of endothelial COX-2 on n-3 DPA (13R). The statin effect: atorvastatin S-nitrosylates COX-2 and raises it, so more resolvin T is made.",
-  rvt1: "13-series resolvin (7,13,20-trihydroxy-n-3 DPA). In mouse infection it lowers neutrophil tissue entry, raises macrophage phagocytosis and improves survival. No receptor is established. Not a drug.",
-  rvt2: "13-series resolvin (7,12,13-trihydroxy-n-3 DPA). Same protective actions in animals as RvT1; levels rise in infection and with atorvastatin. No receptor is established.",
-  rvt3: "13-series resolvin (7,8,13-trihydroxy-n-3 DPA). Same protective actions in animals as RvT1. No receptor is established.",
-  rvt4: "13-series resolvin (7,13-dihydroxy-n-3 DPA); an enzymatic oxygenation can convert it to RvT1. No receptor is established.",
-  hdpa14: "12-Lipoxygenase product of n-3 DPA: marker of the n-3 DPA maresin route and the start of MaR1 and MaR2 of n-3 DPA.",
-  mar1n3: "Congener of maresin 1 made from n-3 DPA. Reduces neutrophil chemotaxis and adhesion and raises macrophage phagocytosis; protective in mouse ischaemia–reperfusion. Research tool only.",
-  mar2n3: "Maresin of n-3 DPA (13,14-diol). Rises early in mouse inflammation and falls over the next day. Research tool only.",
-  pd1n3: "Congener of protectin D1 (10R,17S) made from n-3 DPA through 17S-HpDPA. Reduces neutrophil chemotaxis and raises macrophage phagocytosis; peaks at about 4 hours in mouse peritonitis. Research tool only.",
-  rve2: "Acts on ChemR23 (partial agonist) and blocks BLT1, so it limits neutrophil entry and raises phagocytosis in animals. Made by neutrophil 5-lipoxygenase from 18-HEPE, with the 5,6-epoxide reduced instead of hydrolysed. Research tool only.",
-  rve3: "Made by 12/15-lipoxygenase (for example in eosinophils) from 18-HEPE as a 17,18-diol, in an 18R and an 18S form. Limits neutrophil infiltration in mouse peritonitis. Research tool only.",
-  rvd3: "Acts on GPR32 (human) and lowers neutrophil entry in mouse peritonitis and skin inflammation; raises macrophage efferocytosis. Unlike RvD1 and RvD2 it appears late in resolution. Research tool only.",
-  rvd4: "Raises macrophage clearance of bacteria and dead cells and helps clear Staphylococcus aureus infection in mice; stays high late into resolution. Research tool only.",
-  rvd6: "Rarely studied D-series resolvin (4,17-diol); its actions are less well described than those of the other D-series members. Research tool only.",
-  pd2n3: "Congener of protectin D2 (16,17-diol) made from n-3 DPA. Shows two peaks in mouse exudates, at peak neutrophil entry and late in resolution. Research tool only.",
-  hdha14: "12-Lipoxygenase product of DHA. Marker of the maresin route and itself weakly anti-inflammatory.",
-  mar1: "Acts on macrophages (LGR6, RORα) and nerves: limits neutrophil entry, drives macrophage efferocytosis and tissue regeneration (planaria and mice), and reduces neuropathic pain. Not a drug yet.",
-  atrvd1: "Longer-lived aspirin-triggered form of resolvin D1 (17R, binds ALX/FPR2 and GPR32). Low-dose aspirin raises 17R-resolvins in animals and in some human studies.",
-  hdha17r: "Intermediate of aspirin-triggered resolvins: made only when COX-2 is acetylated, so low-dose aspirin shifts DHA toward this route.",
-  pge2g: "Product of COX-2 acting on 2-AG. It reaches its own receptor, causes hyperalgesia and calcium signalling in macrophages and neurons, and is a reason why COX-2 inhibitors change endocannabinoid tone.",
-  mctr1: "First maresin conjugate (a glutathione adduct): promotes regeneration and bacterial killing, and raises phagocytosis. Not a drug yet. No receptor has been established for the conjugates.",
-  mctr2: "Cysteinyl-glycinyl step of the conjugate chain: made by GGT, still active; converted onward by a dipeptidase.",
-  mctr3: "Cysteinyl conjugate, the last in the series; levels rise in human tissue during healing, and it promotes regeneration.",
-  rctr1: "Resolvin conjugate (glutathione adduct): lowers neutrophil entry, speeds clearance of bacteria and dead cells, and aids regeneration in planaria and mice. Not a drug yet. No receptor has been established for the conjugates.",
-  rctr2: "Cysteinyl-glycinyl step of the resolvin conjugate chain, made by GGT.",
-  rctr3: "Cysteinyl conjugate, the last in the RCTR series; promotes tissue regeneration.",
-  pctr1: "Protectin conjugate (glutathione adduct): reduces neutrophil entry, promotes regeneration and limits neuroinflammation in animals; detected in human tissue during healing. No receptor has been established for the conjugates.",
-  pctr2: "Cysteinyl-glycinyl step of the protectin conjugate chain, made by GGT.",
-  pctr3: "Cysteinyl conjugate, the last of the PCTR series; promotes tissue regeneration.",
-  rve1: "Acts on ChemR23 (CMKLR1; agonist) and on BLT1 (blocks LTB₄ signalling), so it blocks neutrophil entry, lowers platelet activation and promotes clearance of dead cells. Plasma levels rise after fish-oil supplements.",
-  nape: "The anandamide precursor, a minor membrane phospholipid. N-acyltransferase (PLA2G4E, calcium-dependent) moves an acyl chain from phosphatidylcholine onto the nitrogen of phosphatidylethanolamine; NAPE-PLD then splits it. NAPE also gives other N-acylethanolamines (oleoyl, palmitoyl), which act on PPARα and not on CB1.",
-  dag: "Product of phospholipase C-β (Gq receptors) and of phospholipase C-γ. It is also the activator of protein kinase C, so the same molecule can carry on as a PKC signal or be cut by DAG lipase to 2-AG.",
-  aea: "Anandamide (from the Sanskrit ananda, bliss). A partial agonist at CB1, weaker at CB2, also an agonist of TRPV1 channels. Made on demand, acts nearby and is destroyed within minutes by FAAH. FAAH loss-of-function variants (C385A) are linked to higher anandamide and lower anxiety and pain in some studies, and to more problem drug use in others.",
-  ag2: "Full agonist at CB1 and CB2, present at about 200 times the concentration of anandamide in brain. Retrograde signal for short-term depression of excitatory and inhibitory synapses; also made by immune cells and platelets. COX-2 can oxidise it to prostaglandin glyceryl esters, a route that is not drawn.",
-  etha: "A simple amino-alcohol. In tissue it is mostly re-used (CDP-ethanolamine pathway) to make phosphatidylethanolamine.",
-  glyc: "Joins the glycerol pool: glycerol kinase (liver, kidney) makes glycerol 3-phosphate for triglycerides or gluconeogenesis.",
-  pgf2a: "Acts on the Gq-coupled FP receptor: uterine and bronchial contraction, luteolysis in animals, raised uveoscleral outflow. Latanoprost, bimatoprost and travoprost (FP agonists) lower intra-ocular pressure; carboprost treats postpartum haemorrhage.",
-  fructose: "The sweet ketohexose of fruit, honey, sucrose and high-fructose syrups. It is taken up by GLUT5 on the lumen side of the jejunum (GLUT7 further down the gut, GLUT2 at the blood side), and the liver clears most of it. Hexokinase turns it into fructose 6-phosphate in muscle and adipose; liver fructokinase makes fructose 1-phosphate instead. Because this bypasses phosphofructokinase-1, a large load floods the liver with triose phosphates, which feeds triglyceride synthesis and (through fast ATP use) uric acid. Malabsorption (limited GLUT5 capacity) causes bloating and osmotic diarrhoea; hereditary fructose intolerance is aldolase B deficiency.",
   adenine: "The free adenine base. Adenine phosphoribosyltransferase (APRT) joins it to PRPP to give AMP. APRT deficiency lets adenine go to 2,8-dihydroxyadenine, which forms radiolucent kidney stones that are easily mistaken for uric acid stones; allopurinol or febuxostat (xanthine oxidase inhibition) prevents them.",
   pcat: "Purine nucleotides are dephosphorylated to nucleosides (5′-nucleotidase), the base is cut off by purine nucleoside phosphorylase, and the bases are oxidised by xanthine oxidase to uric acid, the human end product (most mammals continue to allantoin). Adenosine is first deaminated to inosine by adenosine deaminase; guanine is deaminated to xanthine, so both routes meet at xanthine. Hypoxanthine and guanine can instead be salvaged by HGPRT. Excess uric acid causes gout and uric acid stones; tumour lysis releases a large purine load.",
   inosine: "Hypoxanthine riboside. IMP loses its phosphate (5′-nucleotidase), or adenosine loses its amino group (adenosine deaminase), and purine nucleoside phosphorylase then releases free hypoxanthine and ribose 1-phosphate. Inosine is also used as a drug and is the base of the tRNA wobble nucleoside.",
@@ -6133,7 +6094,7 @@ function PathCard({ p, open, shell }) {
       <Sec t="Molecules"><div className="omino-chiprow">{mols.map((n) => <Pill key={n.id} c={pc.color} onClick={() => open("mol", n.id)}>{n.label}</Pill>)}</div></Sec>
       {hx.length > 0 && <Sec t="Hormones, tissues and cells"><div className="omino-chiprow">{hx.map((h) => <Pill key={h.id} c={pc.color} onClick={() => open("hor", h.id)}>{h.label}</Pill>)}</div></Sec>}
       {enz.length > 0 && <Sec t="Enzymes"><div className="omino-chiprow">{enz.map((l) => <Pill key={l} onClick={() => open("enz", l)}>{l}</Pill>)}</div></Sec>}
-      {(p === "pcat" || p === "eico") && <Sec t="Disorders and clinical panels"><div className="omino-chiprow">{Object.entries(PUD).filter(([, z]) => (z.pw || "pcat") === p).map(([k, z]) => <Pill key={k} c={pc.color} onClick={() => pudGo(open, z.at[0])}>{z.name}</Pill>)}</div></Sec>}
+      {p === "pcat" && <Sec t="Disorders and clinical panels"><div className="omino-chiprow">{Object.entries(PUD).map(([k, z]) => <Pill key={k} c={pc.color} onClick={() => pudGo(open, z.at[0])}>{z.name}</Pill>)}</div></Sec>}
     </CardShell>
   );
 }
@@ -6293,7 +6254,7 @@ function PudBlock({ hostId, open }) {
               <List t={lb[0] || "Presentation"} a={z.feat} />
               <List t={lb[1] || "Diagnosis"} a={z.dx} />
               <List t={lb[2] || "Treatment"} a={z.tx} />
-              {here.length > 0 && <><h5>Where in the atlas</h5><div className="omino-chiprow">{here.map((h) => <Pill key={h} c={PATHWAYS[z.pw || "pcat"].color} onClick={() => pudGo(open, h)}>{NODE_BY[h]?.label || h}</Pill>)}</div></>}
+              {here.length > 0 && <><h5>Where in the atlas</h5><div className="omino-chiprow">{here.map((h) => <Pill key={h} c={PATHWAYS.pcat.color} onClick={() => pudGo(open, h)}>{NODE_BY[h]?.label || h}</Pill>)}</div></>}
             </div>
           </details>
         );
@@ -6615,9 +6576,70 @@ function FollowModes({ mode, onMode }) {
     </div>
   );
 }
-function TrackerMap({ line, mini, onStation, onJump }) {
+// v9.9.2: the Pathway Tracker's overview in the 3D Network view is a 3D GPS: the pathway at its real places on the canvas, laid on a tilted ground plane
+// with perspective (the road runs off toward the horizon), the road behind faded and the road ahead bold, the tracker's arrow on it, nothing else.
+// The view glides to centre each object the tracker moves to (Back, Follow, a tapped stop); drag to turn the ground, double-tap to square up.
+function gpsLayout(n) { // a gently winding road: every stop one block further along, heading up the screen
+  const L = 54, P = [[0, 0]];
+  for (let i = 1; i < n; i++) { const a = 0.95 * Math.sin(i * 1.7 + 0.4) + 0.45 * Math.sin(i * 0.63 + 1.1), q = P[i - 1]; P.push([q[0] + Math.sin(a) * L, q[1] - Math.cos(a) * L]); }
+  return P;
+}
+const gpsF = (v) => Math.round(v * 10) / 10;
+function gpsRoad(P, a, b) { // Catmull-Rom through the stops a..b, drawn as cubic curves so every stop sits on the road
+  if (b <= a) return "";
+  const g = (i) => P[Math.max(0, Math.min(P.length - 1, i))]; let d = `M${gpsF(P[a][0])} ${gpsF(P[a][1])}`;
+  for (let i = a; i < b; i++) { const p0 = g(i - 1), p1 = g(i), p2 = g(i + 1), p3 = g(i + 2); d += `C${gpsF(p1[0] + (p2[0] - p0[0]) / 6)} ${gpsF(p1[1] + (p2[1] - p0[1]) / 6)} ${gpsF(p2[0] - (p3[0] - p1[0]) / 6)} ${gpsF(p2[1] - (p3[1] - p1[1]) / 6)} ${gpsF(p2[0])} ${gpsF(p2[1])}`; }
+  return d;
+}
+const gpsCut = (t, k) => (t.length > k ? t.slice(0, k - 1) + "…" : t);
+function TrackerGps({ line, mm, onStation }) {
+  const n = line.st.length, at = line.at, [yaw, setYaw] = useState(0), [c, setC] = useState(null), cRef = useRef(null), raf = useRef(0), drag = useRef(null);
+  const W = 340, H = 230, pitch = 1.0, D = 380, cp = Math.cos(pitch), sp = Math.sin(pitch);
+  const G = useMemo(() => { // the stops at the canvas's real places (or, without them, a winding road), and the scale that makes one step about 62 px
+    const pos = new Map((mm ? mm.pts : []).map((q) => [q.id, [q.x, q.y]]));
+    let P = line.st.map((x) => pos.get(x.id)), real = true; if (P.some((q) => !q)) { P = gpsLayout(n); real = false; }
+    const d = []; for (let i = 1; i < n; i++) d.push(Math.hypot(P[i][0] - P[i - 1][0], P[i][1] - P[i - 1][1])); d.sort((x, y) => x - y);
+    return { P, real, k: 62 / Math.max(d.length ? d[Math.floor(d.length / 2)] : 1, 1) };
+  }, [line, mm, n]);
+  const tx = G.P[at][0], ty = G.P[at][1];
+  useEffect(() => { // glide to the object the tracker now stands on
+    cancelAnimationFrame(raf.current); const from = cRef.current || [tx, ty], t0 = performance.now(), far = Math.hypot(tx - from[0], ty - from[1]) * G.k > 900;
+    const tick = (t) => { const u = far ? 1 : Math.min(1, (t - t0) / 520), e = 1 - Math.pow(1 - u, 3), v = [from[0] + (tx - from[0]) * e, from[1] + (ty - from[1]) * e]; cRef.current = v; setC(v); if (u < 1) raf.current = requestAnimationFrame(tick); };
+    raf.current = requestAnimationFrame(tick); return () => cancelAnimationFrame(raf.current);
+  }, [tx, ty]); // eslint-disable-line react-hooks/exhaustive-deps
+  const ctr = c || [tx, ty], cy = Math.cos(yaw), sy = Math.sin(yaw);
+  const proj = (p) => { const dx = (p[0] - ctr[0]) * G.k, dy = (p[1] - ctr[1]) * G.k, rx = dx * cy - dy * sy, ry = dx * sy + dy * cy, z = -ry * sp, f = D / Math.max(60, D + z); return { x: rx * f, y: ry * cp * f, f, z }; };
+  const Q = G.P.map(proj), Qa = Q.map((q) => [q.x, q.y]);
+  const grid = []; { const g = 60 / G.k, gx = Math.round(ctr[0] / g) * g, gy = Math.round(ctr[1] / g) * g, R = 9; for (let i = -R; i <= R; i++) { const a = proj([gx + i * g, gy - R * g]), b = proj([gx + i * g, gy + R * g]), c2 = proj([gx - R * g, gy + i * g]), d = proj([gx + R * g, gy + i * g]); grid.push(`M${gpsF(a.x)} ${gpsF(a.y)}L${gpsF(b.x)} ${gpsF(b.y)}M${gpsF(c2.x)} ${gpsF(c2.y)}L${gpsF(d.x)} ${gpsF(d.y)}`); } }
+  const side = [], dots = []; if (G.real && mm) { mm.edges.forEach((e) => { if (e.on) return; const a = proj([e.x1, e.y1]), b = proj([e.x2, e.y2]); side.push(`M${gpsF(a.x)} ${gpsF(a.y)}L${gpsF(b.x)} ${gpsF(b.y)}`); }); mm.pts.forEach((q) => { if (!q.on) { const r = proj([q.x, q.y]); dots.push(<circle key={q.id} className="omino-gps__ctx" cx={gpsF(r.x)} cy={gpsF(r.y)} r={gpsF(Math.max(1.4, 2.4 * r.f))} />); } }); }
+  const segs = []; for (let i = 0; i < n - 1; i++) segs.push({ i, d: gpsRoad(Qa, i, i + 1), z: (Q[i].z + Q[i + 1].z) / 2, f: (Q[i].f + Q[i + 1].f) / 2 }); segs.sort((a, b) => b.z - a.z);
+  const order = Q.map((q, i) => i).sort((a, b) => Q[b].z - Q[a].z);
+  const nN = proj([ctr[0], ctr[1] - 40 / G.k]), ang = (Math.atan2(nN.x - proj(ctr).x, -(nN.y - proj(ctr).y)) * 180) / Math.PI; // the arrow always heads north (up the canvas), however the ground is turned
+  const wid = (f, w) => gpsF(Math.min(w * 1.5, Math.max(w * 0.45, w * f)));
+  return (
+    <div className="omino-gps">
+      <svg viewBox={`${-W / 2} ${-H * 0.7} ${W} ${H}`} preserveAspectRatio="xMidYMid slice" role="img" aria-label={`${line.name} in 3D: stop ${at + 1} of ${n}`}
+        onPointerMove={(e) => { if (e.buttons === 1 && drag.current != null) { const dx = e.clientX - drag.current; drag.current = e.clientX; setYaw((v) => v - dx * 0.01); } }}
+        onPointerDown={(e) => { drag.current = e.clientX; }} onPointerUp={() => { drag.current = null; }} onPointerLeave={() => { drag.current = null; }} onDoubleClick={() => setYaw(0)}>
+        <path className="omino-gps__grid" d={grid.join("")} />
+        {side.length > 0 && <path className="omino-gps__side" d={side.join("")} />}
+        {dots}
+        {segs.map((g) => <path key={"c" + g.i} className="omino-gps__case" d={g.d} strokeWidth={wid(g.f, 13)} />)}
+        {segs.map((g) => <path key={"r" + g.i} className={g.i < at ? "omino-gps__past" : "omino-gps__ahead"} d={g.d} strokeWidth={wid(g.f, 7)} />)}
+        {order.map((i) => { const q = Q[i], r = gpsF(Math.max(2.6, (i === at + 1 ? 6.5 : 5) * q.f)); return (
+          <g key={line.st[i].id} className={`omino-gps__stop ${i < at ? "is-past" : i === at ? "is-cur" : "is-next"}`}>
+            {i !== at && <circle className="dot" cx={gpsF(q.x)} cy={gpsF(q.y)} r={r} strokeWidth={gpsF(Math.max(1.4, 2.2 * q.f))} />}
+            <circle className="hit" cx={gpsF(q.x)} cy={gpsF(q.y)} r={15} onClick={() => onStation(i)}><title>{line.st[i].via ? `${line.st[i].name} · reached by ${line.st[i].via}` : line.st[i].name}</title></circle>
+          </g>); })}
+        {order.map((i) => { if (i < at - 1 || i > at + 3) return null; const q = Q[i], big = i === at || i === at + 1, sd = i % 2 ? 1 : -1; return <text key={"l" + i} className={`omino-gps__lbl${big ? " is-big" : ""}${i < at ? " is-past" : ""}`} x={gpsF(q.x + sd * 13)} y={gpsF(q.y + 3.5)} textAnchor={sd > 0 ? "start" : "end"} opacity={gpsF(Math.min(1, 0.35 + q.f * 0.65))}>{gpsCut(line.st[i].name, big ? 28 : 22)}</text>; })}
+        <g className="omino-gps__me" transform={`translate(${gpsF(Q[at].x)} ${gpsF(Q[at].y)})`}><circle className="pulse" r={17} /><g style={{ transform: `rotate(${gpsF(ang)}deg)` }}><path d="M0 -13L9 10L0 5L-9 10Z" /></g></g>
+      </svg>
+    </div>
+  );
+}
+function TrackerMap({ line, mini, onStation, onJump, gps }) {
   const box = useRef(null), root = useRef(null), [wide, setWide] = useState(false), cur = line.st[line.at];
-  const mm = useMemo(() => (wide ? mini(line) : null), [wide, line]); // eslint-disable-line react-hooks/exhaustive-deps
+  const mm = useMemo(() => (wide ? mini(line) : null), [wide, line]), gm = useMemo(() => (gps ? mini(line) : null), [gps, line]); // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => { // keep the tracker's own station in the middle of the window
     const el = box.current && box.current.querySelector(".is-cur");
     if (el) box.current.scrollTo({ left: el.offsetLeft - box.current.clientWidth / 2 + el.offsetWidth / 2, behavior: "smooth" });
@@ -6627,10 +6649,11 @@ function TrackerMap({ line, mini, onStation, onJump }) {
   return (
     <div className="omino-metro nodrag nopan nowheel" ref={root} style={line.color ? { "--lc": line.color } : undefined} role="group" aria-label={`${line.name} overview`}>
       <div className="omino-metro__head">
-        <b>{line.name}</b><em>station {line.at + 1} of {line.st.length}{line.loopTo ? " · loops" : ""}</em>
-        <button className="omino-metro__more" onClick={() => setWide((v) => !v)} aria-expanded={wide} title={wide ? "Back to the stations only" : "Show the whole pathway as a mini map"}><span>{wide ? "Stations only" : "Whole pathway"}</span><Icon d={ICON.chevR} size={12} /></button>
+        <b>{line.name}</b><em>{gps ? "stop" : "station"} {line.at + 1} of {line.st.length}{line.loopTo ? " · loops" : ""}</em>
+        <button className="omino-metro__more" onClick={() => setWide((v) => !v)} aria-expanded={wide} title={wide ? (gps ? "Back to the route" : "Back to the stations only") : "Show the whole pathway as a mini map"}><span>{wide ? (gps ? "Route" : "Stations only") : "Whole pathway"}</span><Icon d={ICON.chevR} size={12} /></button>
       </div>
-      <div className="omino-metro__scroll" ref={box}>
+      {gps && <TrackerGps line={line} mm={gm} onStation={onStation} />}
+      {!gps && <div className="omino-metro__scroll" ref={box}>
         <ol className="omino-metro__line">
           {line.head && <li className="omino-metro__end is-head"><button onClick={() => onJump(line.head.id)} title={`Comes from ${line.head.label}`}>{line.head.label}</button></li>}
           {line.st.map((x, i) => (
@@ -6643,7 +6666,7 @@ function TrackerMap({ line, mini, onStation, onJump }) {
           {line.loopTo && <li className="omino-metro__end is-tail"><button onClick={() => onStation(0)} title={`Loops back to ${line.loopName}`}>↻ {line.loopName}</button></li>}
           {line.tail && <li className="omino-metro__end is-tail"><button onClick={() => onJump(line.tail.id)} title={`Leads on to ${line.tail.label}`}>{line.tail.label}</button></li>}
         </ol>
-      </div>
+      </div>}
       {wide && mm && mm.pts.length > 0 && (
         <div className="omino-metro__mini">
           <svg viewBox={mm.vb.join(" ")} preserveAspectRatio="xMidYMid meet" role="img" aria-label={`The whole ${line.name} pathway, ${mm.pts.length} objects`}>
@@ -6663,7 +6686,7 @@ function TrackerMap({ line, mini, onStation, onJump }) {
     </div>
   );
 }
-function PathPanel({ at, inE, outE, nIn, nOut, iIn, iOut, onBack, onFollow, onCycleIn, onCycleOut, onClose, onMode, onStand, standId, open, line, mini, onStation, onJump }) {
+function PathPanel({ at, inE, outE, nIn, nOut, iIn, iOut, onBack, onFollow, onCycleIn, onCycleOut, onClose, onMode, onStand, standId, open, line, mini, onStation, onJump, gps, netActs }) {
   const o = outE && edgeHow(outE), i = inE && edgeHow(inE), c = (o || i || {}).color || "#A1A1AA";
   const side = (e, n, k, dir, go, cyc) => (
     <div className="omino-follow__side">
@@ -6699,7 +6722,8 @@ function PathPanel({ at, inE, outE, nIn, nOut, iIn, iOut, onBack, onFollow, onCy
           {standId && <button className="omino-edgecard__enz" onClick={() => onStand(standId)}>Stand on {nm(standId)}</button>}
         </div>
       )}
-      {at && line && line.st.length > 0 && <TrackerMap line={line} mini={mini} onStation={onStation} onJump={onJump} />}
+      {at && netActs && <div className="omino-rdx__netacts">{netActs.map(([lab, fn]) => <button key={lab} onClick={fn}>{lab}</button>)}</div>}
+      {at && line && line.st.length > 0 && <TrackerMap line={line} mini={mini} onStation={onStation} onJump={onJump} gps={gps} />}
     </div>
   );
 }
@@ -6831,6 +6855,8 @@ function Atlas() {
     return () => window.removeEventListener("keydown", k);
   }, [editing]);
   const [groupMove, setGroupMove] = useState(true); // v8.9: in Edit mode a drag moves the card's whole group (Alt: one card); off = single cards
+  const [rot, setRot] = useState({ on: true, speed: 0.25, ccw: true }), [netHome, setNetHome] = useState(0), [netOpen, setNetOpen] = useState(true); // v8.9: the Network view (v9.9.2: the app opens in it; its header button or Esc goes to the 2D canvas)
+  const [cellOpen, setCellOpen] = useState(false); // v8.9: the hybrid Cell view
   const [gHot, setGHot] = useState(null); // the group under the pointer (or being dragged), outlined while editing
   const gDrag = useRef(null);
   const onGroupDragStart = (ev, node) => {
@@ -7154,6 +7180,21 @@ function Atlas() {
     for (let k = 0; k < 4; k++) { const sc = Math.min(390 / (x1 - x0 + r * 18), 190 / (y1 - y0 + r * 8)); r = Math.max(20, 4.2 / sc); } // objects about 4 px across on screen, whatever the pathway's size
     return { pts, edges, r, vb: [x0 - r * 9, y0 - r * 5, x1 - x0 + r * 18, y1 - y0 + r * 8] };
   };
+  const netEdgeStyle = (e) => { // the canvas's own vector colours: main enzyme steps in their pathway colour, other links grey dashed, pharmacology in the effect colour (red / green dashed, blue, amber), tethers and organ lines thin
+    const fx = e.data?.fx; if (fx) return [fx === "tether" ? "#59626e" : fx === "organ" ? ORGANS[e.data.org]?.color || "#9ca3af" : FX[fx]?.color || "#c084fc", fx === "inhibit" ? 6 : fx === "activate" ? 2 : fx === "tether" ? 3 : fx === "organ" ? 5 : 4, ""];
+    return e.data?.main ? [PATHWAYS[e.data.path]?.color || null, 0, e.data.path || ""] : ["#7b8594", 1, e.data?.path || ""];
+  };
+  const netData = useMemo(() => { // the network: every object and link now on the map (no co-substrate chips or pathway titles)
+    if (!netOpen) return null;
+    const keep = shownNodes.filter((n) => !n.hidden && n.data.kind !== "cofactor" && !n.data.title && !n.data.rx && !n.data.pharm && !n.data.organ && n.data.kind !== "gland" && n.data.kind !== "cell") /* pharmacology, organ hubs and histology live on the 2D canvas only */, ix = new Map(keep.map((n, i) => [n.id, i]));
+    const col = (k) => (k.startsWith("path:") ? PATHWAYS[k.slice(5)]?.color : k.startsWith("organ:") ? ORGANS[k.slice(6)]?.color : k.startsWith("rx:") ? "#c084fc" : null) || "#9ca3af";
+    const nodes = keep.map((n) => { const d = n.data, g = EDIT_GROUPS.of.get(n.id) || "solo:" + n.id; return { id: n.id, label: nm(n.id), g, gname: EDIT_GROUPS.names.get(g) || "", color: col(g), shape: d.rx === "drug" ? 2 : d.rx === "target" ? 1 : d.rx === "organ" ? 3 : 0, hub: d.rx === "organ", mol: d.mol && MOLS[d.mol] ? d.mol : null, md: d.mol && MOLS[d.mol] ? Math.max(bounds(MOLS[d.mol]).w, bounds(MOLS[d.mol]).h) : 0, card: !!(d.hor || d.mol || d.rx) }; });
+    return { nodes, edges: shownEdges.filter((e) => ix.has(e.source) && ix.has(e.target)).map((e) => [ix.get(e.source), ix.get(e.target), e.data?.fx === "organ" ? 2 : e.data?.fx ? 1 : 0, e.id, e.data?.label || "", e.data?.main ? 1 : 0, ...netEdgeStyle(e)]) };
+  }, [netOpen]); // eslint-disable-line react-hooks/exhaustive-deps
+  const openNetCard = (id) => { const d = getNode(id)?.data; if (!d) return; if (d.hor) open("hor", id); else if (d.mol) open("mol", id); else if (d.rx) open(d.rx, id); };
+  const openGroupCard = (g) => { const [k, id] = [g.slice(0, g.indexOf(":")), g.slice(g.indexOf(":") + 1)]; if (k === "path" && PATHWAYS[id]) open("path", id); else if (k === "organ" && ORGANS[id]) open("organ", "o_" + id); else if (k === "rx") { if (getNode(id)?.data?.rx) openNetCard(id); else open("path", "pharm"); } }; // the pathway / hub / pharmacology card of a network group
+  const showPathFromCell = (id) => { setCellOpen(false); setTimeout(() => { if (focus !== id) selectPathway(id); }, 80); };
+  const showFromNet = (id) => { setNetOpen(false); setTimeout(() => flyTo(id), 80); };
   const goStation = (i) => { // a station on the overview: stand there, keeping the line the tracker is walking
     const L = trackLine, x = L && L.st[i]; if (!x) return;
     const nx = L.st[i + 1];
@@ -7165,6 +7206,17 @@ function Atlas() {
     setTrack({ at, inn: adj.inn[at]?.[0]?.id || null, out: adj.out[at]?.[0]?.id || null });
     flyTo(at); syncCard(at);
   };
+  const netStand = (id, es) => { // the Network view chose an object (or tapped one of its vectors): the Pathway Tracker stands there; null lets go
+    if (!id) { setTrack(null); return; }
+    setTrack(es && es.dir === "out" ? { at: id, out: es.line, inn: adj.inn[id]?.[0]?.id || null } : es && es.dir === "inn" ? { at: id, inn: es.line, out: adj.out[id]?.[0]?.id || null } : { at: id, inn: adj.inn[id]?.[0]?.id || null, out: adj.out[id]?.[0]?.id || null });
+    setFpOpen(true); setRdx(null); setRdxPlay(false);
+  };
+  const netHop = (dir) => { if (track && fpOpen && rdx == null) hop(edgeById[dir === "out" ? track.out : track.inn], dir); }; // arrow keys in the Network view
+  const netActs = netOpen && track?.at ? [ // what the Network view's old object panel offered, now on the tracker
+    ...(getNode(track.at)?.data && (getNode(track.at).data.hor || getNode(track.at).data.mol || getNode(track.at).data.rx) ? [["Description card", () => openNetCard(track.at)]] : []),
+    ...(/^(path|organ|rx):/.test(EDIT_GROUPS.of.get(track.at) || "") ? [["Pathway card", () => openGroupCard(EDIT_GROUPS.of.get(track.at))]] : []),
+    ["Show in atlas", () => showFromNet(track.at)],
+  ] : null;
   // The open description card follows the canvas: hopping to an object swaps the card to it
   const NODE_CARDS = ["mol", "drug", "target", "organ"];
   const cardNode = cur && NODE_CARDS.includes(cur.t) ? cur.id : null;
@@ -7376,7 +7428,7 @@ function Atlas() {
 
   const resetSettings = () => { // every switch and choice in the settings panel back to how Omino first opens
     setHideG(false); setHideS(true); setShowRx(true); setShowKey(true); setShowLoc(true); setShowOrgans(true);
-    setShowPaths(true); setShowMini(true); setNavOn(false); setScrollPans(false); setThemePref("dark");
+    setShowPaths(true); setShowMini(true); setNavOn(false); setScrollPans(false); setThemePref("dark"); setRot({ on: true, speed: 0.25, ccw: true });
   };
 
   return (
@@ -7385,31 +7437,45 @@ function Atlas() {
       <style>{CSS}</style>
       <div className="omino-top">
         <header className={`omino-header ${wide ? "is-wide" : ""}`}>
-          <button className="omino-wordmark" onClick={() => { setQuery(""); setFocus(null); setLocFocus(null); setOrganFocus(null); setStack([]); setSearchOpen(false); clearSelection(); setViewport(homeViewport(), { duration: 600 }); }} aria-label="Home" title="Home">OMINO</button>
+          <button className="omino-wordmark" onClick={() => { setQuery(""); setFocus(null); setLocFocus(null); setOrganFocus(null); setStack([]); setSearchOpen(false); clearSelection(); setViewport(homeViewport(), { duration: 600 }); setCellOpen(false); setNetOpen(true); setNetHome((v) => v + 1); }} aria-label="Home" title="Home: the 3D view, turning round the TCA cycle">OMINO</button>
           {wide && <AtlasSearch {...searchProps} wide />}
           <div className="omino-hdr-right">
           {!wide && (
             <button className="omino-round omino-round--ghost" onClick={() => setSearchOpen((o) => !o)} aria-expanded={searchOpen} aria-label="Search" title="Search"><SearchGlyph size={15} /></button>
           )}
-          <a className={`omino-owbtn ${OWORLD_URL ? "" : "is-off"}`} href={OWORLD_URL || undefined} target="_blank" rel="noopener noreferrer" aria-disabled={!OWORLD_URL} aria-label="Open OWORLD" title={OWORLD_URL ? "Open OWORLD in a new tab" : "Set OWORLD_URL at the top of the file to turn this on"} onClick={(e) => { if (!OWORLD_URL) e.preventDefault(); }}>
-            <img className="omino-owbtn__icon" src={OWORLD_ICON} alt="" width="26" height="26" /><span className="omino-owbtn__logo">Open OWORLD</span>
-          </a>
-          <button className={`omino-round ${navOn ? "is-on" : ""}`} onClick={() => setNavOn((v) => !v)} aria-pressed={navOn} aria-label="Navigation tools" title={navOn ? "Clear the canvas (hide navigation tools)" : "Show navigation tools"}>
+          <button className={`omino-round ${navOn ? "is-on" : ""}`} onClick={() => setNavOn((v) => !v)} aria-pressed={navOn} aria-label="Navigation tools" title={navOn ? "Hide the navigation buttons in every view" : "Show the navigation buttons in every view (canvas, network, hybrid cell)"}>
             <Icon d={ICON.nav} />{navOn && <i />}
           </button>
           <button className={`omino-round ${ptOpen ? "is-on" : ""}`} onClick={() => setPtOpen((v) => !v)} aria-pressed={ptOpen} aria-label="Periodic table" title="Periodic table">
             <Icon d={ICON.table} />{ptOpen && <i />}
           </button>
-          <button className={`omino-round ${fpOpen ? "is-on" : ""}`} onClick={toggleFp} aria-pressed={fpOpen} aria-label="Pathway Tracker" title="Pathway Tracker: walk a pathway, or follow the electrons and hydrogens of one glucose">
-            <Icon d={ICON.redox} />{fpOpen && <i />}
+          <button className={`omino-round ${cellOpen ? "is-on" : ""}`} onClick={() => { setCellOpen((v) => !v); setNetOpen(false); }} aria-pressed={cellOpen} aria-label="Hybrid cell" title="Hybrid cell: a cut-open cell with the core signalling cascades, to turn and zoom into">
+            <Icon d={ICON.cell} />{cellOpen && <i />}
+          </button>
+          <button className={`omino-round ${netOpen ? "is-on" : ""}`} onClick={() => { setNetOpen((v) => !v); setCellOpen(false); }} aria-pressed={netOpen} aria-label="Network view" title="Network view: the pathways' objects and links as a 3D cloud you turn (pharmacology, organs and histology are on the 2D canvas)">
+            <Icon d={ICON.network} />{netOpen && <i />}
           </button>
           <button data-settings className={`omino-round ${stOpen ? "is-on" : "is-sky"}`} onClick={() => setStOpen((v) => !v)} aria-pressed={stOpen} aria-expanded={stOpen} aria-label="Settings" title="Settings"><Icon d={ICON.settings} /></button>
-          <button className={`omino-round ${editing ? "is-on" : "is-sky"}`} onClick={() => { setStOpen(false); if (editing) saveEdit(); else startEdit(); }} aria-pressed={editing} aria-label={editing ? "Save layout" : "Edit layout"} title={editing ? "Save this arrangement" : "Edit: drag cards, or whole pathways, organ hubs and pharmacology groups, then save"}><Icon d={editing ? ICON.check : ICON.edit} /></button>
+          {((!netOpen && !cellOpen) || editing) && (
+            <button className={`omino-round ${editing ? "is-on" : "is-sky"}`} onClick={() => { setStOpen(false); setNetOpen(false); setCellOpen(false); if (editing) saveEdit(); else startEdit(); }} aria-pressed={editing} aria-label={editing ? "Save layout" : "Edit layout"} title={editing ? "Save this arrangement" : "Edit: drag cards, or whole pathways, organ hubs and pharmacology groups, then save"}><Icon d={editing ? ICON.check : ICON.edit} /></button>
+          )}
           {stOpen && (
-            <div className="omino-settings" role="dialog" aria-label="Settings">
-              <h4>Settings</h4>
+            <div className="omino-pop">
+            <div className="omino-settings" role="dialog" aria-modal="true" aria-label="Settings">
+              <div className="omino-settings__bar"><h4>Settings</h4><button className="omino-settings__x" onClick={() => setStOpen(false)} aria-label="Close settings" title="Close (Esc)">×</button></div>
+              <div className="omino-settings__body">
+              <h5 className="omino-settings__sec omino-settings__sec--first">Tools</h5>
+              <div className="omino-settings__row">
+                <div><b>OWORLD</b><span>{OWORLD_URL ? "The exam simulator, in a new tab" : "Set OWORLD_URL at the top of the file to turn this on"}</span></div>
+                <a className={`omino-settings__link ${OWORLD_URL ? "" : "is-off"}`} href={OWORLD_URL || undefined} target="_blank" rel="noopener noreferrer" aria-disabled={!OWORLD_URL} aria-label="Open OWORLD" onClick={(e) => { if (!OWORLD_URL) e.preventDefault(); }}><img src={OWORLD_ICON} alt="" width="20" height="20" />Open OWORLD</a>
+              </div>
+              <div className="omino-settings__row">
+                <div><b>Pathway Tracker</b><span>Walk a pathway object by object, or follow the electrons and hydrogens of one glucose</span></div>
+                <button className={`omino-switch ${fpOpen ? "is-on" : ""}`} role="switch" aria-checked={fpOpen} aria-label="Pathway Tracker" onClick={() => { const on = !fpOpen; toggleFp(); if (on) setStOpen(false); }}><i /></button>
+              </div>
+              <h5 className="omino-settings__sec">Display</h5>
               {[
-                ["Navigation tools", "Zoom and filter tools, minimap and legend over the canvas", navOn, () => setNavOn((v) => !v)],
+                ["Navigation tools", "Zoom, fit and filter buttons, minimap and legend in every view: the canvas, the network and the hybrid cell", navOn, () => setNavOn((v) => !v)],
                 ["Enzyme labels", "Names on the reaction arrows (G)", !hideG, () => setHideG((v) => !v)],
                 ["Substrates", "Co-substrates beside each molecule (S)", !hideS, () => setHideS((v) => !v)],
                 ["Pharmacology", "Drugs, their targets and effects", showRx, toggleRx],
@@ -7440,7 +7506,25 @@ function Atlas() {
                   <button className={scrollPans ? "is-on" : ""} onClick={() => setScrollPans(true)}>Pan</button>
                 </div>
               </div>
+              <h5 className="omino-settings__sec">3D view</h5>
+              <div className="omino-settings__row">
+                <div><b>Auto-rotation</b><span>Turns round the TCA cycle until you pick an object</span></div>
+                <button className={`omino-switch ${rot.on ? "is-on" : ""}`} role="switch" aria-checked={rot.on} aria-label="Auto-rotation" onClick={() => setRot((r) => ({ ...r, on: !r.on }))}><i /></button>
+              </div>
+              <div className="omino-settings__row">
+                <div><b>Rotation speed</b><span>One turn takes about {Math.round(40 / rot.speed)} s</span></div>
+                <label className="omino-range"><input type="range" min="0.25" max="4" step="0.25" value={rot.speed} disabled={!rot.on} onChange={(e) => setRot((r) => ({ ...r, speed: +e.target.value }))} aria-label="Rotation speed" /><em>{rot.speed}×</em></label>
+              </div>
+              <div className="omino-settings__row">
+                <div><b>Direction</b><span>Which way the view turns</span></div>
+                <div className="omino-seg" role="group" aria-label="Rotation direction">
+                  <button className={rot.ccw ? "is-on" : ""} disabled={!rot.on} aria-pressed={rot.ccw} onClick={() => setRot((r) => ({ ...r, ccw: true }))}>↺ Counter</button>
+                  <button className={!rot.ccw ? "is-on" : ""} disabled={!rot.on} aria-pressed={!rot.ccw} onClick={() => setRot((r) => ({ ...r, ccw: false }))}>↻ Clockwise</button>
+                </div>
+              </div>
               <button className="omino-settings__export" onClick={resetSettings}><Icon d={ICON.reset} size={18} />Default Settings</button>
+              </div>
+            </div>
             </div>
           )}
         </div>
@@ -7576,13 +7660,15 @@ function Atlas() {
           <PeriodicTable q={query.trim().toLowerCase()} sel={cur?.t === "el" ? cur.id : null} onPick={(e) => (cur?.t === "el" ? swap("el", e.sym) : open("el", e.sym))} onClose={() => setPtOpen(false)}
             width={cur ? "min(1680px, calc(100% - 440px))" : "min(1680px, calc(100% - 96px))"} />
         )}
+        {cellOpen && <CellView nav={navOn} onClose={() => setCellOpen(false)} onPath={showPathFromCell} onCard={openNetCard} onPathCard={(id) => open("path", id)} onLocCard={(id) => open("loc", id)} />}
+        {netOpen && netData && <NetworkView data={netData} home={netHome} rot={rot} setRot={setRot} nav={navOn} focusId={fpOpen && rdx == null && track ? track.at : cardNode} onClose={() => setNetOpen(false)} onOpen={openNetCard} onGroup={openGroupCard} onStand={netStand} onHop={netHop} tracking={fpOpen && rdx == null && !!track} lined={fpOpen && rdx == null && track ? { out: track.out, inn: track.inn } : null} />}
         {fpOpen && (rdx != null
           ? <RedoxPanel i={rdx} setI={setRdx} playing={rdxPlay} setPlaying={setRdxPlay} onClose={closeFp} onMode={(m) => (m === "path" ? modePath() : modeRedox())} />
           : (() => {
             const inE = track ? edgeById[track.inn] : null, outE = track ? edgeById[track.out] : null, ins = track ? adj.inn[track.at] || [] : [], outs = track ? adj.out[track.at] || [] : [];
             return <PathPanel at={track?.at} inE={inE} outE={outE} nIn={ins.length} nOut={outs.length} iIn={Math.max(0, ins.findIndex((x) => x.id === track?.inn))} iOut={Math.max(0, outs.findIndex((x) => x.id === track?.out))}
               onBack={() => hop(inE, "in")} onFollow={() => hop(outE, "out")} onCycleIn={() => cycle("in")} onCycleOut={() => cycle("out")} onClose={closeFp}
-              onMode={(m) => (m === "redox" ? modeRedox() : modePath())} onStand={standOn} standId={!track && cardNode ? cardNode : null} open={open} line={trackLine} mini={buildMini} onStation={goStation} onJump={standOn} />;
+              onMode={(m) => (m === "redox" ? modeRedox() : modePath())} onStand={standOn} standId={!track && cardNode ? cardNode : null} open={open} line={trackLine} mini={buildMini} onStation={goStation} onJump={standOn} gps={netOpen} netActs={netActs} />;
           })())}
         {cur && <InfoCard cur={cur} open={open} swap={swap} fit={fit} onBack={stack.length > 1 ? () => setStack((s) => s.slice(0, -1)) : null} onClose={() => setStack([])}
           nav={cardNode ? { canPrev: canStep("in"), canNext: canStep("out"), onPrev: () => stepCard("in"), onNext: () => stepCard("out") } : null} />}
@@ -7929,7 +8015,23 @@ ${LIGHT_CSS}
 .omino-top .omino-wordmark:focus-visible { outline: 2px solid var(--sky); outline-offset: 2px; border-radius: 4px; }
 .omino-top .omino-hdr-right { align-items: center; gap: 10px; }
 .omino-top .omino-round { width: 40px; height: 40px; flex-shrink: 0; }
-.omino-top .omino-settings { top: 48px; width: min(320px, calc(100vw - 40px)); max-height: calc(100dvh - 90px); overflow-y: auto; }
+.omino-pop { position: fixed; inset: 0; z-index: 1000; display: grid; place-items: center; padding: 20px; box-sizing: border-box; pointer-events: auto; background: rgba(0, 0, 0, .5); backdrop-filter: blur(3px); }
+.omino-top .omino-settings { position: relative; top: auto; right: auto; display: flex; flex-direction: column; width: min(460px, 100%); max-height: min(740px, calc(100dvh - 40px)); padding: 0; overflow: hidden; }
+.omino-settings__bar { flex: none; display: flex; align-items: center; justify-content: space-between; padding: 18px 20px 6px; }
+.omino-settings__bar h4 { margin: 0; }
+.omino-settings__x { width: 32px; height: 32px; padding: 0; font-size: 20px; line-height: 1; color: var(--o-muted); cursor: pointer; background: transparent; border: 1px solid var(--o-border); border-radius: 50%; }
+.omino-settings__x:hover { color: var(--o-ink); background: var(--o-hover); }
+.omino-settings__body { overflow-y: auto; padding: 0 20px 20px; }
+.omino-settings__sec { margin: 22px 0 0; padding-bottom: 2px; font: 600 11px var(--mono, monospace); letter-spacing: .12em; text-transform: uppercase; color: var(--o-muted); border-bottom: 1px solid var(--o-border); }
+.omino-settings__sec--first { margin-top: 8px; }
+.omino-settings__link { flex: none; display: inline-flex; align-items: center; gap: 8px; padding: 7px 14px 7px 8px; font-size: 13px; font-weight: 600; color: var(--o-ink); text-decoration: none; border: 1px solid var(--o-border); border-radius: 999px; }
+.omino-settings__link:hover { background: var(--o-hover); }
+.omino-settings__link img { border-radius: 6px; }
+.omino-settings__link.is-off { opacity: .4; pointer-events: none; }
+.omino-range { flex: none; display: flex; align-items: center; gap: 10px; }
+.omino-range input { width: 130px; accent-color: var(--sky); }
+.omino-range input:disabled, .omino-seg button:disabled { opacity: .4; cursor: default; }
+.omino-range em { min-width: 34px; font: normal 600 11px var(--mono, monospace); text-align: right; color: var(--o-muted); }
 .omino-searchrow { margin-top: 12px; }
 .omino-top .omino-round--ghost { background: transparent; border-color: var(--o-border); color: var(--o-ink); }
 .omino-top .omino-round--ghost:hover { background: transparent; }
@@ -8237,6 +8339,59 @@ ${LIGHT_CSS}
 .omino-rdx__modes button:hover { color: var(--o-ink); }
 .omino-rdx__modes button.is-on { color: var(--o-ink); background: var(--o-hover); border-color: var(--o-accent); }
 .omino-rdx__modes button:focus-visible { outline: 2px solid var(--o-accent); outline-offset: 2px; }
+.omino-cell { position: absolute; inset: 0; z-index: 7; overflow: hidden; touch-action: none; user-select: none; background: #0a0a0c; }
+.omino-cell canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; touch-action: none; cursor: grab; }
+.omino-cell__tools { position: absolute; top: 12px; left: 12px; display: flex; flex-direction: column; gap: 6px; padding: 6px; background: var(--o-card); border: 1px solid var(--o-border); border-radius: 14px; }
+.omino-cell__tools button { width: 38px; height: 38px; padding: 0; font: 600 16px var(--mono, monospace); color: var(--o-ink); cursor: pointer; background: transparent; border: 1px solid var(--o-border); border-radius: 10px; }
+.omino-cell__tools button:hover { background: var(--o-hover); }
+.omino-cell__tools button.is-on { color: var(--sky); border-color: var(--sky); }
+.omino-cell__chips { position: absolute; top: 12px; left: 72px; right: 12px; display: flex; gap: 6px; overflow-x: auto; padding-bottom: 4px; scrollbar-width: none; }
+.omino-cell__chips::-webkit-scrollbar { display: none; }
+.omino-cell__chips button { flex: none; padding: 8px 12px; font: 600 12px var(--mono, monospace); color: var(--o-ink2); cursor: pointer; background: var(--o-card); border: 1px solid color-mix(in srgb, var(--cc) 60%, var(--o-border)); border-radius: 999px; white-space: nowrap; }
+.omino-cell__chips button:hover { color: var(--o-ink); }
+.omino-cell__chips button.is-on { color: #0a0a0c; background: var(--cc); border-color: var(--cc); }
+.omino-cell__panel { position: absolute; left: 12px; right: 12px; bottom: 12px; max-width: 520px; max-height: 44%; overflow-y: auto; padding: 12px 14px; display: flex; flex-direction: column; gap: 9px; background: var(--o-card); border: 1px solid var(--o-border); border-radius: 14px; box-shadow: 0 12px 32px var(--o-shadow2); overscroll-behavior: contain; }
+.omino-cell__top { display: flex; align-items: center; gap: 8px; }
+.omino-cell__top i { flex: none; width: 10px; height: 10px; border-radius: 50%; }
+.omino-cell__top b { flex: 1; min-width: 0; font-size: 14px; }
+.omino-cell__top button { font-size: 20px; line-height: 1; color: var(--o-muted); cursor: pointer; background: none; border: 0; }
+.omino-cell__panel p { margin: 0; font-size: 12.5px; line-height: 1.45; color: var(--o-ink2); }
+.omino-cell__steps { display: flex; gap: 6px; overflow-x: auto; padding: 2px 0; scrollbar-width: none; }
+.omino-cell__steps button { flex: none; width: 30px; height: 30px; padding: 0; font: 700 12px var(--mono, monospace); color: var(--o-ink2); cursor: pointer; background: transparent; border: 2px solid var(--cc); border-radius: 50%; opacity: .6; }
+.omino-cell__steps button.is-done { background: color-mix(in srgb, var(--cc) 35%, transparent); opacity: 1; }
+.omino-cell__steps button.is-cur { color: #0a0a0c; background: var(--cc); opacity: 1; box-shadow: 0 0 0 4px color-mix(in srgb, var(--cc) 30%, transparent); }
+.omino-cell__now { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; }
+.omino-cell__now b { font-size: 13px; }
+.omino-cell__now button { padding: 2px 9px; font: 600 10.5px var(--mono, monospace); color: var(--cc); cursor: pointer; background: transparent; border: 1px solid var(--cc); border-radius: 999px; }
+.omino-cell__now span { flex-basis: 100%; font-size: 12.5px; line-height: 1.45; color: var(--o-ink2); }
+.omino-cell__acts { display: flex; align-items: center; gap: 8px; }
+.omino-cell__acts button { padding: 7px 12px; font: 600 12px var(--mono, monospace); color: var(--o-ink2); cursor: pointer; background: transparent; border: 1px solid var(--o-border); border-radius: 999px; }
+.omino-cell__acts button:disabled { opacity: .35; cursor: default; }
+.omino-cell__acts button.is-primary { color: #0a0a0c; background: var(--sky); border-color: var(--sky); min-width: 68px; }
+.omino-cell__acts em { margin-left: auto; font: normal 500 11px var(--mono, monospace); color: var(--o-muted); }
+.omino-cell__links { display: flex; flex-wrap: wrap; align-items: center; gap: 5px; }
+.omino-cell__links span { font: 600 10px var(--mono, monospace); letter-spacing: .06em; text-transform: uppercase; color: var(--o-muted); margin-right: 2px; }
+.omino-cell__links button { padding: 4px 9px; font: 600 11px var(--mono, monospace); color: var(--o-ink2); cursor: pointer; background: transparent; border: 1px solid var(--cc, var(--o-border)); border-radius: 999px; }
+.omino-cell__links button:hover { color: var(--o-ink); border-color: var(--sky); }
+.omino-cell__links button.is-path { border-style: dashed; }
+.omino-cell__links .is-pathgrp { display: inline-flex; gap: 2px; }
+.omino-cell__links .is-pathgrp button:first-child { border-radius: 999px 0 0 999px; }
+.omino-cell__links .is-pathgrp button:last-child { border-radius: 0 999px 999px 0; padding: 4px 7px; }
+@media (max-width: 760px) { .omino-cell__panel { max-height: 48%; } }
+.omino-net { position: absolute; inset: 0; z-index: 7; overflow: hidden; touch-action: none; user-select: none; }
+.omino-net canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; touch-action: none; cursor: grab; }
+.omino-net__tools { position: absolute; top: 12px; left: 12px; display: flex; flex-direction: column; gap: 6px; padding: 6px; background: var(--o-card); border: 1px solid var(--o-border); border-radius: 14px; }
+.omino-net__tools button { width: 38px; height: 38px; padding: 0; font: 600 16px var(--mono, monospace); color: var(--o-ink); cursor: pointer; background: transparent; border: 1px solid var(--o-border); border-radius: 10px; }
+.omino-net__tools button:hover { background: var(--o-hover); }
+.omino-net__tools button.is-on { color: var(--sky); border-color: var(--sky); }
+.omino-net__search { position: absolute; top: 12px; left: 72px; right: 12px; max-width: 340px; display: flex; align-items: center; background: var(--o-card); border: 1px solid var(--o-border); border-radius: 12px; }
+.omino-net__search input { flex: 1; min-width: 0; padding: 11px 12px; font: 500 14px var(--mono, monospace); color: var(--o-ink); background: transparent; border: 0; outline: 0; }
+.omino-net__search button { padding: 0 12px; font-size: 18px; color: var(--o-muted); cursor: pointer; background: none; border: 0; }
+.omino-net__stat { position: absolute; right: 14px; bottom: 10px; font: 500 10px var(--mono, monospace); color: var(--o-muted); pointer-events: none; text-align: right; }
+@media (max-width: 760px) { .omino-net__stat { display: none; } }
+.omino-rdx__netacts { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; padding: 0 14px 12px; }
+.omino-rdx__netacts button { padding: 7px 12px; font: 600 12px var(--mono, monospace); color: var(--o-ink2); cursor: pointer; background: transparent; border: 1px solid var(--o-border); border-radius: 999px; }
+.omino-rdx__netacts button:hover { color: var(--o-ink); border-color: var(--sky); }
 .omino-metro { flex: none; margin: 0 14px 12px; --lc: var(--sky); border: 1px solid var(--o-border); border-radius: 12px; background: color-mix(in srgb, var(--o-ink) 4%, transparent); text-align: left; }
 .omino-metro__head { display: flex; align-items: center; gap: 8px; padding: 8px 8px 8px 10px; color: var(--o-ink); }
 .omino-metro__head b { flex: 1; min-width: 0; font-size: 11.5px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: color-mix(in srgb, var(--lc) var(--o-keep), var(--o-ink)); }
@@ -8291,6 +8446,28 @@ ${LIGHT_CSS}
 .omino-rdx__ctl button:disabled { opacity: .35; cursor: default; }
 .omino-rdx__ctl button.is-play { min-width: 64px; color: var(--sky); border-color: var(--sky); }
 .omino-rdx__ctl input[type=range] { flex: 1; min-width: 0; accent-color: var(--o-accent); }
+.omino-gps { position: relative; margin: 0 8px 8px; border: 1px solid var(--o-border); border-radius: 10px; overflow: hidden; background: color-mix(in srgb, var(--lc) 4%, var(--o-card)); }
+.omino-gps::before { content: ""; position: absolute; inset: 0 0 auto 0; height: 38%; z-index: 1; pointer-events: none; background: linear-gradient(var(--o-card), transparent); } /* the horizon fades into the sky */
+.omino-gps > svg { display: block; width: 100%; height: 230px; touch-action: none; cursor: grab; }
+.omino-gps__grid { fill: none; stroke: var(--o-ink); stroke-width: 1; opacity: .07; }
+.omino-gps__side { fill: none; stroke: var(--lc); stroke-width: 1.2; opacity: .22; }
+.omino-gps__ctx { fill: var(--lc); opacity: .28; }
+.omino-gps__case { fill: none; stroke: var(--o-card); stroke-linecap: round; stroke-linejoin: round; }
+.omino-gps__past, .omino-gps__ahead { fill: none; stroke: var(--lc); stroke-linecap: round; stroke-linejoin: round; }
+.omino-gps__past { opacity: .32; }
+.omino-gps__stop .dot { fill: var(--o-card); stroke: var(--lc); }
+.omino-gps__stop.is-past .dot { fill: color-mix(in srgb, var(--lc) 45%, var(--o-card)); }
+.omino-gps__stop .hit { fill: transparent; cursor: pointer; }
+.omino-gps__stop:hover .dot { stroke-width: 3.4; }
+.omino-gps__lbl { font: 600 10px var(--mono, monospace); fill: var(--o-muted); paint-order: stroke; stroke: var(--o-card); stroke-width: 3.4px; stroke-linejoin: round; pointer-events: none; }
+.omino-gps__lbl.is-past { fill-opacity: .7; }
+.omino-gps__lbl.is-big { font-size: 11.5px; font-weight: 700; fill: var(--o-ink); }
+.omino-gps__me { pointer-events: none; }
+.omino-gps__me path { fill: var(--lc); stroke: var(--o-card); stroke-width: 2.4; stroke-linejoin: round; }
+.omino-gps__me g { transition: transform .35s ease; }
+.omino-gps__me .pulse { fill: var(--lc); opacity: .2; }
+@media (max-width: 760px) { .omino-gps > svg { height: min(230px, 32dvh); } }
+@media (prefers-reduced-motion: reduce) { .omino-gps__me g { transition: none; } }
 @media (max-width: 760px) {
   .omino-rdx { left: 8px; right: 8px; top: auto; bottom: 8px; width: auto; max-height: 52%; }
   .omino-rdx__row { grid-template-columns: 1fr 70px 30px; }
